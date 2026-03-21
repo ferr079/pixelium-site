@@ -1,0 +1,286 @@
+---
+import Base from '../layouts/Base.astro';
+---
+
+<Base title="pixelium.win — Homelab Infrastructure">
+  <main>
+    <!-- Hero -->
+    <section class="hero">
+      <div class="container">
+        <p class="terminal-prompt">$ whoami</p>
+        <h1>pixelium<span class="dot">.</span>win</h1>
+        <p class="tagline">Infrastructure homelab auto-hébergée — de la virtualisation à l'observabilité.</p>
+        <div class="hero-links">
+          <a href="#stack" class="btn btn-primary">Voir la stack</a>
+          <a href="#contact" class="btn btn-secondary">Contact</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- Stack -->
+    <section id="stack" class="stack">
+      <div class="container">
+        <h2><span class="hash">#</span> Stack technique</h2>
+        <div class="grid">
+          <div class="card">
+            <h3>Virtualisation</h3>
+            <p>3 nœuds Proxmox VE (N5105, Ryzen 7840HS, i7-2600K) — 30+ conteneurs LXC et VMs en production.</p>
+            <ul class="tags">
+              <li>Proxmox VE</li>
+              <li>LXC</li>
+              <li>PBS</li>
+            </ul>
+          </div>
+          <div class="card">
+            <h3>Réseau & DNS</h3>
+            <p>DNS interne TechnitiumDNS en haute dispo (primaire + secondaire), DoT, blocklists. Reverse proxy Traefik avec TLS automatique via step-ca.</p>
+            <ul class="tags">
+              <li>Traefik</li>
+              <li>step-ca</li>
+              <li>TechnitiumDNS</li>
+              <li>DoT</li>
+            </ul>
+          </div>
+          <div class="card">
+            <h3>Sécurité</h3>
+            <p>ACME TLS interne, SSH durci (clés uniquement), Wazuh SIEM, Authentik SSO, Headscale VPN mesh.</p>
+            <ul class="tags">
+              <li>Wazuh</li>
+              <li>Authentik</li>
+              <li>Headscale</li>
+              <li>Vaultwarden</li>
+            </ul>
+          </div>
+          <div class="card">
+            <h3>Observabilité</h3>
+            <p>Métriques (VictoriaMetrics), logs centralisés (Loki + Promtail), monitoring agents (Beszel), patch management (Patchmon).</p>
+            <ul class="tags">
+              <li>VictoriaMetrics</li>
+              <li>Loki</li>
+              <li>Beszel</li>
+              <li>Patchmon</li>
+            </ul>
+          </div>
+          <div class="card">
+            <h3>IaC & Automatisation</h3>
+            <p>Ansible (Semaphore UI) pour le déploiement et la configuration. Configs versionnées sur Forgejo. Unattended upgrades.</p>
+            <ul class="tags">
+              <li>Ansible</li>
+              <li>Semaphore</li>
+              <li>Forgejo</li>
+            </ul>
+          </div>
+          <div class="card">
+            <h3>Services applicatifs</h3>
+            <p>Forge Git, gestionnaire de mots de passe, lecteur multimédia, gestion photos, bookmarks, wiki, et plus.</p>
+            <ul class="tags">
+              <li>Jellyfin</li>
+              <li>Immich</li>
+              <li>Kavita</li>
+              <li>Linkwarden</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Contact -->
+    <section id="contact" class="contact">
+      <div class="container">
+        <h2><span class="hash">#</span> Contact</h2>
+        <p>Intéressé par cette infrastructure ou mon profil ? N'hésitez pas à me contacter.</p>
+        <div class="contact-links">
+          <a href="https://github.com/ferr079" target="_blank" rel="noopener">GitHub</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+      <div class="container">
+        <p>Construit avec <a href="https://astro.build" target="_blank" rel="noopener">Astro</a> — Hébergé sur Cloudflare Pages</p>
+      </div>
+    </footer>
+  </main>
+</Base>
+
+<style>
+  .container {
+    max-width: var(--max-width);
+    margin: 0 auto;
+    padding: 0 1.5rem;
+  }
+
+  /* Hero */
+  .hero {
+    min-height: 80vh;
+    display: flex;
+    align-items: center;
+    padding: 4rem 0;
+  }
+
+  .terminal-prompt {
+    font-family: var(--font-mono);
+    color: var(--color-accent);
+    font-size: 0.95rem;
+    margin-bottom: 0.75rem;
+  }
+
+  h1 {
+    font-size: clamp(2.5rem, 6vw, 4rem);
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    line-height: 1.1;
+    margin-bottom: 1rem;
+  }
+
+  .dot {
+    color: var(--color-accent);
+  }
+
+  .tagline {
+    font-size: 1.25rem;
+    color: var(--color-text-muted);
+    max-width: 36rem;
+    margin-bottom: 2rem;
+  }
+
+  .hero-links {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+  }
+
+  .btn {
+    display: inline-block;
+    padding: 0.75rem 1.5rem;
+    border-radius: 6px;
+    font-weight: 600;
+    font-size: 0.95rem;
+    transition: all 0.2s;
+  }
+
+  .btn-primary {
+    background: var(--color-accent);
+    color: var(--color-bg);
+  }
+
+  .btn-primary:hover {
+    background: var(--color-accent-hover);
+    color: var(--color-bg);
+  }
+
+  .btn-secondary {
+    border: 1px solid var(--color-border);
+    color: var(--color-text);
+  }
+
+  .btn-secondary:hover {
+    border-color: var(--color-accent);
+    color: var(--color-accent);
+  }
+
+  /* Stack */
+  .stack {
+    padding: 5rem 0;
+  }
+
+  h2 {
+    font-size: 1.75rem;
+    margin-bottom: 2.5rem;
+  }
+
+  .hash {
+    color: var(--color-accent);
+    margin-right: 0.25rem;
+  }
+
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(18rem, 1fr));
+    gap: 1.25rem;
+  }
+
+  .card {
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: 8px;
+    padding: 1.5rem;
+    transition: border-color 0.2s;
+  }
+
+  .card:hover {
+    border-color: var(--color-accent);
+  }
+
+  .card h3 {
+    font-size: 1.1rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .card p {
+    color: var(--color-text-muted);
+    font-size: 0.9rem;
+    margin-bottom: 1rem;
+    line-height: 1.5;
+  }
+
+  .tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+    list-style: none;
+  }
+
+  .tags li {
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    background: var(--color-bg);
+    color: var(--color-accent);
+    padding: 0.2rem 0.6rem;
+    border-radius: 4px;
+    border: 1px solid var(--color-border);
+  }
+
+  /* Contact */
+  .contact {
+    padding: 5rem 0;
+    border-top: 1px solid var(--color-border);
+  }
+
+  .contact p {
+    color: var(--color-text-muted);
+    margin-bottom: 1.5rem;
+    max-width: 36rem;
+  }
+
+  .contact-links {
+    display: flex;
+    gap: 1rem;
+  }
+
+  .contact-links a {
+    font-family: var(--font-mono);
+    font-size: 0.9rem;
+    padding: 0.5rem 1rem;
+    border: 1px solid var(--color-border);
+    border-radius: 6px;
+    transition: all 0.2s;
+  }
+
+  .contact-links a:hover {
+    border-color: var(--color-accent);
+  }
+
+  /* Footer */
+  footer {
+    padding: 2rem 0;
+    border-top: 1px solid var(--color-border);
+  }
+
+  footer p {
+    color: var(--color-text-muted);
+    font-size: 0.85rem;
+    text-align: center;
+  }
+</style>
