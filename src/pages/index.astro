@@ -66,7 +66,7 @@ import Base from '../layouts/Base.astro';
       <div class="container">
         <div class="opensource-badge">
           <span class="opensource-icon">&#9671;</span>
-          <p><strong>100% open source.</strong> Chaque service de cette infrastructure repose sur des logiciels libres. Aucun logiciel propriétaire, aucun vendor lock-in, aucune licence payante.</p>
+          <p><strong>100% open source.</strong> De Linux et Proxmox aux services applicatifs, chaque brique repose sur des logiciels libres. Aucun logiciel propriétaire, aucun vendor lock-in — juste du Linux, du BSD et de l'open source.</p>
         </div>
       </div>
     </section>
@@ -530,26 +530,26 @@ import Base from '../layouts/Base.astro';
 
   .opensource-badge {
     display: flex;
-    align-items: flex-start;
-    gap: 1rem;
-    padding: 1.25rem 1.5rem;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 1.5rem 2rem;
     border: 1px solid rgba(56, 189, 248, 0.2);
     border-radius: 8px;
     background: linear-gradient(135deg, rgba(56, 189, 248, 0.05), rgba(56, 189, 248, 0.02));
-    max-width: 100%;
+    text-align: center;
   }
 
   .opensource-icon {
     font-size: 1.4rem;
     color: var(--color-accent);
-    flex-shrink: 0;
-    margin-top: 0.1rem;
   }
 
   .opensource-badge p {
     font-size: 0.9rem;
     color: var(--color-text-muted);
     line-height: 1.6;
+    max-width: 40rem;
   }
 
   .opensource-badge strong {
