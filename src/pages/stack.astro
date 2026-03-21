@@ -1,0 +1,590 @@
+---
+import Base from '../layouts/Base.astro';
+---
+
+<Base title="Stack technique — pixelium.win" description="Architecture technique détaillée du homelab pixelium — Proxmox, Astro, Cloudflare Workers, pipeline CI/CD.">
+  <main>
+    <nav>
+      <div class="container">
+        <a href="/" class="nav-home">← pixelium.win</a>
+      </div>
+    </nav>
+
+    <section class="hero-mini">
+      <div class="container">
+        <p class="terminal-prompt">$ cat architecture.md</p>
+        <h1>Stack<span class="dot"> </span>technique</h1>
+        <p class="subtitle">Chaque couche du pipeline, du code source au navigateur du visiteur.</p>
+      </div>
+    </section>
+
+    <!-- Astro -->
+    <section class="layer">
+      <div class="container">
+        <div class="layer-header">
+          <span class="layer-number">01</span>
+          <h2>Framework — Astro 6</h2>
+        </div>
+        <div class="layer-content">
+          <p>Générateur de site statique qui transforme des fichiers <code>.astro</code> en HTML/CSS optimisé. <strong>Zéro JavaScript côté client par défaut</strong> — les pages sont pré-rendues au build, pas dans le navigateur. Résultat : chargement instantané.</p>
+          <div class="details-grid">
+            <div class="detail">
+              <h4>Langage template</h4>
+              <p>Fichiers <code>.astro</code> — un mélange de JSX et HTML avec un frontmatter TypeScript (le bloc <code>---</code> en haut du fichier).</p>
+            </div>
+            <div class="detail">
+              <h4>Routing</h4>
+              <p>Basé sur le filesystem : chaque fichier dans <code>src/pages/</code> devient une route. Cette page est <code>src/pages/stack.astro</code> → <code>/stack</code>.</p>
+            </div>
+            <div class="detail">
+              <h4>Contenu futur</h4>
+              <p>Le dossier <code>src/content/</code> est préparé pour du contenu Markdown — articles, fiches détaillées par service, blog technique.</p>
+            </div>
+          </div>
+          <ul class="tags">
+            <li>Astro 6</li>
+            <li>TypeScript strict</li>
+            <li>SSG</li>
+            <li>0 JS client</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- Cloudflare Workers -->
+    <section class="layer">
+      <div class="container">
+        <div class="layer-header">
+          <span class="layer-number">02</span>
+          <h2>Build & Deploy — Cloudflare Workers</h2>
+        </div>
+        <div class="layer-content">
+          <p>Au premier build, Cloudflare a auto-détecté Astro et installé l'adapter <code>@astrojs/cloudflare</code>. Le site ne tourne pas comme du HTML statique pur — c'est un <strong>Cloudflare Worker</strong> (V8 isolate, serverless).</p>
+          <div class="details-grid">
+            <div class="detail">
+              <h4>Pipeline de déploiement</h4>
+              <p><code>git push</code> sur <code>main</code> → webhook GitHub → Cloudflare clone le repo → <code>npm run build</code> → <code>npx wrangler deploy</code> → live en ~30 secondes.</p>
+            </div>
+            <div class="detail">
+              <h4>Bindings provisionnés</h4>
+              <p><code>ASSETS</code> (fichiers statiques), <code>SESSION</code> (KV store), <code>IMAGES</code> (Cloudflare Images) — prêt pour du SSR ou des API routes sans rien changer.</p>
+            </div>
+          </div>
+          <ul class="tags">
+            <li>Cloudflare Workers</li>
+            <li>Wrangler</li>
+            <li>V8 isolate</li>
+            <li>Serverless</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- Hébergement -->
+    <section class="layer">
+      <div class="container">
+        <div class="layer-header">
+          <span class="layer-number">03</span>
+          <h2>Hébergement — Cloudflare</h2>
+        </div>
+        <div class="layer-content">
+          <p>Hébergement gratuit sur le réseau mondial Cloudflare. Le contenu est servi depuis le Point of Presence le plus proche du visiteur — Paris CDG pour la France.</p>
+          <div class="specs">
+            <div class="spec">
+              <span class="spec-label">Worker</span>
+              <span class="spec-value"><code>pixelium-site</code> — 100 000 req/jour (free tier)</span>
+            </div>
+            <div class="spec">
+              <span class="spec-label">CDN</span>
+              <span class="spec-value">Réseau mondial, PoP CDG (Paris)</span>
+            </div>
+            <div class="spec">
+              <span class="spec-label">HTTPS</span>
+              <span class="spec-value">Certificat automatique, TLS 1.3, HTTP/2</span>
+            </div>
+            <div class="spec">
+              <span class="spec-label">DNS</span>
+              <span class="spec-value"><code>pixelium.win</code> géré par Cloudflare — enregistrements A + AAAA</span>
+            </div>
+            <div class="spec">
+              <span class="spec-label">Coût</span>
+              <span class="spec-value">0 €</span>
+            </div>
+          </div>
+          <ul class="tags">
+            <li>CDN mondial</li>
+            <li>TLS 1.3</li>
+            <li>HTTP/2</li>
+            <li>Free tier</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- Git -->
+    <section class="layer">
+      <div class="container">
+        <div class="layer-header">
+          <span class="layer-number">04</span>
+          <h2>Versioning — Git dual-remote</h2>
+        </div>
+        <div class="layer-content">
+          <p>Le code source est versionné sur deux forges Git en parallèle : GitHub (public, déclenche le déploiement) et Forgejo (self-hosted, mirror interne du homelab).</p>
+          <div class="specs">
+            <div class="spec">
+              <span class="spec-label">origin</span>
+              <span class="spec-value">GitHub <code>ferr079/pixelium-site</code> — SSH — déclenche Cloudflare</span>
+            </div>
+            <div class="spec">
+              <span class="spec-label">forgejo</span>
+              <span class="spec-value">Forgejo <code>uzer/pixelium-site</code> — HTTPS — mirror interne homelab</span>
+            </div>
+          </div>
+          <ul class="tags">
+            <li>Git</li>
+            <li>GitHub</li>
+            <li>Forgejo</li>
+            <li>Dual-remote</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- Design System -->
+    <section class="layer">
+      <div class="container">
+        <div class="layer-header">
+          <span class="layer-number">05</span>
+          <h2>Design system — CSS pur</h2>
+        </div>
+        <div class="layer-content">
+          <p>Pas de framework CSS. Le design repose sur des <strong>variables CSS custom</strong> pour la palette, la typographie et les espacements. Responsive via <code>clamp()</code> et <code>grid auto-fill</code>.</p>
+          <div class="palette">
+            <div class="swatch" style="background: #0f172a; border: 1px solid #334155;">
+              <span class="swatch-name">bg</span>
+              <span class="swatch-hex">#0f172a</span>
+            </div>
+            <div class="swatch" style="background: #1e293b;">
+              <span class="swatch-name">surface</span>
+              <span class="swatch-hex">#1e293b</span>
+            </div>
+            <div class="swatch" style="background: #334155;">
+              <span class="swatch-name">border</span>
+              <span class="swatch-hex">#334155</span>
+            </div>
+            <div class="swatch" style="background: #38bdf8;">
+              <span class="swatch-name">accent</span>
+              <span class="swatch-hex">#38bdf8</span>
+            </div>
+          </div>
+          <div class="specs">
+            <div class="spec">
+              <span class="spec-label">Texte</span>
+              <span class="spec-value"><code>system-ui, -apple-system, sans-serif</code></span>
+            </div>
+            <div class="spec">
+              <span class="spec-label">Mono</span>
+              <span class="spec-value"><code>JetBrains Mono, Fira Code, ui-monospace</code></span>
+            </div>
+          </div>
+          <ul class="tags">
+            <li>CSS custom properties</li>
+            <li>Responsive</li>
+            <li>Dark theme</li>
+            <li>Sans framework</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- Choix techniques -->
+    <section class="layer">
+      <div class="container">
+        <div class="layer-header">
+          <span class="layer-number">06</span>
+          <h2>Choix techniques — ce qui est absent</h2>
+        </div>
+        <div class="layer-content">
+          <p>Chaque techno absente est un choix délibéré de simplicité. Moins de dépendances, moins de surface d'attaque, moins de maintenance.</p>
+          <div class="absent-grid">
+            <div class="absent">
+              <h4>React / Vue / Svelte</h4>
+              <p>Pas de JS interactif nécessaire pour un portfolio statique.</p>
+            </div>
+            <div class="absent">
+              <h4>Tailwind</h4>
+              <p>Les CSS variables suffisent pour ce scope. Moins de dépendances.</p>
+            </div>
+            <div class="absent">
+              <h4>CMS</h4>
+              <p>Le contenu est directement dans les fichiers <code>.astro</code> et futurs <code>.md</code>.</p>
+            </div>
+            <div class="absent">
+              <h4>Base de données</h4>
+              <p>Site 100% pré-rendu, aucun état serveur.</p>
+            </div>
+            <div class="absent">
+              <h4>CI/CD dédié</h4>
+              <p>Cloudflare fait le build et le deploy. Pas besoin de GitHub Actions.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Flux -->
+    <section class="flow">
+      <div class="container">
+        <h2><span class="hash">#</span> Flux complet</h2>
+        <div class="flow-diagram">
+          <div class="flow-step">
+            <span class="flow-icon">01</span>
+            <div>
+              <h4>Édition locale</h4>
+              <p>Fichiers <code>.astro</code> dans le repo local</p>
+            </div>
+          </div>
+          <div class="flow-arrow">→</div>
+          <div class="flow-step">
+            <span class="flow-icon">02</span>
+            <div>
+              <h4>git push</h4>
+              <p>SSH vers GitHub + HTTPS vers Forgejo</p>
+            </div>
+          </div>
+          <div class="flow-arrow">→</div>
+          <div class="flow-step">
+            <span class="flow-icon">03</span>
+            <div>
+              <h4>Webhook</h4>
+              <p>GitHub notifie Cloudflare</p>
+            </div>
+          </div>
+          <div class="flow-arrow">→</div>
+          <div class="flow-step">
+            <span class="flow-icon">04</span>
+            <div>
+              <h4>Build</h4>
+              <p><code>npm run build</code> + <code>wrangler deploy</code></p>
+            </div>
+          </div>
+          <div class="flow-arrow">→</div>
+          <div class="flow-step">
+            <span class="flow-icon">05</span>
+            <div>
+              <h4>Live</h4>
+              <p><code>pixelium.win</code> — CDN mondial, HTTPS</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <footer>
+      <div class="container">
+        <p>Construit avec <a href="https://astro.build" target="_blank" rel="noopener">Astro</a> — Hébergé sur Cloudflare Workers</p>
+      </div>
+    </footer>
+  </main>
+</Base>
+
+<style>
+  .container {
+    max-width: var(--max-width);
+    margin: 0 auto;
+    padding: 0 1.5rem;
+  }
+
+  /* Nav */
+  nav {
+    padding: 1.5rem 0;
+  }
+
+  .nav-home {
+    font-family: var(--font-mono);
+    font-size: 0.9rem;
+  }
+
+  /* Hero mini */
+  .hero-mini {
+    padding: 4rem 0 3rem;
+  }
+
+  .terminal-prompt {
+    font-family: var(--font-mono);
+    color: var(--color-accent);
+    font-size: 0.95rem;
+    margin-bottom: 0.75rem;
+  }
+
+  h1 {
+    font-size: clamp(2rem, 5vw, 3rem);
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    line-height: 1.1;
+    margin-bottom: 1rem;
+  }
+
+  .dot {
+    color: var(--color-accent);
+  }
+
+  .subtitle {
+    color: var(--color-text-muted);
+    font-size: 1.1rem;
+    max-width: 36rem;
+  }
+
+  /* Layers */
+  .layer {
+    padding: 3rem 0;
+    border-top: 1px solid var(--color-border);
+  }
+
+  .layer-header {
+    display: flex;
+    align-items: baseline;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .layer-number {
+    font-family: var(--font-mono);
+    font-size: 0.85rem;
+    color: var(--color-accent);
+    font-weight: 700;
+  }
+
+  .layer-header h2 {
+    font-size: 1.4rem;
+    margin-bottom: 0;
+  }
+
+  .layer-content > p {
+    color: var(--color-text-muted);
+    max-width: 48rem;
+    margin-bottom: 1.5rem;
+    line-height: 1.7;
+  }
+
+  .layer-content > p strong {
+    color: var(--color-text);
+  }
+
+  /* Details grid */
+  .details-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(16rem, 1fr));
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .detail {
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: 6px;
+    padding: 1.25rem;
+  }
+
+  .detail h4 {
+    font-size: 0.9rem;
+    margin-bottom: 0.5rem;
+    color: var(--color-text);
+  }
+
+  .detail p {
+    font-size: 0.85rem;
+    color: var(--color-text-muted);
+    line-height: 1.5;
+  }
+
+  /* Specs */
+  .specs {
+    margin-bottom: 1.5rem;
+  }
+
+  .spec {
+    display: flex;
+    gap: 1rem;
+    padding: 0.6rem 0;
+    border-bottom: 1px solid var(--color-border);
+    align-items: baseline;
+  }
+
+  .spec:last-child {
+    border-bottom: none;
+  }
+
+  .spec-label {
+    font-family: var(--font-mono);
+    font-size: 0.8rem;
+    color: var(--color-accent);
+    min-width: 6rem;
+    flex-shrink: 0;
+  }
+
+  .spec-value {
+    font-size: 0.9rem;
+    color: var(--color-text-muted);
+  }
+
+  /* Tags */
+  .tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+    list-style: none;
+  }
+
+  .tags li {
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    background: var(--color-bg);
+    color: var(--color-accent);
+    padding: 0.2rem 0.6rem;
+    border-radius: 4px;
+    border: 1px solid var(--color-border);
+  }
+
+  /* Palette swatches */
+  .palette {
+    display: flex;
+    gap: 0.75rem;
+    margin-bottom: 1.5rem;
+    flex-wrap: wrap;
+  }
+
+  .swatch {
+    width: 7rem;
+    height: 5rem;
+    border-radius: 8px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    padding: 0.5rem;
+  }
+
+  .swatch-name {
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    color: var(--color-text);
+  }
+
+  .swatch-hex {
+    font-family: var(--font-mono);
+    font-size: 0.65rem;
+    color: var(--color-text-muted);
+  }
+
+  /* Absent grid */
+  .absent-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(14rem, 1fr));
+    gap: 1rem;
+  }
+
+  .absent {
+    padding: 1rem;
+    border-left: 2px solid var(--color-border);
+  }
+
+  .absent h4 {
+    font-size: 0.9rem;
+    margin-bottom: 0.4rem;
+    color: var(--color-text-muted);
+    text-decoration: line-through;
+    text-decoration-color: var(--color-border);
+  }
+
+  .absent p {
+    font-size: 0.8rem;
+    color: var(--color-text-muted);
+    line-height: 1.4;
+  }
+
+  /* Flow */
+  .flow {
+    padding: 3rem 0;
+    border-top: 1px solid var(--color-border);
+  }
+
+  .flow h2 {
+    font-size: 1.4rem;
+    margin-bottom: 2rem;
+  }
+
+  .hash {
+    color: var(--color-accent);
+    margin-right: 0.25rem;
+  }
+
+  .flow-diagram {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    flex-wrap: wrap;
+  }
+
+  .flow-step {
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: 8px;
+    padding: 1rem 1.25rem;
+    display: flex;
+    align-items: flex-start;
+    gap: 0.75rem;
+    flex: 1;
+    min-width: 10rem;
+  }
+
+  .flow-icon {
+    font-family: var(--font-mono);
+    font-size: 0.8rem;
+    color: var(--color-accent);
+    font-weight: 700;
+    flex-shrink: 0;
+    margin-top: 0.1rem;
+  }
+
+  .flow-step h4 {
+    font-size: 0.85rem;
+    margin-bottom: 0.25rem;
+  }
+
+  .flow-step p {
+    font-size: 0.75rem;
+    color: var(--color-text-muted);
+    line-height: 1.4;
+  }
+
+  .flow-arrow {
+    color: var(--color-accent);
+    font-family: var(--font-mono);
+    font-size: 1.2rem;
+    flex-shrink: 0;
+  }
+
+  @media (max-width: 768px) {
+    .flow-diagram {
+      flex-direction: column;
+    }
+    .flow-arrow {
+      transform: rotate(90deg);
+    }
+    .flow-step {
+      width: 100%;
+    }
+  }
+
+  /* Footer */
+  footer {
+    padding: 2rem 0;
+    border-top: 1px solid var(--color-border);
+  }
+
+  footer p {
+    color: var(--color-text-muted);
+    font-size: 0.85rem;
+    text-align: center;
+  }
+</style>
