@@ -6,8 +6,22 @@ import Base from '../layouts/Base.astro';
   <main>
     <!-- Hero -->
     <section class="hero">
-      <div class="container">
-        <p class="terminal-prompt">$ whoami</p>
+      <div class="hero-grid"></div>
+      <div class="container hero-content">
+        <div class="terminal">
+          <div class="terminal-bar">
+            <span class="terminal-dot"></span>
+            <span class="terminal-dot"></span>
+            <span class="terminal-dot"></span>
+            <span class="terminal-title">terre2 — bash</span>
+          </div>
+          <div class="terminal-body">
+            <p class="terminal-line">
+              <span class="prompt">terre2@pixelium</span><span class="prompt-sep">:</span><span class="prompt-dir">~</span><span class="prompt-dollar">$</span>
+              <span class="typed">cat /etc/homelab.conf</span><span class="cursor">_</span>
+            </p>
+          </div>
+        </div>
         <h1>pixelium<span class="dot">.</span>win</h1>
         <p class="tagline">Infrastructure homelab auto-hébergée — de la virtualisation à l'observabilité.</p>
         <div class="hero-links">
@@ -18,12 +32,40 @@ import Base from '../layouts/Base.astro';
       </div>
     </section>
 
+    <!-- Stats -->
+    <section class="stats">
+      <div class="container">
+        <div class="stats-grid">
+          <div class="stat">
+            <span class="stat-number">3</span>
+            <span class="stat-label">nœuds Proxmox</span>
+          </div>
+          <div class="stat-sep"></div>
+          <div class="stat">
+            <span class="stat-number">30+</span>
+            <span class="stat-label">conteneurs LXC</span>
+          </div>
+          <div class="stat-sep"></div>
+          <div class="stat">
+            <span class="stat-number">20+</span>
+            <span class="stat-label">services HTTPS</span>
+          </div>
+          <div class="stat-sep"></div>
+          <div class="stat">
+            <span class="stat-number">0€</span>
+            <span class="stat-label">cloud externe</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
     <!-- Stack -->
     <section id="stack" class="stack">
       <div class="container">
         <h2><span class="hash">#</span> Stack technique</h2>
         <div class="grid">
           <div class="card">
+            <div class="card-icon">&#9633;</div>
             <h3>Virtualisation</h3>
             <p>3 nœuds Proxmox VE (N5105, Ryzen 7840HS, i7-2600K) — 30+ conteneurs LXC et VMs en production.</p>
             <ul class="tags">
@@ -33,6 +75,7 @@ import Base from '../layouts/Base.astro';
             </ul>
           </div>
           <div class="card">
+            <div class="card-icon">&#9700;</div>
             <h3>Réseau & DNS</h3>
             <p>DNS interne TechnitiumDNS en haute dispo (primaire + secondaire), DoT, blocklists. Reverse proxy Traefik avec TLS automatique via step-ca.</p>
             <ul class="tags">
@@ -43,6 +86,7 @@ import Base from '../layouts/Base.astro';
             </ul>
           </div>
           <div class="card">
+            <div class="card-icon">&#9670;</div>
             <h3>Sécurité</h3>
             <p>ACME TLS interne, SSH durci (clés uniquement), Wazuh SIEM, Authentik SSO, Headscale VPN mesh.</p>
             <ul class="tags">
@@ -53,6 +97,7 @@ import Base from '../layouts/Base.astro';
             </ul>
           </div>
           <div class="card">
+            <div class="card-icon">&#9678;</div>
             <h3>Observabilité</h3>
             <p>Métriques (VictoriaMetrics), logs centralisés (Loki + Promtail), monitoring agents (Beszel), patch management (Patchmon).</p>
             <ul class="tags">
@@ -63,6 +108,7 @@ import Base from '../layouts/Base.astro';
             </ul>
           </div>
           <div class="card">
+            <div class="card-icon">&#9881;</div>
             <h3>IaC & Automatisation</h3>
             <p>Ansible (Semaphore UI) pour le déploiement et la configuration. Configs versionnées sur Forgejo. Unattended upgrades.</p>
             <ul class="tags">
@@ -72,6 +118,7 @@ import Base from '../layouts/Base.astro';
             </ul>
           </div>
           <div class="card">
+            <div class="card-icon">&#9733;</div>
             <h3>Services applicatifs</h3>
             <p>Forge Git, gestionnaire de mots de passe, lecteur multimédia, gestion photos, bookmarks, wiki, et plus.</p>
             <ul class="tags">
@@ -82,6 +129,23 @@ import Base from '../layouts/Base.astro';
             </ul>
           </div>
         </div>
+      </div>
+    </section>
+
+    <!-- This site banner -->
+    <section class="site-banner">
+      <div class="container">
+        <a href="/stack" class="banner-link">
+          <span class="banner-prefix">Ce site</span>
+          <span class="banner-pipe">|</span>
+          <span class="banner-step">Astro 6</span>
+          <span class="banner-arrow">&#8594;</span>
+          <span class="banner-step">Cloudflare Workers</span>
+          <span class="banner-arrow">&#8594;</span>
+          <span class="banner-step">live en 30s</span>
+          <span class="banner-pipe">|</span>
+          <span class="banner-cta">Voir l'architecture &#8594;</span>
+        </a>
       </div>
     </section>
 
@@ -112,25 +176,115 @@ import Base from '../layouts/Base.astro';
     padding: 0 1.5rem;
   }
 
-  /* Hero */
+  /* ═══════════════════════════════════════════
+     Hero with grid background
+     ═══════════════════════════════════════════ */
   .hero {
-    min-height: 80vh;
+    min-height: 90vh;
     display: flex;
     align-items: center;
     padding: 4rem 0;
+    position: relative;
+    overflow: hidden;
   }
 
-  .terminal-prompt {
+  .hero-grid {
+    position: absolute;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(56, 189, 248, 0.03) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(56, 189, 248, 0.03) 1px, transparent 1px);
+    background-size: 4rem 4rem;
+    mask-image: radial-gradient(ellipse 60% 60% at 50% 40%, black 20%, transparent 70%);
+    -webkit-mask-image: radial-gradient(ellipse 60% 60% at 50% 40%, black 20%, transparent 70%);
+  }
+
+  .hero-content {
+    position: relative;
+    z-index: 1;
+  }
+
+  /* Terminal window */
+  .terminal {
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: 8px;
+    max-width: 28rem;
+    margin-bottom: 2rem;
+    overflow: hidden;
+  }
+
+  .terminal-bar {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    padding: 0.6rem 0.8rem;
+    background: rgba(0, 0, 0, 0.2);
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  .terminal-dot {
+    width: 0.5rem;
+    height: 0.5rem;
+    border-radius: 50%;
+    background: var(--color-border);
+  }
+
+  .terminal-dot:first-child { background: #ef4444; }
+  .terminal-dot:nth-child(2) { background: #eab308; }
+  .terminal-dot:nth-child(3) { background: #22c55e; }
+
+  .terminal-title {
     font-family: var(--font-mono);
+    font-size: 0.7rem;
+    color: var(--color-text-muted);
+    margin-left: auto;
+  }
+
+  .terminal-body {
+    padding: 0.8rem 1rem;
+  }
+
+  .terminal-line {
+    font-family: var(--font-mono);
+    font-size: 0.85rem;
+    line-height: 1.6;
+    white-space: nowrap;
+  }
+
+  .prompt { color: #22c55e; }
+  .prompt-sep { color: var(--color-text-muted); }
+  .prompt-dir { color: var(--color-accent); }
+  .prompt-dollar { color: var(--color-text-muted); margin: 0 0.4rem; }
+
+  .typed {
+    color: var(--color-text);
+    display: inline-block;
+    overflow: hidden;
+    white-space: nowrap;
+    animation: typing 1.5s steps(22) 0.5s both;
+    width: 0;
+    vertical-align: bottom;
+  }
+
+  .cursor {
     color: var(--color-accent);
-    font-size: 0.95rem;
-    margin-bottom: 0.75rem;
+    animation: blink 1s step-end infinite;
+    font-weight: 100;
+  }
+
+  @keyframes typing {
+    to { width: 13ch; }
+  }
+
+  @keyframes blink {
+    50% { opacity: 0; }
   }
 
   h1 {
-    font-size: clamp(2.5rem, 6vw, 4rem);
+    font-size: clamp(2.5rem, 6vw, 4.5rem);
     font-weight: 800;
-    letter-spacing: -0.02em;
+    letter-spacing: -0.03em;
     line-height: 1.1;
     margin-bottom: 1rem;
   }
@@ -181,7 +335,61 @@ import Base from '../layouts/Base.astro';
     color: var(--color-accent);
   }
 
-  /* Stack */
+  /* ═══════════════════════════════════════════
+     Stats bar
+     ═══════════════════════════════════════════ */
+  .stats {
+    padding: 2.5rem 0;
+    border-top: 1px solid var(--color-border);
+    border-bottom: 1px solid var(--color-border);
+    background: var(--color-surface);
+  }
+
+  .stats-grid {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 2rem;
+    flex-wrap: wrap;
+  }
+
+  .stat {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.3rem;
+    min-width: 8rem;
+  }
+
+  .stat-number {
+    font-family: var(--font-mono);
+    font-size: 2rem;
+    font-weight: 800;
+    color: var(--color-accent);
+    line-height: 1;
+  }
+
+  .stat-label {
+    font-size: 0.85rem;
+    color: var(--color-text-muted);
+    text-align: center;
+  }
+
+  .stat-sep {
+    width: 1px;
+    height: 2.5rem;
+    background: var(--color-border);
+  }
+
+  @media (max-width: 640px) {
+    .stat-sep { display: none; }
+    .stats-grid { gap: 1.5rem; }
+    .stat { min-width: 6rem; }
+  }
+
+  /* ═══════════════════════════════════════════
+     Stack cards
+     ═══════════════════════════════════════════ */
   .stack {
     padding: 5rem 0;
   }
@@ -207,11 +415,19 @@ import Base from '../layouts/Base.astro';
     border: 1px solid var(--color-border);
     border-radius: 8px;
     padding: 1.5rem;
-    transition: border-color 0.2s;
+    transition: border-color 0.2s, transform 0.2s;
   }
 
   .card:hover {
     border-color: var(--color-accent);
+    transform: translateY(-2px);
+  }
+
+  .card-icon {
+    font-size: 1.5rem;
+    color: var(--color-accent);
+    margin-bottom: 0.75rem;
+    opacity: 0.7;
   }
 
   .card h3 {
@@ -243,10 +459,63 @@ import Base from '../layouts/Base.astro';
     border: 1px solid var(--color-border);
   }
 
-  /* Contact */
+  /* ═══════════════════════════════════════════
+     Site banner
+     ═══════════════════════════════════════════ */
+  .site-banner {
+    padding: 1.5rem 0;
+    border-top: 1px solid var(--color-border);
+    border-bottom: 1px solid var(--color-border);
+    background: linear-gradient(135deg, rgba(56, 189, 248, 0.03), rgba(56, 189, 248, 0.08));
+  }
+
+  .banner-link {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.6rem;
+    font-family: var(--font-mono);
+    font-size: 0.85rem;
+    color: var(--color-text-muted);
+    flex-wrap: wrap;
+    transition: color 0.2s;
+  }
+
+  .banner-link:hover {
+    color: var(--color-text);
+  }
+
+  .banner-prefix {
+    color: var(--color-text);
+    font-weight: 600;
+  }
+
+  .banner-pipe {
+    color: var(--color-border);
+  }
+
+  .banner-step {
+    color: var(--color-accent);
+  }
+
+  .banner-arrow {
+    color: var(--color-border);
+  }
+
+  .banner-cta {
+    color: var(--color-accent);
+    font-weight: 600;
+  }
+
+  .banner-link:hover .banner-cta {
+    color: var(--color-accent-hover);
+  }
+
+  /* ═══════════════════════════════════════════
+     Contact
+     ═══════════════════════════════════════════ */
   .contact {
     padding: 5rem 0;
-    border-top: 1px solid var(--color-border);
   }
 
   .contact p {
@@ -273,7 +542,9 @@ import Base from '../layouts/Base.astro';
     border-color: var(--color-accent);
   }
 
-  /* Footer */
+  /* ═══════════════════════════════════════════
+     Footer
+     ═══════════════════════════════════════════ */
   footer {
     padding: 2rem 0;
     border-top: 1px solid var(--color-border);
