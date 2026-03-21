@@ -7,8 +7,10 @@ import Base from '../layouts/Base.astro';
     <!-- Hero -->
     <section class="hero">
       <div class="hero-grid"></div>
+      <div class="hero-glow"></div>
+      <div class="hero-scanline"></div>
       <div class="container hero-content">
-        <div class="terminal">
+        <div class="terminal animate-in" style="--delay: 0">
           <div class="terminal-bar">
             <span class="terminal-dot"></span>
             <span class="terminal-dot"></span>
@@ -22,9 +24,9 @@ import Base from '../layouts/Base.astro';
             </p>
           </div>
         </div>
-        <h1>pixelium<span class="dot">.</span>win</h1>
-        <p class="tagline">Infrastructure homelab auto-hébergée — de la virtualisation à l'observabilité.</p>
-        <div class="hero-links">
+        <h1 class="animate-in" style="--delay: 1">pixelium<span class="dot">.</span>win</h1>
+        <p class="tagline animate-in" style="--delay: 2">Infrastructure homelab auto-hébergée — de la virtualisation à l'observabilité.</p>
+        <div class="hero-links animate-in" style="--delay: 3">
           <a href="#stack" class="btn btn-primary">Voir la stack</a>
           <a href="/stack" class="btn btn-secondary">Architecture détaillée</a>
           <a href="#contact" class="btn btn-secondary">Contact</a>
@@ -36,22 +38,22 @@ import Base from '../layouts/Base.astro';
     <section class="stats">
       <div class="container">
         <div class="stats-grid">
-          <div class="stat">
+          <div class="stat reveal">
             <span class="stat-number">3</span>
             <span class="stat-label">nœuds Proxmox</span>
           </div>
           <div class="stat-sep"></div>
-          <div class="stat">
+          <div class="stat reveal">
             <span class="stat-number">30+</span>
             <span class="stat-label">conteneurs LXC</span>
           </div>
           <div class="stat-sep"></div>
-          <div class="stat">
+          <div class="stat reveal">
             <span class="stat-number">20+</span>
             <span class="stat-label">services HTTPS</span>
           </div>
           <div class="stat-sep"></div>
-          <div class="stat">
+          <div class="stat reveal">
             <span class="stat-number">0€</span>
             <span class="stat-label">cloud externe</span>
           </div>
@@ -62,9 +64,9 @@ import Base from '../layouts/Base.astro';
     <!-- Stack -->
     <section id="stack" class="stack">
       <div class="container">
-        <h2><span class="hash">#</span> Stack technique</h2>
+        <h2 class="reveal"><span class="hash">#</span> Stack technique</h2>
         <div class="grid">
-          <div class="card">
+          <div class="card reveal">
             <div class="card-icon">&#9633;</div>
             <h3>Virtualisation</h3>
             <p>3 nœuds Proxmox VE (N5105, Ryzen 7840HS, i7-2600K) — 30+ conteneurs LXC et VMs en production.</p>
@@ -74,7 +76,7 @@ import Base from '../layouts/Base.astro';
               <li>PBS</li>
             </ul>
           </div>
-          <div class="card">
+          <div class="card reveal">
             <div class="card-icon">&#9700;</div>
             <h3>Réseau & DNS</h3>
             <p>DNS interne TechnitiumDNS en haute dispo (primaire + secondaire), DoT, blocklists. Reverse proxy Traefik avec TLS automatique via step-ca.</p>
@@ -85,7 +87,7 @@ import Base from '../layouts/Base.astro';
               <li>DoT</li>
             </ul>
           </div>
-          <div class="card">
+          <div class="card reveal">
             <div class="card-icon">&#9670;</div>
             <h3>Sécurité</h3>
             <p>ACME TLS interne, SSH durci (clés uniquement), Wazuh SIEM, Authentik SSO, Headscale VPN mesh.</p>
@@ -96,7 +98,7 @@ import Base from '../layouts/Base.astro';
               <li>Vaultwarden</li>
             </ul>
           </div>
-          <div class="card">
+          <div class="card reveal">
             <div class="card-icon">&#9678;</div>
             <h3>Observabilité</h3>
             <p>Métriques (VictoriaMetrics), logs centralisés (Loki + Promtail), monitoring agents (Beszel), patch management (Patchmon).</p>
@@ -107,7 +109,7 @@ import Base from '../layouts/Base.astro';
               <li>Patchmon</li>
             </ul>
           </div>
-          <div class="card">
+          <div class="card reveal">
             <div class="card-icon">&#9881;</div>
             <h3>IaC & Automatisation</h3>
             <p>Ansible (Semaphore UI) pour le déploiement et la configuration. Configs versionnées sur Forgejo. Unattended upgrades.</p>
@@ -117,7 +119,7 @@ import Base from '../layouts/Base.astro';
               <li>Forgejo</li>
             </ul>
           </div>
-          <div class="card">
+          <div class="card reveal">
             <div class="card-icon">&#9733;</div>
             <h3>Services applicatifs</h3>
             <p>Forge Git, gestionnaire de mots de passe, lecteur multimédia, gestion photos, bookmarks, wiki, et plus.</p>
@@ -133,7 +135,7 @@ import Base from '../layouts/Base.astro';
     </section>
 
     <!-- This site banner -->
-    <section class="site-banner">
+    <section class="site-banner reveal">
       <div class="container">
         <a href="/stack" class="banner-link">
           <span class="banner-prefix">Ce site</span>
@@ -152,9 +154,9 @@ import Base from '../layouts/Base.astro';
     <!-- Contact -->
     <section id="contact" class="contact">
       <div class="container">
-        <h2><span class="hash">#</span> Contact</h2>
-        <p>Intéressé par cette infrastructure ou mon profil ? N'hésitez pas à me contacter.</p>
-        <div class="contact-links">
+        <h2 class="reveal"><span class="hash">#</span> Contact</h2>
+        <p class="reveal">Intéressé par cette infrastructure ou mon profil ? N'hésitez pas à me contacter.</p>
+        <div class="contact-links reveal">
           <a href="https://github.com/ferr079" target="_blank" rel="noopener">GitHub</a>
         </div>
       </div>
@@ -169,6 +171,22 @@ import Base from '../layouts/Base.astro';
   </main>
 </Base>
 
+<!-- Scroll reveal - minimal JS (~15 lines) -->
+<script>
+  const observer = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+          observer.unobserve(entry.target);
+        }
+      });
+    },
+    { threshold: 0.15, rootMargin: '0px 0px -40px 0px' }
+  );
+  document.querySelectorAll('.reveal').forEach((el) => observer.observe(el));
+</script>
+
 <style>
   .container {
     max-width: var(--max-width);
@@ -177,7 +195,52 @@ import Base from '../layouts/Base.astro';
   }
 
   /* ═══════════════════════════════════════════
-     Hero with grid background
+     Scroll reveal
+     ═══════════════════════════════════════════ */
+  .reveal {
+    opacity: 0;
+    transform: translateY(1.5rem);
+    transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+  }
+
+  .reveal.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  /* Stagger cards */
+  .grid .card.reveal:nth-child(1) { transition-delay: 0ms; }
+  .grid .card.reveal:nth-child(2) { transition-delay: 80ms; }
+  .grid .card.reveal:nth-child(3) { transition-delay: 160ms; }
+  .grid .card.reveal:nth-child(4) { transition-delay: 240ms; }
+  .grid .card.reveal:nth-child(5) { transition-delay: 320ms; }
+  .grid .card.reveal:nth-child(6) { transition-delay: 400ms; }
+
+  /* Stagger stats */
+  .stats-grid .stat.reveal:nth-of-type(1) { transition-delay: 0ms; }
+  .stats-grid .stat.reveal:nth-of-type(2) { transition-delay: 100ms; }
+  .stats-grid .stat.reveal:nth-of-type(3) { transition-delay: 200ms; }
+  .stats-grid .stat.reveal:nth-of-type(4) { transition-delay: 300ms; }
+
+  /* ═══════════════════════════════════════════
+     Hero entrance animations
+     ═══════════════════════════════════════════ */
+  .animate-in {
+    opacity: 0;
+    transform: translateY(1rem);
+    animation: hero-enter 0.7s ease-out forwards;
+    animation-delay: calc(var(--delay) * 0.15s + 0.2s);
+  }
+
+  @keyframes hero-enter {
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  /* ═══════════════════════════════════════════
+     Hero with grid background + glow + scanline
      ═══════════════════════════════════════════ */
   .hero {
     min-height: 90vh;
@@ -192,11 +255,69 @@ import Base from '../layouts/Base.astro';
     position: absolute;
     inset: 0;
     background-image:
-      linear-gradient(rgba(56, 189, 248, 0.03) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(56, 189, 248, 0.03) 1px, transparent 1px);
+      linear-gradient(rgba(56, 189, 248, 0.04) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(56, 189, 248, 0.04) 1px, transparent 1px);
     background-size: 4rem 4rem;
     mask-image: radial-gradient(ellipse 60% 60% at 50% 40%, black 20%, transparent 70%);
     -webkit-mask-image: radial-gradient(ellipse 60% 60% at 50% 40%, black 20%, transparent 70%);
+  }
+
+  /* Pulsing glow behind title */
+  .hero-glow {
+    position: absolute;
+    top: 35%;
+    left: 15%;
+    width: 30rem;
+    height: 20rem;
+    background: radial-gradient(ellipse, rgba(56, 189, 248, 0.08), transparent 70%);
+    animation: glow-pulse 4s ease-in-out infinite alternate;
+    pointer-events: none;
+  }
+
+  @keyframes glow-pulse {
+    0% {
+      opacity: 0.4;
+      transform: scale(1);
+    }
+    100% {
+      opacity: 1;
+      transform: scale(1.15);
+    }
+  }
+
+  /* Horizontal scan line */
+  .hero-scanline {
+    position: absolute;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: linear-gradient(
+      90deg,
+      transparent 0%,
+      rgba(56, 189, 248, 0.15) 20%,
+      rgba(56, 189, 248, 0.4) 50%,
+      rgba(56, 189, 248, 0.15) 80%,
+      transparent 100%
+    );
+    animation: scan 6s linear infinite;
+    pointer-events: none;
+  }
+
+  @keyframes scan {
+    0% {
+      top: -2%;
+      opacity: 0;
+    }
+    5% {
+      opacity: 1;
+    }
+    95% {
+      opacity: 1;
+    }
+    100% {
+      top: 102%;
+      opacity: 0;
+    }
   }
 
   .hero-content {
@@ -318,11 +439,14 @@ import Base from '../layouts/Base.astro';
   .btn-primary {
     background: var(--color-accent);
     color: var(--color-bg);
+    box-shadow: 0 0 0 0 rgba(56, 189, 248, 0);
+    transition: all 0.3s;
   }
 
   .btn-primary:hover {
     background: var(--color-accent-hover);
     color: var(--color-bg);
+    box-shadow: 0 0 20px rgba(56, 189, 248, 0.3);
   }
 
   .btn-secondary {
@@ -415,12 +539,37 @@ import Base from '../layouts/Base.astro';
     border: 1px solid var(--color-border);
     border-radius: 8px;
     padding: 1.5rem;
-    transition: border-color 0.2s, transform 0.2s;
+    transition: border-color 0.3s, transform 0.3s, box-shadow 0.3s;
+    position: relative;
   }
 
   .card:hover {
     border-color: var(--color-accent);
-    transform: translateY(-2px);
+    transform: translateY(-3px);
+    box-shadow:
+      0 0 15px rgba(56, 189, 248, 0.1),
+      0 8px 25px rgba(0, 0, 0, 0.3);
+  }
+
+  .card::after {
+    content: '';
+    position: absolute;
+    inset: -1px;
+    border-radius: 8px;
+    background: linear-gradient(135deg, rgba(56, 189, 248, 0.15), transparent 60%);
+    opacity: 0;
+    transition: opacity 0.3s;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .card:hover::after {
+    opacity: 1;
+  }
+
+  .card > * {
+    position: relative;
+    z-index: 1;
   }
 
   .card-icon {
@@ -428,6 +577,12 @@ import Base from '../layouts/Base.astro';
     color: var(--color-accent);
     margin-bottom: 0.75rem;
     opacity: 0.7;
+    transition: opacity 0.3s, transform 0.3s;
+  }
+
+  .card:hover .card-icon {
+    opacity: 1;
+    transform: scale(1.1);
   }
 
   .card h3 {
@@ -457,6 +612,11 @@ import Base from '../layouts/Base.astro';
     padding: 0.2rem 0.6rem;
     border-radius: 4px;
     border: 1px solid var(--color-border);
+    transition: border-color 0.2s, background 0.2s;
+  }
+
+  .card:hover .tags li {
+    border-color: rgba(56, 189, 248, 0.3);
   }
 
   /* ═══════════════════════════════════════════
@@ -500,6 +660,11 @@ import Base from '../layouts/Base.astro';
 
   .banner-arrow {
     color: var(--color-border);
+    transition: color 0.2s;
+  }
+
+  .banner-link:hover .banner-arrow {
+    color: var(--color-accent);
   }
 
   .banner-cta {
@@ -535,11 +700,12 @@ import Base from '../layouts/Base.astro';
     padding: 0.5rem 1rem;
     border: 1px solid var(--color-border);
     border-radius: 6px;
-    transition: all 0.2s;
+    transition: all 0.3s;
   }
 
   .contact-links a:hover {
     border-color: var(--color-accent);
+    box-shadow: 0 0 12px rgba(56, 189, 248, 0.15);
   }
 
   /* ═══════════════════════════════════════════
@@ -554,5 +720,33 @@ import Base from '../layouts/Base.astro';
     color: var(--color-text-muted);
     font-size: 0.85rem;
     text-align: center;
+  }
+
+  /* ═══════════════════════════════════════════
+     Reduced motion
+     ═══════════════════════════════════════════ */
+  @media (prefers-reduced-motion: reduce) {
+    .reveal {
+      opacity: 1;
+      transform: none;
+      transition: none;
+    }
+    .animate-in {
+      opacity: 1;
+      transform: none;
+      animation: none;
+    }
+    .hero-scanline,
+    .hero-glow {
+      animation: none;
+      display: none;
+    }
+    .typed {
+      animation: none;
+      width: auto;
+    }
+    .cursor {
+      animation: none;
+    }
   }
 </style>
