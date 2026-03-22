@@ -25,7 +25,7 @@ import Base from '../layouts/Base.astro';
           </div>
         </div>
         <h1 class="animate-in" style="--delay: 1">pixelium<span class="dot">.</span>win</h1>
-        <p class="tagline animate-in" style="--delay: 2">Infrastructure homelab auto-hébergée — de la virtualisation à l'observabilité.</p>
+        <p class="tagline animate-in" style="--delay: 2">Infrastructure homelab auto-hébergée — de la virtualisation aux agents IA.</p>
         <div class="hero-links animate-in" style="--delay: 3">
           <a href="#stack" class="btn btn-primary">Voir la stack</a>
           <a href="/stack" class="btn btn-secondary">Architecture détaillée</a>
@@ -140,6 +140,40 @@ import Base from '../layouts/Base.astro';
               <li>Linkwarden</li>
             </ul>
           </div>
+          <div class="card reveal">
+            <div class="card-icon">&#10023;</div>
+            <h3>Agents IA</h3>
+            <p>Deux agents IA self-hosted sur l'infra. OpenFang : agent Rust AIOps qui surveille, diagnostique et agit sur l'infrastructure en autonomie. OpenClaw : assistant personnel accessible via Telegram et TUI SSH. Zéro dépendance cloud — LLM via API privée.</p>
+            <ul class="tags">
+              <li>OpenFang</li>
+              <li>OpenClaw</li>
+              <li>Rust</li>
+              <li>MiniMax M2.7</li>
+              <li>AIOps</li>
+            </ul>
+          </div>
+          <div class="card reveal">
+            <div class="card-icon">&#8962;</div>
+            <h3>Résilience offline</h3>
+            <p>Bug-out bag numérique : une forge Git miroir (34 repos upstream) et un réseau mesh LoRa 868 MHz pour communiquer sans Internet ni GSM. L'objectif : pouvoir reconstruire toute l'infra et rester joignable avec un sac à dos et du courant.</p>
+            <ul class="tags">
+              <li>Forworld</li>
+              <li>Meshtastic</li>
+              <li>LoRa 868MHz</li>
+              <li>Forgejo</li>
+            </ul>
+          </div>
+          <div class="card reveal">
+            <div class="card-icon">&#9638;</div>
+            <h3>Philosophie OS</h3>
+            <p>Workstation sur Bluefin (Fedora Silverblue) — un OS immuable où le système ne casse jamais. Updates atomiques, rollback instantané, apps en conteneurs. Du desktop (MX Linux, Bluefin) aux serveurs (Debian, Proxmox) : chaque couche est choisie pour sa stabilité et sa maintenabilité.</p>
+            <ul class="tags">
+              <li>Bluefin</li>
+              <li>Fedora Silverblue</li>
+              <li>MX Linux</li>
+              <li>Immutable OS</li>
+            </ul>
+          </div>
         </div>
       </div>
     </section>
@@ -225,6 +259,9 @@ import Base from '../layouts/Base.astro';
   .grid .card.reveal:nth-child(4) { transition-delay: 240ms; }
   .grid .card.reveal:nth-child(5) { transition-delay: 320ms; }
   .grid .card.reveal:nth-child(6) { transition-delay: 400ms; }
+  .grid .card.reveal:nth-child(7) { transition-delay: 480ms; }
+  .grid .card.reveal:nth-child(8) { transition-delay: 560ms; }
+  .grid .card.reveal:nth-child(9) { transition-delay: 640ms; }
 
   /* Stagger stats */
   .stats-grid .stat.reveal:nth-of-type(1) { transition-delay: 0ms; }
