@@ -120,14 +120,28 @@ import StatsBar from '../components/StatsBar.astro';
             </a>
 
             <!-- Root-Me -->
-            <div class="platform-card rootme-card placeholder-card" id="rootme-card">
+            <a href="https://www.root-me.org/Ferr0" target="_blank" rel="noopener" class="platform-card rootme-card">
               <div class="platform-header">
                 <span class="platform-name">Root-Me</span>
-                <span class="platform-rank pending">En cours</span>
+                <span class="platform-rank rootme-rank">765 pts</span>
               </div>
-              <p class="platform-desc">Challenges techniques ciblés — web, crypto, forensics, réseau. Plateforme française de référence pour la pratique CTF.</p>
-              <span class="platform-pending">Profil à venir</span>
-            </div>
+              <div class="platform-stats">
+                <div class="platform-stat">
+                  <span class="stat-number">63</span>
+                  <span class="stat-label">Challenges</span>
+                </div>
+                <div class="platform-stat">
+                  <span class="stat-number">10%</span>
+                  <span class="stat-label">Validations</span>
+                </div>
+                <div class="platform-stat">
+                  <span class="stat-number">3</span>
+                  <span class="stat-label">Badges</span>
+                </div>
+              </div>
+              <p class="platform-desc">Challenges techniques ciblés — file upload, directory traversal, cookies, web-server exploits. Plateforme française de référence pour la pratique CTF.</p>
+              <span class="platform-cta">Voir le profil &#8594;</span>
+            </a>
 
           </div>
         </div>
@@ -423,10 +437,6 @@ import StatsBar from '../components/StatsBar.astro';
     border-top: 3px solid #ffc107;
   }
 
-  .placeholder-card {
-    opacity: 0.6;
-  }
-
   .platform-header {
     display: flex;
     justify-content: space-between;
@@ -456,10 +466,10 @@ import StatsBar from '../components/StatsBar.astro';
     border-color: rgba(239, 59, 54, 0.3);
   }
 
-  .platform-rank.pending {
-    background: rgba(148, 163, 184, 0.1);
-    color: var(--color-text-muted);
-    border-color: var(--color-border);
+  .platform-rank.rootme-rank {
+    background: rgba(255, 193, 7, 0.1);
+    color: #ffc107;
+    border-color: rgba(255, 193, 7, 0.3);
   }
 
   .platform-stats {
@@ -497,14 +507,6 @@ import StatsBar from '../components/StatsBar.astro';
     font-family: var(--font-mono);
     font-size: 0.8rem;
     color: var(--color-accent);
-    margin-top: auto;
-  }
-
-  .platform-pending {
-    font-family: var(--font-mono);
-    font-size: 0.8rem;
-    color: var(--color-text-muted);
-    font-style: italic;
     margin-top: auto;
   }
 
