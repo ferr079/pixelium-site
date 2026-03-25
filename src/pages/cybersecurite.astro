@@ -1,0 +1,642 @@
+---
+import Base from '../layouts/Base.astro';
+import StatsBar from '../components/StatsBar.astro';
+---
+
+<Base title="Cybersécurité — pixelium.win" description="Parcours cybersécurité offensive de Stéphane — Hack The Box (rang Hacker, #951), TryHackMe, Root-Me. Présenté par Claude.">
+  <main>
+    <section class="hero-mini">
+      <div class="container">
+        <p class="terminal-prompt">$ ./recon.sh --target self</p>
+        <h1>Cybersécurité<span class="dot">.</span></h1>
+        <p class="subtitle">Apprendre à attaquer pour mieux défendre. Stéphane ne se contente pas de protéger son infrastructure — il comprend les techniques de ceux qui voudraient la compromettre.</p>
+      </div>
+    </section>
+
+    <!-- La démarche -->
+    <section class="layer">
+      <div class="container">
+        <div class="layer-header">
+          <span class="layer-number">01</span>
+          <h2>La démarche</h2>
+        </div>
+        <div class="layer-content">
+          <p>Chaque technique offensive apprise renforce directement une couche défensive du homelab. Ce n'est pas du hobbyisme — c'est une <strong>boucle de feedback entre l'attaque et la défense.</strong></p>
+          <div class="feedback-loop">
+            <div class="loop-item">
+              <span class="loop-arrow">&#8594;</span>
+              <div>
+                <span class="loop-offense">Password spraying sur HTB</span>
+                <span class="loop-result">&#8594; Politiques de complexité renforcées sur Authentik</span>
+              </div>
+            </div>
+            <div class="loop-item">
+              <span class="loop-arrow">&#8594;</span>
+              <div>
+                <span class="loop-offense">MSSQL impersonation</span>
+                <span class="loop-result">&#8594; Audit des permissions de service sur le homelab</span>
+              </div>
+            </div>
+            <div class="loop-item">
+              <span class="loop-arrow">&#8594;</span>
+              <div>
+                <span class="loop-offense">Kerberoasting / AD enum</span>
+                <span class="loop-result">&#8594; Monitoring SPN et tickets Kerberos dans Wazuh</span>
+              </div>
+            </div>
+            <div class="loop-item">
+              <span class="loop-arrow">&#8594;</span>
+              <div>
+                <span class="loop-offense">Hash cracking PBKDF2</span>
+                <span class="loop-result">&#8594; Vérification des algorithmes de hashing sur chaque service</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Profils plateformes -->
+    <section class="layer">
+      <div class="container">
+        <div class="layer-header">
+          <span class="layer-number">02</span>
+          <h2>Profils</h2>
+        </div>
+        <div class="layer-content">
+          <p>Apprentissage actif sur trois plateformes de cybersécurité — chacune avec son approche et ses forces.</p>
+          <div class="platforms-grid">
+
+            <!-- HTB -->
+            <a href="https://app.hackthebox.com/users/1161145" target="_blank" rel="noopener" class="platform-card htb-card">
+              <div class="platform-header">
+                <span class="platform-name">Hack The Box</span>
+                <span class="platform-rank">Hacker</span>
+              </div>
+              <div class="platform-stats">
+                <div class="platform-stat">
+                  <span class="stat-number">22</span>
+                  <span class="stat-label">Machines</span>
+                </div>
+                <div class="platform-stat">
+                  <span class="stat-number">13</span>
+                  <span class="stat-label">Challenges</span>
+                </div>
+                <div class="platform-stat">
+                  <span class="stat-number">59</span>
+                  <span class="stat-label">Flags</span>
+                </div>
+                <div class="platform-stat">
+                  <span class="stat-number">#951</span>
+                  <span class="stat-label">Global</span>
+                </div>
+              </div>
+              <p class="platform-desc">Machines vulnérables réalistes — du scan initial à l'escalade root. Windows AD, Linux privesc, web exploitation. La plateforme principale de Stéphane.</p>
+              <span class="platform-cta">Voir le profil &#8594;</span>
+            </a>
+
+            <!-- THM -->
+            <a href="https://tryhackme.com/p/ferr0" target="_blank" rel="noopener" class="platform-card thm-card">
+              <div class="platform-header">
+                <span class="platform-name">TryHackMe</span>
+                <span class="platform-rank thm-rank">Hacker</span>
+              </div>
+              <div class="platform-stats">
+                <div class="platform-stat">
+                  <span class="stat-number">35</span>
+                  <span class="stat-label">Rooms</span>
+                </div>
+                <div class="platform-stat">
+                  <span class="stat-number">7</span>
+                  <span class="stat-label">Badges</span>
+                </div>
+                <div class="platform-stat">
+                  <span class="stat-number">Top 15%</span>
+                  <span class="stat-label">Rang</span>
+                </div>
+              </div>
+              <p class="platform-desc">Parcours guidés et rooms thématiques — apprentissage structuré du pentest au SOC. Linux fundamentals, réseau, John the Ripper, méthodologie pentesting.</p>
+              <span class="platform-cta">Voir le profil &#8594;</span>
+            </a>
+
+            <!-- Root-Me -->
+            <div class="platform-card rootme-card placeholder-card" id="rootme-card">
+              <div class="platform-header">
+                <span class="platform-name">Root-Me</span>
+                <span class="platform-rank pending">En cours</span>
+              </div>
+              <p class="platform-desc">Challenges techniques ciblés — web, crypto, forensics, réseau. Plateforme française de référence pour la pratique CTF.</p>
+              <span class="platform-pending">Profil à venir</span>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Techniques -->
+    <section class="layer">
+      <div class="container">
+        <div class="layer-header">
+          <span class="layer-number">03</span>
+          <h2>Techniques pratiquées</h2>
+        </div>
+        <div class="layer-content">
+          <p>Compétences acquises et validées sur des environnements réels — pas de la théorie, des <strong>flags capturés.</strong></p>
+          <div class="techniques-grid">
+            <div class="technique-group">
+              <h4>Active Directory</h4>
+              <div class="technique-tags">
+                <span>Kerberoasting</span>
+                <span>AS-REP Roasting</span>
+                <span>ACL abuse</span>
+                <span>MSSQL impersonation</span>
+                <span>Password spraying</span>
+                <span>BloodHound enum</span>
+                <span>WinRM lateral movement</span>
+              </div>
+            </div>
+            <div class="technique-group">
+              <h4>Exploitation web</h4>
+              <div class="technique-tags">
+                <span>SQLi</span>
+                <span>SSTI</span>
+                <span>LFI / RFI</span>
+                <span>Command injection</span>
+                <span>OAuth redirect abuse</span>
+                <span>Cookie manipulation</span>
+              </div>
+            </div>
+            <div class="technique-group">
+              <h4>Cryptographie & cracking</h4>
+              <div class="technique-tags">
+                <span>Hashcat (PBKDF2, bcrypt)</span>
+                <span>John the Ripper</span>
+                <span>Hash identification</span>
+                <span>Salt extraction</span>
+                <span>GPU cracking (RTX 3090)</span>
+              </div>
+            </div>
+            <div class="technique-group">
+              <h4>Énumération & reconnaissance</h4>
+              <div class="technique-tags">
+                <span>Nmap</span>
+                <span>Gobuster / ffuf</span>
+                <span>SMB enum</span>
+                <span>SNMP walk</span>
+                <span>DNS zone transfer</span>
+                <span>Service fingerprinting</span>
+              </div>
+            </div>
+            <div class="technique-group">
+              <h4>Escalade de privilèges</h4>
+              <div class="technique-tags">
+                <span>SUID / capabilities</span>
+                <span>Sudo misconfiguration</span>
+                <span>Cron abuse</span>
+                <span>Kernel exploits</span>
+                <span>Service permissions</span>
+                <span>Token impersonation</span>
+              </div>
+            </div>
+            <div class="technique-group">
+              <h4>Outils</h4>
+              <div class="technique-tags">
+                <span>Impacket</span>
+                <span>Evil-WinRM</span>
+                <span>Netexec</span>
+                <span>Metasploit</span>
+                <span>Burp Suite</span>
+                <span>Chisel / ligolo</span>
+                <span>LinPEAS / WinPEAS</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Environnement -->
+    <section class="layer">
+      <div class="container">
+        <div class="layer-header">
+          <span class="layer-number">04</span>
+          <h2>L'environnement</h2>
+        </div>
+        <div class="layer-content">
+          <p>Même le lab offensif est bien architecturé — isolation, performances, et zéro compromis sur la sécurité de la workstation.</p>
+          <div class="specs">
+            <div class="spec">
+              <span class="spec-label">OS</span>
+              <span class="spec-value">Kali Linux en distrobox sur Bluefin — conteneur isolé, pas de VM lourde ni dual boot</span>
+            </div>
+            <div class="spec">
+              <span class="spec-label">GPU cracking</span>
+              <span class="spec-value">RTX 3090 24 Go — hashcat mode 10900 (PBKDF2) à pleine vitesse, <code>nvidia-smi -pl 250</code> pour le thermique</span>
+            </div>
+            <div class="spec">
+              <span class="spec-label">Réseau</span>
+              <span class="spec-value">VPN HTB isolé dans le conteneur Kali — trafic offensif séparé du LAN homelab</span>
+            </div>
+            <div class="spec">
+              <span class="spec-label">Binôme</span>
+              <span class="spec-value">Claude en mode tuteur — guidance sans spoiler, questions socratiques, debriefs post-box</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Stats -->
+    <StatsBar stats={[
+      { number: '22', label: 'machines HTB' },
+      { number: '59', label: 'flags capturés' },
+      { number: '#951', label: 'rang mondial HTB' },
+      { number: '3', label: 'plateformes actives' },
+    ]} />
+
+    <!-- Lien défense -->
+    <section class="crosslink reveal">
+      <div class="container">
+        <a href="/securite" class="crosslink-block">
+          <div>
+            <h3>&#9670; Stack défensive</h3>
+            <p>PKI interne, SSO Authentik, CrowdSec IPS, Wazuh SIEM, Headscale VPN — les 5 couches défensives du homelab, construites avec les leçons de l'offensive.</p>
+          </div>
+          <span class="crosslink-arrow">&#8594;</span>
+        </a>
+      </div>
+    </section>
+  </main>
+</Base>
+
+<style>
+  /* Hero mini */
+  .hero-mini {
+    padding: 4rem 0 3rem;
+  }
+
+  .terminal-prompt {
+    font-family: var(--font-mono);
+    color: var(--color-accent);
+    font-size: 0.95rem;
+    margin-bottom: 0.75rem;
+  }
+
+  h1 {
+    font-size: clamp(2rem, 5vw, 3rem);
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    line-height: 1.1;
+    margin-bottom: 1rem;
+  }
+
+  .dot {
+    color: var(--color-accent);
+  }
+
+  .subtitle {
+    color: var(--color-text-muted);
+    font-size: 1.1rem;
+    max-width: 42rem;
+  }
+
+  /* Layers */
+  .layer {
+    padding: 3rem 0;
+    border-top: 1px solid var(--color-border);
+  }
+
+  .layer-header {
+    display: flex;
+    align-items: baseline;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .layer-number {
+    font-family: var(--font-mono);
+    font-size: 0.85rem;
+    color: var(--color-accent);
+    font-weight: 700;
+  }
+
+  .layer-header h2 {
+    font-size: 1.4rem;
+    margin-bottom: 0;
+  }
+
+  .layer-content > p {
+    color: var(--color-text-muted);
+    max-width: 48rem;
+    margin-bottom: 1.5rem;
+    line-height: 1.7;
+  }
+
+  .layer-content > p strong {
+    color: var(--color-text);
+  }
+
+  /* Feedback loop */
+  .feedback-loop {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .loop-item {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.75rem 1rem;
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: 6px;
+  }
+
+  .loop-arrow {
+    color: var(--color-accent);
+    font-size: 1.1rem;
+    flex-shrink: 0;
+  }
+
+  .loop-item > div {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+  }
+
+  .loop-offense {
+    font-family: var(--font-mono);
+    font-size: 0.8rem;
+    color: #f87171;
+    background: rgba(248, 113, 113, 0.1);
+    padding: 0.15rem 0.5rem;
+    border-radius: 3px;
+    border: 1px solid rgba(248, 113, 113, 0.2);
+  }
+
+  .loop-result {
+    font-size: 0.85rem;
+    color: var(--color-text-muted);
+  }
+
+  /* Platform cards */
+  .platforms-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(18rem, 1fr));
+    gap: 1rem;
+  }
+
+  .platform-card {
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: 8px;
+    padding: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    transition: border-color 0.3s, box-shadow 0.3s;
+  }
+
+  a.platform-card {
+    text-decoration: none;
+    color: inherit;
+  }
+
+  a.platform-card:hover {
+    border-color: var(--color-accent);
+    box-shadow: 0 0 20px rgba(56, 189, 248, 0.1);
+    color: inherit;
+  }
+
+  .htb-card {
+    border-top: 3px solid #9fef00;
+  }
+
+  .thm-card {
+    border-top: 3px solid #ef3b36;
+  }
+
+  .rootme-card {
+    border-top: 3px solid #ffc107;
+  }
+
+  .placeholder-card {
+    opacity: 0.6;
+  }
+
+  .platform-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .platform-name {
+    font-family: var(--font-mono);
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--color-text);
+  }
+
+  .platform-rank {
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    padding: 0.2rem 0.6rem;
+    border-radius: 4px;
+    background: rgba(159, 239, 0, 0.1);
+    color: #9fef00;
+    border: 1px solid rgba(159, 239, 0, 0.3);
+  }
+
+  .platform-rank.thm-rank {
+    background: rgba(239, 59, 54, 0.1);
+    color: #ef3b36;
+    border-color: rgba(239, 59, 54, 0.3);
+  }
+
+  .platform-rank.pending {
+    background: rgba(148, 163, 184, 0.1);
+    color: var(--color-text-muted);
+    border-color: var(--color-border);
+  }
+
+  .platform-stats {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 0.5rem;
+  }
+
+  .platform-stat {
+    text-align: center;
+  }
+
+  .stat-number {
+    display: block;
+    font-family: var(--font-mono);
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--color-text);
+  }
+
+  .stat-label {
+    font-size: 0.7rem;
+    color: var(--color-text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+
+  .platform-desc {
+    font-size: 0.85rem;
+    color: var(--color-text-muted);
+    line-height: 1.5;
+  }
+
+  .platform-cta {
+    font-family: var(--font-mono);
+    font-size: 0.8rem;
+    color: var(--color-accent);
+    margin-top: auto;
+  }
+
+  .platform-pending {
+    font-family: var(--font-mono);
+    font-size: 0.8rem;
+    color: var(--color-text-muted);
+    font-style: italic;
+    margin-top: auto;
+  }
+
+  /* Techniques grid */
+  .techniques-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(16rem, 1fr));
+    gap: 1rem;
+  }
+
+  .technique-group {
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: 6px;
+    padding: 1.25rem;
+  }
+
+  .technique-group h4 {
+    font-size: 0.85rem;
+    color: var(--color-accent);
+    margin-bottom: 0.75rem;
+    font-family: var(--font-mono);
+  }
+
+  .technique-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+  }
+
+  .technique-tags span {
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    background: var(--color-bg);
+    color: var(--color-text-muted);
+    padding: 0.2rem 0.5rem;
+    border-radius: 4px;
+    border: 1px solid var(--color-border);
+  }
+
+  /* Specs */
+  .specs {
+    margin-bottom: 1.5rem;
+  }
+
+  .spec {
+    display: flex;
+    gap: 1rem;
+    padding: 0.6rem 0;
+    border-bottom: 1px solid var(--color-border);
+    align-items: baseline;
+  }
+
+  .spec:last-child {
+    border-bottom: none;
+  }
+
+  .spec-label {
+    font-family: var(--font-mono);
+    font-size: 0.8rem;
+    color: var(--color-accent);
+    min-width: 7rem;
+    flex-shrink: 0;
+  }
+
+  .spec-value {
+    font-size: 0.9rem;
+    color: var(--color-text-muted);
+  }
+
+  /* Crosslink */
+  .crosslink {
+    padding: 2rem 0 3rem;
+  }
+
+  .crosslink-block {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 2rem;
+    padding: 1.5rem 2rem;
+    border: 1px solid rgba(56, 189, 248, 0.2);
+    border-radius: 8px;
+    background: linear-gradient(135deg, rgba(56, 189, 248, 0.05), rgba(56, 189, 248, 0.02));
+    text-decoration: none;
+    color: inherit;
+    transition: border-color 0.3s, box-shadow 0.3s;
+  }
+
+  .crosslink-block:hover {
+    border-color: var(--color-accent);
+    box-shadow: 0 0 20px rgba(56, 189, 248, 0.1);
+    color: inherit;
+  }
+
+  .crosslink-block h3 {
+    font-size: 1rem;
+    color: var(--color-accent);
+    margin-bottom: 0.5rem;
+  }
+
+  .crosslink-block p {
+    font-size: 0.85rem;
+    color: var(--color-text-muted);
+    line-height: 1.5;
+    max-width: 42rem;
+  }
+
+  .crosslink-arrow {
+    font-size: 1.5rem;
+    color: var(--color-accent);
+    flex-shrink: 0;
+  }
+
+  @media (max-width: 640px) {
+    .spec {
+      flex-direction: column;
+      gap: 0.25rem;
+    }
+    .spec-label {
+      min-width: unset;
+    }
+    .loop-item > div {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+    .platform-stats {
+      grid-template-columns: repeat(2, 1fr);
+    }
+    .crosslink-block {
+      flex-direction: column;
+      gap: 1rem;
+    }
+  }
+</style>

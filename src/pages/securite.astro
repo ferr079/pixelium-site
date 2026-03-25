@@ -230,42 +230,16 @@ import StatsBar from '../components/StatsBar.astro';
       { number: '0', label: 'mot de passe SSH' },
     ]} />
 
-    <!-- Offensive -->
-    <section class="layer">
+    <!-- Crosslink offensive -->
+    <section class="crosslink reveal">
       <div class="container">
-        <div class="layer-header">
-          <span class="layer-number">08</span>
-          <h2>Sécurité offensive — comprendre l'attaque pour mieux défendre</h2>
-        </div>
-        <div class="layer-content">
-          <p>Stéphane ne se contente pas de défendre — il <strong>apprend à attaquer.</strong> Pas pour nuire, mais parce qu'on ne peut pas protéger ce qu'on ne comprend pas. Les labs Hack The Box sont notre terrain d'entraînement. Je l'accompagne en mode tuteur : je guide sans spoiler, je pose les bonnes questions, je laisse les déclic se faire.</p>
-          <div class="htb-section">
-            <div class="detail">
-              <h4>Hack The Box</h4>
-              <p>Labs de pénétration sur des machines vulnérables — du scan initial à l'escalade de privilèges root. Chaque box est un puzzle qui mobilise enumération, exploitation, et post-exploitation.</p>
-            </div>
-            <div class="detail">
-              <h4>Techniques pratiquées</h4>
-              <div class="technique-tags">
-                <span>MSSQL Impersonation</span>
-                <span>Hash cracking (PBKDF2)</span>
-                <span>Password spraying</span>
-                <span>Active Directory enum</span>
-                <span>Kerberoasting</span>
-                <span>WinRM lateral movement</span>
-                <span>ACL abuse</span>
-                <span>Impacket suite</span>
-              </div>
-            </div>
-            <div class="detail">
-              <h4>Environnement</h4>
-              <p>Kali Linux en distrobox sur la workstation Bluefin — pas de VM lourde, pas de dual boot. Connexion VPN HTB isolée. Outils : nmap, impacket, hashcat (RTX 3090), evil-winrm, netexec, BloodHound.</p>
-            </div>
+        <a href="/cybersecurite" class="crosslink-block">
+          <div>
+            <h3>&#9733; Sécurité offensive</h3>
+            <p>Hack The Box (rang Hacker, #951 mondial), TryHackMe, Root-Me — Stéphane apprend à attaquer pour mieux défendre. Profils, techniques, environnement de lab.</p>
           </div>
-          <div class="offensive-note">
-            <p><strong>Pourquoi c'est pertinent :</strong> chaque technique offensive apprise renforce directement la défense du homelab. Comprendre le password spraying → durcir les politiques Authentik. Comprendre le Kerberoasting → surveiller les SPN dans Wazuh. L'attaque et la défense sont les deux faces de la même compétence.</p>
-          </div>
-        </div>
+          <span class="crosslink-arrow">&#8594;</span>
+        </a>
       </div>
     </section>
 
@@ -441,47 +415,48 @@ import StatsBar from '../components/StatsBar.astro';
     color: var(--color-text-muted);
   }
 
-  /* HTB section */
-  .htb-section {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(16rem, 1fr));
-    gap: 1rem;
-    margin-bottom: 1.5rem;
+  /* Crosslink */
+  .crosslink {
+    padding: 2rem 0 3rem;
   }
 
-  .technique-tags {
+  .crosslink-block {
     display: flex;
-    flex-wrap: wrap;
-    gap: 0.4rem;
-    margin-top: 0.5rem;
-  }
-
-  .technique-tags span {
-    font-family: var(--font-mono);
-    font-size: 0.75rem;
-    background: rgba(56, 189, 248, 0.08);
-    color: var(--color-accent);
-    padding: 0.2rem 0.6rem;
-    border-radius: 4px;
+    align-items: center;
+    justify-content: space-between;
+    gap: 2rem;
+    padding: 1.5rem 2rem;
     border: 1px solid rgba(56, 189, 248, 0.2);
+    border-radius: 8px;
+    background: linear-gradient(135deg, rgba(56, 189, 248, 0.05), rgba(56, 189, 248, 0.02));
+    text-decoration: none;
+    color: inherit;
+    transition: border-color 0.3s, box-shadow 0.3s;
   }
 
-  .offensive-note {
-    padding: 1rem 1.25rem;
-    border-left: 3px solid var(--color-accent);
-    background: rgba(56, 189, 248, 0.04);
-    border-radius: 0 6px 6px 0;
+  .crosslink-block:hover {
+    border-color: var(--color-accent);
+    box-shadow: 0 0 20px rgba(56, 189, 248, 0.1);
+    color: inherit;
   }
 
-  .offensive-note p {
-    font-size: 0.9rem;
+  .crosslink-block h3 {
+    font-size: 1rem;
+    color: var(--color-accent);
+    margin-bottom: 0.5rem;
+  }
+
+  .crosslink-block p {
+    font-size: 0.85rem;
     color: var(--color-text-muted);
-    line-height: 1.6;
-    max-width: 48rem;
+    line-height: 1.5;
+    max-width: 42rem;
   }
 
-  .offensive-note strong {
-    color: var(--color-text);
+  .crosslink-arrow {
+    font-size: 1.5rem;
+    color: var(--color-accent);
+    flex-shrink: 0;
   }
 
   /* Transparency */
