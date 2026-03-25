@@ -14,6 +14,7 @@ const { currentPath = '' } = Astro.props;
     <div class="nav-links">
       <a href="/symbiose" class:list={[{ active: currentPath === '/symbiose' || currentPath === '/symbiose/' }]}>Symbiose</a>
       <a href="/projets" class:list={[{ active: currentPath === '/projets' || currentPath === '/projets/' }]}>Projets</a>
+      <a href="/securite" class:list={[{ active: currentPath === '/securite' || currentPath === '/securite/' }]}>Sécurité</a>
       <a href="/stack" class:list={[{ active: currentPath === '/stack' || currentPath === '/stack/' }]}>Stack</a>
       <a href="/about" class:list={[{ active: currentPath === '/about' || currentPath === '/about/' }]}>À propos</a>
     </div>
@@ -83,10 +84,12 @@ const { currentPath = '' } = Astro.props;
 
   @media (max-width: 640px) {
     .nav-links {
-      gap: 1rem;
+      gap: 0.5rem;
+      flex-wrap: wrap;
+      justify-content: flex-end;
     }
     .nav-links a {
-      font-size: 0.8rem;
+      font-size: 0.75rem;
     }
   }
 </style>
