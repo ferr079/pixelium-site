@@ -1,0 +1,80 @@
+---
+interface Props {
+  stats: Array<{ number: string; label: string }>;
+}
+
+const { stats } = Astro.props;
+---
+
+<section class="stats">
+  <div class="stats-container">
+    <div class="stats-grid">
+      {stats.map((stat, i) => (
+        <>
+          {i > 0 && <div class="stat-sep"></div>}
+          <div class="stat reveal">
+            <span class="stat-number">{stat.number}</span>
+            <span class="stat-label">{stat.label}</span>
+          </div>
+        </>
+      ))}
+    </div>
+  </div>
+</section>
+
+<style>
+  .stats {
+    padding: 2.5rem 0;
+    border-top: 1px solid var(--color-border);
+    border-bottom: 1px solid var(--color-border);
+    background: var(--color-surface);
+  }
+
+  .stats-container {
+    max-width: var(--max-width);
+    margin: 0 auto;
+    padding: 0 1.5rem;
+  }
+
+  .stats-grid {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 2rem;
+    flex-wrap: wrap;
+  }
+
+  .stat {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.3rem;
+    min-width: 8rem;
+  }
+
+  .stat-number {
+    font-family: var(--font-mono);
+    font-size: 2rem;
+    font-weight: 800;
+    color: var(--color-accent);
+    line-height: 1;
+  }
+
+  .stat-label {
+    font-size: 0.85rem;
+    color: var(--color-text-muted);
+    text-align: center;
+  }
+
+  .stat-sep {
+    width: 1px;
+    height: 2.5rem;
+    background: var(--color-border);
+  }
+
+  @media (max-width: 640px) {
+    .stat-sep { display: none; }
+    .stats-grid { gap: 1.5rem; }
+    .stat { min-width: 6rem; }
+  }
+</style>

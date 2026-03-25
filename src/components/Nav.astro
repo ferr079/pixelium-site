@@ -1,0 +1,91 @@
+---
+interface Props {
+  currentPath?: string;
+}
+
+const { currentPath = '' } = Astro.props;
+---
+
+<nav class="site-nav">
+  <div class="nav-container">
+    <a href="/" class="nav-brand">
+      <span class="nav-prompt">$</span> pixelium<span class="nav-dot">.</span>win
+    </a>
+    <div class="nav-links">
+      <a href="/symbiose" class:list={[{ active: currentPath === '/symbiose' || currentPath === '/symbiose/' }]}>Symbiose</a>
+      <a href="/stack" class:list={[{ active: currentPath === '/stack' || currentPath === '/stack/' }]}>Stack</a>
+      <a href="/about" class:list={[{ active: currentPath === '/about' || currentPath === '/about/' }]}>À propos</a>
+    </div>
+  </div>
+</nav>
+
+<style>
+  .site-nav {
+    padding: 1.25rem 0;
+    position: relative;
+    z-index: 100;
+  }
+
+  .nav-container {
+    max-width: var(--max-width);
+    margin: 0 auto;
+    padding: 0 1.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .nav-brand {
+    font-family: var(--font-mono);
+    font-size: 0.95rem;
+    color: var(--color-text);
+    font-weight: 600;
+    text-decoration: none;
+  }
+
+  .nav-brand:hover {
+    color: var(--color-accent);
+  }
+
+  .nav-prompt {
+    color: var(--color-accent);
+    margin-right: 0.3rem;
+  }
+
+  .nav-dot {
+    color: var(--color-accent);
+  }
+
+  .nav-links {
+    display: flex;
+    gap: 1.5rem;
+  }
+
+  .nav-links a {
+    font-family: var(--font-mono);
+    font-size: 0.85rem;
+    color: var(--color-text-muted);
+    text-decoration: none;
+    padding: 0.25rem 0;
+    border-bottom: 1px solid transparent;
+    transition: color 0.2s, border-color 0.2s;
+  }
+
+  .nav-links a:hover {
+    color: var(--color-accent);
+  }
+
+  .nav-links a.active {
+    color: var(--color-accent);
+    border-bottom-color: var(--color-accent);
+  }
+
+  @media (max-width: 640px) {
+    .nav-links {
+      gap: 1rem;
+    }
+    .nav-links a {
+      font-size: 0.8rem;
+    }
+  }
+</style>

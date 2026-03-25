@@ -1,0 +1,118 @@
+---
+interface Props {
+  icon: string;
+  title: string;
+  description: string;
+  tags: string[];
+}
+
+const { icon, title, description, tags } = Astro.props;
+---
+
+<div class="card reveal">
+  <div class="card-icon" set:html={icon} />
+  <h3>{title}</h3>
+  <p>{description}</p>
+  <ul class="tags">
+    {tags.map((tag) => <li>{tag}</li>)}
+  </ul>
+</div>
+
+<style>
+  .card {
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: 8px;
+    padding: 1.5rem;
+    transition: border-color 0.3s, transform 0.3s, box-shadow 0.3s;
+    position: relative;
+  }
+
+  .card:hover {
+    border-color: var(--color-accent);
+    transform: translateY(-3px);
+    box-shadow:
+      0 0 15px rgba(56, 189, 248, 0.1),
+      0 8px 25px rgba(0, 0, 0, 0.3);
+  }
+
+  .card::after {
+    content: '';
+    position: absolute;
+    inset: -1px;
+    border-radius: 8px;
+    background: linear-gradient(135deg, rgba(56, 189, 248, 0.15), transparent 60%);
+    opacity: 0;
+    transition: opacity 0.3s;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .card:hover::after {
+    opacity: 1;
+  }
+
+  .card > :global(*) {
+    position: relative;
+    z-index: 1;
+  }
+
+  .card-icon {
+    font-size: 1.5rem;
+    color: var(--color-accent);
+    margin-bottom: 0.75rem;
+    opacity: 0.7;
+    transition: opacity 0.3s, transform 0.3s;
+  }
+
+  .card:hover .card-icon {
+    opacity: 1;
+    transform: scale(1.1);
+  }
+
+  h3 {
+    font-size: 1.1rem;
+    margin-bottom: 0.75rem;
+  }
+
+  p {
+    color: var(--color-text-muted);
+    font-size: 0.9rem;
+    margin-bottom: 1rem;
+    line-height: 1.5;
+  }
+
+  .tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+    list-style: none;
+  }
+
+  .tags li {
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    background: var(--color-bg);
+    color: var(--color-accent);
+    padding: 0.2rem 0.6rem;
+    border-radius: 4px;
+    border: 1px solid var(--color-border);
+    transition: border-color 0.2s, background 0.2s;
+  }
+
+  .card:hover .tags li {
+    border-color: rgba(56, 189, 248, 0.3);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .card {
+      transition: none;
+    }
+    .card:hover {
+      transform: none;
+    }
+    .card-icon {
+      transition: none;
+    }
+  }
+</style>

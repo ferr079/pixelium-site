@@ -1,0 +1,23 @@
+---
+interface Props {
+  id?: string;
+}
+
+const { id } = Astro.props;
+---
+
+<h2 class="section-heading reveal" id={id}>
+  <span class="hash">#</span> <slot />
+</h2>
+
+<style>
+  .section-heading {
+    font-size: 1.75rem;
+    margin-bottom: 2.5rem;
+  }
+
+  .hash {
+    color: var(--color-accent);
+    margin-right: 0.25rem;
+  }
+</style>

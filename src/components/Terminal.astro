@@ -1,0 +1,113 @@
+---
+interface Props {
+  title?: string;
+  prompt?: string;
+  command: string;
+}
+
+const { title = 'terre2 — bash', prompt = 'terre2@pixelium', command } = Astro.props;
+const charCount = command.length;
+---
+
+<div class="terminal">
+  <div class="terminal-bar">
+    <span class="terminal-dot"></span>
+    <span class="terminal-dot"></span>
+    <span class="terminal-dot"></span>
+    <span class="terminal-title">{title}</span>
+  </div>
+  <div class="terminal-body">
+    <p class="terminal-line">
+      <span class="prompt">{prompt}</span><span class="prompt-sep">:</span><span class="prompt-dir">~</span><span class="prompt-dollar">$</span>
+      <span class="typed" style={`--typing-width: ${charCount}ch; --typing-steps: ${charCount};`}>{command}</span><span class="cursor">_</span>
+    </p>
+  </div>
+</div>
+
+<style>
+  .terminal {
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: 8px;
+    max-width: 32rem;
+    margin-bottom: 2rem;
+    overflow: hidden;
+  }
+
+  .terminal-bar {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    padding: 0.6rem 0.8rem;
+    background: rgba(0, 0, 0, 0.2);
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  .terminal-dot {
+    width: 0.5rem;
+    height: 0.5rem;
+    border-radius: 50%;
+    background: var(--color-border);
+  }
+
+  .terminal-dot:first-child { background: #ef4444; }
+  .terminal-dot:nth-child(2) { background: #eab308; }
+  .terminal-dot:nth-child(3) { background: #22c55e; }
+
+  .terminal-title {
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    color: var(--color-text-muted);
+    margin-left: auto;
+  }
+
+  .terminal-body {
+    padding: 0.8rem 1rem;
+  }
+
+  .terminal-line {
+    font-family: var(--font-mono);
+    font-size: 0.85rem;
+    line-height: 1.6;
+    white-space: nowrap;
+  }
+
+  .prompt { color: #22c55e; }
+  .prompt-sep { color: var(--color-text-muted); }
+  .prompt-dir { color: var(--color-accent); }
+  .prompt-dollar { color: var(--color-text-muted); margin: 0 0.4rem; }
+
+  .typed {
+    color: var(--color-text);
+    display: inline-block;
+    overflow: hidden;
+    white-space: nowrap;
+    animation: typing 1.5s steps(var(--typing-steps)) 0.5s both;
+    width: 0;
+    vertical-align: bottom;
+  }
+
+  .cursor {
+    color: var(--color-accent);
+    animation: blink 1s step-end infinite;
+    font-weight: 100;
+  }
+
+  @keyframes typing {
+    to { width: var(--typing-width); }
+  }
+
+  @keyframes blink {
+    50% { opacity: 0; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .typed {
+      animation: none;
+      width: auto;
+    }
+    .cursor {
+      animation: none;
+    }
+  }
+</style>
