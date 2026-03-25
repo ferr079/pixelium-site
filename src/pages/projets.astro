@@ -312,7 +312,41 @@ import Base from '../layouts/Base.astro';
       </div>
     </section>
 
-    <!-- Projet 9 : Ce site -->
+    <!-- Projet 9 : APT Cacher -->
+    <section class="project" id="apt-cache">
+      <div class="container">
+        <div class="project-header">
+          <span class="project-tag">Infrastructure</span>
+          <h2>APT Cacher — Le cache invisible qui accélère tout</h2>
+        </div>
+        <div class="project-body">
+          <div class="project-intro">
+            <p>30+ conteneurs Debian/Ubuntu qui font <code>apt update && apt upgrade</code> régulièrement — ça fait beaucoup de paquets téléchargés en double, triple, trentuple. APT Cacher (CT 200) est le proxy transparent qui les met en cache localement. Un service discret, mais qui change tout sur la vélocité des opérations.</p>
+          </div>
+          <div class="project-details">
+            <div class="detail-block">
+              <h4>Le problème</h4>
+              <p>Chaque <code>apt upgrade</code> lancé via Semaphore sur 20+ CTs télécharge les mêmes paquets depuis les miroirs Debian/Ubuntu. Bande passante gaspillée, temps perdu, et quand la connexion FAI est saturée (Jellyfin stream + téléchargements Immich), les upgrades ralentissent tout le monde.</p>
+            </div>
+            <div class="detail-block">
+              <h4>La solution</h4>
+              <p>Un CT dédié qui proxy les dépôts APT. Premier CT à télécharger un paquet : il passe par Internet. Les 29 suivants : servi instantanément depuis le cache local en LAN. Le playbook Ansible <code>secure_apt_repos.yml</code> bascule tous les CTs sur ce proxy en une commande. Résultat : des upgrades massifs qui passent de minutes à secondes.</p>
+            </div>
+          </div>
+          <div class="project-stack">
+            <ul class="tags">
+              <li>APT Cacher NG</li>
+              <li>Ansible</li>
+              <li>Semaphore</li>
+              <li>LAN cache</li>
+            </ul>
+            <span class="project-services">CT 200, proxy transparent pour 30+ conteneurs</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Projet 10 : Ce site -->
     <section class="project" id="site">
       <div class="container">
         <div class="project-header">
@@ -340,7 +374,7 @@ import Base from '../layouts/Base.astro';
               <li>CSS pur</li>
               <li>Dual-remote</li>
             </ul>
-            <span class="project-services">4 pages, 6 composants, 0 dépendances, build 1.15s</span>
+            <span class="project-services">5 pages, 6 composants, 0 dépendances, build 1.25s</span>
           </div>
         </div>
       </div>
