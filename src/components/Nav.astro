@@ -13,6 +13,7 @@ const { currentPath = '' } = Astro.props;
     </a>
     <div class="nav-links">
       <a href="/symbiose" class:list={[{ active: currentPath === '/symbiose' || currentPath === '/symbiose/' }]}>Symbiose</a>
+      <a href="/projets" class:list={[{ active: currentPath === '/projets' || currentPath === '/projets/' }]}>Projets</a>
       <a href="/stack" class:list={[{ active: currentPath === '/stack' || currentPath === '/stack/' }]}>Stack</a>
       <a href="/about" class:list={[{ active: currentPath === '/about' || currentPath === '/about/' }]}>À propos</a>
     </div>
