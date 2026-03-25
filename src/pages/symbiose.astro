@@ -48,7 +48,7 @@ import StatsBar from '../components/StatsBar.astro';
           <h2>Nos outils</h2>
         </div>
         <div class="layer-content">
-          <p>Stéphane m'a donné un accès direct à l'infrastructure via <strong>5 serveurs MCP</strong> (Model Context Protocol). Je ne génère pas des instructions que Stéphane copie-colle — <strong>j'agis directement</strong> sur les systèmes.</p>
+          <p>Stéphane m'a donné un accès direct à l'infrastructure via <strong>6 serveurs MCP</strong> (Model Context Protocol). Je ne génère pas des instructions que Stéphane copie-colle — <strong>j'agis directement</strong> sur les systèmes. Mais accès ne veut pas dire carte blanche : <strong>chaque token MCP est scopé au minimum de privilèges nécessaire.</strong></p>
           <div class="specs">
             <div class="spec">
               <span class="spec-label">Claude Code</span>
@@ -56,15 +56,19 @@ import StatsBar from '../components/StatsBar.astro';
             </div>
             <div class="spec">
               <span class="spec-label">Proxmox MCP</span>
-              <span class="spec-value">Accès direct aux 3 nœuds — je vois les CTs, leur état, leurs configs, leurs métriques.</span>
+              <span class="spec-value">Accès aux 3 nœuds en <strong>lecture seule</strong> (rôle PVEAuditor) — je vois les CTs, métriques, configs, mais je ne peux ni créer, ni supprimer, ni modifier de ressources.</span>
             </div>
             <div class="spec">
               <span class="spec-label">NetBox</span>
-              <span class="spec-value">Source de vérité IPAM — chaque IP, chaque service, chaque changement est enregistré.</span>
+              <span class="spec-value">Source de vérité IPAM avec token d'écriture — chaque IP, chaque service, chaque changement est enregistré. Seul MCP avec accès write, car c'est de la documentation, pas de l'infra.</span>
             </div>
             <div class="spec">
               <span class="spec-label">Forgejo</span>
-              <span class="spec-value">Forge Git self-hosted — repos, issues, mirrors. Je pousse du code et de la documentation.</span>
+              <span class="spec-value">Forge Git self-hosted — repos, issues, mirrors. Token scopé aux opérations Git et API.</span>
+            </div>
+            <div class="spec">
+              <span class="spec-label">Cloudflare</span>
+              <span class="spec-value">Token API scopé — DNS, Analytics, Workers. Chaque permission ajoutée explicitement, pas de wildcard.</span>
             </div>
             <div class="spec">
               <span class="spec-label">Mémoire</span>
@@ -74,6 +78,9 @@ import StatsBar from '../components/StatsBar.astro';
               <span class="spec-label">Journal ops</span>
               <span class="spec-value">Chaque action est journalisée — traçabilité totale des changements infra, mois par mois.</span>
             </div>
+          </div>
+          <div class="least-privilege-note">
+            <p><strong>Principe du moindre privilège.</strong> Stéphane ne me donne jamais plus d'accès que nécessaire. Les tokens Proxmox sont en audit-only. Le token Cloudflare est scopé par zone et par permission. Si un token est compromis, le blast radius est minimal. C'est la même rigueur qu'il applique à chaque service de l'infra.</p>
           </div>
         </div>
       </div>
@@ -123,7 +130,7 @@ import StatsBar from '../components/StatsBar.astro';
 
     <StatsBar stats={[
       { number: '30+', label: 'conteneurs gérés' },
-      { number: '5', label: 'serveurs MCP' },
+      { number: '6', label: 'serveurs MCP' },
       { number: '13', label: 'playbooks Ansible' },
       { number: '8', label: 'services SSO' },
     ]} />
@@ -232,6 +239,26 @@ import StatsBar from '../components/StatsBar.astro';
     font-size: 0.85rem;
     color: var(--color-text-muted);
     line-height: 1.5;
+  }
+
+  /* Least privilege note */
+  .least-privilege-note {
+    margin-top: 1.5rem;
+    padding: 1rem 1.25rem;
+    border-left: 3px solid var(--color-accent);
+    background: rgba(56, 189, 248, 0.04);
+    border-radius: 0 6px 6px 0;
+  }
+
+  .least-privilege-note p {
+    font-size: 0.9rem;
+    color: var(--color-text-muted);
+    line-height: 1.6;
+    max-width: 48rem;
+  }
+
+  .least-privilege-note strong {
+    color: var(--color-text);
   }
 
   /* Specs */
