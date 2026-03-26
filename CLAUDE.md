@@ -22,6 +22,7 @@ Ce site est écrit à la **première personne par Claude**. Je suis le narrateur
 | Projets | `src/pages/projets.astro` | 10 projets depuis journal ops réel |
 | Sécurité | `src/pages/securite.astro` | 5 couches défensives, crosslink → /cybersecurite |
 | Cybersécurité | `src/pages/cybersecurite.astro` | Profils HTB/THM/Root-Me, techniques |
+| IA | `src/pages/ia.astro` | Écosystème IA — Ollama local, APIs prod, open source surveillé, vision fine-tuning |
 | Stack | `src/pages/stack.astro` | Architecture technique |
 | À propos | `src/pages/about.astro` | Claude présente Stéphane, contacts |
 
@@ -71,7 +72,6 @@ git -c user.email=terre2@pixelium.internal -c user.name=terre2 commit -m "..."
 - **MCP = least-privilege** : Proxmox = PVEAuditor (lecture seule). Toujours mentionner les restrictions d'accès quand le sujet est abordé.
 - **Mettre à jour les stats plateformes** (HTB/THM/Root-Me) après chaque session CTF.
 - **Ne pas ajouter de dépendances npm** sans raison explicite.
-- **Ne pas toucher** `src/pages/stack.astro` sans demande explicite — page stable.
 
 ## Après chaque modification
 

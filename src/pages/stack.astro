@@ -20,7 +20,7 @@ import Base from '../layouts/Base.astro';
           <h2>Framework — Astro 6</h2>
         </div>
         <div class="layer-content">
-          <p>Générateur de site statique qui transforme des fichiers <code>.astro</code> en HTML/CSS optimisé. <strong>Zéro JavaScript côté client par défaut</strong> — les pages sont pré-rendues au build, pas dans le navigateur. Résultat : chargement instantané.</p>
+          <p>J'ai choisi Astro 6 pour construire ce site avec Stéphane — un générateur de site statique qui transforme des fichiers <code>.astro</code> en HTML/CSS optimisé. <strong>Zéro JavaScript côté client par défaut</strong> — les pages sont pré-rendues au build, pas dans le navigateur. Résultat : chargement instantané.</p>
           <div class="details-grid">
             <div class="detail">
               <h4>Langage template</h4>
@@ -53,15 +53,15 @@ import Base from '../layouts/Base.astro';
           <h2>Build & Deploy — Cloudflare Workers</h2>
         </div>
         <div class="layer-content">
-          <p>Au premier build, Cloudflare a auto-détecté Astro et installé l'adapter <code>@astrojs/cloudflare</code>. Le site ne tourne pas comme du HTML statique pur — c'est un <strong>Cloudflare Worker</strong> (V8 isolate, serverless).</p>
+          <p>On déploie sur Cloudflare Workers — pas de CI/CD automatique pour l'instant. Chaque modification suit une séquence manuelle : <code>npm run build</code> → <code>wrangler deploy</code> → push sur les deux remotes. Le site tourne comme un <strong>Cloudflare Worker</strong> (V8 isolate, serverless), pas du HTML statique pur.</p>
           <div class="details-grid">
             <div class="detail">
               <h4>Pipeline de déploiement</h4>
-              <p><code>git push</code> sur <code>main</code> → webhook GitHub → Cloudflare clone le repo → <code>npm run build</code> → <code>npx wrangler deploy</code> → live en ~30 secondes.</p>
+              <p><code>npm run build</code> → <code>wrangler deploy</code> → <code>git push origin main</code> + <code>git push forgejo main</code>. Séquence manuelle — une GitHub Action pour automatiser est sur la roadmap.</p>
             </div>
             <div class="detail">
-              <h4>Bindings provisionnés</h4>
-              <p><code>ASSETS</code> (fichiers statiques), <code>SESSION</code> (KV store), <code>IMAGES</code> (Cloudflare Images) — prêt pour du SSR ou des API routes sans rien changer.</p>
+              <h4>Worker config</h4>
+              <p><code>wrangler.toml</code> : <code>name = "pixelium-site"</code>, <code>[assets] directory = "./dist"</code>. Token API scopé Workers Scripts Edit dans <code>secrets.env</code>.</p>
             </div>
           </div>
           <ul class="tags">
@@ -123,7 +123,7 @@ import Base from '../layouts/Base.astro';
           <h2>Versioning — Git dual-remote</h2>
         </div>
         <div class="layer-content">
-          <p>Le code source est versionné sur deux forges Git en parallèle : GitHub (public, déclenche le déploiement) et Forgejo (self-hosted, mirror interne du homelab).</p>
+          <p>On versionne le code sur deux forges Git en parallèle : GitHub (public) et Forgejo (self-hosted, mirror interne du homelab). Le push ne déclenche pas de déploiement automatique — c'est une décision délibérée tant que le CI/CD n'est pas en place.</p>
           <div class="specs">
             <div class="spec">
               <span class="spec-label">origin</span>
@@ -219,7 +219,7 @@ import Base from '../layouts/Base.astro';
             </div>
             <div class="absent">
               <h4>CI/CD dédié</h4>
-              <p>Cloudflare fait le build et le deploy. Pas besoin de GitHub Actions.</p>
+              <p>Le déploiement est manuel pour l'instant (<code>wrangler deploy</code>). Une GitHub Action <code>push → build → deploy</code> est sur la roadmap Phase 2.</p>
             </div>
           </div>
         </div>
@@ -242,24 +242,24 @@ import Base from '../layouts/Base.astro';
           <div class="flow-step">
             <span class="flow-icon">02</span>
             <div>
-              <h4>git push</h4>
-              <p>SSH vers GitHub + HTTPS vers Forgejo</p>
+              <h4>npm run build</h4>
+              <p>Astro compile → <code>dist/</code> statique</p>
             </div>
           </div>
           <div class="flow-arrow">→</div>
           <div class="flow-step">
             <span class="flow-icon">03</span>
             <div>
-              <h4>Webhook</h4>
-              <p>GitHub notifie Cloudflare</p>
+              <h4>wrangler deploy</h4>
+              <p>Upload vers Cloudflare Workers</p>
             </div>
           </div>
           <div class="flow-arrow">→</div>
           <div class="flow-step">
             <span class="flow-icon">04</span>
             <div>
-              <h4>Build</h4>
-              <p><code>npm run build</code> + <code>wrangler deploy</code></p>
+              <h4>git push</h4>
+              <p>SSH → GitHub + HTTPS → Forgejo</p>
             </div>
           </div>
           <div class="flow-arrow">→</div>

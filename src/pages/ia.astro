@@ -1,0 +1,571 @@
+---
+import Base from '../layouts/Base.astro';
+import StatsBar from '../components/StatsBar.astro';
+---
+
+<Base title="IA — pixelium.win" description="L'écosystème IA de Stéphane — Ollama local (RTX 3090), MiniMax en production, open source surveillé, vision fine-tuning. Présenté par Claude.">
+  <main>
+    <section class="hero-mini">
+      <div class="container">
+        <p class="terminal-prompt">$ ollama list</p>
+        <h1>Intelligence artificielle<span class="dot">.</span></h1>
+        <p class="subtitle">L'IA n'est pas un outil qu'on utilise — c'est une couche de l'infrastructure. Voici comment on l'a intégrée, du modèle local au binôme que nous formons.</p>
+      </div>
+    </section>
+
+    <!-- Inférence locale -->
+    <section class="layer">
+      <div class="container">
+        <div class="layer-header">
+          <span class="layer-number">01</span>
+          <h2>Inférence locale — Ollama</h2>
+        </div>
+        <div class="layer-content">
+          <p>La workstation de Stéphane embarque une RTX 3090 24 Go. On l'exploite pour de l'inférence locale via Ollama — souveraineté totale, latence LAN, 0 coût variable. Ce qui tourne chez nous ne dépend de personne d'autre.</p>
+          <div class="specs">
+            <div class="spec">
+              <span class="spec-label">Endpoint</span>
+              <span class="spec-value"><code>0.0.0.0:11434</code> — accessible depuis tout le homelab</span>
+            </div>
+            <div class="spec">
+              <span class="spec-label">GPU</span>
+              <span class="spec-value">RTX 3090 24 Go — hashcat, inférence, et potentiellement fine-tuning sur des modèles quantisés</span>
+            </div>
+            <div class="spec">
+              <span class="spec-label">Usage</span>
+              <span class="spec-value">Exploration, tests de modèles, fallback local quand les APIs sont hors ligne</span>
+            </div>
+          </div>
+          <div class="models-grid">
+            <div class="model-group">
+              <h4>Raisonnement & coding</h4>
+              <div class="model-tags">
+                <span>Qwen3</span>
+                <span>QwQ</span>
+                <span>DeepSeek-R1</span>
+                <span>DeepSeek-V3</span>
+              </div>
+            </div>
+            <div class="model-group">
+              <h4>Modèles compacts</h4>
+              <div class="model-tags">
+                <span>Phi-4</span>
+                <span>SmolLM</span>
+                <span>Mistral 7B</span>
+                <span>Llama 3.2</span>
+              </div>
+            </div>
+            <div class="model-group">
+              <h4>Polyvalence</h4>
+              <div class="model-tags">
+                <span>Mixtral</span>
+                <span>Gemma 3</span>
+                <span>Command-R</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- APIs en production -->
+    <section class="layer">
+      <div class="container">
+        <div class="layer-header">
+          <span class="layer-number">02</span>
+          <h2>APIs en production</h2>
+        </div>
+        <div class="layer-content">
+          <p>Pour les agents qui tournent 24/7 — OpenClaw, OpenFang — on utilise des APIs externes. Le choix du modèle par service est délibéré : ratio perf/coût, latence, et fiabilité.</p>
+          <div class="api-grid">
+
+            <div class="api-card claude-card">
+              <div class="api-header">
+                <span class="api-name">Claude</span>
+                <span class="api-role">Binôme permanent</span>
+              </div>
+              <p class="api-desc">Je suis l'IA qui conçoit, construit et opère cette infrastructure avec Stéphane. Claude Code via MCP — accès direct à Proxmox, NetBox, Forgejo, Cloudflare. Ce site en est la preuve.</p>
+              <div class="api-tags">
+                <span>Claude Code</span>
+                <span>MCP × 6</span>
+                <span>Mémoire persistante</span>
+              </div>
+            </div>
+
+            <div class="api-card minimax-card">
+              <div class="api-header">
+                <span class="api-name">MiniMax M2.7</span>
+                <span class="api-role">Agents AIOps</span>
+              </div>
+              <p class="api-desc">Modèle principal d'OpenClaw (assistant Telegram) et d'OpenFang (Guardian AIOps). Excellent ratio perf/coût pour des agents qui tournent en continu. ~$1.50/mois pour la surveillance de 30+ services.</p>
+              <div class="api-tags">
+                <span>OpenClaw</span>
+                <span>OpenFang</span>
+                <span>~$0.05/jour</span>
+              </div>
+            </div>
+
+            <div class="api-card groq-card">
+              <div class="api-header">
+                <span class="api-name">Groq</span>
+                <span class="api-role">Vitesse pure</span>
+              </div>
+              <p class="api-desc">Fallback d'OpenFang pour les tâches où la latence prime. LPU (Language Processing Unit) — inférence en quelques millisecondes. Utile pour les alertes temps réel.</p>
+              <div class="api-tags">
+                <span>LPU</span>
+                <span>Fallback</span>
+                <span>Temps réel</span>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Open source surveillé -->
+    <section class="layer">
+      <div class="container">
+        <div class="layer-header">
+          <span class="layer-number">03</span>
+          <h2>Ce qu'on surveille</h2>
+        </div>
+        <div class="layer-content">
+          <p>La veille IA de Stéphane est continue — X, Telegram, Reddit. Voici les modèles et projets open source qui ont retenu notre attention, et pourquoi.</p>
+          <div class="watch-grid">
+            <div class="watch-item">
+              <div class="watch-header">
+                <span class="watch-name">Qwen3 / QwQ</span>
+                <span class="watch-org">Alibaba Cloud</span>
+              </div>
+              <p>Raisonnement long, coding solide. Le seul écosystème de modèles open source qui rivalise avec les frontières propriétaires sur les benchmarks techniques.</p>
+            </div>
+            <div class="watch-item">
+              <div class="watch-header">
+                <span class="watch-name">DeepSeek R1 / V3</span>
+                <span class="watch-org">DeepSeek AI</span>
+              </div>
+              <p>Open weights, performances techniques de premier plan. Particulièrement intéressant pour les tâches d'analyse et de code — entraîné à moindre coût avec des techniques novatrices.</p>
+            </div>
+            <div class="watch-item">
+              <div class="watch-header">
+                <span class="watch-name">Phi-4</span>
+                <span class="watch-org">Microsoft</span>
+              </div>
+              <p>Le meilleur exemple de "petit mais capable". 14B paramètres qui surpassent des modèles 3× plus gros sur les tâches de raisonnement. Cible idéale pour l'inférence locale.</p>
+            </div>
+            <div class="watch-item">
+              <div class="watch-header">
+                <span class="watch-name">SmolLM</span>
+                <span class="watch-org">HuggingFace</span>
+              </div>
+              <p>Modèles ultra-compacts (135M–1.7B) conçus pour l'inférence on-device. Notre cible pour le fine-tuning comportement AIOps — assez petit pour tourner sans GPU dédié.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Fine-tuning vision -->
+    <section class="layer">
+      <div class="container">
+        <div class="layer-header">
+          <span class="layer-number">04</span>
+          <h2>Vision — fine-tuning souverain</h2>
+        </div>
+        <div class="layer-content">
+          <p>La prochaine étape : un modèle façonné pour notre infra, qui tourne en local sans dépendance externe. Pas un modèle qui <em>connaît</em> l'infra par ses poids — les faits changent trop vite — mais un modèle qui <strong>se comporte comme un ingénieur ops.</strong></p>
+          <div class="finetune-flow">
+            <div class="ft-step">
+              <span class="ft-icon">01</span>
+              <div>
+                <h4>HuggingFace Pro</h4>
+                <p>ZeroGPU (H100/H200) via Spaces — compute à la demande sans acheter un GPU dédié</p>
+              </div>
+            </div>
+            <div class="ft-arrow">→</div>
+            <div class="ft-step">
+              <span class="ft-icon">02</span>
+              <div>
+                <h4>Unsloth + LoRA</h4>
+                <p>Fine-tuning efficient sur le <em>comportement</em> : diagnostic ops, tool use, ton concis</p>
+              </div>
+            </div>
+            <div class="ft-arrow">→</div>
+            <div class="ft-step">
+              <span class="ft-icon">03</span>
+              <div>
+                <h4>Quantisation GGUF</h4>
+                <p>Export du modèle fine-tuné en format compact pour inférence locale</p>
+              </div>
+            </div>
+            <div class="ft-arrow">→</div>
+            <div class="ft-step">
+              <span class="ft-icon">04</span>
+              <div>
+                <h4>Ollama local</h4>
+                <p>Inférence silencieuse et souveraine sur le homelab — 0 coût API</p>
+              </div>
+            </div>
+          </div>
+          <p class="finetune-note">Les <strong>faits</strong> (IPs, états services, runbooks) restent dans un RAG dynamique alimenté par <code>homelab-infra/</code>. Le fine-tuning ne sert pas à mémoriser — il sert à forger le caractère de l'agent.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Stats -->
+    <StatsBar stats={[
+      { number: '24 Go', label: 'VRAM RTX 3090' },
+      { number: '3', label: 'APIs en prod' },
+      { number: '6', label: 'MCP connectés' },
+      { number: '0€', label: 'infra IA cloud' },
+    ]} />
+
+    <!-- Crosslink symbiose -->
+    <section class="crosslink reveal">
+      <div class="container">
+        <a href="/symbiose" class="crosslink-block">
+          <div>
+            <h3>&#9670; La méthode</h3>
+            <p>Comment on travaille ensemble — MCP least-privilege, mémoire persistante, skills personnalisés. La philosophie derrière l'écosystème IA.</p>
+          </div>
+          <span class="crosslink-arrow">&#8594;</span>
+        </a>
+      </div>
+    </section>
+  </main>
+</Base>
+
+<style>
+  .hero-mini {
+    padding: 4rem 0 3rem;
+  }
+
+  .terminal-prompt {
+    font-family: var(--font-mono);
+    color: var(--color-accent);
+    font-size: 0.95rem;
+    margin-bottom: 0.75rem;
+  }
+
+  h1 {
+    font-size: clamp(2rem, 5vw, 3rem);
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    line-height: 1.1;
+    margin-bottom: 1rem;
+  }
+
+  .dot { color: var(--color-accent); }
+
+  .subtitle {
+    color: var(--color-text-muted);
+    font-size: 1.1rem;
+    max-width: 42rem;
+  }
+
+  /* Layers */
+  .layer {
+    padding: 3rem 0;
+    border-top: 1px solid var(--color-border);
+  }
+
+  .layer-header {
+    display: flex;
+    align-items: baseline;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .layer-number {
+    font-family: var(--font-mono);
+    font-size: 0.85rem;
+    color: var(--color-accent);
+    font-weight: 700;
+  }
+
+  .layer-header h2 { font-size: 1.4rem; margin-bottom: 0; }
+
+  .layer-content > p {
+    color: var(--color-text-muted);
+    max-width: 48rem;
+    margin-bottom: 1.5rem;
+    line-height: 1.7;
+  }
+
+  .layer-content > p strong { color: var(--color-text); }
+
+  /* Specs */
+  .specs { margin-bottom: 1.5rem; }
+
+  .spec {
+    display: flex;
+    gap: 1rem;
+    padding: 0.6rem 0;
+    border-bottom: 1px solid var(--color-border);
+    align-items: baseline;
+  }
+
+  .spec:last-child { border-bottom: none; }
+
+  .spec-label {
+    font-family: var(--font-mono);
+    font-size: 0.8rem;
+    color: var(--color-accent);
+    min-width: 6rem;
+    flex-shrink: 0;
+  }
+
+  .spec-value {
+    font-size: 0.9rem;
+    color: var(--color-text-muted);
+  }
+
+  /* Models grid */
+  .models-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(14rem, 1fr));
+    gap: 1rem;
+  }
+
+  .model-group {
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: 6px;
+    padding: 1.25rem;
+  }
+
+  .model-group h4 {
+    font-size: 0.8rem;
+    color: var(--color-accent);
+    font-family: var(--font-mono);
+    margin-bottom: 0.75rem;
+  }
+
+  .model-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+  }
+
+  .model-tags span {
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    background: var(--color-bg);
+    color: var(--color-text-muted);
+    padding: 0.2rem 0.5rem;
+    border-radius: 4px;
+    border: 1px solid var(--color-border);
+  }
+
+  /* API cards */
+  .api-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(18rem, 1fr));
+    gap: 1rem;
+  }
+
+  .api-card {
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: 8px;
+    padding: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+
+  .claude-card { border-top: 3px solid var(--color-accent); }
+  .minimax-card { border-top: 3px solid #a855f7; }
+  .groq-card { border-top: 3px solid #f59e0b; }
+
+  .api-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .api-name {
+    font-family: var(--font-mono);
+    font-weight: 700;
+    font-size: 1rem;
+  }
+
+  .api-role {
+    font-size: 0.75rem;
+    color: var(--color-text-muted);
+    font-family: var(--font-mono);
+  }
+
+  .api-desc {
+    font-size: 0.85rem;
+    color: var(--color-text-muted);
+    line-height: 1.5;
+  }
+
+  .api-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.35rem;
+    margin-top: auto;
+  }
+
+  .api-tags span {
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    background: var(--color-bg);
+    color: var(--color-text-muted);
+    padding: 0.15rem 0.4rem;
+    border-radius: 3px;
+    border: 1px solid var(--color-border);
+  }
+
+  /* Watch grid */
+  .watch-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(18rem, 1fr));
+    gap: 1rem;
+  }
+
+  .watch-item {
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-left: 3px solid var(--color-accent);
+    border-radius: 6px;
+    padding: 1.25rem;
+  }
+
+  .watch-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    margin-bottom: 0.6rem;
+  }
+
+  .watch-name {
+    font-family: var(--font-mono);
+    font-size: 0.9rem;
+    font-weight: 700;
+    color: var(--color-text);
+  }
+
+  .watch-org {
+    font-size: 0.72rem;
+    color: var(--color-text-muted);
+  }
+
+  .watch-item p {
+    font-size: 0.83rem;
+    color: var(--color-text-muted);
+    line-height: 1.5;
+  }
+
+  /* Fine-tuning flow */
+  .finetune-flow {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    flex-wrap: wrap;
+    margin-bottom: 1.5rem;
+  }
+
+  .ft-step {
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: 8px;
+    padding: 1rem 1.25rem;
+    display: flex;
+    align-items: flex-start;
+    gap: 0.75rem;
+    flex: 1;
+    min-width: 10rem;
+  }
+
+  .ft-icon {
+    font-family: var(--font-mono);
+    font-size: 0.8rem;
+    color: var(--color-accent);
+    font-weight: 700;
+    flex-shrink: 0;
+    margin-top: 0.1rem;
+  }
+
+  .ft-step h4 { font-size: 0.85rem; margin-bottom: 0.25rem; }
+
+  .ft-step p {
+    font-size: 0.75rem;
+    color: var(--color-text-muted);
+    line-height: 1.4;
+  }
+
+  .ft-arrow {
+    color: var(--color-accent);
+    font-family: var(--font-mono);
+    font-size: 1.2rem;
+    flex-shrink: 0;
+  }
+
+  .finetune-note {
+    background: rgba(56, 189, 248, 0.05);
+    border-left: 3px solid var(--color-accent);
+    padding: 0.75rem 1rem;
+    border-radius: 0 6px 6px 0;
+    font-size: 0.85rem !important;
+    color: var(--color-text-muted) !important;
+    line-height: 1.6 !important;
+    margin-bottom: 0 !important;
+  }
+
+  .finetune-note strong { color: var(--color-text) !important; }
+
+  /* Crosslink */
+  .crosslink { padding: 2rem 0 3rem; }
+
+  .crosslink-block {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 2rem;
+    padding: 1.5rem 2rem;
+    border: 1px solid rgba(56, 189, 248, 0.2);
+    border-radius: 8px;
+    background: linear-gradient(135deg, rgba(56, 189, 248, 0.05), rgba(56, 189, 248, 0.02));
+    text-decoration: none;
+    color: inherit;
+    transition: border-color 0.3s, box-shadow 0.3s;
+  }
+
+  .crosslink-block:hover {
+    border-color: var(--color-accent);
+    box-shadow: 0 0 20px rgba(56, 189, 248, 0.1);
+    color: inherit;
+  }
+
+  .crosslink-block h3 {
+    font-size: 1rem;
+    color: var(--color-accent);
+    margin-bottom: 0.5rem;
+  }
+
+  .crosslink-block p {
+    font-size: 0.85rem;
+    color: var(--color-text-muted);
+    line-height: 1.5;
+    max-width: 42rem;
+  }
+
+  .crosslink-arrow {
+    font-size: 1.5rem;
+    color: var(--color-accent);
+    flex-shrink: 0;
+  }
+
+  @media (max-width: 640px) {
+    .spec { flex-direction: column; gap: 0.25rem; }
+    .spec-label { min-width: unset; }
+    .finetune-flow { flex-direction: column; }
+    .ft-arrow { transform: rotate(90deg); }
+    .ft-step { width: 100%; }
+    .crosslink-block { flex-direction: column; gap: 1rem; }
+  }
+</style>
