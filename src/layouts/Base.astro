@@ -30,10 +30,15 @@ const currentPath = Astro.url.pathname;
     <meta name="twitter:title" content={title} />
     <meta name="twitter:description" content={description} />
     <link rel="canonical" href={Astro.url.href} />
+    <meta name="theme-color" content="#0f172a" />
     <title>{title}</title>
   </head>
   <body>
     {!hideNav && <Nav currentPath={currentPath} />}
+    <div class="banner-construction">
+      <span class="banner-icon">&#9651;</span>
+      <span>Site en construction — certaines sections sont incomplètes.</span>
+    </div>
     <slot />
     <Footer />
   </body>
@@ -131,5 +136,25 @@ const currentPath = Astro.url.pathname;
     max-width: var(--max-width);
     margin: 0 auto;
     padding: 0 1.5rem;
+  }
+
+  /* Construction banner */
+  .banner-construction {
+    background: rgba(56, 189, 248, 0.05);
+    border-bottom: 1px solid rgba(56, 189, 248, 0.15);
+    padding: 0.4rem 1.5rem;
+    text-align: center;
+    font-size: 0.75rem;
+    color: var(--color-text-muted);
+    font-family: var(--font-mono);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+  }
+
+  .banner-icon {
+    color: var(--color-accent);
+    font-size: 0.7rem;
   }
 </style>
