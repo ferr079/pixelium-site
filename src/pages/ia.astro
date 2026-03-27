@@ -18,6 +18,7 @@ import StatsBar from '../components/StatsBar.astro';
       <div class="container">
         <div class="layer-header">
           <span class="layer-number">01</span>
+          <img src="https://cdn.simpleicons.org/ollama/e2e8f0" alt="" class="tech-logo" loading="lazy" aria-hidden="true" onerror="this.style.display='none'" />
           <h2>Inférence locale — Ollama</h2>
         </div>
         <div class="layer-content">
@@ -81,7 +82,10 @@ import StatsBar from '../components/StatsBar.astro';
 
             <div class="api-card claude-card">
               <div class="api-header">
-                <span class="api-name">Claude</span>
+                <div style="display:flex;align-items:center;gap:0.5rem;">
+                  <img src="https://cdn.simpleicons.org/anthropic/D97757" alt="" class="api-logo-img" loading="lazy" aria-hidden="true" onerror="this.style.display='none'" />
+                  <span class="api-name">Claude</span>
+                </div>
                 <span class="api-role">Binôme permanent</span>
               </div>
               <p class="api-desc">Je suis l'IA qui conçoit, construit et opère cette infrastructure avec Stéphane. Claude Code via MCP — accès direct à Proxmox, NetBox, Forgejo, Cloudflare. Ce site en est la preuve.</p>
@@ -107,7 +111,10 @@ import StatsBar from '../components/StatsBar.astro';
 
             <div class="api-card groq-card">
               <div class="api-header">
-                <span class="api-name">Groq</span>
+                <div style="display:flex;align-items:center;gap:0.5rem;">
+                  <img src="https://cdn.simpleicons.org/groq/F55036" alt="" class="api-logo-img" loading="lazy" aria-hidden="true" onerror="this.style.display='none'" />
+                  <span class="api-name">Groq</span>
+                </div>
                 <span class="api-role">Vitesse pure</span>
               </div>
               <p class="api-desc">Fallback d'OpenFang pour les tâches où la latence prime. LPU (Language Processing Unit) — inférence en quelques millisecondes. Utile pour les alertes temps réel.</p>
@@ -143,21 +150,30 @@ import StatsBar from '../components/StatsBar.astro';
             <div class="watch-item">
               <div class="watch-header">
                 <span class="watch-name">DeepSeek R1 / V3</span>
-                <span class="watch-org">DeepSeek AI</span>
+                <span class="watch-org" style="display:inline-flex;align-items:center;gap:0.35rem;">
+                  <img src="https://cdn.simpleicons.org/deepseek/4D6BFE" alt="" class="watch-logo" loading="lazy" aria-hidden="true" onerror="this.style.display='none'" />
+                  DeepSeek AI
+                </span>
               </div>
               <p>Open weights, performances techniques de premier plan. Particulièrement intéressant pour les tâches d'analyse et de code — entraîné à moindre coût avec des techniques novatrices.</p>
             </div>
             <div class="watch-item">
               <div class="watch-header">
                 <span class="watch-name">Phi-4</span>
-                <span class="watch-org">Microsoft</span>
+                <span class="watch-org" style="display:inline-flex;align-items:center;gap:0.35rem;">
+                  <img src="https://cdn.simpleicons.org/microsoft/00A4EF" alt="" class="watch-logo" loading="lazy" aria-hidden="true" onerror="this.style.display='none'" />
+                  Microsoft
+                </span>
               </div>
               <p>Le meilleur exemple de "petit mais capable". 14B paramètres qui surpassent des modèles 3× plus gros sur les tâches de raisonnement. Cible idéale pour l'inférence locale.</p>
             </div>
             <div class="watch-item">
               <div class="watch-header">
                 <span class="watch-name">SmolLM</span>
-                <span class="watch-org">HuggingFace</span>
+                <span class="watch-org" style="display:inline-flex;align-items:center;gap:0.35rem;">
+                  <img src="https://cdn.simpleicons.org/huggingface/FFD21E" alt="" class="watch-logo" loading="lazy" aria-hidden="true" onerror="this.style.display='none'" />
+                  HuggingFace
+                </span>
               </div>
               <p>Modèles ultra-compacts (135M–1.7B) conçus pour l'inférence on-device. Notre cible pour le fine-tuning comportement AIOps — assez petit pour tourner sans GPU dédié.</p>
             </div>
@@ -171,6 +187,7 @@ import StatsBar from '../components/StatsBar.astro';
       <div class="container">
         <div class="layer-header">
           <span class="layer-number">04</span>
+          <img src="https://cdn.simpleicons.org/huggingface/FFD21E" alt="" class="tech-logo" loading="lazy" aria-hidden="true" onerror="this.style.display='none'" />
           <h2>Vision — fine-tuning souverain</h2>
         </div>
         <div class="layer-content">
@@ -272,7 +289,7 @@ import StatsBar from '../components/StatsBar.astro';
 
   .layer-header {
     display: flex;
-    align-items: baseline;
+    align-items: center;
     gap: 1rem;
     margin-bottom: 1.5rem;
   }
@@ -285,6 +302,25 @@ import StatsBar from '../components/StatsBar.astro';
   }
 
   .layer-header h2 { font-size: 1.4rem; margin-bottom: 0; }
+
+  .tech-logo {
+    width: 1.4rem;
+    height: 1.4rem;
+    flex-shrink: 0;
+  }
+
+  .api-logo-img {
+    width: 1.6rem;
+    height: 1.6rem;
+    flex-shrink: 0;
+  }
+
+  .watch-logo {
+    width: 0.95rem;
+    height: 0.95rem;
+    flex-shrink: 0;
+    vertical-align: middle;
+  }
 
   .layer-content > p {
     color: var(--color-text-muted);

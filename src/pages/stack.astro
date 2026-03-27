@@ -17,6 +17,7 @@ import Base from '../layouts/Base.astro';
       <div class="container">
         <div class="layer-header">
           <span class="layer-number">01</span>
+          <img src="https://cdn.simpleicons.org/astro/FF5D01" alt="" class="tech-logo" loading="lazy" aria-hidden="true" onerror="this.style.display='none'" />
           <h2>Framework — Astro 6</h2>
         </div>
         <div class="layer-content">
@@ -50,6 +51,7 @@ import Base from '../layouts/Base.astro';
       <div class="container">
         <div class="layer-header">
           <span class="layer-number">02</span>
+          <img src="https://cdn.simpleicons.org/cloudflare/F38020" alt="" class="tech-logo" loading="lazy" aria-hidden="true" onerror="this.style.display='none'" />
           <h2>Build & Deploy — Cloudflare Workers</h2>
         </div>
         <div class="layer-content">
@@ -79,6 +81,7 @@ import Base from '../layouts/Base.astro';
       <div class="container">
         <div class="layer-header">
           <span class="layer-number">03</span>
+          <img src="https://cdn.simpleicons.org/cloudflare/F38020" alt="" class="tech-logo" loading="lazy" aria-hidden="true" onerror="this.style.display='none'" />
           <h2>Hébergement — Cloudflare</h2>
         </div>
         <div class="layer-content">
@@ -120,6 +123,11 @@ import Base from '../layouts/Base.astro';
       <div class="container">
         <div class="layer-header">
           <span class="layer-number">04</span>
+          <div class="logo-group">
+            <img src="https://cdn.simpleicons.org/git/F05032" alt="" class="tech-logo" loading="lazy" aria-hidden="true" onerror="this.style.display='none'" />
+            <img src="https://cdn.simpleicons.org/github/e2e8f0" alt="" class="tech-logo" loading="lazy" aria-hidden="true" onerror="this.style.display='none'" />
+            <img src="https://cdn.simpleicons.org/forgejo/609926" alt="" class="tech-logo" loading="lazy" aria-hidden="true" onerror="this.style.display='none'" />
+          </div>
           <h2>Versioning — Git dual-remote</h2>
         </div>
         <div class="layer-content">
@@ -316,7 +324,7 @@ import Base from '../layouts/Base.astro';
 
   .layer-header {
     display: flex;
-    align-items: baseline;
+    align-items: center;
     gap: 1rem;
     margin-bottom: 1.5rem;
   }
@@ -326,6 +334,18 @@ import Base from '../layouts/Base.astro';
     font-size: 0.85rem;
     color: var(--color-accent);
     font-weight: 700;
+  }
+
+  .tech-logo {
+    width: 1.4rem;
+    height: 1.4rem;
+    flex-shrink: 0;
+  }
+
+  .logo-group {
+    display: flex;
+    gap: 0.4rem;
+    align-items: center;
   }
 
   .layer-header h2 {

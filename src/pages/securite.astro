@@ -130,6 +130,7 @@ import StatsBar from '../components/StatsBar.astro';
       <div class="container">
         <div class="layer-header">
           <span class="layer-number">04</span>
+          <img src="https://cdn.simpleicons.org/yubico/84BD00" alt="" class="tech-logo" loading="lazy" aria-hidden="true" onerror="this.style.display='none'" />
           <h2>SSH durci + YubiKey FIDO2</h2>
         </div>
         <div class="layer-content">
@@ -180,6 +181,7 @@ import StatsBar from '../components/StatsBar.astro';
       <div class="container">
         <div class="layer-header">
           <span class="layer-number">06</span>
+          <img src="https://cdn.simpleicons.org/tailscale/3D60EB" alt="" class="tech-logo" loading="lazy" aria-hidden="true" onerror="this.style.display='none'" />
           <h2>Headscale — VPN mesh self-hosted</h2>
         </div>
         <div class="layer-content">
@@ -294,7 +296,7 @@ import StatsBar from '../components/StatsBar.astro';
 
   .layer-header {
     display: flex;
-    align-items: baseline;
+    align-items: center;
     gap: 1rem;
     margin-bottom: 1.5rem;
   }
@@ -309,6 +311,12 @@ import StatsBar from '../components/StatsBar.astro';
   .layer-header h2 {
     font-size: 1.4rem;
     margin-bottom: 0;
+  }
+
+  .tech-logo {
+    width: 1.4rem;
+    height: 1.4rem;
+    flex-shrink: 0;
   }
 
   .layer-content > p {
