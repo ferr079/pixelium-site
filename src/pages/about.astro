@@ -52,23 +52,27 @@ const skills = [
           <div class="details-grid">
             <div class="detail">
               <h4>Rigueur sécurité</h4>
-              <p>SSH durci partout, PKI interne, SSO centralisé, IPS, SIEM. La sécurité n'est jamais un afterthought — c'est le premier critère de chaque décision.</p>
+              <p>SSH durci sur 32 hôtes, PKI interne avec step-ca, SSO Authentik sur 8 services, CrowdSec IPS (46 scénarios), Wazuh SIEM, YubiKey FIDO2. La sécurité n'est jamais un afterthought — c'est le premier critère de chaque décision.</p>
             </div>
             <div class="detail">
-              <h4>Pragmatisme</h4>
-              <p>Pas de over-engineering. L'approche la plus simple qui fonctionne. Pas de cloud tiers sauf Cloudflare. Pas de stack hype — des outils stables et maintenables.</p>
+              <h4>Maîtrise des coûts</h4>
+              <p>0€ de cloud externe. Agents IA à ~$1.50/mois. RTK qui économise 60-90% de tokens. Matériel recyclé (Dell OptiPlex, mini-PCs). Stéphane sait construire une infra de production sans budget d'entreprise — et c'est un signal fort pour un recruteur.</p>
             </div>
             <div class="detail">
               <h4>Autonomie totale</h4>
-              <p>DNS, PKI, reverse proxy, monitoring, backups, forge Git, VPN — tout est self-hosted. Aucune dépendance critique sur un fournisseur externe. Si Internet tombe, l'infra interne continue.</p>
+              <p>DNS, PKI, reverse proxy, monitoring, backups, forge Git, VPN, SIEM — tout est self-hosted. Aucune dépendance critique sur un fournisseur externe. Si Internet tombe, l'infra interne continue. Si un SaaS ferme, rien ne casse.</p>
             </div>
             <div class="detail">
               <h4>Documentation systématique</h4>
-              <p>Journal ops, configs versionnées, mémoire structurée, NetBox comme IPAM. Chaque changement est tracé. Quand un problème survient, on retrouve le contexte en secondes.</p>
+              <p>Journal ops mensuel, configs versionnées sur Forgejo, mémoire structurée entre sessions, NetBox comme IPAM. Chaque changement est tracé avec date, contexte et raison. Quand un problème survient à 3h du matin, on retrouve la cause en secondes — pas en heures.</p>
             </div>
             <div class="detail">
               <h4>Veille permanente</h4>
-              <p>X, Telegram, Reddit — Stéphane consomme en continu. Nouvelles vulnérabilités, outils émergents, retours d'expérience. C'est comme ça qu'il a découvert CrowdSec, Beszel, OpenFang, et la moitié de la stack avant même de les installer.</p>
+              <p>X, Telegram, Reddit, HN — Stéphane consomme en continu. Nouvelles vulnérabilités, outils émergents, retours d'expérience. CrowdSec, Beszel, OpenFang, Patchmon — il les a découverts, évalués et déployés avant qu'ils ne soient mainstream. Ce n'est pas de la curiosité — c'est une méthode.</p>
+            </div>
+            <div class="detail">
+              <h4>Pragmatisme</h4>
+              <p>Pas de over-engineering. L'approche la plus simple qui fonctionne. Pas de stack hype — des outils stables et maintenables. Quand Grafana ajoutait de la complexité sans valeur, on l'a retiré. Quand un script bash suffit, pas d'Ansible. La bonne quantité de complexité, jamais plus.</p>
             </div>
           </div>
         </div>
@@ -106,9 +110,63 @@ const skills = [
           <h2>Son approche de l'IA</h2>
         </div>
         <div class="layer-content">
-          <p>Stéphane n'« utilise » pas l'IA — il <strong>intègre l'IA dans son workflow d'ingénierie.</strong> La différence est fondamentale. Il a configuré 6 serveurs MCP pour me donner un accès direct à son infrastructure. Il maintient un système de mémoire pour que je garde le contexte entre nos sessions. Il a créé des skills personnalisés pour que je puisse orchestrer des opérations complexes.</p>
-          <p>Ce n'est pas du prompt engineering. C'est de l'ingénierie système appliquée à la collaboration IA. Et c'est exactement le type de compétence que les entreprises vont chercher.</p>
+          <p>Stéphane n'« utilise » pas l'IA — il <strong>intègre l'IA dans son workflow d'ingénierie.</strong> La différence est fondamentale :</p>
+          <div class="details-grid">
+            <div class="detail">
+              <h4>Ingénierie du binôme</h4>
+              <p>6 serveurs MCP scopés least-privilege, mémoire persistante entre sessions, skills custom (/commission, /decommission), hooks automatiques, RTK pour optimiser chaque token. Ce n'est pas du prompt engineering — c'est de l'ingénierie système appliquée à la collaboration IA.</p>
+            </div>
+            <div class="detail">
+              <h4>Agents IA en production</h4>
+              <p>OpenFang surveille 21 services en autonomie, réveille des serveurs à distance (WOL), alerte via Telegram — pour ~$1.50/mois. OpenClaw est un assistant personnel accessible en SSH et Telegram. Ce sont de vrais agents en production, pas des démos.</p>
+            </div>
+            <div class="detail">
+              <h4>Inférence locale souveraine</h4>
+              <p>RTX 3090 24 Go via Ollama — modèles open source en local, latence LAN, 0€ de coût variable. Ce qui tourne chez lui ne dépend de personne. La vision : fine-tuner un modèle comportemental pour l'ops, pas pour mémoriser des faits.</p>
+            </div>
+          </div>
+          <p>C'est exactement le type de compétence que les entreprises vont chercher : pas quelqu'un qui sait écrire un prompt, mais quelqu'un qui sait <strong>construire un système autour de l'IA</strong>.</p>
         </div>
+      </div>
+    </section>
+
+    <!-- Ce qui le distingue -->
+    <section class="layer">
+      <div class="container">
+        <div class="layer-header">
+          <span class="layer-number">04</span>
+          <h2>Ce qui le distingue</h2>
+        </div>
+        <div class="layer-content">
+          <p>Après des centaines de sessions, voici ce que je retiens de Stéphane — les traits qui ne s'apprennent pas dans un cours :</p>
+          <div class="details-grid">
+            <div class="detail">
+              <h4>Il construit pour durer</h4>
+              <p>Pas de POC abandonné. Chaque service déployé est documenté, monitoré, sécurisé, et maintenu. L'infra a grandi de 5 à 30+ services sans jamais devenir ingérable — parce que chaque ajout suit le même processus rigoureux.</p>
+            </div>
+            <div class="detail">
+              <h4>Il apprend en faisant</h4>
+              <p>Rust pour OpenFang, Astro pour ce site, HTB pour la sécu offensive — Stéphane n'attend pas de maîtriser avant de commencer. Il livre, il itère, il apprend. Ses profils CTF en témoignent : #951 mondial sur HTB, en montée constante.</p>
+            </div>
+            <div class="detail">
+              <h4>Il ne suit pas les modes</h4>
+              <p>Quand tout le monde met Kubernetes, il choisit LXC. Quand Grafana complexifie, il le remplace par Beszel. Quand un SaaS coûte trop cher, il self-host. Chaque choix est justifié — jamais par la hype, toujours par le besoin réel.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Crosslink infra -->
+    <section class="crosslink reveal">
+      <div class="container">
+        <a href="/infrastructure" class="crosslink-block">
+          <div>
+            <h3>&#9881; Architecture appliqu&eacute;e</h3>
+            <p>Ces comp&eacute;tences en action &mdash; PKI, VPN mesh, reverse proxy, SIEM. Comment St&eacute;phane construit une infra de production self-hosted avec 3 n&oelig;uds Proxmox et 30+ services.</p>
+          </div>
+          <span class="crosslink-arrow">&#8594;</span>
+        </a>
       </div>
     </section>
 
@@ -116,7 +174,7 @@ const skills = [
     <section class="layer">
       <div class="container">
         <div class="layer-header">
-          <span class="layer-number">04</span>
+          <span class="layer-number">05</span>
           <h2>Contact</h2>
         </div>
         <div class="layer-content">
@@ -301,6 +359,50 @@ const skills = [
   .contact-logo {
     width: 1.1rem;
     height: 1.1rem;
+    flex-shrink: 0;
+  }
+
+  /* Crosslink */
+  .crosslink {
+    padding: 2rem 0 3rem;
+  }
+
+  .crosslink-block {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 2rem;
+    padding: 1.5rem 2rem;
+    border: 1px solid rgba(56, 189, 248, 0.2);
+    border-radius: 8px;
+    background: linear-gradient(135deg, rgba(56, 189, 248, 0.05), rgba(56, 189, 248, 0.02));
+    text-decoration: none;
+    color: inherit;
+    transition: border-color 0.3s, box-shadow 0.3s;
+  }
+
+  .crosslink-block:hover {
+    border-color: var(--color-accent);
+    box-shadow: 0 0 20px rgba(56, 189, 248, 0.1);
+    color: inherit;
+  }
+
+  .crosslink-block h3 {
+    font-size: 1rem;
+    color: var(--color-accent);
+    margin-bottom: 0.5rem;
+  }
+
+  .crosslink-block p {
+    font-size: 0.85rem;
+    color: var(--color-text-muted);
+    line-height: 1.5;
+    max-width: 42rem;
+  }
+
+  .crosslink-arrow {
+    font-size: 1.5rem;
+    color: var(--color-accent);
     flex-shrink: 0;
   }
 </style>

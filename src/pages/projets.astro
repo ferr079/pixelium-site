@@ -379,6 +379,19 @@ import Base from '../layouts/Base.astro';
         </div>
       </div>
     </section>
+
+    <!-- Crosslink sécurité -->
+    <section class="crosslink reveal">
+      <div class="container">
+        <a href="/securite" class="crosslink-block">
+          <div>
+            <h3>&#9670; Stack défensive complète</h3>
+            <p>PKI interne, SSO Authentik, CrowdSec IPS, Wazuh SIEM, Headscale VPN — les 5 couches de sécurité déployées sur ce homelab, détaillées une par une.</p>
+          </div>
+          <span class="crosslink-arrow">&#8594;</span>
+        </a>
+      </div>
+    </section>
   </main>
 </Base>
 
@@ -514,5 +527,49 @@ import Base from '../layouts/Base.astro';
     font-size: 0.8rem;
     color: var(--color-text-muted);
     font-style: italic;
+  }
+
+  /* Crosslink */
+  .crosslink {
+    padding: 2rem 0 3rem;
+  }
+
+  .crosslink-block {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 2rem;
+    padding: 1.5rem 2rem;
+    border: 1px solid rgba(56, 189, 248, 0.2);
+    border-radius: 8px;
+    background: linear-gradient(135deg, rgba(56, 189, 248, 0.05), rgba(56, 189, 248, 0.02));
+    text-decoration: none;
+    color: inherit;
+    transition: border-color 0.3s, box-shadow 0.3s;
+  }
+
+  .crosslink-block:hover {
+    border-color: var(--color-accent);
+    box-shadow: 0 0 20px rgba(56, 189, 248, 0.1);
+    color: inherit;
+  }
+
+  .crosslink-block h3 {
+    font-size: 1rem;
+    color: var(--color-accent);
+    margin-bottom: 0.5rem;
+  }
+
+  .crosslink-block p {
+    font-size: 0.85rem;
+    color: var(--color-text-muted);
+    line-height: 1.5;
+    max-width: 42rem;
+  }
+
+  .crosslink-arrow {
+    font-size: 1.5rem;
+    color: var(--color-accent);
+    flex-shrink: 0;
   }
 </style>

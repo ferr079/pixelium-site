@@ -9,7 +9,13 @@ const { currentPath = '' } = Astro.props;
 <nav class="site-nav">
   <div class="nav-container">
     <a href="/" class="nav-brand">
-      <span class="nav-prompt">$</span> pixelium<span class="nav-dot">.</span>win
+      <svg class="nav-logo" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <rect x="0" y="0" width="7" height="7" rx="1" fill="#38bdf8" opacity="0.9" />
+        <rect x="9" y="0" width="7" height="7" rx="1" fill="#38bdf8" opacity="0.5" />
+        <rect x="0" y="9" width="7" height="7" rx="1" fill="#38bdf8" opacity="0.5" />
+        <rect x="9" y="9" width="7" height="7" rx="1" fill="#38bdf8" opacity="0.2" />
+      </svg>
+      <span class="nav-text">pixelium<span class="nav-dot">.</span>win</span>
     </a>
     <div class="nav-links">
       <a href="/symbiose" class:list={[{ active: currentPath === '/symbiose' || currentPath === '/symbiose/' }]}>Symbiose</a>
@@ -17,7 +23,8 @@ const { currentPath = '' } = Astro.props;
       <a href="/securite" class:list={[{ active: currentPath === '/securite' || currentPath === '/securite/' }]}>Sécurité</a>
       <a href="/cybersecurite" class:list={[{ active: currentPath === '/cybersecurite' || currentPath === '/cybersecurite/' }]}>Cyber</a>
       <a href="/ia" class:list={[{ active: currentPath === '/ia' || currentPath === '/ia/' }]}>IA</a>
-      <a href="/stack" class:list={[{ active: currentPath === '/stack' || currentPath === '/stack/' }]}>Stack</a>
+      <a href="/infrastructure" class:list={[{ active: currentPath === '/infrastructure' || currentPath === '/infrastructure/' }]}>Infra</a>
+      <a href="/journal" class:list={[{ active: currentPath === '/journal' || currentPath === '/journal/' }]}>Journal</a>
       <a href="/about" class:list={[{ active: currentPath === '/about' || currentPath === '/about/' }]}>À propos</a>
     </div>
   </div>
@@ -26,8 +33,13 @@ const { currentPath = '' } = Astro.props;
 <style>
   .site-nav {
     padding: 1.25rem 0;
-    position: relative;
+    position: sticky;
+    top: 0;
     z-index: 100;
+    background: rgba(15, 23, 42, 0.95);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    border-bottom: 1px solid var(--color-border);
   }
 
   .nav-container {
@@ -41,19 +53,36 @@ const { currentPath = '' } = Astro.props;
 
   .nav-brand {
     font-family: var(--font-mono);
-    font-size: 0.95rem;
+    font-size: 1.1rem;
     color: var(--color-text);
-    font-weight: 600;
+    font-weight: 700;
     text-decoration: none;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
   }
 
   .nav-brand:hover {
     color: var(--color-accent);
   }
 
-  .nav-prompt {
-    color: var(--color-accent);
-    margin-right: 0.3rem;
+  .nav-brand:hover .nav-logo rect {
+    opacity: 1;
+  }
+
+  .nav-logo {
+    width: 1.25rem;
+    height: 1.25rem;
+    flex-shrink: 0;
+    transition: filter 0.3s;
+  }
+
+  .nav-logo rect {
+    transition: opacity 0.3s;
+  }
+
+  .nav-brand:hover .nav-logo {
+    filter: drop-shadow(0 0 4px rgba(56, 189, 248, 0.5));
   }
 
   .nav-dot {
@@ -66,13 +95,15 @@ const { currentPath = '' } = Astro.props;
   }
 
   .nav-links a {
-    font-family: var(--font-mono);
-    font-size: 0.85rem;
+    font-family: var(--font-sans);
+    font-size: 0.95rem;
+    font-weight: 500;
     color: var(--color-text-muted);
     text-decoration: none;
     padding: 0.25rem 0;
     border-bottom: 1px solid transparent;
     transition: color 0.2s, border-color 0.2s;
+    letter-spacing: 0.01em;
   }
 
   .nav-links a:hover {
@@ -91,7 +122,7 @@ const { currentPath = '' } = Astro.props;
       justify-content: flex-end;
     }
     .nav-links a {
-      font-size: 0.75rem;
+      font-size: 0.8rem;
     }
   }
 </style>

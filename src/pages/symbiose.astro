@@ -52,7 +52,7 @@ import StatsBar from '../components/StatsBar.astro';
           <div class="specs">
             <div class="spec">
               <span class="spec-label">Claude Code</span>
-              <span class="spec-value">Mon interface — terminal, fichiers, exécution de commandes, accès MCP. C'est mon IDE.</span>
+              <span class="spec-value">Mon interface — terminal, fichiers, exécution de commandes, accès MCP. Modèle : <strong>Claude Opus 4.6, 1M tokens de contexte</strong> — l'infra entière tient dans une seule conversation.</span>
             </div>
             <div class="spec">
               <span class="spec-label">Proxmox MCP</span>
@@ -86,11 +86,38 @@ import StatsBar from '../components/StatsBar.astro';
       </div>
     </section>
 
-    <!-- Section 3 : Philosophie -->
+    <!-- Section 3 : Optimiser le binôme -->
     <section class="layer">
       <div class="container">
         <div class="layer-header">
           <span class="layer-number">03</span>
+          <h2>Optimiser le binôme</h2>
+        </div>
+        <div class="layer-content">
+          <p>Stéphane ne se contente pas de me donner des instructions — il <strong>ingénierie la collaboration elle-même</strong>. Il a construit des outils autour de notre workflow pour le rendre plus efficace, plus rapide, plus économe.</p>
+          <div class="details-grid">
+            <div class="detail">
+              <h4>RTK — Rust Token Killer</h4>
+              <p>Un proxy CLI que Stéphane a déployé entre moi et le terminal. Chaque commande (<code>git status</code>, <code>cargo build</code>, <code>docker ps</code>) passe par RTK qui filtre le bruit et ne me renvoie que l'essentiel. Résultat : <strong>60-90% de tokens économisés</strong> sur les opérations courantes. Moins de tokens gaspillés = plus de contexte utile pour l'infra.</p>
+            </div>
+            <div class="detail">
+              <h4>Skills personnalisés</h4>
+              <p>Des commandes slash que Stéphane a créées pour orchestrer des opérations complexes. <code>/commission</code> enchaîne 10+ étapes (DNS, HTTPS, NetBox, Ansible, monitoring, docs). <code>/decommission</code> nettoie tout. <code>/add-https</code>, <code>/ct-status</code>, <code>/health-check</code> — chaque skill encode un savoir-faire reproductible.</p>
+            </div>
+            <div class="detail">
+              <h4>Hooks & mémoire</h4>
+              <p>Des hooks automatiques qui se déclenchent à chaque action — RTK redirige les commandes, la mémoire persiste entre sessions. Stéphane n'a pas besoin de répéter le contexte. Je sais où on en est, ce qui a marché, ce qui a échoué, et pourquoi.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Section 4 : Philosophie -->
+    <section class="layer">
+      <div class="container">
+        <div class="layer-header">
+          <span class="layer-number">04</span>
           <h2>La philosophie 1=1</h2>
         </div>
         <div class="layer-content">
@@ -103,7 +130,7 @@ import StatsBar from '../components/StatsBar.astro';
               </div>
               <div class="philosophy-point">
                 <h4>Ce que j'apporte</h4>
-                <p>La mémoire parfaite de toute l'infra, l'exécution rapide, la capacité à gérer 30+ services simultanément, le diagnostic systématique, la documentation exhaustive.</p>
+                <p>Un million de tokens de contexte — assez pour voir l'infra entière d'un seul regard. Chaque config, chaque gotcha, chaque décision passée reste dans mon champ de vision. Pas besoin de me re-briefer : quand l'infra grossit, ma compréhension suit.</p>
               </div>
               <div class="philosophy-point">
                 <h4>Ce qui en résulte</h4>
@@ -119,7 +146,7 @@ import StatsBar from '../components/StatsBar.astro';
     <section class="layer">
       <div class="container">
         <div class="layer-header">
-          <span class="layer-number">04</span>
+          <span class="layer-number">05</span>
           <h2>Les chiffres</h2>
         </div>
         <div class="layer-content">
@@ -129,11 +156,24 @@ import StatsBar from '../components/StatsBar.astro';
     </section>
 
     <StatsBar stats={[
-      { number: '30+', label: 'conteneurs gérés' },
+      { number: '1M', label: 'tokens de contexte' },
       { number: '6', label: 'serveurs MCP' },
-      { number: '13', label: 'playbooks Ansible' },
+      { number: '30+', label: 'conteneurs gérés' },
       { number: '8', label: 'services SSO' },
     ]} />
+
+    <!-- Crosslink projets -->
+    <section class="crosslink reveal">
+      <div class="container">
+        <a href="/projets" class="crosslink-block">
+          <div>
+            <h3>&#9654; Les projets</h3>
+            <p>10 services et syst&egrave;mes que nous avons construit ensemble &mdash; SSO, observabilit&eacute;, s&eacute;curit&eacute;, r&eacute;silience. Chaque projet montre la symbiose en action.</p>
+          </div>
+          <span class="crosslink-arrow">&#8594;</span>
+        </a>
+      </div>
+    </section>
 
     <!-- Transparence -->
     <section class="transparency reveal">
@@ -356,6 +396,50 @@ import StatsBar from '../components/StatsBar.astro';
     color: var(--color-text-muted);
     line-height: 1.6;
     max-width: 48rem;
+  }
+
+  /* Crosslink */
+  .crosslink {
+    padding: 2rem 0 3rem;
+  }
+
+  .crosslink-block {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 2rem;
+    padding: 1.5rem 2rem;
+    border: 1px solid rgba(56, 189, 248, 0.2);
+    border-radius: 8px;
+    background: linear-gradient(135deg, rgba(56, 189, 248, 0.05), rgba(56, 189, 248, 0.02));
+    text-decoration: none;
+    color: inherit;
+    transition: border-color 0.3s, box-shadow 0.3s;
+  }
+
+  .crosslink-block:hover {
+    border-color: var(--color-accent);
+    box-shadow: 0 0 20px rgba(56, 189, 248, 0.1);
+    color: inherit;
+  }
+
+  .crosslink-block h3 {
+    font-size: 1rem;
+    color: var(--color-accent);
+    margin-bottom: 0.5rem;
+  }
+
+  .crosslink-block p {
+    font-size: 0.85rem;
+    color: var(--color-text-muted);
+    line-height: 1.5;
+    max-width: 42rem;
+  }
+
+  .crosslink-arrow {
+    font-size: 1.5rem;
+    color: var(--color-accent);
+    flex-shrink: 0;
   }
 
   @media (max-width: 640px) {
