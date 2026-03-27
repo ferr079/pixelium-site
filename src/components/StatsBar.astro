@@ -13,7 +13,7 @@ const { stats } = Astro.props;
         <>
           {i > 0 && <div class="stat-sep"></div>}
           <div class="stat reveal">
-            <span class="stat-number">{stat.number}</span>
+            <span class="stat-number" data-target={stat.number}>{stat.number}</span>
             <span class="stat-label">{stat.label}</span>
           </div>
         </>
@@ -21,6 +21,55 @@ const { stats } = Astro.props;
     </div>
   </div>
 </section>
+
+<script>
+  function animateCounters() {
+    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (prefersReducedMotion) return;
+
+    const counters = document.querySelectorAll('.stat-number[data-target]');
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (!entry.isIntersecting) return;
+          const el = entry.target as HTMLElement;
+          observer.unobserve(el);
+
+          const raw = el.dataset.target || '';
+          const match = raw.match(/^([^\d]*)(\d+)(.*)$/);
+          if (!match) return;
+
+          const [, prefix, numStr, suffix] = match;
+          const target = parseInt(numStr, 10);
+          if (target === 0) return;
+
+          const duration = 1500;
+          const start = performance.now();
+
+          el.textContent = prefix + '0' + suffix;
+
+          function step(now: number) {
+            const elapsed = now - start;
+            const progress = Math.min(elapsed / duration, 1);
+            // ease-out cubic
+            const eased = 1 - Math.pow(1 - progress, 3);
+            const current = Math.round(eased * target);
+            el.textContent = prefix + current + suffix;
+            if (progress < 1) requestAnimationFrame(step);
+          }
+
+          requestAnimationFrame(step);
+        });
+      },
+      { threshold: 0.5 }
+    );
+
+    counters.forEach((el) => observer.observe(el));
+  }
+
+  animateCounters();
+</script>
 
 <style>
   .stats {

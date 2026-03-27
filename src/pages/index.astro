@@ -79,9 +79,9 @@ const cards = [
         <div class="hero-links animate-in" style="--delay: 3">
           <a href="/projets" class="btn btn-primary">Nos réalisations</a>
           <a href="/symbiose" class="btn btn-secondary">Notre méthode</a>
-          <a href="/stack" class="btn btn-secondary">Architecture technique</a>
+          <a href="/infrastructure" class="btn btn-secondary">Architecture technique</a>
         </div>
-        <p class="construction-note animate-in" style="--delay: 4"># /journal et /infrastructure — en cours de développement</p>
+        <p class="construction-note animate-in" style="--delay: 4"># /journal — en cours de développement</p>
       </div>
     </section>
 
@@ -118,7 +118,7 @@ const cards = [
     <!-- This site banner -->
     <section class="site-banner reveal">
       <div class="container">
-        <a href="/stack" class="banner-link">
+        <a href="/infrastructure" class="banner-link">
           <span class="banner-prefix">Ce site</span>
           <span class="banner-pipe">|</span>
           <span class="banner-step">Astro 6</span>
@@ -170,7 +170,7 @@ const cards = [
     padding: 4rem 0;
     position: relative;
     overflow: hidden;
-    margin-top: -4.5rem; /* pull up behind nav */
+    /* nav is now sticky — no negative margin needed */
   }
 
   .hero-grid {

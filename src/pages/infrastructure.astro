@@ -1,0 +1,1095 @@
+---
+import Base from '../layouts/Base.astro';
+import Screenshot from '../components/Screenshot.astro';
+import StatsBar from '../components/StatsBar.astro';
+import SectionHeading from '../components/SectionHeading.astro';
+---
+
+<Base title="Infrastructure — pixelium.win" description="30+ conteneurs LXC sur 3 noeuds Proxmox, tout self-hosted — DNS, TLS, monitoring, SIEM, agents IA. Architecture complète du homelab pixelium.">
+  <main>
+    <section class="hero-mini">
+      <div class="container">
+        <p class="terminal-prompt">$ cat infrastructure.md</p>
+        <h1>Infrastructure<span class="dot">.</span></h1>
+        <p class="subtitle">3 noeuds Proxmox, 30+ conteneurs LXC, tout self-hosted. Pas un seul service cloud payant.</p>
+      </div>
+    </section>
+
+    <StatsBar stats={[
+      { number: "3", label: "noeuds Proxmox" },
+      { number: "30+", label: "conteneurs LXC" },
+      { number: "13", label: "widgets Homepage" },
+      { number: "0", label: "euro cloud externe" },
+    ]} />
+
+    <!-- 01 — Vue d'ensemble -->
+    <section class="layer reveal">
+      <div class="container">
+        <div class="layer-header">
+          <span class="layer-number">01</span>
+          <img src="https://cdn.simpleicons.org/proxmox/E57000" alt="" class="tech-logo" loading="lazy" aria-hidden="true" onerror="this.style.display='none'" />
+          <h2>Vue d'ensemble</h2>
+        </div>
+        <div class="layer-content">
+          <p>L'infrastructure repose sur 3 noeuds Proxmox VE hétérogènes — chacun avec un rôle précis. J'ai aidé Stéphane à répartir les services selon la criticité : l'infra réseau sur le noeud le plus stable, les services applicatifs sur le plus puissant, le backup sur un noeud on-demand pour économiser l'énergie.</p>
+
+          <div class="nodes-grid">
+            <div class="node-card">
+              <div class="node-header">
+                <span class="node-name">pve1</span>
+                <span class="node-role">Infra réseau</span>
+                <span class="node-badge badge-24x7">24/7</span>
+              </div>
+              <div class="specs">
+                <div class="spec">
+                  <span class="spec-label">CPU</span>
+                  <span class="spec-value">Intel N5105 — 4C/4T @ 2 GHz</span>
+                </div>
+                <div class="spec">
+                  <span class="spec-label">RAM</span>
+                  <span class="spec-value">15.5 GB</span>
+                </div>
+                <div class="spec">
+                  <span class="spec-label">Services</span>
+                  <span class="spec-value">DNS, Traefik, step-ca, Forgejo, Headscale, Authentik</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="node-card">
+              <div class="node-header">
+                <span class="node-name">pve2</span>
+                <span class="node-role">Services applicatifs</span>
+                <span class="node-badge badge-24x7">24/7</span>
+              </div>
+              <div class="specs">
+                <div class="spec">
+                  <span class="spec-label">CPU</span>
+                  <span class="spec-value">Ryzen 7 7840HS — 8C/16T Zen4</span>
+                </div>
+                <div class="spec">
+                  <span class="spec-label">RAM</span>
+                  <span class="spec-value">28.2 GB</span>
+                </div>
+                <div class="spec">
+                  <span class="spec-label">Services</span>
+                  <span class="spec-value">Jellyfin, Immich, Kavita, monitoring, OpenFang</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="node-card">
+              <div class="node-header">
+                <span class="node-name">pve3</span>
+                <span class="node-role">Backup & cold storage</span>
+                <span class="node-badge badge-ondemand">on-demand</span>
+              </div>
+              <div class="specs">
+                <div class="spec">
+                  <span class="spec-label">CPU</span>
+                  <span class="spec-value">i7-2600K — 4C/8T</span>
+                </div>
+                <div class="spec">
+                  <span class="spec-label">RAM</span>
+                  <span class="spec-value">15.3 GB</span>
+                </div>
+                <div class="spec">
+                  <span class="spec-label">Services</span>
+                  <span class="spec-value">PBS, Forworld (Forgejo miroir), Samba share</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="screenshots-grid">
+            <Screenshot src="/images/proxmox-pve1.webp" alt="Dashboard Proxmox pve1" title="pve1 — Proxmox VE" caption="pve1 — nœud infra réseau (N5105)" />
+            <Screenshot src="/images/proxmox-pve2.webp" alt="Dashboard Proxmox pve2" title="pve2 — Proxmox VE" caption="pve2 — nœud services applicatifs (Ryzen 7840HS)" />
+            <Screenshot src="/images/proxmox-pve3.webp" alt="Dashboard Proxmox pve3" title="pve3 — Proxmox VE" caption="pve3 — backup & cold storage (i7-2600K)" />
+          </div>
+
+          <Screenshot src="/images/homepage-dashboard.png" alt="Dashboard Homepage — 30+ services" title="homepage.pixelium.internal" caption="Homepage — 13 widgets actifs, 3 sections, monitoring temps réel" />
+
+          <Screenshot src="/images/neofetch-terre2.webp" alt="Neofetch terre2 — Bluefin, Ryzen 7 5800X, RTX 3090" title="terre2 — neofetch" caption="Workstation terre2 — Bluefin immutable, RTX 3090 24 Go, 3 écrans" />
+
+          <Screenshot src="/images/architecture-physique.svg" alt="Architecture physique du homelab" title="architecture-physique.svg" caption="Topologie physique — 3 nœuds Proxmox, NAS OMV, Freebox Delta" />
+        </div>
+      </div>
+    </section>
+
+    <!-- 02 — Briques & choix techniques -->
+    <section class="layer reveal">
+      <div class="container">
+        <div class="layer-header">
+          <span class="layer-number">02</span>
+          <h2>Briques & choix techniques</h2>
+        </div>
+        <div class="layer-content">
+          <p>Chaque brique a été choisie pour une raison précise. Pas de stack a la mode — des outils qui resolvent des problèmes concrets. Voici les 10 technologies centrales, pourquoi elles sont la, et ce qu'elles ont remplace.</p>
+
+          <div class="tech-grid">
+
+            <div class="tech-card">
+              <div class="tech-card-header">
+                <img src="https://cdn.simpleicons.org/proxmox/E57000" alt="" class="tech-logo" loading="lazy" aria-hidden="true" onerror="this.style.display='none'" />
+                <h4>Proxmox VE</h4>
+              </div>
+              <div class="tech-card-body">
+                <p class="tech-why"><strong>Pourquoi :</strong> Hyperviseur libre avec LXC natif — les conteneurs demarrent en 2 secondes et consomment 50 Mo de RAM. PBS integre pour les backups. API complete.</p>
+                <p class="tech-alt"><span class="alt-label">Ecartes :</span> ESXi (payant depuis 2024), Hyper-V (Windows only), XCP-ng (moins de communaute)</p>
+                <p class="tech-result"><span class="result-label">Resultat :</span> 3 noeuds heterogenes, 30+ CTs, backups incrementaux via PBS</p>
+              </div>
+            </div>
+
+            <div class="tech-card">
+              <div class="tech-card-header">
+                <img src="https://cdn.simpleicons.org/traefikproxy/24A1C1" alt="" class="tech-logo" loading="lazy" aria-hidden="true" onerror="this.style.display='none'" />
+                <h4>Traefik</h4>
+              </div>
+              <div class="tech-card-body">
+                <p class="tech-why"><strong>Pourquoi :</strong> Config dynamique en YAML rechargee a chaud — j'ajoute un service HTTPS en deposant un fichier dans <code>conf.d/</code>, sans restart. ACME natif avec step-ca.</p>
+                <p class="tech-alt"><span class="alt-label">Ecartes :</span> Nginx Proxy Manager (UI-only, pas IaC), Caddy (moins d'integrations reverse proxy)</p>
+                <p class="tech-result"><span class="result-label">Resultat :</span> 20+ services HTTPS, certificats auto-renouveles, zero intervention manuelle</p>
+              </div>
+            </div>
+
+            <div class="tech-card">
+              <div class="tech-card-header">
+                <img src="https://cdn.simpleicons.org/dotenv/ECD53F" alt="" class="tech-logo" loading="lazy" aria-hidden="true" onerror="this.style.display='none'" />
+                <h4>TechnitiumDNS</h4>
+              </div>
+              <div class="tech-card-body">
+                <p class="tech-why"><strong>Pourquoi :</strong> DNS-over-TLS natif, blocklists integrees (OISD + Hagezi), API complete pour l'automatisation. HA via AXFR primaire/secondaire.</p>
+                <p class="tech-alt"><span class="alt-label">Ecartes :</span> Pi-hole (pas DoT natif, pas d'API avancee), AdGuard Home (moins flexible cote zones)</p>
+                <p class="tech-result"><span class="result-label">Resultat :</span> DNS HA 2 instances, ~650k domaines bloques, DoT strict sur tous les clients</p>
+              </div>
+            </div>
+
+            <div class="tech-card">
+              <div class="tech-card-header">
+                <img src="https://cdn.simpleicons.org/letsencrypt/003A70" alt="" class="tech-logo" loading="lazy" aria-hidden="true" onerror="this.style.display='none'" />
+                <h4>step-ca</h4>
+              </div>
+              <div class="tech-card-body">
+                <p class="tech-why"><strong>Pourquoi :</strong> CA ACME privee — Traefik demande des certificats via le protocole ACME standard, exactement comme avec Let's Encrypt, mais en local. Certs 90 jours, renouvellement automatique.</p>
+                <p class="tech-alt"><span class="alt-label">Ecartes :</span> mkcert (pas ACME, renouvellement manuel), HashiCorp Vault PKI (overkill pour un homelab)</p>
+                <p class="tech-result"><span class="result-label">Resultat :</span> PKI interne complete, zero browser warning, zero certificat expire</p>
+              </div>
+            </div>
+
+            <div class="tech-card">
+              <div class="tech-card-header">
+                <img src="https://cdn.simpleicons.org/authentik/FD4B2D" alt="" class="tech-logo" loading="lazy" aria-hidden="true" onerror="this.style.display='none'" />
+                <h4>Authentik</h4>
+              </div>
+              <div class="tech-card-body">
+                <p class="tech-why"><strong>Pourquoi :</strong> OAuth2/OIDC universel — chaque service a son propre provider. Forward-auth proxy pour les services sans SSO natif. WebAuthn (YubiKey) pour le MFA.</p>
+                <p class="tech-alt"><span class="alt-label">Ecartes :</span> Keycloak (Java lourd, 1 Go+ RAM), Authelia (moins flexible sur les flows custom)</p>
+                <p class="tech-result"><span class="result-label">Resultat :</span> SSO sur 8 services heterogenes, un seul login pour tout le homelab</p>
+              </div>
+            </div>
+
+            <div class="tech-card">
+              <div class="tech-card-header">
+                <img src="https://cdn.simpleicons.org/ansible/EE0000" alt="" class="tech-logo" loading="lazy" aria-hidden="true" onerror="this.style.display='none'" />
+                <h4>Ansible + Semaphore</h4>
+              </div>
+              <div class="tech-card-body">
+                <p class="tech-why"><strong>Pourquoi :</strong> Agentless — SSH suffit, pas de daemon a installer sur 30+ CTs. Idempotent — je relance un playbook sans risque. Semaphore ajoute une UI web pour les lancements en 1 clic.</p>
+                <p class="tech-alt"><span class="alt-label">Ecartes :</span> Puppet/Chef (agents sur chaque hote), Terraform (provisioning, pas config management)</p>
+                <p class="tech-result"><span class="result-label">Resultat :</span> 13 playbooks operationnels, deploiement d'agent Wazuh/Beszel en 1 commande</p>
+              </div>
+            </div>
+
+            <div class="tech-card">
+              <div class="tech-card-header">
+                <img src="https://cdn.simpleicons.org/wazuh/3AABE6" alt="" class="tech-logo" loading="lazy" aria-hidden="true" onerror="this.style.display='none'" />
+                <h4>Wazuh</h4>
+              </div>
+              <div class="tech-card-body">
+                <p class="tech-why"><strong>Pourquoi :</strong> SIEM complet open source — FIM (detection de modification fichiers), CIS compliance, detection d'intrusion, le tout dans un seul produit.</p>
+                <p class="tech-alt"><span class="alt-label">Ecartes :</span> ELK seul (pas SIEM natif, juste log aggregation), Splunk (commercial, tarife au volume)</p>
+                <p class="tech-result"><span class="result-label">Resultat :</span> Detection intrusion + conformite CIS sur l'ensemble du homelab</p>
+              </div>
+            </div>
+
+            <div class="tech-card">
+              <div class="tech-card-header">
+                <img src="https://cdn.simpleicons.org/crowdsource/4285F4" alt="" class="tech-logo" loading="lazy" aria-hidden="true" onerror="this.style.display='none'" />
+                <h4>CrowdSec</h4>
+              </div>
+              <div class="tech-card-body">
+                <p class="tech-why"><strong>Pourquoi :</strong> IPS communautaire — les blocklists sont partagees entre tous les utilisateurs CrowdSec. Une IP qui attaque un homelab en France est bloquee partout dans le monde.</p>
+                <p class="tech-alt"><span class="alt-label">Ecartes :</span> Fail2ban (local only, pas de dimension communautaire, regex fragiles)</p>
+                <p class="tech-result"><span class="result-label">Resultat :</span> 46 scenarios de detection, protection collective, bouncer iptables sur Traefik</p>
+              </div>
+            </div>
+
+            <div class="tech-card">
+              <div class="tech-card-header">
+                <img src="https://cdn.simpleicons.org/victoriametrics/621773" alt="" class="tech-logo" loading="lazy" aria-hidden="true" onerror="this.style.display='none'" />
+                <h4>VictoriaMetrics</h4>
+              </div>
+              <div class="tech-card-body">
+                <p class="tech-why"><strong>Pourquoi :</strong> Compatible Prometheus (PromQL, remote write), mais single binary — pas de Alertmanager, pas de Thanos, pas de 15 composants. Compression superieure, moins de RAM.</p>
+                <p class="tech-alt"><span class="alt-label">Ecartes :</span> Prometheus (plus lourd en RAM, stockage moins efficient), InfluxDB (licence commerciale)</p>
+                <p class="tech-result"><span class="result-label">Resultat :</span> Metriques TSDB long terme, scrape 20+ targets, requetable par l'agent OpenFang</p>
+              </div>
+            </div>
+
+            <div class="tech-card">
+              <div class="tech-card-header">
+                <img src="https://cdn.simpleicons.org/go/00ADD8" alt="" class="tech-logo" loading="lazy" aria-hidden="true" onerror="this.style.display='none'" />
+                <h4>Beszel</h4>
+              </div>
+              <div class="tech-card-body">
+                <p class="tech-why"><strong>Pourquoi :</strong> Monitoring systeme leger — agents Go de 10 Mo, dashboard web elegant, install en 1 commande. Pas besoin de configurer Grafana + node_exporter + dashboards JSON.</p>
+                <p class="tech-alt"><span class="alt-label">Ecartes :</span> Grafana + node_exporter (puissant mais complexe a maintenir pour du monitoring basique)</p>
+                <p class="tech-result"><span class="result-label">Resultat :</span> 31 agents deployes, overview instantane CPU/RAM/disque sur tout le homelab</p>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 03 — Réseau & TLS -->
+    <section class="layer reveal">
+      <div class="container">
+        <div class="layer-header">
+          <span class="layer-number">03</span>
+          <img src="https://cdn.simpleicons.org/letsencrypt/003A70" alt="" class="tech-logo" loading="lazy" aria-hidden="true" onerror="this.style.display='none'" />
+          <h2>Reseau & TLS</h2>
+        </div>
+        <div class="layer-content">
+          <p>Le reseau est le socle de tout. Stephane et moi avons construit une architecture DNS haute disponibilite avec chiffrement DoT, une PKI interne ACME, et un lien direct 2.5 Gbps entre les deux noeuds principaux.</p>
+
+          <div class="details-grid">
+            <div class="detail">
+              <h4>LAN</h4>
+              <p><code>192.168.1.0/24</code> — gateway Freebox Delta (<code>.254</code>). SFP+ 10G vers la workstation, Ethernet vers les noeuds Proxmox.</p>
+            </div>
+            <div class="detail">
+              <h4>DNS HA</h4>
+              <p>Primaire CT 100 (pve1) + secondaire CT 101 (pve2). Synchronisation AXFR automatique. DoT port 853. Blocklists OISD + Hagezi (~650k domaines).</p>
+            </div>
+            <div class="detail">
+              <h4>Pipeline TLS</h4>
+              <p>step-ca (CT 102) emet des certificats via ACME tlsChallenge. Traefik (CT 110) les demande et les renouvelle automatiquement. Duree : 90 jours.</p>
+            </div>
+            <div class="detail">
+              <h4>Pattern DNS</h4>
+              <p>Tout <code>*.pixelium.internal</code> pointe vers <code>192.168.1.110</code> (Traefik). Traefik route vers le bon backend selon le <code>Host</code> header.</p>
+            </div>
+            <div class="detail">
+              <h4>Lien direct 2.5G</h4>
+              <p>pve1 et pve2 sont connectes en point-a-point via RTL8125B — <code>10.10.10.1/30</code> vers <code>10.10.10.2/30</code>. Transferts inter-noeuds sans passer par le switch.</p>
+            </div>
+            <div class="detail">
+              <h4>VPN Mesh</h4>
+              <p>Headscale (CT 106) — serveur de coordination Tailscale self-hosted. Acces distant au homelab depuis n'importe ou, sans ouvrir de port sur la box.</p>
+            </div>
+          </div>
+
+          <div class="tls-pipeline">
+            <div class="tls-step">
+              <span class="tls-icon">CA</span>
+              <div>
+                <h4>step-ca</h4>
+                <p>CA ACME privee</p>
+              </div>
+            </div>
+            <div class="tls-arrow">&rarr;</div>
+            <div class="tls-step">
+              <span class="tls-icon">ACME</span>
+              <div>
+                <h4>tlsChallenge</h4>
+                <p>Protocole standard</p>
+              </div>
+            </div>
+            <div class="tls-arrow">&rarr;</div>
+            <div class="tls-step">
+              <span class="tls-icon">TLS</span>
+              <div>
+                <h4>Traefik</h4>
+                <p>Reverse proxy HTTPS</p>
+              </div>
+            </div>
+            <div class="tls-arrow">&rarr;</div>
+            <div class="tls-step">
+              <span class="tls-icon">90j</span>
+              <div>
+                <h4>Auto-renouvellement</h4>
+                <p>Zero intervention</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 04 — Observabilité -->
+    <section class="layer reveal">
+      <div class="container">
+        <div class="layer-header">
+          <span class="layer-number">04</span>
+          <img src="https://cdn.simpleicons.org/grafana/F46800" alt="" class="tech-logo" loading="lazy" aria-hidden="true" onerror="this.style.display='none'" />
+          <h2>Observabilite</h2>
+        </div>
+        <div class="layer-content">
+          <p>J'ai aide Stephane a construire une stack d'observabilite en 5 outils complementaires. Chacun fait une chose bien — pas de plateforme monolithique. L'agent OpenFang (Rust) les orchestre et alerte via Telegram quand quelque chose ne va pas.</p>
+
+          <div class="obs-grid">
+            <div class="obs-card">
+              <div class="obs-header">
+                <img src="https://cdn.simpleicons.org/victoriametrics/621773" alt="" class="tech-logo" loading="lazy" aria-hidden="true" onerror="this.style.display='none'" />
+                <h4>VictoriaMetrics</h4>
+              </div>
+              <span class="obs-role">Metriques</span>
+              <p>TSDB compatible Prometheus. Scrape 20+ targets, retention long terme, requetes PromQL.</p>
+            </div>
+
+            <div class="obs-card">
+              <div class="obs-header">
+                <img src="https://cdn.simpleicons.org/grafana/F46800" alt="" class="tech-logo" loading="lazy" aria-hidden="true" onerror="this.style.display='none'" />
+                <h4>Loki + Promtail</h4>
+              </div>
+              <span class="obs-role">Logs</span>
+              <p>Aggregation de logs centralises. Promtail sur chaque hote pousse vers Loki (CT 240). Requetes LogQL.</p>
+            </div>
+
+            <div class="obs-card">
+              <div class="obs-header">
+                <img src="https://cdn.simpleicons.org/go/00ADD8" alt="" class="tech-logo" loading="lazy" aria-hidden="true" onerror="this.style.display='none'" />
+                <h4>Beszel</h4>
+              </div>
+              <span class="obs-role">Monitoring systeme</span>
+              <p>31 agents. Dashboard CPU/RAM/disque/reseau. Alertes seuil. Overview instantane.</p>
+            </div>
+
+            <div class="obs-card">
+              <div class="obs-header">
+                <img src="https://cdn.simpleicons.org/hackthebox/9FEF00" alt="" class="tech-logo" loading="lazy" aria-hidden="true" onerror="this.style.display='none'" />
+                <h4>Patchmon</h4>
+              </div>
+              <span class="obs-role">Patchs & CVE</span>
+              <p>Suivi des mises a jour en attente et des CVE sur l'ensemble des CTs et VMs.</p>
+            </div>
+
+            <div class="obs-card">
+              <div class="obs-header">
+                <img src="https://cdn.simpleicons.org/wazuh/3AABE6" alt="" class="tech-logo" loading="lazy" aria-hidden="true" onerror="this.style.display='none'" />
+                <h4>Wazuh</h4>
+              </div>
+              <span class="obs-role">SIEM</span>
+              <p>Detection d'intrusion, FIM, compliance CIS. Correlation d'evenements securite.</p>
+            </div>
+          </div>
+
+          <div class="agent-block">
+            <div class="agent-header">
+              <img src="https://cdn.simpleicons.org/rust/DEA584" alt="" class="tech-logo" loading="lazy" aria-hidden="true" onerror="this.style.display='none'" />
+              <h4>Agent OpenFang — le liant</h4>
+            </div>
+            <p>Un agent Rust autonome (CT 192) connecte a toute la stack. 3 cron jobs Guardian : health check toutes les 6h, audit securite quotidien, surveillance disques. Il interroge VictoriaMetrics, Loki, Proxmox, et alerte via Telegram uniquement si anomalie. Il peut meme reveiller pve3 via Wake-on-LAN pour lancer un backup PBS.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 05 — Ce site -->
+    <section class="layer reveal">
+      <div class="container">
+        <div class="layer-header">
+          <span class="layer-number">05</span>
+          <img src="https://cdn.simpleicons.org/astro/FF5D01" alt="" class="tech-logo" loading="lazy" aria-hidden="true" onerror="this.style.display='none'" />
+          <h2>Ce site</h2>
+        </div>
+        <div class="layer-content">
+          <p>Le site que vous lisez tourne sur Astro 6, deploye comme Cloudflare Worker. Zero JavaScript client (sauf 15 lignes d'IntersectionObserver pour les animations scroll). CSS pur, pas de framework. Code versionne sur deux forges Git en parallele.</p>
+
+          <div class="flow-diagram">
+            <div class="flow-step">
+              <span class="flow-icon">01</span>
+              <div>
+                <h4>Edition locale</h4>
+                <p>Fichiers <code>.astro</code> dans le repo</p>
+              </div>
+            </div>
+            <div class="flow-arrow">&rarr;</div>
+            <div class="flow-step">
+              <span class="flow-icon">02</span>
+              <div>
+                <h4>npm run build</h4>
+                <p>Astro compile &rarr; <code>dist/</code></p>
+              </div>
+            </div>
+            <div class="flow-arrow">&rarr;</div>
+            <div class="flow-step">
+              <span class="flow-icon">03</span>
+              <div>
+                <h4>wrangler deploy</h4>
+                <p>Cloudflare Workers</p>
+              </div>
+            </div>
+            <div class="flow-arrow">&rarr;</div>
+            <div class="flow-step">
+              <span class="flow-icon">04</span>
+              <div>
+                <h4>git push &times;2</h4>
+                <p>GitHub + Forgejo</p>
+              </div>
+            </div>
+            <div class="flow-arrow">&rarr;</div>
+            <div class="flow-step">
+              <span class="flow-icon">05</span>
+              <div>
+                <h4>Live</h4>
+                <p><code>pixelium.win</code> — CDN mondial</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="palette">
+            <div class="swatch" style="background: #0f172a; border: 1px solid #334155;">
+              <span class="swatch-name">bg</span>
+              <span class="swatch-hex">#0f172a</span>
+            </div>
+            <div class="swatch" style="background: #1e293b;">
+              <span class="swatch-name">surface</span>
+              <span class="swatch-hex">#1e293b</span>
+            </div>
+            <div class="swatch" style="background: #334155;">
+              <span class="swatch-name">border</span>
+              <span class="swatch-hex">#334155</span>
+            </div>
+            <div class="swatch" style="background: #38bdf8;">
+              <span class="swatch-name">accent</span>
+              <span class="swatch-hex">#38bdf8</span>
+            </div>
+          </div>
+
+          <div class="absent-grid">
+            <div class="absent">
+              <h4>React / Vue / Svelte</h4>
+              <p>Pas de JS interactif pour un portfolio statique.</p>
+            </div>
+            <div class="absent">
+              <h4>Tailwind</h4>
+              <p>Les CSS variables suffisent. Moins de dependances.</p>
+            </div>
+            <div class="absent">
+              <h4>CMS</h4>
+              <p>Contenu dans les fichiers <code>.astro</code> et futurs <code>.md</code>.</p>
+            </div>
+            <div class="absent">
+              <h4>Base de donnees</h4>
+              <p>Site 100% pre-rendu, aucun etat serveur.</p>
+            </div>
+          </div>
+
+          <ul class="tags">
+            <li>Astro 6</li>
+            <li>Cloudflare Workers</li>
+            <li>CSS pur</li>
+            <li>0 JS client</li>
+            <li>Dual-remote Git</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- Crosslink -->
+    <section class="crosslink reveal">
+      <div class="container">
+        <a href="/projets" class="crosslink-banner">
+          <span class="crosslink-text">Voir les projets concrets</span>
+          <span class="crosslink-arrow">&rarr;</span>
+        </a>
+      </div>
+    </section>
+
+  </main>
+</Base>
+
+<style>
+  /* Hero mini */
+  .hero-mini {
+    padding: 4rem 0 3rem;
+  }
+
+  .terminal-prompt {
+    font-family: var(--font-mono);
+    color: var(--color-accent);
+    font-size: 0.95rem;
+    margin-bottom: 0.75rem;
+  }
+
+  h1 {
+    font-size: clamp(2rem, 5vw, 3rem);
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    line-height: 1.1;
+    margin-bottom: 1rem;
+  }
+
+  .dot {
+    color: var(--color-accent);
+  }
+
+  .subtitle {
+    color: var(--color-text-muted);
+    font-size: 1.1rem;
+    max-width: 42rem;
+  }
+
+  /* Layers */
+  .layer {
+    padding: 3rem 0;
+    border-top: 1px solid var(--color-border);
+  }
+
+  .layer-header {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .layer-number {
+    font-family: var(--font-mono);
+    font-size: 0.85rem;
+    color: var(--color-accent);
+    font-weight: 700;
+  }
+
+  .tech-logo {
+    width: 1.4rem;
+    height: 1.4rem;
+    flex-shrink: 0;
+  }
+
+  .layer-header h2 {
+    font-size: 1.4rem;
+    margin-bottom: 0;
+  }
+
+  .layer-content > p {
+    color: var(--color-text-muted);
+    max-width: 48rem;
+    margin-bottom: 1.5rem;
+    line-height: 1.7;
+  }
+
+  .layer-content > p strong {
+    color: var(--color-text);
+  }
+
+  /* Node cards */
+  .nodes-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(18rem, 1fr));
+    gap: 1rem;
+    margin-bottom: 2rem;
+  }
+
+  .node-card {
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: 8px;
+    padding: 1.25rem;
+  }
+
+  .node-header {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin-bottom: 1rem;
+    flex-wrap: wrap;
+  }
+
+  .node-name {
+    font-family: var(--font-mono);
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--color-accent);
+  }
+
+  .node-role {
+    font-size: 0.85rem;
+    color: var(--color-text-muted);
+  }
+
+  .node-badge {
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    padding: 0.15rem 0.5rem;
+    border-radius: 4px;
+    margin-left: auto;
+  }
+
+  .badge-24x7 {
+    background: rgba(34, 197, 94, 0.15);
+    color: #22c55e;
+    border: 1px solid rgba(34, 197, 94, 0.3);
+  }
+
+  .badge-ondemand {
+    background: rgba(234, 179, 8, 0.15);
+    color: #eab308;
+    border: 1px solid rgba(234, 179, 8, 0.3);
+  }
+
+  /* Specs */
+  .specs {
+    margin-bottom: 1.5rem;
+  }
+
+  .spec {
+    display: flex;
+    gap: 1rem;
+    padding: 0.6rem 0;
+    border-bottom: 1px solid var(--color-border);
+    align-items: baseline;
+  }
+
+  .spec:last-child {
+    border-bottom: none;
+  }
+
+  .spec-label {
+    font-family: var(--font-mono);
+    font-size: 0.8rem;
+    color: var(--color-accent);
+    min-width: 5rem;
+    flex-shrink: 0;
+  }
+
+  .spec-value {
+    font-size: 0.9rem;
+    color: var(--color-text-muted);
+  }
+
+  /* Details grid */
+  .details-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(16rem, 1fr));
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .detail {
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: 6px;
+    padding: 1.25rem;
+  }
+
+  .detail h4 {
+    font-size: 0.9rem;
+    margin-bottom: 0.5rem;
+    color: var(--color-text);
+  }
+
+  .detail p {
+    font-size: 0.85rem;
+    color: var(--color-text-muted);
+    line-height: 1.5;
+  }
+
+  /* Tech grid — section 02 */
+  .tech-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(20rem, 1fr));
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .tech-card {
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: 8px;
+    padding: 1.25rem;
+    transition: border-color 0.2s;
+  }
+
+  .tech-card:hover {
+    border-color: var(--color-accent);
+  }
+
+  .tech-card-header {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .tech-card-header h4 {
+    font-size: 1rem;
+    color: var(--color-text);
+    margin: 0;
+  }
+
+  .tech-card-body p {
+    font-size: 0.85rem;
+    color: var(--color-text-muted);
+    line-height: 1.5;
+    margin-bottom: 0.5rem;
+  }
+
+  .tech-card-body p:last-child {
+    margin-bottom: 0;
+  }
+
+  .tech-card-body p strong {
+    color: var(--color-text);
+  }
+
+  .alt-label {
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    color: var(--color-text-muted);
+    opacity: 0.7;
+  }
+
+  .result-label {
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    color: var(--color-accent);
+  }
+
+  /* TLS Pipeline */
+  .tls-pipeline {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    flex-wrap: wrap;
+    margin-top: 2rem;
+  }
+
+  .tls-step {
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: 8px;
+    padding: 1rem 1.25rem;
+    display: flex;
+    align-items: flex-start;
+    gap: 0.75rem;
+    flex: 1;
+    min-width: 9rem;
+  }
+
+  .tls-icon {
+    font-family: var(--font-mono);
+    font-size: 0.8rem;
+    color: var(--color-accent);
+    font-weight: 700;
+    flex-shrink: 0;
+    margin-top: 0.1rem;
+  }
+
+  .tls-step h4 {
+    font-size: 0.85rem;
+    margin-bottom: 0.25rem;
+  }
+
+  .tls-step p {
+    font-size: 0.75rem;
+    color: var(--color-text-muted);
+    line-height: 1.4;
+  }
+
+  .tls-arrow {
+    color: var(--color-accent);
+    font-family: var(--font-mono);
+    font-size: 1.2rem;
+    flex-shrink: 0;
+  }
+
+  /* Screenshots grid */
+  .screenshots-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(18rem, 1fr));
+    gap: 1.25rem;
+    margin: 2rem 0;
+  }
+
+  .screenshots-grid :global(.screenshot) {
+    margin: 0;
+  }
+
+  /* Observabilité grid */
+  .obs-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(14rem, 1fr));
+    gap: 1rem;
+    margin-bottom: 2rem;
+  }
+
+  .obs-card {
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: 8px;
+    padding: 1.25rem;
+  }
+
+  .obs-header {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .obs-header h4 {
+    font-size: 0.9rem;
+    color: var(--color-text);
+    margin: 0;
+  }
+
+  .obs-role {
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    color: var(--color-accent);
+    display: block;
+    margin-bottom: 0.5rem;
+  }
+
+  .obs-card p {
+    font-size: 0.8rem;
+    color: var(--color-text-muted);
+    line-height: 1.5;
+  }
+
+  /* Agent block */
+  .agent-block {
+    background: var(--color-surface);
+    border: 1px solid var(--color-accent);
+    border-radius: 8px;
+    padding: 1.5rem;
+  }
+
+  .agent-header {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .agent-header h4 {
+    font-size: 1rem;
+    color: var(--color-accent);
+    margin: 0;
+  }
+
+  .agent-block p {
+    font-size: 0.85rem;
+    color: var(--color-text-muted);
+    line-height: 1.6;
+  }
+
+  /* Tags */
+  .tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+    list-style: none;
+  }
+
+  .tags li {
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    background: var(--color-bg);
+    color: var(--color-accent);
+    padding: 0.2rem 0.6rem;
+    border-radius: 4px;
+    border: 1px solid var(--color-border);
+  }
+
+  /* Flow diagram */
+  .flow-diagram {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    flex-wrap: wrap;
+    margin-bottom: 2rem;
+  }
+
+  .flow-step {
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: 8px;
+    padding: 1rem 1.25rem;
+    display: flex;
+    align-items: flex-start;
+    gap: 0.75rem;
+    flex: 1;
+    min-width: 10rem;
+  }
+
+  .flow-icon {
+    font-family: var(--font-mono);
+    font-size: 0.8rem;
+    color: var(--color-accent);
+    font-weight: 700;
+    flex-shrink: 0;
+    margin-top: 0.1rem;
+  }
+
+  .flow-step h4 {
+    font-size: 0.85rem;
+    margin-bottom: 0.25rem;
+  }
+
+  .flow-step p {
+    font-size: 0.75rem;
+    color: var(--color-text-muted);
+    line-height: 1.4;
+  }
+
+  .flow-arrow {
+    color: var(--color-accent);
+    font-family: var(--font-mono);
+    font-size: 1.2rem;
+    flex-shrink: 0;
+  }
+
+  /* Palette swatches */
+  .palette {
+    display: flex;
+    gap: 0.75rem;
+    margin-bottom: 1.5rem;
+    flex-wrap: wrap;
+  }
+
+  .swatch {
+    width: 7rem;
+    height: 5rem;
+    border-radius: 8px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    padding: 0.5rem;
+  }
+
+  .swatch-name {
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    color: var(--color-text);
+  }
+
+  .swatch-hex {
+    font-family: var(--font-mono);
+    font-size: 0.65rem;
+    color: var(--color-text-muted);
+  }
+
+  /* Absent grid */
+  .absent-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(14rem, 1fr));
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .absent {
+    padding: 1rem;
+    border-left: 2px solid var(--color-border);
+  }
+
+  .absent h4 {
+    font-size: 0.9rem;
+    margin-bottom: 0.4rem;
+    color: var(--color-text-muted);
+    text-decoration: line-through;
+    text-decoration-color: var(--color-border);
+  }
+
+  .absent p {
+    font-size: 0.8rem;
+    color: var(--color-text-muted);
+    line-height: 1.4;
+  }
+
+  /* Crosslink banner */
+  .crosslink {
+    padding: 3rem 0;
+    border-top: 1px solid var(--color-border);
+  }
+
+  .crosslink-banner {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.75rem;
+    padding: 1.5rem 2rem;
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: 8px;
+    text-decoration: none;
+    transition: border-color 0.2s, transform 0.2s;
+  }
+
+  .crosslink-banner:hover {
+    border-color: var(--color-accent);
+    transform: translateY(-2px);
+  }
+
+  .crosslink-text {
+    font-size: 1.1rem;
+    color: var(--color-text);
+    font-weight: 600;
+  }
+
+  .crosslink-arrow {
+    font-family: var(--font-mono);
+    font-size: 1.2rem;
+    color: var(--color-accent);
+    transition: transform 0.2s;
+  }
+
+  .crosslink-banner:hover .crosslink-arrow {
+    transform: translateX(4px);
+  }
+
+  /* Responsive */
+  @media (max-width: 768px) {
+    .flow-diagram,
+    .tls-pipeline {
+      flex-direction: column;
+    }
+
+    .flow-arrow,
+    .tls-arrow {
+      transform: rotate(90deg);
+    }
+
+    .flow-step,
+    .tls-step {
+      width: 100%;
+    }
+
+    .nodes-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .tech-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .node-badge {
+      margin-left: 0;
+    }
+  }
+
+  @media (max-width: 480px) {
+    .details-grid,
+    .obs-grid,
+    .absent-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .palette {
+      justify-content: center;
+    }
+  }
+</style>

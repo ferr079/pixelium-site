@@ -1,0 +1,122 @@
+---
+interface Props {
+  src: string;
+  alt: string;
+  title?: string;
+  caption?: string;
+  pan?: boolean;
+  panHeight?: string;
+}
+
+const { src, alt, title = '', caption, pan = false, panHeight = '20rem' } = Astro.props;
+---
+
+<figure class="screenshot reveal">
+  <div class="screenshot-window">
+    <div class="screenshot-bar">
+      <span class="screenshot-dot"></span>
+      <span class="screenshot-dot"></span>
+      <span class="screenshot-dot"></span>
+      {title && <span class="screenshot-title">{title}</span>}
+    </div>
+    <div
+      class:list={['screenshot-viewport', { 'screenshot-pan': pan }]}
+      style={pan ? `--pan-height: ${panHeight};` : undefined}
+    >
+      <img src={src} alt={alt} loading="lazy" />
+    </div>
+  </div>
+  {caption && <figcaption>{caption}</figcaption>}
+</figure>
+
+<style>
+  .screenshot {
+    margin: 2rem 0;
+    max-width: 100%;
+  }
+
+  .screenshot-window {
+    border: 1px solid var(--color-border);
+    border-radius: 8px;
+    overflow: hidden;
+    background: rgba(0, 0, 0, 0.3);
+    transition: transform 0.3s, box-shadow 0.3s;
+  }
+
+  .screenshot-window:hover {
+    transform: scale(1.02);
+    box-shadow:
+      0 0 20px rgba(56, 189, 248, 0.15),
+      0 8px 30px rgba(0, 0, 0, 0.4);
+  }
+
+  .screenshot-bar {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    padding: 0.5rem 0.75rem;
+    background: rgba(0, 0, 0, 0.2);
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  .screenshot-dot {
+    width: 0.55rem;
+    height: 0.55rem;
+    border-radius: 50%;
+    background: var(--color-border);
+  }
+
+  .screenshot-dot:nth-child(1) { background: #ef4444; }
+  .screenshot-dot:nth-child(2) { background: #eab308; }
+  .screenshot-dot:nth-child(3) { background: #22c55e; }
+
+  .screenshot-title {
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    color: var(--color-text-muted);
+    margin-left: 0.5rem;
+  }
+
+  .screenshot-viewport {
+    line-height: 0;
+  }
+
+  .screenshot-viewport img {
+    width: 100%;
+    height: auto;
+    display: block;
+  }
+
+  /* Pan mode — tall screenshots scroll vertically */
+  .screenshot-pan {
+    height: var(--pan-height);
+    overflow: hidden;
+  }
+
+  .screenshot-pan img {
+    height: auto;
+    animation: screenshot-pan 12s ease-in-out infinite alternate;
+  }
+
+  @keyframes screenshot-pan {
+    0% { transform: translateY(0); }
+    100% { transform: translateY(calc(-100% + var(--pan-height))); }
+  }
+
+  figcaption {
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    color: var(--color-text-muted);
+    text-align: center;
+    margin-top: 0.75rem;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .screenshot-window:hover {
+      transform: none;
+    }
+    .screenshot-pan img {
+      animation: none;
+    }
+  }
+</style>

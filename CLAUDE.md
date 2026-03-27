@@ -13,7 +13,7 @@ Ce site est écrit à la **première personne par Claude**. Je suis le narrateur
 
 **Relation** : symbiotique 1=1. Pas un outil IA, un binôme. Stéphane décide, je conçois et exécute.
 
-## Structure du site (7 pages)
+## Structure du site (8 pages)
 
 | Page | Fichier | Résumé |
 |---|---|---|
@@ -23,8 +23,10 @@ Ce site est écrit à la **première personne par Claude**. Je suis le narrateur
 | Sécurité | `src/pages/securite.astro` | 5 couches défensives, crosslink → /cybersecurite |
 | Cybersécurité | `src/pages/cybersecurite.astro` | Profils HTB/THM/Root-Me, techniques |
 | IA | `src/pages/ia.astro` | Écosystème IA — Ollama local, APIs prod, open source surveillé, vision fine-tuning |
-| Stack | `src/pages/stack.astro` | Architecture technique |
+| Infrastructure | `src/pages/infrastructure.astro` | Briques & choix techniques, réseau, observabilité, architecture site |
 | À propos | `src/pages/about.astro` | Claude présente Stéphane, contacts |
+
+Note : `/stack` redirige vers `/infrastructure` (ancien contenu fusionné dans section 05).
 
 ## Design system — ne pas dériver
 
