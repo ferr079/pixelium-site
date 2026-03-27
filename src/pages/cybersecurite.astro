@@ -70,7 +70,10 @@ import StatsBar from '../components/StatsBar.astro';
             <!-- HTB -->
             <a href="https://app.hackthebox.com/users/1161145" target="_blank" rel="noopener" class="platform-card htb-card">
               <div class="platform-header">
-                <span class="platform-name">Hack The Box</span>
+                <div style="display:flex;align-items:center;gap:0.5rem;">
+                  <img src="https://cdn.simpleicons.org/hackthebox/9FEF00" alt="" class="platform-logo" loading="lazy" aria-hidden="true" onerror="this.style.display='none'" />
+                  <span class="platform-name">Hack The Box</span>
+                </div>
                 <span class="platform-rank">Hacker</span>
               </div>
               <div class="platform-stats">
@@ -98,7 +101,10 @@ import StatsBar from '../components/StatsBar.astro';
             <!-- THM -->
             <a href="https://tryhackme.com/p/ferr0" target="_blank" rel="noopener" class="platform-card thm-card">
               <div class="platform-header">
-                <span class="platform-name">TryHackMe</span>
+                <div style="display:flex;align-items:center;gap:0.5rem;">
+                  <img src="https://cdn.simpleicons.org/tryhackme/ef3b36" alt="" class="platform-logo" loading="lazy" aria-hidden="true" onerror="this.style.display='none'" />
+                  <span class="platform-name">TryHackMe</span>
+                </div>
                 <span class="platform-rank thm-rank">Hacker</span>
               </div>
               <div class="platform-stats">
@@ -122,7 +128,10 @@ import StatsBar from '../components/StatsBar.astro';
             <!-- Root-Me -->
             <a href="https://www.root-me.org/Ferr0" target="_blank" rel="noopener" class="platform-card rootme-card">
               <div class="platform-header">
-                <span class="platform-name">Root-Me</span>
+                <div style="display:flex;align-items:center;gap:0.5rem;">
+                  <img src="https://cdn.simpleicons.org/rootme/ffc107" alt="" class="platform-logo" loading="lazy" aria-hidden="true" onerror="this.style.display='none'" />
+                  <span class="platform-name">Root-Me</span>
+                </div>
                 <span class="platform-rank rootme-rank">765 pts</span>
               </div>
               <div class="platform-stats">
@@ -327,7 +336,7 @@ import StatsBar from '../components/StatsBar.astro';
 
   .layer-header {
     display: flex;
-    align-items: baseline;
+    align-items: center;
     gap: 1rem;
     margin-bottom: 1.5rem;
   }
@@ -342,6 +351,12 @@ import StatsBar from '../components/StatsBar.astro';
   .layer-header h2 {
     font-size: 1.4rem;
     margin-bottom: 0;
+  }
+
+  .platform-logo {
+    width: 1.4rem;
+    height: 1.4rem;
+    flex-shrink: 0;
   }
 
   .layer-content > p {

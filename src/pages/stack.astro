@@ -55,15 +55,15 @@ import Base from '../layouts/Base.astro';
           <h2>Build & Deploy — Cloudflare Workers</h2>
         </div>
         <div class="layer-content">
-          <p>On déploie sur Cloudflare Workers — pas de CI/CD automatique pour l'instant. Chaque modification suit une séquence manuelle : <code>npm run build</code> → <code>wrangler deploy</code> → push sur les deux remotes. Le site tourne comme un <strong>Cloudflare Worker</strong> (V8 isolate, serverless), pas du HTML statique pur.</p>
+          <p>On déploie sur Cloudflare Workers via une GitHub Action — chaque <code>git push origin main</code> déclenche automatiquement le build et le déploiement. Le site tourne comme un <strong>Cloudflare Worker</strong> (V8 isolate, serverless), pas du HTML statique pur.</p>
           <div class="details-grid">
             <div class="detail">
               <h4>Pipeline de déploiement</h4>
-              <p><code>npm run build</code> → <code>wrangler deploy</code> → <code>git push origin main</code> + <code>git push forgejo main</code>. Séquence manuelle — une GitHub Action pour automatiser est sur la roadmap.</p>
+              <p>GitHub Action <code>.github/workflows/deploy.yml</code> : <code>npm ci</code> → <code>npx wrangler deploy</code> au push sur <code>main</code>. Le push Forgejo (mirror interne) reste manuel.</p>
             </div>
             <div class="detail">
               <h4>Worker config</h4>
-              <p><code>wrangler.toml</code> : <code>name = "pixelium-site"</code>, <code>[assets] directory = "./dist"</code>. Token API scopé Workers Scripts Edit dans <code>secrets.env</code>.</p>
+              <p><code>wrangler.toml</code> : <code>name = "pixelium-site"</code>, <code>[assets] directory = "./dist"</code>. Token API <code>CLOUDFLARE_API_TOKEN</code> en secret GitHub Actions.</p>
             </div>
           </div>
           <ul class="tags">
@@ -226,8 +226,8 @@ import Base from '../layouts/Base.astro';
               <p>Site 100% pré-rendu, aucun état serveur.</p>
             </div>
             <div class="absent">
-              <h4>CI/CD dédié</h4>
-              <p>Le déploiement est manuel pour l'instant (<code>wrangler deploy</code>). Une GitHub Action <code>push → build → deploy</code> est sur la roadmap Phase 2.</p>
+              <h4>Serveur CI/CD dédié</h4>
+              <p>Pas de runner Jenkins ou GitLab CI — une GitHub Action suffit pour un site statique. Complexité proportionnelle au besoin.</p>
             </div>
           </div>
         </div>
@@ -258,16 +258,16 @@ import Base from '../layouts/Base.astro';
           <div class="flow-step">
             <span class="flow-icon">03</span>
             <div>
-              <h4>wrangler deploy</h4>
-              <p>Upload vers Cloudflare Workers</p>
+              <h4>GitHub Action</h4>
+              <p><code>npm ci</code> → <code>wrangler deploy</code> automatique</p>
             </div>
           </div>
           <div class="flow-arrow">→</div>
           <div class="flow-step">
             <span class="flow-icon">04</span>
             <div>
-              <h4>git push</h4>
-              <p>SSH → GitHub + HTTPS → Forgejo</p>
+              <h4>git push forgejo</h4>
+              <p>HTTPS → Forgejo (mirror interne)</p>
             </div>
           </div>
           <div class="flow-arrow">→</div>
