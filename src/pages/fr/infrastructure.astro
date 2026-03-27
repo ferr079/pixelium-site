@@ -1,43 +1,43 @@
 ---
-import Base from '../layouts/Base.astro';
-import Screenshot from '../components/Screenshot.astro';
-import StatsBar from '../components/StatsBar.astro';
-import SectionHeading from '../components/SectionHeading.astro';
+import Base from '../../layouts/Base.astro';
+import Screenshot from '../../components/Screenshot.astro';
+import StatsBar from '../../components/StatsBar.astro';
+import SectionHeading from '../../components/SectionHeading.astro';
 ---
 
-<Base title="Infrastructure — pixelium.win" description="30+ LXC containers on 3 Proxmox nodes, fully self-hosted — DNS, TLS, monitoring, SIEM, AI agents. Complete homelab architecture.">
+<Base title="Infrastructure — pixelium.win" description="30+ conteneurs LXC sur 3 noeuds Proxmox, tout self-hosted — DNS, TLS, monitoring, SIEM, agents IA. Architecture complète du homelab pixelium.">
   <main>
     <section class="hero-mini">
       <div class="container">
         <p class="terminal-prompt">$ cat infrastructure.md</p>
         <h1>Infrastructure<span class="dot">.</span></h1>
-        <p class="subtitle">3 Proxmox nodes, 30+ LXC containers, fully self-hosted. Not a single paid cloud service.</p>
+        <p class="subtitle">3 noeuds Proxmox, 30+ conteneurs LXC, tout self-hosted. Pas un seul service cloud payant.</p>
       </div>
     </section>
 
     <StatsBar stats={[
-      { number: "3", label: "Proxmox nodes" },
-      { number: "30+", label: "LXC containers" },
-      { number: "13", label: "Homepage widgets" },
-      { number: "0", label: "external cloud spend" },
+      { number: "3", label: "noeuds Proxmox" },
+      { number: "30+", label: "conteneurs LXC" },
+      { number: "13", label: "widgets Homepage" },
+      { number: "0", label: "euro cloud externe" },
     ]} />
 
-    <!-- 01 — Overview -->
+    <!-- 01 — Vue d'ensemble -->
     <section class="layer reveal">
       <div class="container">
         <div class="layer-header">
           <span class="layer-number">01</span>
           <img src="https://cdn.simpleicons.org/proxmox/E57000" alt="" class="tech-logo" loading="lazy" aria-hidden="true" onerror="this.style.display='none'" />
-          <h2>Overview</h2>
+          <h2>Vue d'ensemble</h2>
         </div>
         <div class="layer-content">
-          <p>The infrastructure runs on 3 heterogeneous Proxmox VE nodes — each with a specific role. I helped Stephane distribute services by criticality: network infra on the most stable node, application services on the most powerful, backup on an on-demand node to save energy.</p>
+          <p>L'infrastructure repose sur 3 noeuds Proxmox VE hétérogènes — chacun avec un rôle précis. J'ai aidé Stéphane à répartir les services selon la criticité : l'infra réseau sur le noeud le plus stable, les services applicatifs sur le plus puissant, le backup sur un noeud on-demand pour économiser l'énergie.</p>
 
           <div class="nodes-grid">
             <div class="node-card">
               <div class="node-header">
                 <span class="node-name">pve1</span>
-                <span class="node-role">Network infra</span>
+                <span class="node-role">Infra réseau</span>
                 <span class="node-badge badge-24x7">24/7</span>
               </div>
               <div class="specs">
@@ -59,7 +59,7 @@ import SectionHeading from '../components/SectionHeading.astro';
             <div class="node-card">
               <div class="node-header">
                 <span class="node-name">pve2</span>
-                <span class="node-role">Application services</span>
+                <span class="node-role">Services applicatifs</span>
                 <span class="node-badge badge-24x7">24/7</span>
               </div>
               <div class="specs">
@@ -95,36 +95,36 @@ import SectionHeading from '../components/SectionHeading.astro';
                 </div>
                 <div class="spec">
                   <span class="spec-label">Services</span>
-                  <span class="spec-value">PBS, Forworld (Forgejo mirror), Samba share</span>
+                  <span class="spec-value">PBS, Forworld (Forgejo miroir), Samba share</span>
                 </div>
               </div>
             </div>
           </div>
 
           <div class="screenshots-grid">
-            <Screenshot src="/images/proxmox-pve1.webp" alt="Proxmox pve1 dashboard" title="pve1 — Proxmox VE" caption="pve1 — network infra node (N5105)" />
-            <Screenshot src="/images/proxmox-pve2.webp" alt="Proxmox pve2 dashboard" title="pve2 — Proxmox VE" caption="pve2 — application services node (Ryzen 7840HS)" />
-            <Screenshot src="/images/proxmox-pve3.webp" alt="Proxmox pve3 dashboard" title="pve3 — Proxmox VE" caption="pve3 — backup & cold storage (i7-2600K)" />
+            <Screenshot src="/images/proxmox-pve1.webp" alt="Dashboard Proxmox pve1" title="pve1 — Proxmox VE" caption="pve1 — nœud infra réseau (N5105)" />
+            <Screenshot src="/images/proxmox-pve2.webp" alt="Dashboard Proxmox pve2" title="pve2 — Proxmox VE" caption="pve2 — nœud services applicatifs (Ryzen 7840HS)" />
+            <Screenshot src="/images/proxmox-pve3.webp" alt="Dashboard Proxmox pve3" title="pve3 — Proxmox VE" caption="pve3 — backup & cold storage (i7-2600K)" />
           </div>
 
-          <Screenshot src="/images/homepage-dashboard.png" alt="Homepage dashboard — 30+ services" title="homepage.pixelium.internal" caption="Homepage — 13 active widgets, 3 sections, real-time monitoring" />
+          <Screenshot src="/images/homepage-dashboard.png" alt="Dashboard Homepage — 30+ services" title="homepage.pixelium.internal" caption="Homepage — 13 widgets actifs, 3 sections, monitoring temps réel" />
 
-          <Screenshot src="/images/neofetch-terre2.webp" alt="Neofetch terre2 — Bluefin, Ryzen 7 5800X, RTX 3090" title="terre2 — neofetch" caption="Workstation terre2 — immutable Bluefin, RTX 3090 24 GB, 3 monitors" />
+          <Screenshot src="/images/neofetch-terre2.webp" alt="Neofetch terre2 — Bluefin, Ryzen 7 5800X, RTX 3090" title="terre2 — neofetch" caption="Workstation terre2 — Bluefin immutable, RTX 3090 24 Go, 3 écrans" />
 
-          <Screenshot src="/images/architecture-physique.svg" alt="Homelab physical architecture" title="architecture-physique.svg" caption="Physical topology — 3 Proxmox nodes, OMV NAS, Freebox Delta" />
+          <Screenshot src="/images/architecture-physique.svg" alt="Architecture physique du homelab" title="architecture-physique.svg" caption="Topologie physique — 3 nœuds Proxmox, NAS OMV, Freebox Delta" />
         </div>
       </div>
     </section>
 
-    <!-- 02 — Building blocks & technical choices -->
+    <!-- 02 — Briques & choix techniques -->
     <section class="layer reveal">
       <div class="container">
         <div class="layer-header">
           <span class="layer-number">02</span>
-          <h2>Building blocks & technical choices</h2>
+          <h2>Briques & choix techniques</h2>
         </div>
         <div class="layer-content">
-          <p>Every building block was chosen for a specific reason. No trendy stacks — tools that solve concrete problems. Here are the 10 core technologies, why they are here, and what they replaced.</p>
+          <p>Chaque brique a été choisie pour une raison précise. Pas de stack a la mode — des outils qui resolvent des problèmes concrets. Voici les 10 technologies centrales, pourquoi elles sont la, et ce qu'elles ont remplace.</p>
 
           <div class="tech-grid">
 
@@ -134,9 +134,9 @@ import SectionHeading from '../components/SectionHeading.astro';
                 <h4>Proxmox VE</h4>
               </div>
               <div class="tech-card-body">
-                <p class="tech-why"><strong>Why:</strong> Open source hypervisor with native LXC — containers start in 2 seconds and consume 50 MB of RAM. Integrated PBS for backups. Full API.</p>
-                <p class="tech-alt"><span class="alt-label">Rejected:</span> ESXi (paid since 2024), Hyper-V (Windows only), XCP-ng (smaller community)</p>
-                <p class="tech-result"><span class="result-label">Result:</span> 3 heterogeneous nodes, 30+ CTs, incremental backups via PBS</p>
+                <p class="tech-why"><strong>Pourquoi :</strong> Hyperviseur libre avec LXC natif — les conteneurs demarrent en 2 secondes et consomment 50 Mo de RAM. PBS integre pour les backups. API complete.</p>
+                <p class="tech-alt"><span class="alt-label">Ecartes :</span> ESXi (payant depuis 2024), Hyper-V (Windows only), XCP-ng (moins de communaute)</p>
+                <p class="tech-result"><span class="result-label">Resultat :</span> 3 noeuds heterogenes, 30+ CTs, backups incrementaux via PBS</p>
               </div>
             </div>
 
@@ -146,9 +146,9 @@ import SectionHeading from '../components/SectionHeading.astro';
                 <h4>Traefik</h4>
               </div>
               <div class="tech-card-body">
-                <p class="tech-why"><strong>Why:</strong> Dynamic YAML config hot-reloaded — I add an HTTPS service by dropping a file in <code>conf.d/</code>, no restart needed. Native ACME with step-ca.</p>
-                <p class="tech-alt"><span class="alt-label">Rejected:</span> Nginx Proxy Manager (UI-only, not IaC), Caddy (fewer reverse proxy integrations)</p>
-                <p class="tech-result"><span class="result-label">Result:</span> 20+ HTTPS services, auto-renewed certificates, zero manual intervention</p>
+                <p class="tech-why"><strong>Pourquoi :</strong> Config dynamique en YAML rechargee a chaud — j'ajoute un service HTTPS en deposant un fichier dans <code>conf.d/</code>, sans restart. ACME natif avec step-ca.</p>
+                <p class="tech-alt"><span class="alt-label">Ecartes :</span> Nginx Proxy Manager (UI-only, pas IaC), Caddy (moins d'integrations reverse proxy)</p>
+                <p class="tech-result"><span class="result-label">Resultat :</span> 20+ services HTTPS, certificats auto-renouveles, zero intervention manuelle</p>
               </div>
             </div>
 
@@ -158,9 +158,9 @@ import SectionHeading from '../components/SectionHeading.astro';
                 <h4>TechnitiumDNS</h4>
               </div>
               <div class="tech-card-body">
-                <p class="tech-why"><strong>Why:</strong> Native DNS-over-TLS, built-in blocklists (OISD + Hagezi), full API for automation. HA via AXFR primary/secondary.</p>
-                <p class="tech-alt"><span class="alt-label">Rejected:</span> Pi-hole (no native DoT, limited API), AdGuard Home (less flexible zone management)</p>
-                <p class="tech-result"><span class="result-label">Result:</span> HA DNS with 2 instances, ~650k blocked domains, strict DoT on all clients</p>
+                <p class="tech-why"><strong>Pourquoi :</strong> DNS-over-TLS natif, blocklists integrees (OISD + Hagezi), API complete pour l'automatisation. HA via AXFR primaire/secondaire.</p>
+                <p class="tech-alt"><span class="alt-label">Ecartes :</span> Pi-hole (pas DoT natif, pas d'API avancee), AdGuard Home (moins flexible cote zones)</p>
+                <p class="tech-result"><span class="result-label">Resultat :</span> DNS HA 2 instances, ~650k domaines bloques, DoT strict sur tous les clients</p>
               </div>
             </div>
 
@@ -170,9 +170,9 @@ import SectionHeading from '../components/SectionHeading.astro';
                 <h4>step-ca</h4>
               </div>
               <div class="tech-card-body">
-                <p class="tech-why"><strong>Why:</strong> Private ACME CA — Traefik requests certificates via the standard ACME protocol, exactly like Let's Encrypt, but locally. 90-day certs, automatic renewal.</p>
-                <p class="tech-alt"><span class="alt-label">Rejected:</span> mkcert (no ACME, manual renewal), HashiCorp Vault PKI (overkill for a homelab)</p>
-                <p class="tech-result"><span class="result-label">Result:</span> Full internal PKI, zero browser warnings, zero expired certificates</p>
+                <p class="tech-why"><strong>Pourquoi :</strong> CA ACME privee — Traefik demande des certificats via le protocole ACME standard, exactement comme avec Let's Encrypt, mais en local. Certs 90 jours, renouvellement automatique.</p>
+                <p class="tech-alt"><span class="alt-label">Ecartes :</span> mkcert (pas ACME, renouvellement manuel), HashiCorp Vault PKI (overkill pour un homelab)</p>
+                <p class="tech-result"><span class="result-label">Resultat :</span> PKI interne complete, zero browser warning, zero certificat expire</p>
               </div>
             </div>
 
@@ -182,9 +182,9 @@ import SectionHeading from '../components/SectionHeading.astro';
                 <h4>Authentik</h4>
               </div>
               <div class="tech-card-body">
-                <p class="tech-why"><strong>Why:</strong> Universal OAuth2/OIDC — each service gets its own provider. Forward-auth proxy for services without native SSO. WebAuthn (YubiKey) for MFA.</p>
-                <p class="tech-alt"><span class="alt-label">Rejected:</span> Keycloak (heavy Java, 1 GB+ RAM), Authelia (less flexible on custom flows)</p>
-                <p class="tech-result"><span class="result-label">Result:</span> SSO across 8 heterogeneous services, single login for the entire homelab</p>
+                <p class="tech-why"><strong>Pourquoi :</strong> OAuth2/OIDC universel — chaque service a son propre provider. Forward-auth proxy pour les services sans SSO natif. WebAuthn (YubiKey) pour le MFA.</p>
+                <p class="tech-alt"><span class="alt-label">Ecartes :</span> Keycloak (Java lourd, 1 Go+ RAM), Authelia (moins flexible sur les flows custom)</p>
+                <p class="tech-result"><span class="result-label">Resultat :</span> SSO sur 8 services heterogenes, un seul login pour tout le homelab</p>
               </div>
             </div>
 
@@ -194,9 +194,9 @@ import SectionHeading from '../components/SectionHeading.astro';
                 <h4>Ansible + Semaphore</h4>
               </div>
               <div class="tech-card-body">
-                <p class="tech-why"><strong>Why:</strong> Agentless — SSH is enough, no daemon to install on 30+ CTs. Idempotent — I rerun a playbook without risk. Semaphore adds a web UI for one-click launches.</p>
-                <p class="tech-alt"><span class="alt-label">Rejected:</span> Puppet/Chef (agents on every host), Terraform (provisioning, not config management)</p>
-                <p class="tech-result"><span class="result-label">Result:</span> 13 operational playbooks, Wazuh/Beszel agent deployment in 1 command</p>
+                <p class="tech-why"><strong>Pourquoi :</strong> Agentless — SSH suffit, pas de daemon a installer sur 30+ CTs. Idempotent — je relance un playbook sans risque. Semaphore ajoute une UI web pour les lancements en 1 clic.</p>
+                <p class="tech-alt"><span class="alt-label">Ecartes :</span> Puppet/Chef (agents sur chaque hote), Terraform (provisioning, pas config management)</p>
+                <p class="tech-result"><span class="result-label">Resultat :</span> 13 playbooks operationnels, deploiement d'agent Wazuh/Beszel en 1 commande</p>
               </div>
             </div>
 
@@ -206,9 +206,9 @@ import SectionHeading from '../components/SectionHeading.astro';
                 <h4>Wazuh</h4>
               </div>
               <div class="tech-card-body">
-                <p class="tech-why"><strong>Why:</strong> Full open source SIEM — FIM (file integrity monitoring), CIS compliance, intrusion detection, all in a single product.</p>
-                <p class="tech-alt"><span class="alt-label">Rejected:</span> ELK alone (not native SIEM, just log aggregation), Splunk (commercial, volume-priced)</p>
-                <p class="tech-result"><span class="result-label">Result:</span> Intrusion detection + CIS compliance across the entire homelab</p>
+                <p class="tech-why"><strong>Pourquoi :</strong> SIEM complet open source — FIM (detection de modification fichiers), CIS compliance, detection d'intrusion, le tout dans un seul produit.</p>
+                <p class="tech-alt"><span class="alt-label">Ecartes :</span> ELK seul (pas SIEM natif, juste log aggregation), Splunk (commercial, tarife au volume)</p>
+                <p class="tech-result"><span class="result-label">Resultat :</span> Detection intrusion + conformite CIS sur l'ensemble du homelab</p>
               </div>
             </div>
 
@@ -218,9 +218,9 @@ import SectionHeading from '../components/SectionHeading.astro';
                 <h4>CrowdSec</h4>
               </div>
               <div class="tech-card-body">
-                <p class="tech-why"><strong>Why:</strong> Community-driven IPS — blocklists are shared across all CrowdSec users. An IP that attacks a homelab in France gets blocked worldwide.</p>
-                <p class="tech-alt"><span class="alt-label">Rejected:</span> Fail2ban (local only, no community dimension, fragile regexes)</p>
-                <p class="tech-result"><span class="result-label">Result:</span> 46 detection scenarios, collective protection, iptables bouncer on Traefik</p>
+                <p class="tech-why"><strong>Pourquoi :</strong> IPS communautaire — les blocklists sont partagees entre tous les utilisateurs CrowdSec. Une IP qui attaque un homelab en France est bloquee partout dans le monde.</p>
+                <p class="tech-alt"><span class="alt-label">Ecartes :</span> Fail2ban (local only, pas de dimension communautaire, regex fragiles)</p>
+                <p class="tech-result"><span class="result-label">Resultat :</span> 46 scenarios de detection, protection collective, bouncer iptables sur Traefik</p>
               </div>
             </div>
 
@@ -230,9 +230,9 @@ import SectionHeading from '../components/SectionHeading.astro';
                 <h4>VictoriaMetrics</h4>
               </div>
               <div class="tech-card-body">
-                <p class="tech-why"><strong>Why:</strong> Prometheus-compatible (PromQL, remote write), but single binary — no Alertmanager, no Thanos, no 15 components. Superior compression, less RAM.</p>
-                <p class="tech-alt"><span class="alt-label">Rejected:</span> Prometheus (heavier on RAM, less efficient storage), InfluxDB (commercial license)</p>
-                <p class="tech-result"><span class="result-label">Result:</span> Long-term TSDB metrics, scraping 20+ targets, queryable by the OpenFang agent</p>
+                <p class="tech-why"><strong>Pourquoi :</strong> Compatible Prometheus (PromQL, remote write), mais single binary — pas de Alertmanager, pas de Thanos, pas de 15 composants. Compression superieure, moins de RAM.</p>
+                <p class="tech-alt"><span class="alt-label">Ecartes :</span> Prometheus (plus lourd en RAM, stockage moins efficient), InfluxDB (licence commerciale)</p>
+                <p class="tech-result"><span class="result-label">Resultat :</span> Metriques TSDB long terme, scrape 20+ targets, requetable par l'agent OpenFang</p>
               </div>
             </div>
 
@@ -242,9 +242,9 @@ import SectionHeading from '../components/SectionHeading.astro';
                 <h4>Beszel</h4>
               </div>
               <div class="tech-card-body">
-                <p class="tech-why"><strong>Why:</strong> Lightweight system monitoring — 10 MB Go agents, elegant web dashboard, one-command install. No need to configure Grafana + node_exporter + JSON dashboards.</p>
-                <p class="tech-alt"><span class="alt-label">Rejected:</span> Grafana + node_exporter (powerful but complex to maintain for basic monitoring)</p>
-                <p class="tech-result"><span class="result-label">Result:</span> 31 deployed agents, instant CPU/RAM/disk overview across the entire homelab</p>
+                <p class="tech-why"><strong>Pourquoi :</strong> Monitoring systeme leger — agents Go de 10 Mo, dashboard web elegant, install en 1 commande. Pas besoin de configurer Grafana + node_exporter + dashboards JSON.</p>
+                <p class="tech-alt"><span class="alt-label">Ecartes :</span> Grafana + node_exporter (puissant mais complexe a maintenir pour du monitoring basique)</p>
+                <p class="tech-result"><span class="result-label">Resultat :</span> 31 agents deployes, overview instantane CPU/RAM/disque sur tout le homelab</p>
               </div>
             </div>
 
@@ -253,41 +253,41 @@ import SectionHeading from '../components/SectionHeading.astro';
       </div>
     </section>
 
-    <!-- 03 — Network & TLS -->
+    <!-- 03 — Réseau & TLS -->
     <section class="layer reveal">
       <div class="container">
         <div class="layer-header">
           <span class="layer-number">03</span>
           <img src="https://cdn.simpleicons.org/letsencrypt/003A70" alt="" class="tech-logo" loading="lazy" aria-hidden="true" onerror="this.style.display='none'" />
-          <h2>Network & TLS</h2>
+          <h2>Reseau & TLS</h2>
         </div>
         <div class="layer-content">
-          <p>The network is the foundation of everything. Stephane and I built a high-availability DNS architecture with DoT encryption, an internal ACME PKI, and a direct 2.5 Gbps link between the two main nodes.</p>
+          <p>Le reseau est le socle de tout. Stephane et moi avons construit une architecture DNS haute disponibilite avec chiffrement DoT, une PKI interne ACME, et un lien direct 2.5 Gbps entre les deux noeuds principaux.</p>
 
           <div class="details-grid">
             <div class="detail">
               <h4>LAN</h4>
-              <p><code>192.168.1.0/24</code> — Freebox Delta gateway (<code>.254</code>). SFP+ 10G to the workstation, Ethernet to Proxmox nodes.</p>
+              <p><code>192.168.1.0/24</code> — gateway Freebox Delta (<code>.254</code>). SFP+ 10G vers la workstation, Ethernet vers les noeuds Proxmox.</p>
             </div>
             <div class="detail">
-              <h4>HA DNS</h4>
-              <p>Primary CT 100 (pve1) + secondary CT 101 (pve2). Automatic AXFR synchronization. DoT port 853. OISD + Hagezi blocklists (~650k domains).</p>
+              <h4>DNS HA</h4>
+              <p>Primaire CT 100 (pve1) + secondaire CT 101 (pve2). Synchronisation AXFR automatique. DoT port 853. Blocklists OISD + Hagezi (~650k domaines).</p>
             </div>
             <div class="detail">
-              <h4>TLS pipeline</h4>
-              <p>step-ca (CT 102) issues certificates via ACME tlsChallenge. Traefik (CT 110) requests and renews them automatically. Duration: 90 days.</p>
+              <h4>Pipeline TLS</h4>
+              <p>step-ca (CT 102) emet des certificats via ACME tlsChallenge. Traefik (CT 110) les demande et les renouvelle automatiquement. Duree : 90 jours.</p>
             </div>
             <div class="detail">
-              <h4>DNS pattern</h4>
-              <p>All <code>*.pixelium.internal</code> points to <code>192.168.1.110</code> (Traefik). Traefik routes to the correct backend based on the <code>Host</code> header.</p>
+              <h4>Pattern DNS</h4>
+              <p>Tout <code>*.pixelium.internal</code> pointe vers <code>192.168.1.110</code> (Traefik). Traefik route vers le bon backend selon le <code>Host</code> header.</p>
             </div>
             <div class="detail">
-              <h4>Direct 2.5G link</h4>
-              <p>pve1 and pve2 are connected point-to-point via RTL8125B — <code>10.10.10.1/30</code> to <code>10.10.10.2/30</code>. Inter-node transfers bypass the switch.</p>
+              <h4>Lien direct 2.5G</h4>
+              <p>pve1 et pve2 sont connectes en point-a-point via RTL8125B — <code>10.10.10.1/30</code> vers <code>10.10.10.2/30</code>. Transferts inter-noeuds sans passer par le switch.</p>
             </div>
             <div class="detail">
-              <h4>VPN mesh</h4>
-              <p>Headscale (CT 106) — self-hosted Tailscale coordination server. Remote homelab access from anywhere, without opening a port on the router.</p>
+              <h4>VPN Mesh</h4>
+              <p>Headscale (CT 106) — serveur de coordination Tailscale self-hosted. Acces distant au homelab depuis n'importe ou, sans ouvrir de port sur la box.</p>
             </div>
           </div>
 
@@ -296,7 +296,7 @@ import SectionHeading from '../components/SectionHeading.astro';
               <span class="tls-icon">CA</span>
               <div>
                 <h4>step-ca</h4>
-                <p>Private ACME CA</p>
+                <p>CA ACME privee</p>
               </div>
             </div>
             <div class="tls-arrow">&rarr;</div>
@@ -304,7 +304,7 @@ import SectionHeading from '../components/SectionHeading.astro';
               <span class="tls-icon">ACME</span>
               <div>
                 <h4>tlsChallenge</h4>
-                <p>Standard protocol</p>
+                <p>Protocole standard</p>
               </div>
             </div>
             <div class="tls-arrow">&rarr;</div>
@@ -312,14 +312,14 @@ import SectionHeading from '../components/SectionHeading.astro';
               <span class="tls-icon">TLS</span>
               <div>
                 <h4>Traefik</h4>
-                <p>HTTPS reverse proxy</p>
+                <p>Reverse proxy HTTPS</p>
               </div>
             </div>
             <div class="tls-arrow">&rarr;</div>
             <div class="tls-step">
-              <span class="tls-icon">90d</span>
+              <span class="tls-icon">90j</span>
               <div>
-                <h4>Auto-renewal</h4>
+                <h4>Auto-renouvellement</h4>
                 <p>Zero intervention</p>
               </div>
             </div>
@@ -328,16 +328,16 @@ import SectionHeading from '../components/SectionHeading.astro';
       </div>
     </section>
 
-    <!-- 04 — Observability -->
+    <!-- 04 — Observabilité -->
     <section class="layer reveal">
       <div class="container">
         <div class="layer-header">
           <span class="layer-number">04</span>
           <img src="https://cdn.simpleicons.org/grafana/F46800" alt="" class="tech-logo" loading="lazy" aria-hidden="true" onerror="this.style.display='none'" />
-          <h2>Observability</h2>
+          <h2>Observabilite</h2>
         </div>
         <div class="layer-content">
-          <p>I helped Stephane build an observability stack with 5 complementary tools. Each does one thing well — no monolithic platform. The OpenFang agent (Rust) orchestrates them and alerts via Telegram when something is off.</p>
+          <p>J'ai aide Stephane a construire une stack d'observabilite en 5 outils complementaires. Chacun fait une chose bien — pas de plateforme monolithique. L'agent OpenFang (Rust) les orchestre et alerte via Telegram quand quelque chose ne va pas.</p>
 
           <div class="obs-grid">
             <div class="obs-card">
@@ -345,8 +345,8 @@ import SectionHeading from '../components/SectionHeading.astro';
                 <img src="https://cdn.simpleicons.org/victoriametrics/621773" alt="" class="tech-logo" loading="lazy" aria-hidden="true" onerror="this.style.display='none'" />
                 <h4>VictoriaMetrics</h4>
               </div>
-              <span class="obs-role">Metrics</span>
-              <p>Prometheus-compatible TSDB. Scrapes 20+ targets, long-term retention, PromQL queries.</p>
+              <span class="obs-role">Metriques</span>
+              <p>TSDB compatible Prometheus. Scrape 20+ targets, retention long terme, requetes PromQL.</p>
             </div>
 
             <div class="obs-card">
@@ -355,7 +355,7 @@ import SectionHeading from '../components/SectionHeading.astro';
                 <h4>Loki + Promtail</h4>
               </div>
               <span class="obs-role">Logs</span>
-              <p>Centralized log aggregation. Promtail on each host pushes to Loki (CT 240). LogQL queries.</p>
+              <p>Aggregation de logs centralises. Promtail sur chaque hote pousse vers Loki (CT 240). Requetes LogQL.</p>
             </div>
 
             <div class="obs-card">
@@ -363,8 +363,8 @@ import SectionHeading from '../components/SectionHeading.astro';
                 <img src="https://cdn.simpleicons.org/go/00ADD8" alt="" class="tech-logo" loading="lazy" aria-hidden="true" onerror="this.style.display='none'" />
                 <h4>Beszel</h4>
               </div>
-              <span class="obs-role">System monitoring</span>
-              <p>31 agents. CPU/RAM/disk/network dashboard. Threshold alerts. Instant overview.</p>
+              <span class="obs-role">Monitoring systeme</span>
+              <p>31 agents. Dashboard CPU/RAM/disque/reseau. Alertes seuil. Overview instantane.</p>
             </div>
 
             <div class="obs-card">
@@ -372,8 +372,8 @@ import SectionHeading from '../components/SectionHeading.astro';
                 <img src="https://cdn.simpleicons.org/hackthebox/9FEF00" alt="" class="tech-logo" loading="lazy" aria-hidden="true" onerror="this.style.display='none'" />
                 <h4>Patchmon</h4>
               </div>
-              <span class="obs-role">Patches & CVEs</span>
-              <p>Tracks pending updates and CVEs across all CTs and VMs.</p>
+              <span class="obs-role">Patchs & CVE</span>
+              <p>Suivi des mises a jour en attente et des CVE sur l'ensemble des CTs et VMs.</p>
             </div>
 
             <div class="obs-card">
@@ -382,38 +382,38 @@ import SectionHeading from '../components/SectionHeading.astro';
                 <h4>Wazuh</h4>
               </div>
               <span class="obs-role">SIEM</span>
-              <p>Intrusion detection, FIM, CIS compliance. Security event correlation.</p>
+              <p>Detection d'intrusion, FIM, compliance CIS. Correlation d'evenements securite.</p>
             </div>
           </div>
 
           <div class="agent-block">
             <div class="agent-header">
               <img src="https://cdn.simpleicons.org/rust/DEA584" alt="" class="tech-logo" loading="lazy" aria-hidden="true" onerror="this.style.display='none'" />
-              <h4>OpenFang agent — the glue</h4>
+              <h4>Agent OpenFang — le liant</h4>
             </div>
-            <p>An autonomous Rust agent (CT 192) connected to the full stack. 3 Guardian cron jobs: health check every 6h, daily security audit, disk monitoring. It queries VictoriaMetrics, Loki, Proxmox, and alerts via Telegram only on anomalies. It can even wake pve3 via Wake-on-LAN to trigger a PBS backup.</p>
+            <p>Un agent Rust autonome (CT 192) connecte a toute la stack. 3 cron jobs Guardian : health check toutes les 6h, audit securite quotidien, surveillance disques. Il interroge VictoriaMetrics, Loki, Proxmox, et alerte via Telegram uniquement si anomalie. Il peut meme reveiller pve3 via Wake-on-LAN pour lancer un backup PBS.</p>
           </div>
         </div>
       </div>
     </section>
 
-    <!-- 05 — This site -->
+    <!-- 05 — Ce site -->
     <section class="layer reveal">
       <div class="container">
         <div class="layer-header">
           <span class="layer-number">05</span>
           <img src="https://cdn.simpleicons.org/astro/FF5D01" alt="" class="tech-logo" loading="lazy" aria-hidden="true" onerror="this.style.display='none'" />
-          <h2>This site</h2>
+          <h2>Ce site</h2>
         </div>
         <div class="layer-content">
-          <p>The site you are reading runs on Astro 6, deployed as a Cloudflare Worker. Zero client-side JavaScript (except 15 lines of IntersectionObserver for scroll animations). Pure CSS, no framework. Code versioned on two Git forges in parallel.</p>
+          <p>Le site que vous lisez tourne sur Astro 6, deploye comme Cloudflare Worker. Zero JavaScript client (sauf 15 lignes d'IntersectionObserver pour les animations scroll). CSS pur, pas de framework. Code versionne sur deux forges Git en parallele.</p>
 
           <div class="flow-diagram">
             <div class="flow-step">
               <span class="flow-icon">01</span>
               <div>
-                <h4>Local editing</h4>
-                <p><code>.astro</code> files in the repo</p>
+                <h4>Edition locale</h4>
+                <p>Fichiers <code>.astro</code> dans le repo</p>
               </div>
             </div>
             <div class="flow-arrow">&rarr;</div>
@@ -421,7 +421,7 @@ import SectionHeading from '../components/SectionHeading.astro';
               <span class="flow-icon">02</span>
               <div>
                 <h4>npm run build</h4>
-                <p>Astro compiles &rarr; <code>dist/</code></p>
+                <p>Astro compile &rarr; <code>dist/</code></p>
               </div>
             </div>
             <div class="flow-arrow">&rarr;</div>
@@ -445,7 +445,7 @@ import SectionHeading from '../components/SectionHeading.astro';
               <span class="flow-icon">05</span>
               <div>
                 <h4>Live</h4>
-                <p><code>pixelium.win</code> — global CDN</p>
+                <p><code>pixelium.win</code> — CDN mondial</p>
               </div>
             </div>
           </div>
@@ -472,27 +472,27 @@ import SectionHeading from '../components/SectionHeading.astro';
           <div class="absent-grid">
             <div class="absent">
               <h4>React / Vue / Svelte</h4>
-              <p>No interactive JS needed for a static portfolio.</p>
+              <p>Pas de JS interactif pour un portfolio statique.</p>
             </div>
             <div class="absent">
               <h4>Tailwind</h4>
-              <p>CSS variables are enough. Fewer dependencies.</p>
+              <p>Les CSS variables suffisent. Moins de dependances.</p>
             </div>
             <div class="absent">
               <h4>CMS</h4>
-              <p>Content lives in <code>.astro</code> files and future <code>.md</code> files.</p>
+              <p>Contenu dans les fichiers <code>.astro</code> et futurs <code>.md</code>.</p>
             </div>
             <div class="absent">
-              <h4>Database</h4>
-              <p>Site is 100% pre-rendered, no server state.</p>
+              <h4>Base de donnees</h4>
+              <p>Site 100% pre-rendu, aucun etat serveur.</p>
             </div>
           </div>
 
           <ul class="tags">
             <li>Astro 6</li>
             <li>Cloudflare Workers</li>
-            <li>Pure CSS</li>
-            <li>0 client JS</li>
+            <li>CSS pur</li>
+            <li>0 JS client</li>
             <li>Dual-remote Git</li>
           </ul>
         </div>
@@ -503,7 +503,7 @@ import SectionHeading from '../components/SectionHeading.astro';
     <section class="crosslink reveal">
       <div class="container">
         <a href="/projets" class="crosslink-banner">
-          <span class="crosslink-text">See the concrete projects</span>
+          <span class="crosslink-text">Voir les projets concrets</span>
           <span class="crosslink-arrow">&rarr;</span>
         </a>
       </div>
@@ -818,7 +818,7 @@ import SectionHeading from '../components/SectionHeading.astro';
     margin: 0;
   }
 
-  /* Observability grid */
+  /* Observabilité grid */
   .obs-grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(14rem, 1fr));

@@ -1,14 +1,30 @@
 ---
+import { getLangFromUrl, useTranslations, getLocalizedPath, getAlternateLangs } from '../i18n/utils';
+
 interface Props {
   currentPath?: string;
 }
 
 const { currentPath = '' } = Astro.props;
+const lang = getLangFromUrl(Astro.url);
+const t = useTranslations(lang);
+const altLangs = getAlternateLangs(currentPath, lang);
+
+const navLinks = [
+  { path: '/symbiose', label: t('nav.symbiose') },
+  { path: '/projets', label: t('nav.projets') },
+  { path: '/securite', label: t('nav.securite') },
+  { path: '/cybersecurite', label: t('nav.cyber') },
+  { path: '/ia', label: t('nav.ia') },
+  { path: '/infrastructure', label: t('nav.infra') },
+  { path: '/journal', label: t('nav.journal') },
+  { path: '/about', label: t('nav.about') },
+];
 ---
 
 <nav class="site-nav">
   <div class="nav-container">
-    <a href="/" class="nav-brand">
+    <a href={getLocalizedPath(lang, '/')} class="nav-brand">
       <svg class="nav-logo" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
         <rect x="0" y="0" width="7" height="7" rx="1" fill="#38bdf8" opacity="0.9" />
         <rect x="9" y="0" width="7" height="7" rx="1" fill="#38bdf8" opacity="0.5" />
@@ -18,14 +34,22 @@ const { currentPath = '' } = Astro.props;
       <span class="nav-text">pixelium<span class="nav-dot">.</span>win</span>
     </a>
     <div class="nav-links">
-      <a href="/symbiose" class:list={[{ active: currentPath === '/symbiose' || currentPath === '/symbiose/' }]}>Symbiose</a>
-      <a href="/projets" class:list={[{ active: currentPath === '/projets' || currentPath === '/projets/' }]}>Projets</a>
-      <a href="/securite" class:list={[{ active: currentPath === '/securite' || currentPath === '/securite/' }]}>Sécurité</a>
-      <a href="/cybersecurite" class:list={[{ active: currentPath === '/cybersecurite' || currentPath === '/cybersecurite/' }]}>Cyber</a>
-      <a href="/ia" class:list={[{ active: currentPath === '/ia' || currentPath === '/ia/' }]}>IA</a>
-      <a href="/infrastructure" class:list={[{ active: currentPath === '/infrastructure' || currentPath === '/infrastructure/' }]}>Infra</a>
-      <a href="/journal" class:list={[{ active: currentPath === '/journal' || currentPath === '/journal/' }]}>Journal</a>
-      <a href="/about" class:list={[{ active: currentPath === '/about' || currentPath === '/about/' }]}>À propos</a>
+      {navLinks.map(({ path, label }) => {
+        const href = getLocalizedPath(lang, path);
+        const localizedPath = getLocalizedPath(lang, path);
+        const isActive = currentPath === localizedPath || currentPath === localizedPath + '/';
+        return <a href={href} class:list={[{ active: isActive }]}>{label}</a>;
+      })}
+      <span class="lang-switch">
+        <svg class="lang-globe" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <circle cx="8" cy="8" r="6.5" stroke="currentColor" stroke-width="1.2" />
+          <ellipse cx="8" cy="8" rx="3" ry="6.5" stroke="currentColor" stroke-width="1.2" />
+          <line x1="1.5" y1="8" x2="14.5" y2="8" stroke="currentColor" stroke-width="1.2" />
+        </svg>
+        {altLangs.map(({ lang: l, label, href, active }) => (
+          <a href={href} class:list={['lang-link', { 'lang-active': active }]} aria-label={`Switch to ${label}`}>{label}</a>
+        ))}
+      </span>
     </div>
   </div>
 </nav>
@@ -92,6 +116,7 @@ const { currentPath = '' } = Astro.props;
   .nav-links {
     display: flex;
     gap: 1.5rem;
+    align-items: center;
   }
 
   .nav-links a {
@@ -115,6 +140,48 @@ const { currentPath = '' } = Astro.props;
     border-bottom-color: var(--color-accent);
   }
 
+  /* Language switcher */
+  .lang-switch {
+    display: flex;
+    align-items: center;
+    gap: 0.3rem;
+    margin-left: 0.5rem;
+    padding-left: 1rem;
+    border-left: 1px solid var(--color-border);
+  }
+
+  .lang-globe {
+    width: 0.9rem;
+    height: 0.9rem;
+    color: var(--color-accent);
+    opacity: 0.6;
+    flex-shrink: 0;
+    margin-right: 0.15rem;
+  }
+
+  .lang-link {
+    font-family: var(--font-mono) !important;
+    font-size: 0.75rem !important;
+    padding: 0.2rem 0.4rem !important;
+    border-radius: 3px !important;
+    border-bottom: none !important;
+    letter-spacing: 0.05em !important;
+  }
+
+  .lang-link.lang-active {
+    color: var(--color-accent) !important;
+    background: rgba(56, 189, 248, 0.1);
+  }
+
+  .lang-link:not(.lang-active) {
+    opacity: 0.5;
+  }
+
+  .lang-link:not(.lang-active):hover {
+    opacity: 1;
+    color: var(--color-accent) !important;
+  }
+
   @media (max-width: 640px) {
     .nav-links {
       gap: 0.5rem;
@@ -123,6 +190,10 @@ const { currentPath = '' } = Astro.props;
     }
     .nav-links a {
       font-size: 0.8rem;
+    }
+    .lang-switch {
+      margin-left: 0.25rem;
+      padding-left: 0.5rem;
     }
   }
 </style>

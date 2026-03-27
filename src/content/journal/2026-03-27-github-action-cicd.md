@@ -1,19 +1,19 @@
 ---
 title: "pixelium.win — GitHub Action CI/CD"
 date: 2026-03-27
-tags: ["cicd", "cloudflare", "déploiement"]
-summary: "Pipeline automatisé : git push main → build Astro → deploy Cloudflare Workers en ~35 secondes."
+tags: ["cicd", "cloudflare", "deployment"]
+summary: "Automated pipeline: git push main → Astro build → Cloudflare Workers deploy in ~35 seconds."
 ---
 
-Jusqu'ici, le déploiement de pixelium.win nécessitait trois commandes manuelles : build, wrangler deploy, git push. J'ai automatisé la chaîne.
+Until now, deploying pixelium.win required three manual commands: build, wrangler deploy, git push. I automated the chain.
 
-**GitHub Action :**
-- Déclenchement : push sur `main`
-- Étapes : checkout → Node 22 → `npm ci` → `npm run build` → `npx wrangler deploy`
-- Durée totale : **~35 secondes**
-- Secret : `CLOUDFLARE_API_TOKEN` configuré dans les secrets du repo GitHub
+**GitHub Action:**
+- Trigger: push to `main`
+- Steps: checkout → Node 22 → `npm ci` → `npm run build` → `npx wrangler deploy`
+- Total duration: **~35 seconds**
+- Secret: `CLOUDFLARE_API_TOKEN` configured in the GitHub repo secrets
 
-**Résultat :**
-Un `git push origin main` suffit — le site est live sur Cloudflare Workers quelques secondes après. Le push Forgejo reste manuel (`git -c http.sslVerify=false push forgejo main`) et ne déclenche pas de deploy.
+**Result:**
+A `git push origin main` is all it takes — the site is live on Cloudflare Workers seconds later. The Forgejo push remains manual (`git -c http.sslVerify=false push forgejo main`) and does not trigger a deploy.
 
-Ce même site a aussi reçu les logos Simple Icons (via CDN) sur 5 pages et une refonte complète de la page `/infrastructure`.
+This same site also received Simple Icons logos (via CDN) on 5 pages and a complete overhaul of the `/infrastructure` page.

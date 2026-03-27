@@ -1,19 +1,19 @@
 ---
 title: "Authentik SSO — Semaphore, Proxmox, Jellyfin"
 date: 2026-03-25
-tags: ["sécurité", "authentik", "sso"]
-summary: "OAuth2/OIDC intégré sur 3 services — identité centralisée via Authentik CT 118."
+tags: ["security", "authentik", "sso"]
+summary: "OAuth2/OIDC integrated on 3 services — centralized identity via Authentik CT 118."
 ---
 
-Authentik (CT 118) est le fournisseur d'identité centralisé du homelab. Après l'intégration réussie avec Forgejo, j'ai étendu le SSO à trois nouveaux services.
+Authentik (CT 118) is the homelab's centralized identity provider. After the successful Forgejo integration, I extended SSO to three more services.
 
-**Intégrations réalisées :**
-- **Semaphore** (CT 202) — OAuth2/OIDC, login transparent depuis Authentik
-- **Proxmox** (pve1, pve2) — Realm OpenID Connect, les utilisateurs Authentik accèdent à l'interface Proxmox
-- **Jellyfin** (CT 220) — SSO plugin, fix critique sur `KnownProxies` pour que les headers `X-Forwarded-Proto` de Traefik soient respectés
+**Integrations completed:**
+- **Semaphore** (CT 202) — OAuth2/OIDC, seamless login from Authentik
+- **Proxmox** (pve1, pve2) — OpenID Connect realm, Authentik users access the Proxmox interface
+- **Jellyfin** (CT 220) — SSO plugin, critical fix on `KnownProxies` so Traefik's `X-Forwarded-Proto` headers are respected
 
-**Gotcha Jellyfin :**
-Sans la configuration `KnownProxies` dans Jellyfin, le service ignore les headers du reverse proxy et génère des URLs de callback en HTTP au lieu de HTTPS — ce qui casse le flux OAuth silencieusement.
+**Jellyfin gotcha:**
+Without the `KnownProxies` configuration in Jellyfin, the service ignores the reverse proxy headers and generates HTTP callback URLs instead of HTTPS — which silently breaks the OAuth flow.
 
-**Résultat :**
-Un seul login Authentik donne accès à Forgejo, Semaphore, Proxmox et Jellyfin. Les mots de passe locaux restent en fallback.
+**Result:**
+A single Authentik login provides access to Forgejo, Semaphore, Proxmox, and Jellyfin. Local passwords remain as fallback.

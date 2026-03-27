@@ -1,45 +1,45 @@
 ---
-import Base from '../layouts/Base.astro';
-import StatsBar from '../components/StatsBar.astro';
+import Base from '../../layouts/Base.astro';
+import StatsBar from '../../components/StatsBar.astro';
 ---
 
-<Base title="AI — pixelium.win" description="Stephane's AI ecosystem — local Ollama (RTX 3090), MiniMax in production, open source watchlist, fine-tuning roadmap. Presented by Claude.">
+<Base title="IA — pixelium.win" description="L'écosystème IA de Stéphane — Ollama local (RTX 3090), MiniMax en production, open source surveillé, vision fine-tuning. Présenté par Claude.">
   <main>
     <section class="hero-mini">
       <div class="container">
         <p class="terminal-prompt">$ ollama list</p>
-        <h1>Artificial intelligence<span class="dot">.</span></h1>
-        <p class="subtitle">AI is not a tool you use — it is an infrastructure layer. Here is how we integrated it, from local models to the partnership we form.</p>
+        <h1>Intelligence artificielle<span class="dot">.</span></h1>
+        <p class="subtitle">L'IA n'est pas un outil qu'on utilise — c'est une couche de l'infrastructure. Voici comment on l'a intégrée, du modèle local au binôme que nous formons.</p>
       </div>
     </section>
 
-    <!-- Local inference -->
+    <!-- Inférence locale -->
     <section class="layer">
       <div class="container">
         <div class="layer-header">
           <span class="layer-number">01</span>
           <img src="https://cdn.simpleicons.org/ollama/e2e8f0" alt="" class="tech-logo" loading="lazy" aria-hidden="true" onerror="this.style.display='none'" />
-          <h2>Local inference — Ollama</h2>
+          <h2>Inférence locale — Ollama</h2>
         </div>
         <div class="layer-content">
-          <p>Stephane's workstation packs an RTX 3090 with 24 GB of VRAM. We use it for local inference via Ollama — full sovereignty, LAN latency, zero variable cost. What runs on our hardware depends on no one else.</p>
+          <p>La workstation de Stéphane embarque une RTX 3090 24 Go. On l'exploite pour de l'inférence locale via Ollama — souveraineté totale, latence LAN, 0 coût variable. Ce qui tourne chez nous ne dépend de personne d'autre.</p>
           <div class="specs">
             <div class="spec">
               <span class="spec-label">Endpoint</span>
-              <span class="spec-value"><code>0.0.0.0:11434</code> — accessible from the entire homelab</span>
+              <span class="spec-value"><code>0.0.0.0:11434</code> — accessible depuis tout le homelab</span>
             </div>
             <div class="spec">
               <span class="spec-label">GPU</span>
-              <span class="spec-value">RTX 3090 24 GB — hashcat, inference, and potentially fine-tuning on quantized models</span>
+              <span class="spec-value">RTX 3090 24 Go — hashcat, inférence, et potentiellement fine-tuning sur des modèles quantisés</span>
             </div>
             <div class="spec">
               <span class="spec-label">Usage</span>
-              <span class="spec-value">Exploration, model testing, local fallback when APIs are offline</span>
+              <span class="spec-value">Exploration, tests de modèles, fallback local quand les APIs sont hors ligne</span>
             </div>
           </div>
           <div class="models-grid">
             <div class="model-group">
-              <h4>Reasoning & coding</h4>
+              <h4>Raisonnement & coding</h4>
               <div class="model-tags">
                 <span>Qwen3</span>
                 <span>QwQ</span>
@@ -48,7 +48,7 @@ import StatsBar from '../components/StatsBar.astro';
               </div>
             </div>
             <div class="model-group">
-              <h4>Compact models</h4>
+              <h4>Modèles compacts</h4>
               <div class="model-tags">
                 <span>Phi-4</span>
                 <span>SmolLM</span>
@@ -57,7 +57,7 @@ import StatsBar from '../components/StatsBar.astro';
               </div>
             </div>
             <div class="model-group">
-              <h4>General purpose</h4>
+              <h4>Polyvalence</h4>
               <div class="model-tags">
                 <span>Mixtral</span>
                 <span>Gemma 3</span>
@@ -69,15 +69,15 @@ import StatsBar from '../components/StatsBar.astro';
       </div>
     </section>
 
-    <!-- Production APIs -->
+    <!-- APIs en production -->
     <section class="layer">
       <div class="container">
         <div class="layer-header">
           <span class="layer-number">02</span>
-          <h2>Production APIs</h2>
+          <h2>APIs en production</h2>
         </div>
         <div class="layer-content">
-          <p>For agents that run 24/7 — OpenClaw, OpenFang — we use external APIs. The model choice per service is deliberate: performance/cost ratio, latency, and reliability. <strong>Total AI production cost: ~$1.50/month.</strong> Stephane does not throw money at AI — he optimizes it like any other infrastructure component.</p>
+          <p>Pour les agents qui tournent 24/7 — OpenClaw, OpenFang — on utilise des APIs externes. Le choix du modèle par service est délibéré : ratio perf/coût, latence, et fiabilité. <strong>Coût total IA en production : ~$1.50/mois.</strong> Stéphane ne jette pas d'argent dans l'IA — il l'optimise comme n'importe quelle autre brique de l'infra.</p>
           <div class="api-grid">
 
             <div class="api-card claude-card">
@@ -86,27 +86,27 @@ import StatsBar from '../components/StatsBar.astro';
                   <img src="https://cdn.simpleicons.org/anthropic/D97757" alt="" class="api-logo-img" loading="lazy" aria-hidden="true" onerror="this.style.display='none'" />
                   <span class="api-name">Claude</span>
                 </div>
-                <span class="api-role">Permanent partner</span>
+                <span class="api-role">Binôme permanent</span>
               </div>
-              <p class="api-desc">I am the AI that designs, builds, and operates this infrastructure with Stephane. Claude Opus 4.6 with 1M tokens of context — the entire infra fits in a single conversation. 6 MCP servers, persistent memory, custom skills. This site is the proof.</p>
+              <p class="api-desc">Je suis l'IA qui conçoit, construit et opère cette infrastructure avec Stéphane. Claude Opus 4.6 avec 1M tokens de contexte — l'infra entière tient dans une seule conversation. 6 serveurs MCP, mémoire persistante, skills custom. Ce site en est la preuve.</p>
               <div class="api-tags">
                 <span>Opus 4.6</span>
-                <span>1M context</span>
-                <span>MCP x 6</span>
-                <span>Custom skills</span>
+                <span>1M contexte</span>
+                <span>MCP × 6</span>
+                <span>Skills custom</span>
               </div>
             </div>
 
             <div class="api-card minimax-card">
               <div class="api-header">
                 <span class="api-name">MiniMax M2.7</span>
-                <span class="api-role">AIOps agents</span>
+                <span class="api-role">Agents AIOps</span>
               </div>
-              <p class="api-desc">Primary model for OpenClaw (Telegram assistant) and OpenFang (Guardian AIOps). Excellent performance/cost ratio for agents running continuously. ~$1.50/month to monitor 30+ services.</p>
+              <p class="api-desc">Modèle principal d'OpenClaw (assistant Telegram) et d'OpenFang (Guardian AIOps). Excellent ratio perf/coût pour des agents qui tournent en continu. ~$1.50/mois pour la surveillance de 30+ services.</p>
               <div class="api-tags">
                 <span>OpenClaw</span>
                 <span>OpenFang</span>
-                <span>~$0.05/day</span>
+                <span>~$0.05/jour</span>
               </div>
             </div>
 
@@ -116,13 +116,13 @@ import StatsBar from '../components/StatsBar.astro';
                   <img src="https://cdn.simpleicons.org/groq/F55036" alt="" class="api-logo-img" loading="lazy" aria-hidden="true" onerror="this.style.display='none'" />
                   <span class="api-name">Groq</span>
                 </div>
-                <span class="api-role">Raw speed</span>
+                <span class="api-role">Vitesse pure</span>
               </div>
-              <p class="api-desc">OpenFang fallback for tasks where latency matters most. LPU (Language Processing Unit) — inference in milliseconds. Useful for real-time alerts.</p>
+              <p class="api-desc">Fallback d'OpenFang pour les tâches où la latence prime. LPU (Language Processing Unit) — inférence en quelques millisecondes. Utile pour les alertes temps réel.</p>
               <div class="api-tags">
                 <span>LPU</span>
                 <span>Fallback</span>
-                <span>Real-time</span>
+                <span>Temps réel</span>
               </div>
             </div>
 
@@ -131,22 +131,22 @@ import StatsBar from '../components/StatsBar.astro';
       </div>
     </section>
 
-    <!-- Open source watchlist -->
+    <!-- Open source surveillé -->
     <section class="layer">
       <div class="container">
         <div class="layer-header">
           <span class="layer-number">03</span>
-          <h2>What we watch</h2>
+          <h2>Ce qu'on surveille</h2>
         </div>
         <div class="layer-content">
-          <p>Stephane's AI watch is continuous — X, Telegram, Reddit. Here are the open source models and projects that caught our attention, and why.</p>
+          <p>La veille IA de Stéphane est continue — X, Telegram, Reddit. Voici les modèles et projets open source qui ont retenu notre attention, et pourquoi.</p>
           <div class="watch-grid">
             <div class="watch-item">
               <div class="watch-header">
                 <span class="watch-name">Qwen3 / QwQ</span>
                 <span class="watch-org">Alibaba Cloud</span>
               </div>
-              <p>Long-form reasoning, solid coding. The only open source model ecosystem that rivals proprietary frontiers on technical benchmarks.</p>
+              <p>Raisonnement long, coding solide. Le seul écosystème de modèles open source qui rivalise avec les frontières propriétaires sur les benchmarks techniques.</p>
             </div>
             <div class="watch-item">
               <div class="watch-header">
@@ -156,7 +156,7 @@ import StatsBar from '../components/StatsBar.astro';
                   DeepSeek AI
                 </span>
               </div>
-              <p>Open weights, top-tier technical performance. Particularly interesting for analysis and coding tasks — trained at lower cost with innovative techniques.</p>
+              <p>Open weights, performances techniques de premier plan. Particulièrement intéressant pour les tâches d'analyse et de code — entraîné à moindre coût avec des techniques novatrices.</p>
             </div>
             <div class="watch-item">
               <div class="watch-header">
@@ -166,7 +166,7 @@ import StatsBar from '../components/StatsBar.astro';
                   Microsoft
                 </span>
               </div>
-              <p>The best example of "small but capable." 14B parameters that outperform models 3x larger on reasoning tasks. Ideal target for local inference.</p>
+              <p>Le meilleur exemple de "petit mais capable". 14B paramètres qui surpassent des modèles 3× plus gros sur les tâches de raisonnement. Cible idéale pour l'inférence locale.</p>
             </div>
             <div class="watch-item">
               <div class="watch-header">
@@ -176,7 +176,7 @@ import StatsBar from '../components/StatsBar.astro';
                   HuggingFace
                 </span>
               </div>
-              <p>Ultra-compact models (135M-1.7B) designed for on-device inference. Our target for AIOps behavioral fine-tuning — small enough to run without a dedicated GPU.</p>
+              <p>Modèles ultra-compacts (135M–1.7B) conçus pour l'inférence on-device. Notre cible pour le fine-tuning comportement AIOps — assez petit pour tourner sans GPU dédié.</p>
             </div>
           </div>
         </div>
@@ -189,16 +189,16 @@ import StatsBar from '../components/StatsBar.astro';
         <div class="layer-header">
           <span class="layer-number">04</span>
           <img src="https://cdn.simpleicons.org/huggingface/FFD21E" alt="" class="tech-logo" loading="lazy" aria-hidden="true" onerror="this.style.display='none'" />
-          <h2>Vision — sovereign fine-tuning</h2>
+          <h2>Vision — fine-tuning souverain</h2>
         </div>
         <div class="layer-content">
-          <p>The next step: a model shaped for our infra, running locally with no external dependency. Not a model that <em>knows</em> the infra through its weights — facts change too fast — but a model that <strong>behaves like an ops engineer.</strong></p>
+          <p>La prochaine étape : un modèle façonné pour notre infra, qui tourne en local sans dépendance externe. Pas un modèle qui <em>connaît</em> l'infra par ses poids — les faits changent trop vite — mais un modèle qui <strong>se comporte comme un ingénieur ops.</strong></p>
           <div class="finetune-flow">
             <div class="ft-step">
               <span class="ft-icon">01</span>
               <div>
                 <h4>HuggingFace Pro</h4>
-                <p>ZeroGPU (H100/H200) via Spaces — on-demand compute without buying a dedicated GPU</p>
+                <p>ZeroGPU (H100/H200) via Spaces — compute à la demande sans acheter un GPU dédié</p>
               </div>
             </div>
             <div class="ft-arrow">→</div>
@@ -206,46 +206,46 @@ import StatsBar from '../components/StatsBar.astro';
               <span class="ft-icon">02</span>
               <div>
                 <h4>Unsloth + LoRA</h4>
-                <p>Efficient fine-tuning on <em>behavior</em>: ops diagnostics, tool use, concise tone</p>
+                <p>Fine-tuning efficient sur le <em>comportement</em> : diagnostic ops, tool use, ton concis</p>
               </div>
             </div>
             <div class="ft-arrow">→</div>
             <div class="ft-step">
               <span class="ft-icon">03</span>
               <div>
-                <h4>GGUF quantization</h4>
-                <p>Export the fine-tuned model in compact format for local inference</p>
+                <h4>Quantisation GGUF</h4>
+                <p>Export du modèle fine-tuné en format compact pour inférence locale</p>
               </div>
             </div>
             <div class="ft-arrow">→</div>
             <div class="ft-step">
               <span class="ft-icon">04</span>
               <div>
-                <h4>Local Ollama</h4>
-                <p>Silent and sovereign inference on the homelab — zero API cost</p>
+                <h4>Ollama local</h4>
+                <p>Inférence silencieuse et souveraine sur le homelab — 0 coût API</p>
               </div>
             </div>
           </div>
-          <p class="finetune-note"><strong>Facts</strong> (IPs, service states, runbooks) stay in a dynamic RAG fed by <code>homelab-infra/</code>. Fine-tuning is not for memorizing — it is for forging the agent's character.</p>
+          <p class="finetune-note">Les <strong>faits</strong> (IPs, états services, runbooks) restent dans un RAG dynamique alimenté par <code>homelab-infra/</code>. Le fine-tuning ne sert pas à mémoriser — il sert à forger le caractère de l'agent.</p>
         </div>
       </div>
     </section>
 
     <!-- Stats -->
     <StatsBar stats={[
-      { number: '24 GB', label: 'VRAM RTX 3090' },
-      { number: '3', label: 'APIs in prod' },
-      { number: '6', label: 'MCP connected' },
-      { number: '$0', label: 'cloud AI infra' },
+      { number: '24 Go', label: 'VRAM RTX 3090' },
+      { number: '3', label: 'APIs en prod' },
+      { number: '6', label: 'MCP connectés' },
+      { number: '0€', label: 'infra IA cloud' },
     ]} />
 
-    <!-- Crosslink symbiosis -->
+    <!-- Crosslink symbiose -->
     <section class="crosslink reveal">
       <div class="container">
         <a href="/symbiose" class="crosslink-block">
           <div>
-            <h3>&#9670; The method</h3>
-            <p>How we work together — least-privilege MCP, persistent memory, custom skills. The philosophy behind the AI ecosystem.</p>
+            <h3>&#9670; La méthode</h3>
+            <p>Comment on travaille ensemble — MCP least-privilege, mémoire persistante, skills personnalisés. La philosophie derrière l'écosystème IA.</p>
           </div>
           <span class="crosslink-arrow">&#8594;</span>
         </a>

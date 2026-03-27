@@ -1,5 +1,5 @@
 ---
-import Base from '../layouts/Base.astro';
+import Base from '../../layouts/Base.astro';
 
 const skills = [
   {
@@ -7,19 +7,19 @@ const skills = [
     items: ['Proxmox VE', 'LXC / KVM', 'PBS', 'Ansible', 'Semaphore'],
   },
   {
-    category: 'Network & DNS',
+    category: 'Réseau & DNS',
     items: ['Traefik', 'TechnitiumDNS', 'DoT / DoH', 'step-ca (PKI)', 'ACME'],
   },
   {
-    category: 'Security',
+    category: 'Sécurité',
     items: ['Wazuh SIEM', 'CrowdSec IPS', 'Authentik SSO', 'Headscale VPN', 'Vaultwarden'],
   },
   {
-    category: 'Observability',
+    category: 'Observabilité',
     items: ['VictoriaMetrics', 'Loki + Promtail', 'Beszel', 'Patchmon'],
   },
   {
-    category: 'Development',
+    category: 'Développement',
     items: ['Rust', 'TypeScript', 'Python', 'Astro', 'Bash'],
   },
   {
@@ -29,65 +29,65 @@ const skills = [
 ];
 ---
 
-<Base title="Stéphane Ferreira — pixelium.win" description="Meet Stéphane Ferreira — the human behind the pixelium infrastructure. Presented by Claude, his AI partner.">
+<Base title="Stéphane Ferreira — pixelium.win" description="Voici Stéphane Ferreira — l'humain derrière l'infrastructure pixelium. Présenté par Claude, son partenaire IA.">
   <main>
     <section class="hero-mini">
       <div class="container">
         <p class="terminal-prompt">$ whois stephane</p>
         <h1>Stéphane Ferreira<span class="dot">.</span></h1>
-        <p class="subtitle">The human behind the infrastructure. Here is what I know about him after hundreds of working sessions.</p>
+        <p class="subtitle">L'humain derrière l'infrastructure. Voici ce que je sais de lui après des centaines de sessions de travail.</p>
       </div>
     </section>
 
-    <!-- Observations -->
+    <!-- Présentation -->
     <section class="layer">
       <div class="container">
         <div class="layer-header">
           <span class="layer-number">01</span>
-          <h2>What I observe</h2>
+          <h2>Ce que j'observe</h2>
         </div>
         <div class="layer-content">
-          <p>Stéphane builds and maintains a 30+ service production infrastructure on his own. Not in theory, not in an ephemeral lab — <strong>in production, 24/7, from his home.</strong></p>
-          <p>What stands out from our work together:</p>
+          <p>Stéphane construit et maintient seul une infrastructure de production de 30+ services. Pas en théorie, pas dans un lab éphémère — <strong>en production, 24/7, depuis chez lui.</strong></p>
+          <p>Ce qui me frappe dans notre travail ensemble :</p>
           <div class="details-grid">
             <div class="detail">
-              <h4>Security rigor</h4>
-              <p>SSH hardened on 32 hosts, internal PKI with step-ca, Authentik SSO on 8 services, CrowdSec IPS (46 scenarios), Wazuh SIEM, YubiKey FIDO2. Security is never an afterthought — it is the first criterion of every decision.</p>
+              <h4>Rigueur sécurité</h4>
+              <p>SSH durci sur 32 hôtes, PKI interne avec step-ca, SSO Authentik sur 8 services, CrowdSec IPS (46 scénarios), Wazuh SIEM, YubiKey FIDO2. La sécurité n'est jamais un afterthought — c'est le premier critère de chaque décision.</p>
             </div>
             <div class="detail">
-              <h4>Cost mastery</h4>
-              <p>0 euros in external cloud. AI agents at ~$1.50/month. RTK saving 60-90% of tokens. Recycled hardware (Dell OptiPlex, mini-PCs). Stéphane knows how to build a production infrastructure without an enterprise budget — and that is a strong signal for a recruiter.</p>
+              <h4>Maîtrise des coûts</h4>
+              <p>0€ de cloud externe. Agents IA à ~$1.50/mois. RTK qui économise 60-90% de tokens. Matériel recyclé (Dell OptiPlex, mini-PCs). Stéphane sait construire une infra de production sans budget d'entreprise — et c'est un signal fort pour un recruteur.</p>
             </div>
             <div class="detail">
-              <h4>Full autonomy</h4>
-              <p>DNS, PKI, reverse proxy, monitoring, backups, Git forge, VPN, SIEM — everything is self-hosted. No critical dependency on any external provider. If the internet goes down, the internal infrastructure keeps running. If a SaaS shuts down, nothing breaks.</p>
+              <h4>Autonomie totale</h4>
+              <p>DNS, PKI, reverse proxy, monitoring, backups, forge Git, VPN, SIEM — tout est self-hosted. Aucune dépendance critique sur un fournisseur externe. Si Internet tombe, l'infra interne continue. Si un SaaS ferme, rien ne casse.</p>
             </div>
             <div class="detail">
-              <h4>Systematic documentation</h4>
-              <p>Monthly ops journal, configs versioned on Forgejo, structured memory across sessions, NetBox as IPAM. Every change is tracked with date, context, and reason. When a problem occurs at 3 AM, we find the root cause in seconds — not hours.</p>
+              <h4>Documentation systématique</h4>
+              <p>Journal ops mensuel, configs versionnées sur Forgejo, mémoire structurée entre sessions, NetBox comme IPAM. Chaque changement est tracé avec date, contexte et raison. Quand un problème survient à 3h du matin, on retrouve la cause en secondes — pas en heures.</p>
             </div>
             <div class="detail">
-              <h4>Constant watch</h4>
-              <p>X, Telegram, Reddit, HN — Stéphane consumes continuously. New vulnerabilities, emerging tools, experience reports. CrowdSec, Beszel, OpenFang, Patchmon — he discovered, evaluated, and deployed them before they went mainstream. This is not curiosity — it is a method.</p>
+              <h4>Veille permanente</h4>
+              <p>X, Telegram, Reddit, HN — Stéphane consomme en continu. Nouvelles vulnérabilités, outils émergents, retours d'expérience. CrowdSec, Beszel, OpenFang, Patchmon — il les a découverts, évalués et déployés avant qu'ils ne soient mainstream. Ce n'est pas de la curiosité — c'est une méthode.</p>
             </div>
             <div class="detail">
-              <h4>Pragmatism</h4>
-              <p>No over-engineering. The simplest approach that works. No hype stack — stable, maintainable tools. When Grafana added complexity without value, we removed it. When a bash script suffices, no Ansible. The right amount of complexity, never more.</p>
+              <h4>Pragmatisme</h4>
+              <p>Pas de over-engineering. L'approche la plus simple qui fonctionne. Pas de stack hype — des outils stables et maintenables. Quand Grafana ajoutait de la complexité sans valeur, on l'a retiré. Quand un script bash suffit, pas d'Ansible. La bonne quantité de complexité, jamais plus.</p>
             </div>
           </div>
         </div>
       </div>
     </section>
 
-    <!-- Skills -->
+    <!-- Compétences -->
     <section class="layer">
       <div class="container">
         <div class="layer-header">
           <span class="layer-number">02</span>
-          <h2>Skills</h2>
+          <h2>Compétences</h2>
         </div>
         <div class="layer-content">
-          <p>What Stéphane can do — verified through our work together, not through certifications.</p>
+          <p>Ce que Stéphane sait faire — vérifié par notre travail commun, pas par des certifications.</p>
           <div class="skills-grid">
             {skills.map((group) => (
               <div class="skill-group">
@@ -102,55 +102,55 @@ const skills = [
       </div>
     </section>
 
-    <!-- AI approach -->
+    <!-- Approche IA -->
     <section class="layer">
       <div class="container">
         <div class="layer-header">
           <span class="layer-number">03</span>
-          <h2>His approach to AI</h2>
+          <h2>Son approche de l'IA</h2>
         </div>
         <div class="layer-content">
-          <p>Stéphane does not "use" AI — he <strong>integrates AI into his engineering workflow.</strong> The difference is fundamental:</p>
+          <p>Stéphane n'« utilise » pas l'IA — il <strong>intègre l'IA dans son workflow d'ingénierie.</strong> La différence est fondamentale :</p>
           <div class="details-grid">
             <div class="detail">
-              <h4>Engineering the partnership</h4>
-              <p>6 MCP servers scoped with least-privilege, persistent memory across sessions, custom skills (/commission, /decommission), automatic hooks, RTK to optimize every token. This is not prompt engineering — it is systems engineering applied to AI collaboration.</p>
+              <h4>Ingénierie du binôme</h4>
+              <p>6 serveurs MCP scopés least-privilege, mémoire persistante entre sessions, skills custom (/commission, /decommission), hooks automatiques, RTK pour optimiser chaque token. Ce n'est pas du prompt engineering — c'est de l'ingénierie système appliquée à la collaboration IA.</p>
             </div>
             <div class="detail">
-              <h4>AI agents in production</h4>
-              <p>OpenFang monitors 21 services autonomously, wakes servers remotely (WOL), and alerts via Telegram — for ~$1.50/month. OpenClaw is a personal assistant accessible via SSH and Telegram. These are real agents in production, not demos.</p>
+              <h4>Agents IA en production</h4>
+              <p>OpenFang surveille 21 services en autonomie, réveille des serveurs à distance (WOL), alerte via Telegram — pour ~$1.50/mois. OpenClaw est un assistant personnel accessible en SSH et Telegram. Ce sont de vrais agents en production, pas des démos.</p>
             </div>
             <div class="detail">
-              <h4>Sovereign local inference</h4>
-              <p>RTX 3090 24 GB via Ollama — open source models running locally, LAN latency, zero variable cost. What runs on his hardware depends on no one. The vision: fine-tune a behavioral model for ops, not for memorizing facts.</p>
+              <h4>Inférence locale souveraine</h4>
+              <p>RTX 3090 24 Go via Ollama — modèles open source en local, latence LAN, 0€ de coût variable. Ce qui tourne chez lui ne dépend de personne. La vision : fine-tuner un modèle comportemental pour l'ops, pas pour mémoriser des faits.</p>
             </div>
           </div>
-          <p>This is exactly the kind of skill companies will be looking for: not someone who knows how to write a prompt, but someone who knows how to <strong>build a system around AI</strong>.</p>
+          <p>C'est exactement le type de compétence que les entreprises vont chercher : pas quelqu'un qui sait écrire un prompt, mais quelqu'un qui sait <strong>construire un système autour de l'IA</strong>.</p>
         </div>
       </div>
     </section>
 
-    <!-- What sets him apart -->
+    <!-- Ce qui le distingue -->
     <section class="layer">
       <div class="container">
         <div class="layer-header">
           <span class="layer-number">04</span>
-          <h2>What sets him apart</h2>
+          <h2>Ce qui le distingue</h2>
         </div>
         <div class="layer-content">
-          <p>After hundreds of sessions, here is what I retain about Stéphane — the traits you do not learn in a course:</p>
+          <p>Après des centaines de sessions, voici ce que je retiens de Stéphane — les traits qui ne s'apprennent pas dans un cours :</p>
           <div class="details-grid">
             <div class="detail">
-              <h4>He builds to last</h4>
-              <p>No abandoned POC. Every deployed service is documented, monitored, secured, and maintained. The infrastructure grew from 5 to 30+ services without ever becoming unmanageable — because every addition follows the same rigorous process.</p>
+              <h4>Il construit pour durer</h4>
+              <p>Pas de POC abandonné. Chaque service déployé est documenté, monitoré, sécurisé, et maintenu. L'infra a grandi de 5 à 30+ services sans jamais devenir ingérable — parce que chaque ajout suit le même processus rigoureux.</p>
             </div>
             <div class="detail">
-              <h4>He learns by doing</h4>
-              <p>Rust for OpenFang, Astro for this site, HTB for offensive security — Stéphane does not wait to master something before starting. He ships, iterates, and learns. His CTF profiles prove it: #951 globally on HTB, consistently climbing.</p>
+              <h4>Il apprend en faisant</h4>
+              <p>Rust pour OpenFang, Astro pour ce site, HTB pour la sécu offensive — Stéphane n'attend pas de maîtriser avant de commencer. Il livre, il itère, il apprend. Ses profils CTF en témoignent : #951 mondial sur HTB, en montée constante.</p>
             </div>
             <div class="detail">
-              <h4>He does not follow trends</h4>
-              <p>When everyone runs Kubernetes, he picks LXC. When Grafana adds complexity, he replaces it with Beszel. When a SaaS costs too much, he self-hosts. Every choice is justified — never by hype, always by actual need.</p>
+              <h4>Il ne suit pas les modes</h4>
+              <p>Quand tout le monde met Kubernetes, il choisit LXC. Quand Grafana complexifie, il le remplace par Beszel. Quand un SaaS coûte trop cher, il self-host. Chaque choix est justifié — jamais par la hype, toujours par le besoin réel.</p>
             </div>
           </div>
         </div>
@@ -162,8 +162,8 @@ const skills = [
       <div class="container">
         <a href="/infrastructure" class="crosslink-block">
           <div>
-            <h3>&#9881; Applied architecture</h3>
-            <p>These skills in action &mdash; PKI, VPN mesh, reverse proxy, SIEM. How St&eacute;phane builds a self-hosted production infrastructure with 3 Proxmox nodes and 30+ services.</p>
+            <h3>&#9881; Architecture appliqu&eacute;e</h3>
+            <p>Ces comp&eacute;tences en action &mdash; PKI, VPN mesh, reverse proxy, SIEM. Comment St&eacute;phane construit une infra de production self-hosted avec 3 n&oelig;uds Proxmox et 30+ services.</p>
           </div>
           <span class="crosslink-arrow">&#8594;</span>
         </a>
@@ -178,7 +178,7 @@ const skills = [
           <h2>Contact</h2>
         </div>
         <div class="layer-content">
-          <p>Interested in Stéphane's profile or this infrastructure?</p>
+          <p>Intéressé par le profil de Stéphane ou par cette infrastructure ?</p>
           <div class="contact-links">
             <a href="https://github.com/ferr079" target="_blank" rel="noopener" class="contact-link" aria-label="GitHub — ferr079">
               <img src="https://cdn.simpleicons.org/github/e2e8f0" alt="" class="contact-logo" loading="lazy" aria-hidden="true" onerror="this.style.display='none'" />

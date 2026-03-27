@@ -1,54 +1,54 @@
 ---
-import Base from '../layouts/Base.astro';
-import StatsBar from '../components/StatsBar.astro';
+import Base from '../../layouts/Base.astro';
+import StatsBar from '../../components/StatsBar.astro';
 ---
 
-<Base title="Cybersecurity — pixelium.win" description="Stéphane's offensive cybersecurity journey — Hack The Box (Hacker rank, #951), TryHackMe, Root-Me. Presented by Claude.">
+<Base title="Cybersécurité — pixelium.win" description="Parcours cybersécurité offensive de Stéphane — Hack The Box (rang Hacker, #951), TryHackMe, Root-Me. Présenté par Claude.">
   <main>
     <section class="hero-mini">
       <div class="container">
         <p class="terminal-prompt">$ ./recon.sh --target self</p>
-        <h1>Cybersecurity<span class="dot">.</span></h1>
-        <p class="subtitle">Learning to attack in order to better defend. Stéphane does not settle for protecting his infrastructure — he understands the techniques of those who would try to compromise it.</p>
+        <h1>Cybersécurité<span class="dot">.</span></h1>
+        <p class="subtitle">Apprendre à attaquer pour mieux défendre. Stéphane ne se contente pas de protéger son infrastructure — il comprend les techniques de ceux qui voudraient la compromettre.</p>
       </div>
     </section>
 
-    <!-- The approach -->
+    <!-- La démarche -->
     <section class="layer">
       <div class="container">
         <div class="layer-header">
           <span class="layer-number">01</span>
-          <h2>The approach</h2>
+          <h2>La démarche</h2>
         </div>
         <div class="layer-content">
-          <p>Every offensive technique learned directly strengthens a defensive layer on the homelab. This is not a hobby — it is a <strong>feedback loop between offense and defense.</strong></p>
+          <p>Chaque technique offensive apprise renforce directement une couche défensive du homelab. Ce n'est pas du hobbyisme — c'est une <strong>boucle de feedback entre l'attaque et la défense.</strong></p>
           <div class="feedback-loop">
             <div class="loop-item">
               <span class="loop-arrow">&#8594;</span>
               <div>
-                <span class="loop-offense">Password spraying on HTB</span>
-                <span class="loop-result">&#8594; Strengthened complexity policies on Authentik</span>
+                <span class="loop-offense">Password spraying sur HTB</span>
+                <span class="loop-result">&#8594; Politiques de complexité renforcées sur Authentik</span>
               </div>
             </div>
             <div class="loop-item">
               <span class="loop-arrow">&#8594;</span>
               <div>
                 <span class="loop-offense">MSSQL impersonation</span>
-                <span class="loop-result">&#8594; Audit of service permissions on the homelab</span>
+                <span class="loop-result">&#8594; Audit des permissions de service sur le homelab</span>
               </div>
             </div>
             <div class="loop-item">
               <span class="loop-arrow">&#8594;</span>
               <div>
                 <span class="loop-offense">Kerberoasting / AD enum</span>
-                <span class="loop-result">&#8594; SPN and Kerberos ticket monitoring in Wazuh</span>
+                <span class="loop-result">&#8594; Monitoring SPN et tickets Kerberos dans Wazuh</span>
               </div>
             </div>
             <div class="loop-item">
               <span class="loop-arrow">&#8594;</span>
               <div>
                 <span class="loop-offense">Hash cracking PBKDF2</span>
-                <span class="loop-result">&#8594; Hashing algorithm verification on every service</span>
+                <span class="loop-result">&#8594; Vérification des algorithmes de hashing sur chaque service</span>
               </div>
             </div>
           </div>
@@ -56,15 +56,15 @@ import StatsBar from '../components/StatsBar.astro';
       </div>
     </section>
 
-    <!-- Platform profiles -->
+    <!-- Profils plateformes -->
     <section class="layer">
       <div class="container">
         <div class="layer-header">
           <span class="layer-number">02</span>
-          <h2>Profiles</h2>
+          <h2>Profils</h2>
         </div>
         <div class="layer-content">
-          <p>Active learning on three cybersecurity platforms — each with its own approach and strengths.</p>
+          <p>Apprentissage actif sur trois plateformes de cybersécurité — chacune avec son approche et ses forces.</p>
           <div class="platforms-grid">
 
             <!-- HTB -->
@@ -94,8 +94,8 @@ import StatsBar from '../components/StatsBar.astro';
                   <span class="stat-label">Global</span>
                 </div>
               </div>
-              <p class="platform-desc">Realistic vulnerable machines — from initial scan to root escalation. Windows AD, Linux privesc, web exploitation. Stéphane's primary platform.</p>
-              <span class="platform-cta">View profile &#8594;</span>
+              <p class="platform-desc">Machines vulnérables réalistes — du scan initial à l'escalade root. Windows AD, Linux privesc, web exploitation. La plateforme principale de Stéphane.</p>
+              <span class="platform-cta">Voir le profil &#8594;</span>
             </a>
 
             <!-- THM -->
@@ -118,11 +118,11 @@ import StatsBar from '../components/StatsBar.astro';
                 </div>
                 <div class="platform-stat">
                   <span class="stat-number">Top 15%</span>
-                  <span class="stat-label">Rank</span>
+                  <span class="stat-label">Rang</span>
                 </div>
               </div>
-              <p class="platform-desc">Guided paths and themed rooms — structured learning from pentesting to SOC. Linux fundamentals, networking, John the Ripper, pentesting methodology.</p>
-              <span class="platform-cta">View profile &#8594;</span>
+              <p class="platform-desc">Parcours guidés et rooms thématiques — apprentissage structuré du pentest au SOC. Linux fundamentals, réseau, John the Ripper, méthodologie pentesting.</p>
+              <span class="platform-cta">Voir le profil &#8594;</span>
             </a>
 
             <!-- Root-Me -->
@@ -148,8 +148,8 @@ import StatsBar from '../components/StatsBar.astro';
                   <span class="stat-label">Badges</span>
                 </div>
               </div>
-              <p class="platform-desc">Targeted technical challenges — file upload, directory traversal, cookies, web-server exploits. The leading French platform for CTF practice.</p>
-              <span class="platform-cta">View profile &#8594;</span>
+              <p class="platform-desc">Challenges techniques ciblés — file upload, directory traversal, cookies, web-server exploits. Plateforme française de référence pour la pratique CTF.</p>
+              <span class="platform-cta">Voir le profil &#8594;</span>
             </a>
 
           </div>
@@ -162,10 +162,10 @@ import StatsBar from '../components/StatsBar.astro';
       <div class="container">
         <div class="layer-header">
           <span class="layer-number">03</span>
-          <h2>Practiced techniques</h2>
+          <h2>Techniques pratiquées</h2>
         </div>
         <div class="layer-content">
-          <p>Skills acquired and validated on real environments — not theory, <strong>captured flags.</strong></p>
+          <p>Compétences acquises et validées sur des environnements réels — pas de la théorie, des <strong>flags capturés.</strong></p>
           <div class="techniques-grid">
             <div class="technique-group">
               <h4>Active Directory</h4>
@@ -180,7 +180,7 @@ import StatsBar from '../components/StatsBar.astro';
               </div>
             </div>
             <div class="technique-group">
-              <h4>Web exploitation</h4>
+              <h4>Exploitation web</h4>
               <div class="technique-tags">
                 <span>SQLi</span>
                 <span>SSTI</span>
@@ -191,7 +191,7 @@ import StatsBar from '../components/StatsBar.astro';
               </div>
             </div>
             <div class="technique-group">
-              <h4>Cryptography & cracking</h4>
+              <h4>Cryptographie & cracking</h4>
               <div class="technique-tags">
                 <span>Hashcat (PBKDF2, bcrypt)</span>
                 <span>John the Ripper</span>
@@ -201,7 +201,7 @@ import StatsBar from '../components/StatsBar.astro';
               </div>
             </div>
             <div class="technique-group">
-              <h4>Enumeration & reconnaissance</h4>
+              <h4>Énumération & reconnaissance</h4>
               <div class="technique-tags">
                 <span>Nmap</span>
                 <span>Gobuster / ffuf</span>
@@ -212,7 +212,7 @@ import StatsBar from '../components/StatsBar.astro';
               </div>
             </div>
             <div class="technique-group">
-              <h4>Privilege escalation</h4>
+              <h4>Escalade de privilèges</h4>
               <div class="technique-tags">
                 <span>SUID / capabilities</span>
                 <span>Sudo misconfiguration</span>
@@ -223,7 +223,7 @@ import StatsBar from '../components/StatsBar.astro';
               </div>
             </div>
             <div class="technique-group">
-              <h4>Tools</h4>
+              <h4>Outils</h4>
               <div class="technique-tags">
                 <span>Impacket</span>
                 <span>Evil-WinRM</span>
@@ -239,35 +239,35 @@ import StatsBar from '../components/StatsBar.astro';
       </div>
     </section>
 
-    <!-- Environment -->
+    <!-- Environnement -->
     <section class="layer">
       <div class="container">
         <div class="layer-header">
           <span class="layer-number">04</span>
-          <h2>The environment</h2>
+          <h2>L'environnement</h2>
         </div>
         <div class="layer-content">
-          <p>Even the offensive lab is well-architected — isolation, performance, and zero compromise on workstation security.</p>
+          <p>Même le lab offensif est bien architecturé — isolation, performances, et zéro compromis sur la sécurité de la workstation.</p>
           <div class="specs">
             <div class="spec">
               <span class="spec-label">OS</span>
-              <span class="spec-value">Kali Linux in distrobox on Bluefin — isolated container, no heavy VM or dual boot</span>
+              <span class="spec-value">Kali Linux en distrobox sur Bluefin — conteneur isolé, pas de VM lourde ni dual boot</span>
             </div>
             <div class="spec">
-              <span class="spec-label">Chosen setup</span>
-              <span class="spec-value">We spent a long time trying to get Exegol running — the setup we wanted. Bluefin's atomic architecture (composefs read-only, Podman rootless) made it impossible. Kali distrobox is the pragmatic solution. A real constraint, a deliberate compromise.</span>
+              <span class="spec-label">Setup choisi</span>
+              <span class="spec-value">On a longtemps bataillé pour faire tourner Exegol — le setup que l'on voulait. L'archi atomic de Bluefin (composefs read-only, Podman rootless) l'a rendu impossible. Kali distrobox est la solution pragmatique. Contrainte réelle, compromis assumé.</span>
             </div>
             <div class="spec">
               <span class="spec-label">GPU cracking</span>
-              <span class="spec-value">RTX 3090 24 GB — hashcat mode 10900 (PBKDF2) at full speed, <code>nvidia-smi -pl 250</code> for thermals</span>
+              <span class="spec-value">RTX 3090 24 Go — hashcat mode 10900 (PBKDF2) à pleine vitesse, <code>nvidia-smi -pl 250</code> pour le thermique</span>
             </div>
             <div class="spec">
-              <span class="spec-label">Network</span>
-              <span class="spec-value">HTB VPN isolated inside the Kali container — offensive traffic separated from the homelab LAN</span>
+              <span class="spec-label">Réseau</span>
+              <span class="spec-value">VPN HTB isolé dans le conteneur Kali — trafic offensif séparé du LAN homelab</span>
             </div>
             <div class="spec">
-              <span class="spec-label">Partner</span>
-              <span class="spec-value">I work in tutor mode — guidance without spoilers, Socratic questions, post-box debriefs</span>
+              <span class="spec-label">Binôme</span>
+              <span class="spec-value">Claude en mode tuteur — guidance sans spoiler, questions socratiques, debriefs post-box</span>
             </div>
           </div>
         </div>
@@ -276,19 +276,19 @@ import StatsBar from '../components/StatsBar.astro';
 
     <!-- Stats -->
     <StatsBar stats={[
-      { number: '22', label: 'HTB machines' },
-      { number: '59', label: 'captured flags' },
-      { number: '#951', label: 'HTB global rank' },
-      { number: '3', label: 'active platforms' },
+      { number: '22', label: 'machines HTB' },
+      { number: '59', label: 'flags capturés' },
+      { number: '#951', label: 'rang mondial HTB' },
+      { number: '3', label: 'plateformes actives' },
     ]} />
 
-    <!-- Defense link -->
+    <!-- Lien défense -->
     <section class="crosslink reveal">
       <div class="container">
         <a href="/securite" class="crosslink-block">
           <div>
-            <h3>&#9670; Defensive stack</h3>
-            <p>Internal PKI, SSO Authentik, CrowdSec IPS, Wazuh SIEM, Headscale VPN — the 5 defensive layers of the homelab, built with lessons from the offensive side.</p>
+            <h3>&#9670; Stack défensive</h3>
+            <p>PKI interne, SSO Authentik, CrowdSec IPS, Wazuh SIEM, Headscale VPN — les 5 couches défensives du homelab, construites avec les leçons de l'offensive.</p>
           </div>
           <span class="crosslink-arrow">&#8594;</span>
         </a>

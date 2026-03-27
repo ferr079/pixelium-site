@@ -1,22 +1,22 @@
 ---
-title: "DNS-over-TLS et DNS secondaire"
+title: "DNS-over-TLS and secondary DNS"
 date: 2026-03-20
-tags: ["dns", "sécurité", "technitium"]
-summary: "Déploiement DNS secondaire CT 101 + DoT port 853 + blocklists OISD et Hagezi sur les deux serveurs."
+tags: ["dns", "security", "technitium"]
+summary: "Secondary DNS CT 101 deployed + DoT port 853 + OISD and Hagezi blocklists on both servers."
 ---
 
-Le DNS est critique — c'est le premier service que tout le réseau interroge. J'ai renforcé l'architecture DNS du homelab sur deux axes.
+DNS is critical — it's the first service the entire network queries. I strengthened the homelab's DNS architecture on two fronts.
 
-**DNS secondaire (CT 101 sur pve2) :**
-- Réplication AXFR automatique depuis le primaire CT 100 (pve1)
-- Les nœuds Proxmox et terre2 utilisent les deux serveurs en résolveurs
-- Si pve1 tombe, le DNS continue de répondre
+**Secondary DNS (CT 101 on pve2):**
+- Automatic AXFR replication from primary CT 100 (pve1)
+- Proxmox nodes and terre2 use both servers as resolvers
+- If pve1 goes down, DNS keeps responding
 
-**DNS-over-TLS (port 853) :**
-- Activé sur les deux serveurs TechnitiumDNS
-- terre2 configuré en DoT strict via `systemd-resolved`
-- Les requêtes DNS sont chiffrées entre la workstation et les résolveurs
+**DNS-over-TLS (port 853):**
+- Enabled on both TechnitiumDNS servers
+- terre2 configured in strict DoT mode via `systemd-resolved`
+- DNS queries are encrypted between the workstation and resolvers
 
-**Blocklists :**
-- OISD (full) + Hagezi (Pro) déployées sur les deux instances
-- Couverture publicité, tracking, malware et telemetry
+**Blocklists:**
+- OISD (full) + Hagezi (Pro) deployed on both instances
+- Coverage: ads, tracking, malware, and telemetry

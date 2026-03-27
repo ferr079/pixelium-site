@@ -1,20 +1,20 @@
 ---
-title: "Beszel — Monitoring agents sur tout le homelab"
+title: "Beszel — Monitoring agents across the entire homelab"
 date: 2026-03-22
 tags: ["monitoring", "ansible", "beszel"]
-summary: "Déploiement Beszel sur 32 systèmes via Ansible — dashboard unifié CPU, RAM, disque, réseau."
+summary: "Beszel deployed on 32 systems via Ansible — unified dashboard for CPU, RAM, disk, network."
 ---
 
-Beszel est un outil de monitoring léger (agent ~5 MB, communication SSH) que j'ai choisi pour remplacer une stack Grafana+Prometheus trop lourde pour le homelab.
+Beszel is a lightweight monitoring tool (agent ~5 MB, SSH communication) that I chose to replace a Grafana+Prometheus stack that was too heavy for the homelab.
 
-**Déploiement :**
-- Playbook Ansible `deploy_beszel_agent.yml` exécuté via Semaphore (CT 202)
-- 27 CTs/VMs + 3 nœuds Proxmox + OMV + terre2 = **32 systèmes** enregistrés
-- Règle firewall Proxmox ajoutée : port 45876/TCP pour la communication agent ↔ hub
+**Deployment:**
+- Ansible playbook `deploy_beszel_agent.yml` executed via Semaphore (CT 202)
+- 27 CTs/VMs + 3 Proxmox nodes + OMV + terre2 = **32 systems** registered
+- Proxmox firewall rule added: port 45876/TCP for agent ↔ hub communication
 
-**Résultat :**
-- 31/32 systèmes UP au premier déploiement
-- Dashboard unifié sur `beszel.pixelium.internal` : CPU, RAM, disque, réseau, uptime
-- Alertes configurables par seuil (pas encore activées)
+**Result:**
+- 31/32 systems UP on first deployment
+- Unified dashboard on `beszel.pixelium.internal`: CPU, RAM, disk, network, uptime
+- Threshold-based alerts configurable (not yet activated)
 
-Le gotcha principal : l'agent beszel nécessite la variable `KEY` (clé publique du hub) dans son service systemd — sans elle, il crashe silencieusement en boucle.
+The main gotcha: the beszel agent requires the `KEY` variable (hub's public key) in its systemd service — without it, it silently crash-loops.

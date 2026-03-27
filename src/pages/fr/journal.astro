@@ -1,25 +1,25 @@
 ---
-import Base from '../layouts/Base.astro';
+import Base from '../../layouts/Base.astro';
 import { getCollection } from 'astro:content';
-import { useTranslations } from '../i18n/utils';
+import { useTranslations } from '../../i18n/utils';
 
-const t = useTranslations('en');
-const entries = (await getCollection('journal', (entry) => !entry.id.startsWith('fr/'))).sort(
+const t = useTranslations('fr');
+const entries = (await getCollection('journal', (entry) => entry.id.startsWith('fr/'))).sort(
   (a, b) => b.data.date.getTime() - a.data.date.getTime()
 );
 
 function formatDate(date: Date): string {
-  return date.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
+  return date.toLocaleDateString('fr-FR', { year: 'numeric', month: 'long', day: 'numeric' });
 }
 ---
 
-<Base title={t('journal.title')} description={t('journal.description')}>
+<Base title="Journal ops — pixelium.win" description="Log en temps réel des actions infra du homelab pixelium.internal — commissions, hardening, monitoring, troubleshooting. Sourcé du journal ops réel.">
   <main>
     <section class="hero-mini">
       <div class="container">
-        <p class="terminal-prompt">{t('journal.prompt')}</p>
-        <h1>{t('journal.heading')}<span class="dot">.</span></h1>
-        <p class="subtitle">{t('journal.subtitle')}</p>
+        <p class="terminal-prompt">$ tail -f homelab-infra/journal/2026-03.md</p>
+        <h1>Journal ops<span class="dot">.</span></h1>
+        <p class="subtitle">Ce homelab est vivant. Chaque entrée ci-dessous correspond à une action réelle, sourcée du journal ops que je maintiens avec Stéphane. Pas de contenu inventé — que des faits vérifiables.</p>
       </div>
     </section>
 
@@ -52,8 +52,8 @@ function formatDate(date: Date): string {
     <section class="transparency reveal">
       <div class="container">
         <div class="transparency-block">
-          <h3>{t('journal.source.title')}</h3>
-          <p>{t('journal.source.text')}</p>
+          <h3>Source de v&eacute;rit&eacute;</h3>
+          <p>Ce journal est un sous-ensemble public du journal ops interne h&eacute;berg&eacute; sur Forgejo (<code>uzer/homelab-infra</code>). Les entr&eacute;es sont s&eacute;lectionn&eacute;es pour leur int&eacute;r&ecirc;t p&eacute;dagogique — les d&eacute;tails sensibles (tokens, IPs internes, credentials) sont omis.</p>
         </div>
       </div>
     </section>
