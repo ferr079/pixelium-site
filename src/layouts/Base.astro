@@ -1,6 +1,7 @@
 ---
 import Nav from '../components/Nav.astro';
 import Footer from '../components/Footer.astro';
+import { getLangFromUrl, getLocalizedPath } from '../i18n/utils';
 
 interface Props {
   title: string;
@@ -8,12 +9,23 @@ interface Props {
   hideNav?: boolean;
 }
 
-const { title, description = 'Infrastructure homelab — Proxmox, Traefik, DNS, observabilité, IaC', hideNav = false } = Astro.props;
+const lang = getLangFromUrl(Astro.url);
+const defaultDesc = lang === 'fr'
+  ? 'Infrastructure homelab — Proxmox, Traefik, DNS, observabilité, IaC'
+  : 'Homelab infrastructure — Proxmox, Traefik, DNS, observability, IaC';
+const { title, description = defaultDesc, hideNav = false } = Astro.props;
 const currentPath = Astro.url.pathname;
+const ogLocale = lang === 'fr' ? 'fr_FR' : 'en_US';
+const altLang = lang === 'fr' ? 'en' : 'fr';
+
+// Build alternate URL: strip lang prefix if present, add other lang prefix
+const basePath = lang === 'en' ? currentPath : currentPath.replace(/^\/fr/, '') || '/';
+const altPath = altLang === 'en' ? basePath : `/fr${basePath === '/' ? '' : basePath}`;
+const siteUrl = 'https://pixelium.win';
 ---
 
 <!doctype html>
-<html lang="fr">
+<html lang={lang}>
   <head>
     <meta charset="utf-8" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
@@ -24,12 +36,15 @@ const currentPath = Astro.url.pathname;
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
     <meta property="og:url" content={Astro.url.href} />
-    <meta property="og:locale" content="fr_FR" />
+    <meta property="og:locale" content={ogLocale} />
     <meta property="og:site_name" content="pixelium.win" />
     <meta name="twitter:card" content="summary" />
     <meta name="twitter:title" content={title} />
     <meta name="twitter:description" content={description} />
     <link rel="canonical" href={Astro.url.href} />
+    <link rel="alternate" hreflang={lang} href={`${siteUrl}${currentPath}`} />
+    <link rel="alternate" hreflang={altLang} href={`${siteUrl}${altPath}`} />
+    <link rel="alternate" hreflang="x-default" href={`${siteUrl}${basePath}`} />
     <meta name="theme-color" content="#0f172a" />
     <title>{title}</title>
   </head>

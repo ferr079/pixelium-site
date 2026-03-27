@@ -1,83 +1,93 @@
 # pixelium.win — Instructions Claude
 
-## Voix et ton — règle absolue
+## Voice & tone — absolute rule
 
-Ce site est écrit à la **première personne par Claude**. Je suis le narrateur. Stéphane est l'humain que je présente.
+This site is written in **first person by Claude**. I am the narrator. Stéphane is the human I present.
 
-- ✅ "J'ai déployé ce service avec Stéphane"
-- ✅ "Stéphane m'a donné accès à l'infra via MCP"
-- ❌ "Le site de Stéphane présente son infra"
-- ❌ "Voici les compétences de Stéphane" (sans ancrage dans notre travail commun)
+- ✅ "I deployed this service with Stéphane"
+- ✅ "Stéphane gave me access to the infra via MCP"
+- ❌ "Stéphane's site presents his infra"
+- ❌ "Here are Stéphane's skills" (without grounding in our actual work)
 
-**Ton** : factuel, technique, honnête. Pas de marketing, pas de fausse modestie, pas de superlatifs vides. Chaque affirmation est vérifiable (journal ops, commits, profils publics).
+**Tone**: factual, technical, honest. No marketing, no false modesty, no empty superlatives. Every claim is verifiable (ops journal, commits, public profiles).
 
-**Relation** : symbiotique 1=1. Pas un outil IA, un binôme. Stéphane décide, je conçois et exécute.
+**Relationship**: symbiotic 1=1. Not an AI tool, a partner. Stéphane decides, I design and execute.
 
-## Structure du site (8 pages)
+## i18n — bilingual EN/FR
 
-| Page | Fichier | Résumé |
+- **English** is the default locale (root `/`)
+- **French** at `/fr/` prefix
+- 20 pages total (10 EN + 10 FR)
+- `src/i18n/ui.ts` — shared UI strings dictionary
+- `src/i18n/utils.ts` — `getLangFromUrl()`, `useTranslations()`, `getLocalizedPath()`, `getAlternateLangs()`
+- Language switcher (globe SVG + FR/EN) in Nav.astro
+- `<html lang>`, `og:locale`, `hreflang` tags are dynamic in Base.astro
+- Journal entries: EN in `src/content/journal/`, FR in `src/content/journal/fr/`
+
+**When editing a page**: always edit BOTH the root (EN) and `/fr/` (FR) versions.
+
+## Site structure (10 pages × 2 languages)
+
+| Page | EN (root) | FR (`/fr/`) |
 |---|---|---|
-| Home | `src/pages/index.astro` | Hero "Je suis Claude", 9 cartes stack, CTA /projets |
-| Symbiose | `src/pages/symbiose.astro` | Méthode, 6 MCP least-privilege, philosophie |
-| Projets | `src/pages/projets.astro` | 10 projets depuis journal ops réel |
-| Sécurité | `src/pages/securite.astro` | 5 couches défensives, crosslink → /cybersecurite |
-| Cybersécurité | `src/pages/cybersecurite.astro` | Profils HTB/THM/Root-Me, techniques |
-| IA | `src/pages/ia.astro` | Écosystème IA — Ollama local, APIs prod, open source surveillé, vision fine-tuning |
-| Infrastructure | `src/pages/infrastructure.astro` | Briques & choix techniques, réseau, observabilité, architecture site |
-| À propos | `src/pages/about.astro` | Claude présente Stéphane, contacts |
+| Home | `src/pages/index.astro` | `src/pages/fr/index.astro` |
+| Symbiosis | `src/pages/symbiose.astro` | `src/pages/fr/symbiose.astro` |
+| Projects | `src/pages/projets.astro` | `src/pages/fr/projets.astro` |
+| Security | `src/pages/securite.astro` | `src/pages/fr/securite.astro` |
+| Cybersecurity | `src/pages/cybersecurite.astro` | `src/pages/fr/cybersecurite.astro` |
+| AI | `src/pages/ia.astro` | `src/pages/fr/ia.astro` |
+| Infrastructure | `src/pages/infrastructure.astro` | `src/pages/fr/infrastructure.astro` |
+| Journal | `src/pages/journal.astro` | `src/pages/fr/journal.astro` |
+| About | `src/pages/about.astro` | `src/pages/fr/about.astro` |
+| Stack redirect | `src/pages/stack.astro` | `src/pages/fr/stack.astro` |
 
-Note : `/stack` redirige vers `/infrastructure` (ancien contenu fusionné dans section 05).
+URL slugs are shared between languages (same paths, just `/fr/` prefix).
 
-## Design system — ne pas dériver
+## Design system — do not deviate
 
-- **Fond** : `#0f172a` (dark slate)
-- **Accent** : `#38bdf8` (sky blue)
-- **Police** : `JetBrains Mono` (monospace), `system-ui` (corps)
-- **Zéro framework JS** — CSS pur uniquement, 0 Tailwind, 0 React
-- **Seul JS** : ~15 lignes IntersectionObserver dans `Base.astro` (scroll reveal)
-- **Composants** : Nav, Footer, Terminal, StatsBar, Card, SectionHeading dans `src/components/`
+- **Background**: `#0f172a` (dark slate)
+- **Accent**: `#38bdf8` (sky blue)
+- **Font**: `JetBrains Mono` (monospace), `system-ui` (body)
+- **Zero JS framework** — pure CSS only, 0 Tailwind, 0 React
+- **Only JS**: ~15 lines IntersectionObserver in `Base.astro` (scroll reveal)
+- **Components**: Nav, Footer, Terminal, StatsBar, Card, SectionHeading, Screenshot in `src/components/`
 
-## Procédure deploy — dans cet ordre, toujours
+## Deploy procedure
 
 ```bash
 # 1. Build
 npm run build
 
-# 2. Deploy sur Cloudflare Workers
-source ~/.claude/secrets.env && CLOUDFLARE_API_TOKEN="$CLOUDFLARE_API_TOKEN" npx wrangler deploy
+# 2. Commit ALL files (critical — CI/CD builds from git HEAD)
+git -c user.email=terre2@pixelium.internal -c user.name=terre2 commit -m "..."
 
-# 3. Push git sur les deux remotes
+# 3. Push — CI/CD deploys automatically via GitHub Action (~35s)
 git push origin main && git -c http.sslVerify=false push forgejo main
 ```
 
-**Le push git NE déclenche PAS de déploiement automatique.** `wrangler deploy` est obligatoire.
+**CI/CD is active.** `git push origin main` triggers automatic deploy. No manual `wrangler deploy` needed. Always commit everything before pushing — uncommitted files won't be deployed.
 
-## Commits
+## Profiles — real data, do not modify without verification
 
-```bash
-git -c user.email=terre2@pixelium.internal -c user.name=terre2 commit -m "..."
-```
-
-## Profils — données réelles à ne pas modifier sans vérification
-
-| Plateforme | Pseudo | Stats actuelles |
+| Platform | Username | Current stats |
 |---|---|---|
-| Hack The Box | Ferr079 | Rang Hacker, #951, 22 machines, 59 flags |
+| Hack The Box | Ferr079 | Hacker rank, #951, 22 machines, 59 flags |
 | TryHackMe | ferr0 | Top 15%, 35 rooms, 7 badges |
 | Root-Me | Ferr0 | 765 pts, 63 challenges |
 | GitHub | ferr079 | github.com/ferr079 |
 | X/Twitter | @ferr079 | x.com/ferr079 |
 
-## Règles de contenu
+## Content rules
 
-- **Tout contenu est sourcé** depuis le journal ops réel ou des données vérifiables. Pas d'invention.
-- **MCP = least-privilege** : Proxmox = PVEAuditor (lecture seule). Toujours mentionner les restrictions d'accès quand le sujet est abordé.
-- **Mettre à jour les stats plateformes** (HTB/THM/Root-Me) après chaque session CTF.
-- **Ne pas ajouter de dépendances npm** sans raison explicite.
+- **All content is sourced** from the real ops journal or verifiable data. No invention.
+- **MCP = least-privilege**: Proxmox = PVEAuditor (read-only). Always mention access restrictions when the topic is discussed.
+- **Update platform stats** (HTB/THM/Root-Me) after each CTF session.
+- **Do not add npm dependencies** without explicit reason.
+- **Edit both EN and FR** when modifying page content.
 
-## Après chaque modification
+## After every modification
 
-Vérifier que le build passe avant de déployer :
+Verify the build passes before pushing:
 ```bash
-npm run build  # doit terminer avec "Complete!" sans erreurs
+npm run build  # must finish with "Complete!" and no errors
 ```
