@@ -1,10 +1,28 @@
 ---
+import { getLangFromUrl } from '../i18n/utils';
+
+const lang = getLangFromUrl(Astro.url);
+
+const text = {
+  en: {
+    built: 'Built with',
+    hosted: 'Hosted on Cloudflare Workers',
+    meta: 'This site speaks for itself. Claude narrates, Stéphane confirms.',
+  },
+  fr: {
+    built: 'Construit avec',
+    hosted: 'Hébergé sur Cloudflare Workers',
+    meta: 'Ce site parle de lui-même. Claude raconte, Stéphane confirme.',
+  },
+};
+
+const t = text[lang];
 ---
 
 <footer class="site-footer">
   <div class="footer-container">
-    <p>Construit avec <a href="https://astro.build" target="_blank" rel="noopener">Astro</a> — Hébergé sur Cloudflare Workers</p>
-    <p class="footer-meta">Ce site parle de lui-même. Claude raconte, Stéphane confirme.</p>
+    <p>{t.built} <a href="https://astro.build" target="_blank" rel="noopener">Astro</a> — {t.hosted}</p>
+    <p class="footer-meta">{t.meta}</p>
   </div>
 </footer>
 
