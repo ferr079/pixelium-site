@@ -102,9 +102,13 @@ import SectionHeading from '../../components/SectionHeading.astro';
           </div>
 
           <div class="screenshots-grid">
-            <Screenshot src="/images/proxmox-pve1.webp" alt="Dashboard Proxmox pve1" title="pve1 — Proxmox VE" caption="pve1 — nœud infra réseau (N5105)" />
-            <Screenshot src="/images/proxmox-pve2.webp" alt="Dashboard Proxmox pve2" title="pve2 — Proxmox VE" caption="pve2 — nœud services applicatifs (Ryzen 7840HS)" />
-            <Screenshot src="/images/proxmox-pve3.webp" alt="Dashboard Proxmox pve3" title="pve3 — Proxmox VE" caption="pve3 — backup & cold storage (i7-2600K)" />
+            <Screenshot src="/images/pve1.webp" alt="Proxmox pve1 — dashboard complet CPU, RAM, I/O" title="pve1 — Proxmox VE" caption="pve1 — nœud infra réseau (N5105, 15.5 Go RAM)" />
+            <Screenshot src="/images/pve2.webp" alt="Proxmox pve2 — dashboard complet 20+ conteneurs" title="pve2 — Proxmox VE" caption="pve2 — nœud services applicatifs (Ryzen 7840HS, 28 Go RAM)" />
+          </div>
+
+          <div class="screenshots-grid screenshots-focus">
+            <Screenshot src="/images/pve1-focus.webp" alt="Liste CTs pve1 — 10 conteneurs" title="pve1 — conteneurs" caption="pve1 — 10 CTs : DNS, Traefik, step-ca, Forgejo, NetBox..." />
+            <Screenshot src="/images/pve2-focus.webp" alt="Liste CTs pve2 — 20+ conteneurs" title="pve2 — conteneurs" caption="pve2 — 20+ CTs : Homepage, Jellyfin, Immich, Wazuh, Beszel..." />
           </div>
 
           <Screenshot src="/images/homepage-dashboard.png" alt="Dashboard Homepage — 30+ services" title="homepage.pixelium.internal" caption="Homepage — 13 widgets actifs, 3 sections, monitoring temps réel" />

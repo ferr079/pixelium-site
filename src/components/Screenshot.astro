@@ -12,20 +12,23 @@ const { src, alt, title = '', caption, pan = false, panHeight = '20rem' } = Astr
 ---
 
 <figure class="screenshot reveal">
-  <div class="screenshot-window">
-    <div class="screenshot-bar">
-      <span class="screenshot-dot"></span>
-      <span class="screenshot-dot"></span>
-      <span class="screenshot-dot"></span>
-      {title && <span class="screenshot-title">{title}</span>}
+  <a href={src} target="_blank" rel="noopener" class="screenshot-link" title="Click to enlarge">
+    <div class="screenshot-window">
+      <div class="screenshot-bar">
+        <span class="screenshot-dot"></span>
+        <span class="screenshot-dot"></span>
+        <span class="screenshot-dot"></span>
+        {title && <span class="screenshot-title">{title}</span>}
+        <span class="screenshot-expand" aria-hidden="true">&#8599;</span>
+      </div>
+      <div
+        class:list={['screenshot-viewport', { 'screenshot-pan': pan }]}
+        style={pan ? `--pan-height: ${panHeight};` : undefined}
+      >
+        <img src={src} alt={alt} loading="lazy" />
+      </div>
     </div>
-    <div
-      class:list={['screenshot-viewport', { 'screenshot-pan': pan }]}
-      style={pan ? `--pan-height: ${panHeight};` : undefined}
-    >
-      <img src={src} alt={alt} loading="lazy" />
-    </div>
-  </div>
+  </a>
   {caption && <figcaption>{caption}</figcaption>}
 </figure>
 
@@ -70,11 +73,33 @@ const { src, alt, title = '', caption, pan = false, panHeight = '20rem' } = Astr
   .screenshot-dot:nth-child(2) { background: #eab308; }
   .screenshot-dot:nth-child(3) { background: #22c55e; }
 
+  .screenshot-link {
+    text-decoration: none;
+    color: inherit;
+    display: block;
+  }
+
+  .screenshot-link:hover {
+    color: inherit;
+  }
+
   .screenshot-title {
     font-family: var(--font-mono);
     font-size: 0.7rem;
     color: var(--color-text-muted);
     margin-left: 0.5rem;
+  }
+
+  .screenshot-expand {
+    font-size: 0.7rem;
+    color: var(--color-text-muted);
+    margin-left: auto;
+    opacity: 0;
+    transition: opacity 0.2s;
+  }
+
+  .screenshot-window:hover .screenshot-expand {
+    opacity: 0.7;
   }
 
   .screenshot-viewport {
