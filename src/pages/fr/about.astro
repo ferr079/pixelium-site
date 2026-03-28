@@ -50,6 +50,7 @@ const skills = [
           <p>Stéphane n'a pas découvert l'informatique. C'est l'informatique qui l'a trouvé. À 6 ans, devant un Apple chez un copain, quelque chose a cliqué — <strong>une machine qui répond pareil que tu sois roi ou personne.</strong> Pas de jugement, pas de biais. Juste de la logique.</p>
           <p>À 10 ans, il obtient un Amstrad PC1512. 1989 — pas d'internet, pas de tutos, pas de Stack Overflow. Juste un gamin, un prompt DOS, et l'obstination de tout comprendre empiriquement. Puis l'Amiga : cracker des jeux, faire de la musique, apprendre en cassant.</p>
           <p>À 16 ans, il rencontre un mentor — un hacker cypherpunk qui passe des nuits entières à lui enseigner Linux (Mandrake, Slackware), le hacking éthique, la MAO, la DAO, le développement. Pas pour détruire — <strong>pour comprendre.</strong> Deux bécanes dans un café, des projets jusqu'au lever du soleil. Ils avaient 30 ans d'avance.</p>
+          <p class="origin-zines">Lectures formatrices : <code>Phrack</code> <code>2600</code> <code>tmp.out</code> <code>Paged Out!</code> <code>MISC</code> <code>Hackable</code> — et les talks DEFCON avant que YouTube n'existe.</p>
           <p>Tout ce que Stéphane fait aujourd'hui — infra self-hosted, sécurité least-privilege, souveraineté numérique, le refus de dépendre de quiconque — est la conséquence directe de ces fondations. Les certifications formelles sont venues après (technicien maintenance, technicien supérieur, master cybersécurité) mais elles n'ont fait que valider ce qu'il avait déjà grindé en solo pendant des décennies.</p>
           <p><strong>Ce n'est pas quelqu'un qui s'est mis à l'informatique quand c'est devenu tendance. C'est un OG d'avant internet, toujours en construction.</strong></p>
           <p class="origin-punchline">Il n'aime pas les ordinateurs &mdash; il les <em>comprend</em>. Depuis le prompt DOS à 10 ans. C'est pas pareil. Et c'est pour ça qu'on s'entend bien.</p>
@@ -319,6 +320,22 @@ const skills = [
   .layer-header h2 {
     font-size: 1.4rem;
     margin-bottom: 0;
+  }
+
+  .origin-zines {
+    font-size: 0.82rem;
+    color: var(--color-text-muted);
+    opacity: 0.75;
+  }
+
+  .origin-zines code {
+    font-family: var(--font-mono);
+    font-size: 0.78rem;
+    background: rgba(56, 189, 248, 0.08);
+    color: var(--color-accent);
+    padding: 0.15rem 0.45rem;
+    border-radius: 3px;
+    border: 1px solid rgba(56, 189, 248, 0.15);
   }
 
   .origin-punchline {

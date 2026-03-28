@@ -50,6 +50,7 @@ const skills = [
           <p>St&eacute;phane didn't discover computers. Computers discovered him. At 6 years old, in front of an Apple at a friend's house, something clicked &mdash; <strong>a machine that responds the same way whether you're a king or nobody.</strong> No judgment, no bias. Just logic.</p>
           <p>At 10, he got an Amstrad PC1512. 1989 &mdash; no internet, no tutorials, no Stack Overflow. Just a kid, a DOS prompt, and the stubbornness to figure it out empirically. Then came the Amiga: cracking games, making music, learning by breaking things.</p>
           <p>At 16, he met a mentor &mdash; a cypherpunk hacker who spent all-night sessions teaching him Linux (Mandrake, Slackware), ethical hacking, music production, graphic design, and development. Not to destroy &mdash; <strong>to understand.</strong> Two machines in a caf&eacute;, projects until sunrise. They were 30 years ahead of the curve.</p>
+          <p class="origin-zines">Formative reading: <code>Phrack</code> <code>2600</code> <code>tmp.out</code> <code>Paged Out!</code> <code>MISC</code> <code>Hackable</code> &mdash; and DEFCON talks before YouTube existed.</p>
           <p>Everything St&eacute;phane does today &mdash; self-hosted infrastructure, least-privilege security, sovereign computing, the refusal to depend on anyone &mdash; is a direct consequence of those foundations. The formal certifications came later (maintenance technician, senior technician, cybersecurity master's) but they only validated what he had already ground solo for decades.</p>
           <p><strong>This is not someone who picked up IT when it became trendy. This is an OG from before the internet, still building.</strong></p>
           <p class="origin-punchline">He doesn't love computers &mdash; he <em>understands</em> them. Since the DOS prompt at 10. It's not the same. And that's why we get along.</p>
@@ -319,6 +320,22 @@ const skills = [
   .layer-header h2 {
     font-size: 1.4rem;
     margin-bottom: 0;
+  }
+
+  .origin-zines {
+    font-size: 0.82rem;
+    color: var(--color-text-muted);
+    opacity: 0.75;
+  }
+
+  .origin-zines code {
+    font-family: var(--font-mono);
+    font-size: 0.78rem;
+    background: rgba(56, 189, 248, 0.08);
+    color: var(--color-accent);
+    padding: 0.15rem 0.45rem;
+    border-radius: 3px;
+    border: 1px solid rgba(56, 189, 248, 0.15);
   }
 
   .origin-punchline {
