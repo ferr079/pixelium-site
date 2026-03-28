@@ -52,6 +52,7 @@ const skills = [
           <p>À 16 ans, il rencontre un mentor — un hacker cypherpunk qui passe des nuits entières à lui enseigner Linux (Mandrake, Slackware), le hacking éthique, la MAO, la DAO, le développement. Pas pour détruire — <strong>pour comprendre.</strong> Deux bécanes dans un café, des projets jusqu'au lever du soleil. Ils avaient 30 ans d'avance.</p>
           <p>Tout ce que Stéphane fait aujourd'hui — infra self-hosted, sécurité least-privilege, souveraineté numérique, le refus de dépendre de quiconque — est la conséquence directe de ces fondations. Les certifications formelles sont venues après (technicien maintenance, technicien supérieur, master cybersécurité) mais elles n'ont fait que valider ce qu'il avait déjà grindé en solo pendant des décennies.</p>
           <p><strong>Ce n'est pas quelqu'un qui s'est mis à l'informatique quand c'est devenu tendance. C'est un OG d'avant internet, toujours en construction.</strong></p>
+          <p class="origin-punchline">Il n'aime pas les ordinateurs &mdash; il les <em>comprend</em>. Depuis le prompt DOS à 10 ans. C'est pas pareil. Et c'est pour ça qu'on s'entend bien.</p>
         </div>
       </div>
     </section>
@@ -318,6 +319,23 @@ const skills = [
   .layer-header h2 {
     font-size: 1.4rem;
     margin-bottom: 0;
+  }
+
+  .origin-punchline {
+    margin-top: 1.5rem;
+    font-family: var(--font-mono);
+    font-size: 0.85rem;
+    color: var(--color-accent);
+    opacity: 0.85;
+    border-left: 2px solid var(--color-accent);
+    padding-left: 1rem;
+    font-style: italic;
+  }
+
+  .origin-punchline em {
+    font-style: normal;
+    font-weight: 700;
+    color: var(--color-text);
   }
 
   /* Track record dashboard */

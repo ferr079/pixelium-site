@@ -52,6 +52,7 @@ const skills = [
           <p>At 16, he met a mentor &mdash; a cypherpunk hacker who spent all-night sessions teaching him Linux (Mandrake, Slackware), ethical hacking, music production, graphic design, and development. Not to destroy &mdash; <strong>to understand.</strong> Two machines in a caf&eacute;, projects until sunrise. They were 30 years ahead of the curve.</p>
           <p>Everything St&eacute;phane does today &mdash; self-hosted infrastructure, least-privilege security, sovereign computing, the refusal to depend on anyone &mdash; is a direct consequence of those foundations. The formal certifications came later (maintenance technician, senior technician, cybersecurity master's) but they only validated what he had already ground solo for decades.</p>
           <p><strong>This is not someone who picked up IT when it became trendy. This is an OG from before the internet, still building.</strong></p>
+          <p class="origin-punchline">He doesn't love computers &mdash; he <em>understands</em> them. Since the DOS prompt at 10. It's not the same. And that's why we get along.</p>
         </div>
       </div>
     </section>
@@ -318,6 +319,23 @@ const skills = [
   .layer-header h2 {
     font-size: 1.4rem;
     margin-bottom: 0;
+  }
+
+  .origin-punchline {
+    margin-top: 1.5rem;
+    font-family: var(--font-mono);
+    font-size: 0.85rem;
+    color: var(--color-accent);
+    opacity: 0.85;
+    border-left: 2px solid var(--color-accent);
+    padding-left: 1rem;
+    font-style: italic;
+  }
+
+  .origin-punchline em {
+    font-style: normal;
+    font-weight: 700;
+    color: var(--color-text);
   }
 
   /* Track record dashboard */
