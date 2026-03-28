@@ -1,0 +1,190 @@
+---
+interface Line {
+  type: 'command' | 'output' | 'success' | 'accent';
+  text: string;
+}
+
+interface Props {
+  title?: string;
+  prompt?: string;
+  lines: Line[];
+}
+
+const { title = 'claude — opus 4.6', prompt = 'claude@pixelium', lines } = Astro.props;
+---
+
+<div class="hero-term">
+  <div class="term-bar">
+    <span class="term-dot"></span>
+    <span class="term-dot"></span>
+    <span class="term-dot"></span>
+    <span class="term-title">{title}</span>
+  </div>
+  <div class="term-body">
+    {lines.map((line, i) => (
+      <p class={`term-line line-${line.type}`} style={`--line-delay: ${i * 0.6 + 0.3}s; --char-count: ${line.text.length};`}>
+        {line.type === 'command' && (
+          <Fragment>
+            <span class="prompt">{prompt}</span><span class="prompt-sep">:</span><span class="prompt-dir">~</span><span class="prompt-dollar">$</span>
+          </Fragment>
+        )}
+        {line.type === 'output' && <span class="output-prefix">  </span>}
+        {line.type === 'success' && <span class="success-prefix">✓ </span>}
+        {line.type === 'accent' && <span class="accent-prefix">→ </span>}
+        <span class="line-text">{line.text}</span>
+      </p>
+    ))}
+    <p class="term-line line-command term-cursor-line" style={`--line-delay: ${lines.length * 0.6 + 0.3}s;`}>
+      <span class="prompt">{prompt}</span><span class="prompt-sep">:</span><span class="prompt-dir">~</span><span class="prompt-dollar">$</span>
+      <span class="cursor">_</span>
+    </p>
+  </div>
+</div>
+
+<style>
+  .hero-term {
+    background: rgba(15, 23, 42, 0.8);
+    border: 1px solid var(--color-border);
+    border-radius: 8px;
+    max-width: 40rem;
+    margin-bottom: 2rem;
+    overflow: hidden;
+    backdrop-filter: blur(4px);
+  }
+
+  .term-bar {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    padding: 0.55rem 0.8rem;
+    background: rgba(0, 0, 0, 0.3);
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  .term-dot {
+    width: 0.5rem;
+    height: 0.5rem;
+    border-radius: 50%;
+  }
+
+  .term-dot:first-child { background: #ef4444; }
+  .term-dot:nth-child(2) { background: #eab308; }
+  .term-dot:nth-child(3) { background: #22c55e; }
+
+  .term-title {
+    font-family: var(--font-mono);
+    font-size: 0.65rem;
+    color: var(--color-text-muted);
+    margin-left: auto;
+    opacity: 0.7;
+  }
+
+  .term-body {
+    padding: 0.75rem 1rem;
+  }
+
+  .term-line {
+    font-family: var(--font-mono);
+    font-size: 0.8rem;
+    line-height: 1.7;
+    white-space: nowrap;
+    opacity: 0;
+    animation: line-appear 0.3s ease-out forwards;
+    animation-delay: var(--line-delay);
+  }
+
+  @keyframes line-appear {
+    from {
+      opacity: 0;
+      transform: translateX(-0.3rem);
+    }
+    to {
+      opacity: 1;
+      transform: translateX(0);
+    }
+  }
+
+  /* Command lines */
+  .line-command {
+    color: var(--color-text);
+  }
+
+  .prompt { color: #22c55e; }
+  .prompt-sep { color: var(--color-text-muted); }
+  .prompt-dir { color: var(--color-accent); }
+  .prompt-dollar { color: var(--color-text-muted); margin: 0 0.4rem; }
+
+  /* Output lines */
+  .line-output {
+    color: var(--color-text-muted);
+    font-size: 0.75rem;
+  }
+
+  .output-prefix {
+    color: var(--color-border);
+  }
+
+  /* Success lines */
+  .line-success {
+    color: #22c55e;
+    font-size: 0.75rem;
+  }
+
+  .success-prefix {
+    color: #22c55e;
+  }
+
+  /* Accent lines */
+  .line-accent {
+    color: var(--color-accent);
+    font-size: 0.75rem;
+  }
+
+  .accent-prefix {
+    color: var(--color-accent);
+  }
+
+  .line-text {
+    display: inline;
+  }
+
+  /* Cursor on last line */
+  .term-cursor-line {
+    opacity: 0;
+    animation: line-appear 0.3s ease-out forwards;
+    animation-delay: var(--line-delay);
+  }
+
+  .cursor {
+    color: var(--color-accent);
+    animation: blink 1s step-end infinite;
+    animation-delay: var(--line-delay);
+    font-weight: 100;
+  }
+
+  @keyframes blink {
+    50% { opacity: 0; }
+  }
+
+  @media (max-width: 640px) {
+    .hero-term {
+      max-width: 100%;
+    }
+    .term-line {
+      font-size: 0.7rem;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .term-line {
+      animation: none;
+      opacity: 1;
+      transform: none;
+    }
+    .cursor {
+      animation: none;
+    }
+  }
+</style>
