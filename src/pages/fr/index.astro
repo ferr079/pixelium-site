@@ -104,7 +104,11 @@ const cards = [
     <section class="opensource reveal">
       <div class="container">
         <div class="opensource-badge">
-          <span class="opensource-icon">&#9671;</span>
+          <svg class="opensource-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <path d="M8 18L2 12L8 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+            <path d="M16 6L22 12L16 18" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+            <line x1="14" y1="4" x2="10" y2="20" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" opacity="0.5" />
+          </svg>
           <p><strong>100% open source.</strong> Pas par idéologie — par pragmatisme. Stéphane ne veut dépendre de personne pour faire tourner son infra. De Linux et Proxmox aux services applicatifs, chaque brique repose sur des logiciels libres.</p>
         </div>
       </div>
@@ -320,8 +324,10 @@ const cards = [
   }
 
   .opensource-icon {
-    font-size: 1.4rem;
+    width: 2rem;
+    height: 2rem;
     color: var(--color-accent);
+    flex-shrink: 0;
   }
 
   .opensource-badge p {
