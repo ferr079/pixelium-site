@@ -51,6 +51,33 @@ const siteUrl = 'https://pixelium.win';
     <link rel="alternate" hreflang={altLang} href={`${siteUrl}${altPath}`} />
     <link rel="alternate" hreflang="x-default" href={`${siteUrl}${basePath}`} />
     <meta name="theme-color" content="#0f172a" />
+    <link rel="author" href="/humans.txt" />
+    <script type="application/ld+json" set:html={JSON.stringify({
+      "@context": "https://schema.org",
+      "@graph": [
+        {
+          "@type": "WebSite",
+          "name": "pixelium.win",
+          "url": "https://pixelium.win",
+          "inLanguage": [lang, altLang],
+          "description": description,
+          "author": { "@id": "https://pixelium.win/#stephane" }
+        },
+        {
+          "@type": "Person",
+          "@id": "https://pixelium.win/#stephane",
+          "name": "Stéphane Ferreira",
+          "url": "https://pixelium.win",
+          "jobTitle": lang === 'fr' ? "Ingénieur DevSecOps" : "DevSecOps Engineer",
+          "knowsAbout": ["DevSecOps", "Proxmox", "Ansible", "Cybersecurity", "Infrastructure as Code", "Self-hosted", "Linux", "AI Agents"],
+          "sameAs": [
+            "https://github.com/ferr079",
+            "https://x.com/ferr079",
+            "https://app.hackthebox.com/users/Ferr079"
+          ]
+        }
+      ]
+    })} />
     <title>{title}</title>
   </head>
   <body>

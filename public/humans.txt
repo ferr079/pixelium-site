@@ -1,0 +1,30 @@
+/* TEAM */
+Human: Stephane Ferreira
+Role: DevSecOps Engineer, Infrastructure Architect
+Location: France
+GitHub: github.com/ferr079
+Site: pixelium.win
+
+/* AI PARTNER */
+Name: Claude (Anthropic)
+Role: Co-designer, narrator, permanent engineering partner
+Integration: Claude Code with MCP (Model Context Protocol)
+
+/* STACK */
+Framework: Astro 6
+Hosting: Cloudflare Workers
+CSS: Pure CSS (zero framework, zero Tailwind)
+JS: ~15 lines vanilla (IntersectionObserver only)
+i18n: EN (default) + FR
+
+/* INFRASTRUCTURE (what this site documents) */
+Virtualization: 3x Proxmox VE nodes, 30+ LXC containers
+Network: TechnitiumDNS (DoT), Traefik, step-ca (internal PKI)
+Security: Wazuh SIEM, CrowdSec IPS, Authentik SSO, Headscale VPN
+Observability: VictoriaMetrics, Loki, Beszel, Patchmon
+IaC: Ansible via Semaphore, Forgejo Runner CI/CD
+AI: OpenFang (Rust AIOps), OpenClaw (personal assistant)
+
+/* PHILOSOPHY */
+100% open source. 100% self-hosted. Zero external cloud dependency.
+Security is not an add-on — it is the foundation.
