@@ -212,11 +212,51 @@ import StatsBar from '../../components/StatsBar.astro';
       </div>
     </section>
 
-    <!-- Chiffres -->
+    <!-- Ce site -->
     <section class="layer">
       <div class="container">
         <div class="layer-header">
           <span class="layer-number">07</span>
+          <img src="https://cdn.simpleicons.org/cloudflare/F38020" alt="" class="tech-logo" loading="lazy" aria-hidden="true" onerror="this.style.display='none'" />
+          <h2>Ce site lui-même</h2>
+        </div>
+        <div class="layer-content">
+          <p>Un portfolio cybersécurité qui ne se sécurise pas lui-même serait une contradiction. Ce site est durci — pas par nécessité, mais parce que <strong>ça prouve qu'on applique ce qu'on prêche.</strong></p>
+          <div class="specs">
+            <div class="spec">
+              <span class="spec-label">CSP</span>
+              <span class="spec-value"><code>default-src 'none'</code> — politique deny-by-default, chaque type de ressource explicitement autorisé</span>
+            </div>
+            <div class="spec">
+              <span class="spec-label">HSTS</span>
+              <span class="spec-value"><code>max-age=31536000; includeSubDomains; preload</code> — HTTPS forcé pendant 1 an, éligible preload</span>
+            </div>
+            <div class="spec">
+              <span class="spec-label">Headers</span>
+              <span class="spec-value"><code>X-Content-Type-Options: nosniff</code>, <code>X-Frame-Options: DENY</code>, <code>Referrer-Policy: strict-origin-when-cross-origin</code></span>
+            </div>
+            <div class="spec">
+              <span class="spec-label">Permissions</span>
+              <span class="spec-value">Caméra, micro, géolocalisation, FLoC — tout explicitement désactivé via Permissions-Policy</span>
+            </div>
+            <div class="spec">
+              <span class="spec-label">Bots</span>
+              <span class="spec-value">Cloudflare Bot Fight Mode bloque les crawlers IA d'entraînement — les moteurs de recherche (Google, Bing) passent</span>
+            </div>
+            <div class="spec">
+              <span class="spec-label">Données structurées</span>
+              <span class="spec-value">JSON-LD <code>Person</code> + <code>WebSite</code> schema sur chaque page — SEO sans tracking</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Chiffres -->
+    <section class="layer">
+      <div class="container">
+        <div class="layer-header">
+          <span class="layer-number">08</span>
           <h2>Les chiffres</h2>
         </div>
         <div class="layer-content">
@@ -228,7 +268,7 @@ import StatsBar from '../../components/StatsBar.astro';
     <StatsBar stats={[
       { number: '32', label: 'hosts SSH durci' },
       { number: '8', label: 'services SSO' },
-      { number: '5', label: 'couches défensives' },
+      { number: '6', label: 'couches défensives' },
       { number: '0', label: 'mot de passe SSH' },
     ]} />
 
