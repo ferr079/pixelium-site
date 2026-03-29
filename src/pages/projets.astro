@@ -21,7 +21,7 @@ import Base from '../layouts/Base.astro';
         </div>
         <div class="project-body">
           <div class="project-intro">
-            <p>Integrating centralized authentication across 8 heterogeneous services — from Forgejo (Go) to Jellyfin (ASP.NET Core) through Proxmox and Immich (Node.js). Each with its own pitfalls.</p>
+            <p>Integrating centralized authentication across 6 heterogeneous services — from Forgejo (Go) to Jellyfin (ASP.NET Core) through Proxmox and Immich (Node.js). Each with its own pitfalls.</p>
           </div>
           <div class="project-details">
             <div class="detail-block">
@@ -45,7 +45,7 @@ import Base from '../layouts/Base.astro';
               <li>RS256</li>
               <li>Traefik</li>
             </ul>
-            <span class="project-services">8 services: Forgejo, Immich, Semaphore, Proxmox x2, Jellyfin, Kavita (TODO)</span>
+            <span class="project-services">6 services: Forgejo, Immich, Semaphore, Proxmox x2, Jellyfin — Kavita (TODO)</span>
           </div>
         </div>
       </div>
@@ -144,11 +144,11 @@ import Base from '../layouts/Base.astro';
           <div class="project-details">
             <div class="detail-block">
               <h4>The stack</h4>
-              <p><strong>VictoriaMetrics</strong> (CT 238) for Prometheus metrics — CPU, RAM, disk, network for each PVE node. <strong>Loki</strong> (CT 240) + Promtail for centralized logs across all services. <strong>Beszel</strong> (CT 230) for agent-based monitoring — 31 connected systems. <strong>Patchmon</strong> (CT 236) for update tracking. <strong>Wazuh</strong> (CT 234) as SIEM — intrusion detection and compliance.</p>
+              <p><strong>VictoriaMetrics</strong> (CT 238) for Prometheus metrics — CPU, RAM, disk, network for each PVE node. <strong>Loki</strong> (CT 240) + Promtail for centralized logs across all services. <strong>Beszel</strong> (CT 230) for agent-based monitoring — 30 connected systems. <strong>Patchmon</strong> (CT 236) for update tracking. <strong>Wazuh</strong> (CT 234) as SIEM — intrusion detection and compliance.</p>
             </div>
             <div class="detail-block">
               <h4>Beszel — mass deployment</h4>
-              <p>32 agents deployed in a single pass via Ansible (playbook + Semaphore). The trap: the agent requires a <code>KEY</code> variable (hub's public key) in its systemd service — without it, it starts, crashes, and logs nothing. We added a TCP 45876 firewall rule in the <code>pve-management</code> group across all 3 nodes to allow communication through the PVE firewall.</p>
+              <p>30 agents deployed in a single pass via Ansible (playbook + Semaphore). The trap: the agent requires a <code>KEY</code> variable (hub's public key) in its systemd service — without it, it starts, crashes, and logs nothing. We added a TCP 45876 firewall rule in the <code>pve-management</code> group across all 3 nodes to allow communication through the PVE firewall.</p>
             </div>
             <div class="detail-block">
               <h4>Why not Grafana</h4>
@@ -164,7 +164,7 @@ import Base from '../layouts/Base.astro';
               <li>Patchmon</li>
               <li>Wazuh</li>
             </ul>
-            <span class="project-services">5 tools, 31 Beszel agents, centralized logs, SIEM</span>
+            <span class="project-services">5 tools, 30 Beszel agents, centralized logs, SIEM</span>
           </div>
         </div>
       </div>

@@ -41,7 +41,7 @@ import StatsBar from '../../components/StatsBar.astro';
               <span class="layer-icon">&#9678;</span>
               <div>
                 <h4>Couche identité</h4>
-                <p>Authentik SSO (8 services), YubiKey FIDO2, SSH key-only sur 30+ hôtes</p>
+                <p>Authentik SSO (6 services), YubiKey FIDO2, SSH key-only sur 30+ hôtes</p>
               </div>
             </div>
             <div class="defense-layer">
@@ -106,7 +106,7 @@ import StatsBar from '../../components/StatsBar.astro';
           <h2>SSO Authentik — un login pour tout</h2>
         </div>
         <div class="layer-content">
-          <p>Authentik centralise l'authentification sur <strong>8 services</strong> via OAuth2/OIDC. Un seul couple identifiant/mot de passe, un seul point de contrôle, un seul endroit où révoquer un accès. La phase 2 supprimera les logins locaux — SSO-only + YubiKey WebAuthn.</p>
+          <p>Authentik centralise l'authentification sur <strong>6 services</strong> via OAuth2/OIDC. Un seul couple identifiant/mot de passe, un seul point de contrôle, un seul endroit où révoquer un accès. La phase 2 supprimera les logins locaux — SSO-only + YubiKey WebAuthn.</p>
           <div class="details-grid">
             <div class="detail">
               <h4>Services intégrés</h4>
@@ -138,7 +138,7 @@ import StatsBar from '../../components/StatsBar.astro';
           <div class="details-grid">
             <div class="detail">
               <h4>ed25519-sk résidente</h4>
-              <p>Clé SSH <code>ed25519-sk</code> résidente sur YubiKey 5 NFC — la clé privée n'existe <strong>que sur la YubiKey</strong>. Même si la workstation est compromise, la clé est inextractible. Déployée sur 32/32 hosts.</p>
+              <p>Clé SSH <code>ed25519-sk</code> résidente sur YubiKey 5 NFC — la clé privée n'existe <strong>que sur la YubiKey</strong>. Même si la workstation est compromise, la clé est inextractible. Déployée sur 30+ hosts.</p>
             </div>
             <div class="detail">
               <h4>Hardening Ansible</h4>

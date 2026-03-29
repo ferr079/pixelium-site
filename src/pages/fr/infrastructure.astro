@@ -107,7 +107,7 @@ import SectionHeading from '../../components/SectionHeading.astro';
           </div>
 
           <div class="screenshots-grid screenshots-focus">
-            <Screenshot src="/images/pve1-focus.webp" alt="Liste CTs pve1 — 10 conteneurs" title="pve1 — conteneurs" caption="pve1 — 10 CTs : DNS, Traefik, step-ca, Forgejo, NetBox..." />
+            <Screenshot src="/images/pve1-focus.webp" alt="Liste CTs pve1 — 9 LXC + 2 VM" title="pve1 — conteneurs" caption="pve1 — 9 LXC + 2 VM : DNS, Traefik, step-ca, Forgejo, NetBox..." />
             <Screenshot src="/images/pve2-focus.webp" alt="Liste CTs pve2 — 20+ conteneurs" title="pve2 — conteneurs" caption="pve2 — 20+ CTs : Homepage, Jellyfin, Immich, Wazuh, Beszel..." />
           </div>
 
@@ -188,7 +188,7 @@ import SectionHeading from '../../components/SectionHeading.astro';
               <div class="tech-card-body">
                 <p class="tech-why"><strong>Pourquoi :</strong> OAuth2/OIDC universel — chaque service a son propre provider. Forward-auth proxy pour les services sans SSO natif. WebAuthn (YubiKey) pour le MFA.</p>
                 <p class="tech-alt"><span class="alt-label">Ecartes :</span> Keycloak (Java lourd, 1 Go+ RAM), Authelia (moins flexible sur les flows custom)</p>
-                <p class="tech-result"><span class="result-label">Resultat :</span> SSO sur 8 services heterogenes, un seul login pour tout le homelab</p>
+                <p class="tech-result"><span class="result-label">Resultat :</span> SSO sur 6 services heterogenes, un seul login pour tout le homelab</p>
               </div>
             </div>
 
@@ -248,7 +248,7 @@ import SectionHeading from '../../components/SectionHeading.astro';
               <div class="tech-card-body">
                 <p class="tech-why"><strong>Pourquoi :</strong> Monitoring systeme leger — agents Go de 10 Mo, dashboard web elegant, install en 1 commande. Pas besoin de configurer Grafana + node_exporter + dashboards JSON.</p>
                 <p class="tech-alt"><span class="alt-label">Ecartes :</span> Grafana + node_exporter (puissant mais complexe a maintenir pour du monitoring basique)</p>
-                <p class="tech-result"><span class="result-label">Resultat :</span> 31 agents deployes, overview instantane CPU/RAM/disque sur tout le homelab</p>
+                <p class="tech-result"><span class="result-label">Resultat :</span> 30 agents deployes, overview instantane CPU/RAM/disque sur tout le homelab</p>
               </div>
             </div>
 
@@ -368,7 +368,7 @@ import SectionHeading from '../../components/SectionHeading.astro';
                 <h4>Beszel</h4>
               </div>
               <span class="obs-role">Monitoring systeme</span>
-              <p>31 agents. Dashboard CPU/RAM/disque/reseau. Alertes seuil. Overview instantane.</p>
+              <p>30 agents. Dashboard CPU/RAM/disque/reseau. Alertes seuil. Overview instantane.</p>
             </div>
 
             <div class="obs-card">

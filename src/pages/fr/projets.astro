@@ -21,7 +21,7 @@ import Base from '../../layouts/Base.astro';
         </div>
         <div class="project-body">
           <div class="project-intro">
-            <p>Intégrer une authentification centralisée sur 8 services hétérogènes — de Forgejo (Go) à Jellyfin (ASP.NET Core) en passant par Proxmox et Immich (Node.js). Chacun avec ses propres pièges.</p>
+            <p>Intégrer une authentification centralisée sur 6 services hétérogènes — de Forgejo (Go) à Jellyfin (ASP.NET Core) en passant par Proxmox et Immich (Node.js). Chacun avec ses propres pièges.</p>
           </div>
           <div class="project-details">
             <div class="detail-block">
@@ -45,7 +45,7 @@ import Base from '../../layouts/Base.astro';
               <li>RS256</li>
               <li>Traefik</li>
             </ul>
-            <span class="project-services">8 services : Forgejo, Immich, Semaphore, Proxmox ×2, Jellyfin, Kavita (TODO)</span>
+            <span class="project-services">6 services : Forgejo, Immich, Semaphore, Proxmox ×2, Jellyfin — Kavita (TODO)</span>
           </div>
         </div>
       </div>
@@ -144,11 +144,11 @@ import Base from '../../layouts/Base.astro';
           <div class="project-details">
             <div class="detail-block">
               <h4>La stack</h4>
-              <p><strong>VictoriaMetrics</strong> (CT 238) pour les métriques Prometheus — CPU, RAM, disque, réseau de chaque nœud PVE. <strong>Loki</strong> (CT 240) + Promtail pour les logs centralisés de tous les services. <strong>Beszel</strong> (CT 230) pour le monitoring agents — 31 systèmes connectés. <strong>Patchmon</strong> (CT 236) pour le suivi des mises à jour. <strong>Wazuh</strong> (CT 234) comme SIEM — détection d'intrusion et compliance.</p>
+              <p><strong>VictoriaMetrics</strong> (CT 238) pour les métriques Prometheus — CPU, RAM, disque, réseau de chaque nœud PVE. <strong>Loki</strong> (CT 240) + Promtail pour les logs centralisés de tous les services. <strong>Beszel</strong> (CT 230) pour le monitoring agents — 30 systèmes connectés. <strong>Patchmon</strong> (CT 236) pour le suivi des mises à jour. <strong>Wazuh</strong> (CT 234) comme SIEM — détection d'intrusion et compliance.</p>
             </div>
             <div class="detail-block">
               <h4>Beszel — déploiement massif</h4>
-              <p>32 agents déployés en une passe via Ansible (playbook + Semaphore). Le piège : l'agent nécessite une variable <code>KEY</code> (clé publique du hub) dans son service systemd — sans ça, il démarre, crashe, et ne log rien. On a ajouté une règle firewall TCP 45876 dans le groupe <code>pve-management</code> des 3 nœuds pour permettre la communication à travers le firewall PVE.</p>
+              <p>30 agents déployés en une passe via Ansible (playbook + Semaphore). Le piège : l'agent nécessite une variable <code>KEY</code> (clé publique du hub) dans son service systemd — sans ça, il démarre, crashe, et ne log rien. On a ajouté une règle firewall TCP 45876 dans le groupe <code>pve-management</code> des 3 nœuds pour permettre la communication à travers le firewall PVE.</p>
             </div>
             <div class="detail-block">
               <h4>Pourquoi pas Grafana</h4>
@@ -164,7 +164,7 @@ import Base from '../../layouts/Base.astro';
               <li>Patchmon</li>
               <li>Wazuh</li>
             </ul>
-            <span class="project-services">5 outils, 31 agents Beszel, logs centralisés, SIEM</span>
+            <span class="project-services">5 outils, 30 agents Beszel, logs centralisés, SIEM</span>
           </div>
         </div>
       </div>
