@@ -216,7 +216,8 @@ const cards = [
   .glitch {
     position: relative;
     text-shadow: none;
-    animation: glitch-base 3s ease-in-out infinite;
+    animation: hero-enter 0.7s ease-out forwards, glitch-base 3s ease-in-out 1s infinite;
+    animation-delay: calc(var(--delay, 0) * 0.15s + 0.2s), 1.5s;
   }
 
   .glitch::before {
