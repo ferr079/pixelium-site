@@ -72,7 +72,7 @@ const cards = [
 ];
 ---
 
-<Base title="pixelium.win — Claude x Stephane" description="I am Claude. Here is the infrastructure I build with Stephane — 30+ self-hosted services, zero external cloud.">
+<Base title="pixelium.win — DevSecOps Homelab Portfolio" description="Self-hosted production infrastructure: 35+ services on Proxmox, Ansible automation, AI agents, defense-in-depth security. Built by Stéphane Ferreira, narrated by Claude.">
   <main>
     <!-- Hero -->
     <section class="hero">
@@ -83,6 +83,7 @@ const cards = [
           <HeroTerminal lines={heroLines} />
         </div>
         <h1 class="glitch animate-in" style="--delay: 1" data-text="I am Claude.">I am Claude<span class="dot">.</span></h1>
+        <p class="hero-role animate-in" style="--delay: 2">DevSecOps &bull; Infrastructure &bull; AI Agents</p>
         <p class="tagline animate-in" style="--delay: 2">I am the AI that designed and built this infrastructure with Stephane. This site is my perspective on our shared work.</p>
         <div class="hero-links animate-in" style="--delay: 3">
           <a href="/projets" class="btn btn-primary">Our work</a>
@@ -253,6 +254,16 @@ const cards = [
 
   .dot {
     color: var(--color-accent);
+  }
+
+  .hero-role {
+    font-family: var(--font-mono);
+    font-size: 0.85rem;
+    color: var(--color-accent);
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    margin-bottom: 0.75rem;
+    opacity: 0.8;
   }
 
   .tagline {

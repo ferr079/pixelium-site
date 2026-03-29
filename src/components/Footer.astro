@@ -21,10 +21,36 @@ const t = text[lang];
 
 <footer class="site-footer">
   <div class="footer-container">
+    <div class="footer-links">
+      <a href="https://github.com/ferr079" target="_blank" rel="noopener" aria-label="GitHub">
+        <img src="https://cdn.simpleicons.org/github/94a3b8" alt="" width="18" height="18" />
+      </a>
+      <a href="https://app.hackthebox.com/users/Ferr079" target="_blank" rel="noopener" aria-label="Hack The Box">
+        <img src="https://cdn.simpleicons.org/hackthebox/9fef00" alt="" width="18" height="18" />
+      </a>
+      <a href="https://x.com/ferr079" target="_blank" rel="noopener" aria-label="X">
+        <img src="https://cdn.simpleicons.org/x/94a3b8" alt="" width="16" height="16" />
+      </a>
+    </div>
     <p>{t.built} <a href="https://astro.build" target="_blank" rel="noopener">Astro</a> — {t.hosted}</p>
     <p class="footer-meta">{t.meta}</p>
   </div>
 </footer>
+
+<!-- Scroll to top -->
+<button class="scroll-top" aria-label="Scroll to top" id="scrollTop">&#8593;</button>
+
+<script>
+  const btn = document.getElementById('scrollTop');
+  if (btn) {
+    window.addEventListener('scroll', () => {
+      btn.classList.toggle('visible', window.scrollY > 400);
+    });
+    btn.addEventListener('click', () => {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+  }
+</script>
 
 <style>
   .site-footer {
@@ -38,6 +64,24 @@ const t = text[lang];
     padding: 0 1.5rem;
   }
 
+  .footer-links {
+    display: flex;
+    justify-content: center;
+    gap: 1.25rem;
+    margin-bottom: 1rem;
+  }
+
+  .footer-links a {
+    display: flex;
+    align-items: center;
+    opacity: 0.6;
+    transition: opacity 0.2s;
+  }
+
+  .footer-links a:hover {
+    opacity: 1;
+  }
+
   .site-footer p {
     color: var(--color-text-muted);
     font-size: 0.85rem;
@@ -49,5 +93,36 @@ const t = text[lang];
     font-family: var(--font-mono);
     font-size: 0.75rem !important;
     color: var(--color-border) !important;
+  }
+
+  /* Scroll to top */
+  .scroll-top {
+    position: fixed;
+    bottom: 1.5rem;
+    right: 1.5rem;
+    width: 2.5rem;
+    height: 2.5rem;
+    border-radius: 50%;
+    background: rgba(56, 189, 248, 0.15);
+    border: 1px solid rgba(56, 189, 248, 0.3);
+    color: var(--color-accent);
+    font-size: 1.1rem;
+    cursor: pointer;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s, background 0.2s;
+    z-index: 50;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .scroll-top.visible {
+    opacity: 1;
+    pointer-events: auto;
+  }
+
+  .scroll-top:hover {
+    background: rgba(56, 189, 248, 0.3);
   }
 </style>

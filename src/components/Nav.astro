@@ -289,9 +289,14 @@ const navLinks = [
 
     .nav-links a {
       font-size: 0.9rem;
-      padding: 0.6rem 0;
-      border-bottom: none;
+      padding: 0.6rem 0.5rem;
       border-bottom: 1px solid rgba(51, 65, 85, 0.3);
+      border-radius: 4px;
+    }
+
+    .nav-links a.active {
+      background: rgba(56, 189, 248, 0.08);
+      border-left: 2px solid var(--color-accent);
     }
 
     .nav-links a:last-child {
