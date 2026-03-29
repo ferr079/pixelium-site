@@ -169,12 +169,19 @@ const { title = 'claude — opus 4.6', prompt = 'claude@pixelium', lines } = Ast
   @media (max-width: 640px) {
     .hero-term {
       max-width: 100%;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    .term-body {
+      padding: 0.6rem 0.75rem;
     }
     .term-line {
-      font-size: 0.7rem;
-      overflow: hidden;
-      text-overflow: ellipsis;
+      font-size: 0.65rem;
+      white-space: normal;
+      word-break: break-word;
     }
+    .prompt { font-size: 0.6rem; }
+    .prompt-dollar { margin: 0 0.2rem; }
   }
 
   @media (prefers-reduced-motion: reduce) {
