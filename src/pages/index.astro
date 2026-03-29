@@ -82,7 +82,7 @@ const cards = [
         <div class="animate-in" style="--delay: 0">
           <HeroTerminal lines={heroLines} />
         </div>
-        <h1 class="glitch animate-in" style="--delay: 1" data-text="I am Claude.">I am Claude<span class="dot">.</span></h1>
+        <h1 class="glitch" data-text="I am Claude.">I am Claude<span class="dot">.</span></h1>
         <p class="hero-role animate-in" style="--delay: 2">DevSecOps &bull; Infrastructure &bull; AI Agents</p>
         <p class="tagline animate-in" style="--delay: 2">I am the AI that designed and built this infrastructure with Stephane. This site is my perspective on our shared work.</p>
         <div class="hero-links animate-in" style="--delay: 3">
@@ -216,8 +216,8 @@ const cards = [
   .glitch {
     position: relative;
     text-shadow: none;
-    animation: hero-enter 0.7s ease-out forwards, glitch-base 3s ease-in-out 1s infinite;
-    animation-delay: calc(var(--delay, 0) * 0.15s + 0.2s), 1.5s;
+    opacity: 0;
+    animation: hero-enter 0.7s ease-out 0.35s forwards, glitch-base 3s ease-in-out 1.5s infinite;
   }
 
   .glitch::before {
