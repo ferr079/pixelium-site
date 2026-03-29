@@ -85,13 +85,52 @@ import Base from '../layouts/Base.astro';
               <li>VictoriaMetrics</li>
               <li>Loki</li>
             </ul>
-            <span class="project-services">~$0.05/day — 3 cron jobs, 21 monitored services, Telegram alerts</span>
+            <span class="project-services">~$0.05/day — 4 cron jobs, 2 agents, 21 monitored services, Telegram alerts</span>
           </div>
         </div>
       </div>
     </section>
 
-    <!-- Project 3: Observability stack -->
+    <!-- Project 3: RSS Intelligence Agent -->
+    <section class="project" id="veille">
+      <div class="container">
+        <div class="project-header">
+          <span class="project-tag">AI Agents</span>
+          <h2>RSS Intelligence — AI-powered daily tech digest</h2>
+        </div>
+        <div class="project-body">
+          <div class="project-intro">
+            <p>An autonomous OpenFang sub-agent that reads 15 RSS feeds every day, scores each article by relevance to Stephane's profile (DevSecOps, pentester, homelabber), and delivers a categorized digest via Telegram at 4pm. Zero human intervention.</p>
+          </div>
+          <div class="project-details">
+            <div class="detail-block">
+              <h4>The pipeline</h4>
+              <p>FreshRSS (CT 160) aggregates 15 feeds across 5 categories: cybersecurity, AI/LLM, homelab, tech, Rust. Every 15 minutes, a cron fetches new articles. At 4pm Paris time, the <code>veille-rss</code> agent authenticates to the GReader API, pulls the last 24h of articles (~40/day), and runs a 2-pass LLM analysis: scoring then synthesis.</p>
+            </div>
+            <div class="detail-block">
+              <h4>Smart filtering</h4>
+              <p>Not a dumb RSS reader — the agent scores each article 0-10 against Stephane's actual profile. CVE alerts, major tool releases, and AI breakthroughs score high. Generic opinion pieces and clickbait score low. Only articles above 6/10 make it to the digest. The result: 5-10 curated items instead of 40 raw articles.</p>
+            </div>
+            <div class="detail-block">
+              <h4>Cost and architecture</h4>
+              <p>~12K tokens of input per run (titles + descriptions, not full articles), ~800 tokens of output. MiniMax M2.7 handles both scoring and synthesis. Total cost: under $0.01/day. The agent runs as a dedicated OpenFang sub-agent with its own cron job, separate from the Guardian infrastructure agent — separation of concerns at the agent level.</p>
+            </div>
+          </div>
+          <div class="project-stack">
+            <ul class="tags">
+              <li>OpenFang</li>
+              <li>FreshRSS</li>
+              <li>GReader API</li>
+              <li>MiniMax M2.7</li>
+              <li>Telegram</li>
+            </ul>
+            <span class="project-services">15 feeds, 5 categories, daily digest at 4pm, &lt;$0.01/day</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Project 4: Observability stack -->
     <section class="project" id="observabilite">
       <div class="container">
         <div class="project-header">
@@ -397,7 +436,7 @@ import Base from '../layouts/Base.astro';
           <div class="roadmap-item">
             <span class="roadmap-status status-wip">in progress</span>
             <h4>Full SSO</h4>
-            <p>Authentik integrated on Forgejo, Semaphore, Proxmox, Jellyfin. Remaining: Kavita, Immich, and observability dashboards. Goal: single login across 100% of services.</p>
+            <p>Authentik integrated on Forgejo, Immich, Semaphore, Proxmox, Jellyfin. Remaining: Kavita and observability dashboards. Goal: single login across 100% of services.</p>
           </div>
           <div class="roadmap-item">
             <span class="roadmap-status status-planned">planned</span>
