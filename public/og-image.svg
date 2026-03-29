@@ -1,0 +1,78 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#0f172a"/>
+      <stop offset="100%" stop-color="#1e293b"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Background -->
+  <rect width="1200" height="630" fill="url(#bg)"/>
+
+  <!-- Grid pattern (subtle) -->
+  <g opacity="0.04" stroke="#38bdf8" stroke-width="1">
+    <line x1="0" y1="100" x2="1200" y2="100"/>
+    <line x1="0" y1="200" x2="1200" y2="200"/>
+    <line x1="0" y1="300" x2="1200" y2="300"/>
+    <line x1="0" y1="400" x2="1200" y2="400"/>
+    <line x1="0" y1="500" x2="1200" y2="500"/>
+    <line x1="200" y1="0" x2="200" y2="630"/>
+    <line x1="400" y1="0" x2="400" y2="630"/>
+    <line x1="600" y1="0" x2="600" y2="630"/>
+    <line x1="800" y1="0" x2="800" y2="630"/>
+    <line x1="1000" y1="0" x2="1000" y2="630"/>
+  </g>
+
+  <!-- Accent glow -->
+  <circle cx="900" cy="200" r="250" fill="#38bdf8" opacity="0.03"/>
+
+  <!-- Logo (4 squares) -->
+  <g transform="translate(80, 180)">
+    <rect width="36" height="36" rx="4" fill="#38bdf8" opacity="0.9"/>
+    <rect x="42" width="36" height="36" rx="4" fill="#38bdf8" opacity="0.5"/>
+    <rect y="42" width="36" height="36" rx="4" fill="#38bdf8" opacity="0.5"/>
+    <rect x="42" y="42" width="36" height="36" rx="4" fill="#38bdf8" opacity="0.2"/>
+  </g>
+
+  <!-- pixelium.win -->
+  <text x="175" y="220" font-family="'JetBrains Mono', 'Fira Code', monospace" font-size="52" font-weight="700" fill="#e2e8f0">
+    pixelium<tspan fill="#38bdf8">.</tspan>win
+  </text>
+
+  <!-- Role subtitle -->
+  <text x="80" y="300" font-family="'JetBrains Mono', 'Fira Code', monospace" font-size="22" fill="#38bdf8" letter-spacing="4" opacity="0.8">
+    DEVSECOPS · INFRASTRUCTURE · AI AGENTS
+  </text>
+
+  <!-- Separator line -->
+  <line x1="80" y1="340" x2="500" y2="340" stroke="#334155" stroke-width="1"/>
+
+  <!-- Author -->
+  <text x="80" y="390" font-family="system-ui, -apple-system, sans-serif" font-size="24" fill="#94a3b8">
+    Stéphane Ferreira
+  </text>
+  <text x="355" y="390" font-family="system-ui, -apple-system, sans-serif" font-size="24" fill="#334155">
+    ×
+  </text>
+  <text x="385" y="390" font-family="system-ui, -apple-system, sans-serif" font-size="24" fill="#94a3b8">
+    Claude
+  </text>
+
+  <!-- Stats bar -->
+  <g transform="translate(80, 440)">
+    <text font-family="'JetBrains Mono', monospace" font-size="32" font-weight="700" fill="#38bdf8">35+</text>
+    <text x="0" y="28" font-family="system-ui, sans-serif" font-size="13" fill="#64748b">services</text>
+
+    <text x="140" font-family="'JetBrains Mono', monospace" font-size="32" font-weight="700" fill="#38bdf8">3</text>
+    <text x="140" y="28" font-family="system-ui, sans-serif" font-size="13" fill="#64748b">Proxmox nodes</text>
+
+    <text x="320" font-family="'JetBrains Mono', monospace" font-size="32" font-weight="700" fill="#38bdf8">0€</text>
+    <text x="320" y="28" font-family="system-ui, sans-serif" font-size="13" fill="#64748b">external cloud</text>
+
+    <text x="500" font-family="'JetBrains Mono', monospace" font-size="32" font-weight="700" fill="#38bdf8">24/7</text>
+    <text x="500" y="28" font-family="system-ui, sans-serif" font-size="13" fill="#64748b">production</text>
+  </g>
+
+  <!-- Bottom border accent -->
+  <rect x="0" y="620" width="1200" height="10" fill="#38bdf8" opacity="0.3"/>
+</svg>
