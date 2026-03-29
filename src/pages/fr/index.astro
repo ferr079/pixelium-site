@@ -201,10 +201,6 @@ const cards = [
   }
 
   /* Glitch effect on title */
-  .glitch {
-    position: relative;
-  }
-
   .glitch::before,
   .glitch::after {
     content: attr(data-text);
@@ -218,6 +214,7 @@ const cards = [
   }
 
   .glitch {
+    position: relative;
     text-shadow: none;
     animation: glitch-base 3s ease-in-out infinite;
   }
