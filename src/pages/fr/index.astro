@@ -217,35 +217,61 @@ const cards = [
     pointer-events: none;
   }
 
+  .glitch {
+    text-shadow: none;
+    animation: glitch-base 3s ease-in-out infinite;
+  }
+
   .glitch::before {
     color: #ff6b6b;
-    animation: glitch-1 4s ease-in-out infinite;
+    text-shadow: 2px 0 #ff6b6b;
+    animation: glitch-1 3s ease-in-out infinite;
   }
 
   .glitch::after {
     color: var(--color-accent);
-    animation: glitch-2 4s ease-in-out infinite;
+    text-shadow: -2px 0 var(--color-accent);
+    animation: glitch-2 3s ease-in-out infinite;
+  }
+
+  @keyframes glitch-base {
+    0%, 72%, 84%, 100% { text-shadow: none; transform: none; }
+    74% { transform: translate(1px, 0); text-shadow: -2px 0 rgba(255, 107, 107, 0.3), 2px 0 rgba(56, 189, 248, 0.3); }
+    76% { transform: translate(-1px, 0); text-shadow: 2px 0 rgba(255, 107, 107, 0.2), -2px 0 rgba(56, 189, 248, 0.2); }
+    78% { transform: none; text-shadow: none; }
+    80% { transform: translate(2px, -1px); text-shadow: -3px 0 rgba(255, 107, 107, 0.4), 3px 0 rgba(56, 189, 248, 0.4); }
+    81% { transform: translate(-1px, 1px); text-shadow: none; }
+    82% { transform: none; }
   }
 
   @keyframes glitch-1 {
-    0%, 78%, 86%, 100% { opacity: 0; transform: none; }
-    79% { opacity: 0.8; transform: translate(-3px, 2px); clip-path: inset(10% 0 70% 0); }
-    80% { opacity: 0.9; transform: translate(4px, -1px); clip-path: inset(45% 0 25% 0); }
-    81% { opacity: 0.7; transform: translate(-2px, 0); clip-path: inset(65% 0 10% 0); }
-    82% { opacity: 0; transform: none; }
-    83% { opacity: 0.8; transform: translate(3px, 1px); clip-path: inset(20% 0 50% 0); }
-    84% { opacity: 0.6; transform: translate(-4px, -2px); clip-path: inset(55% 0 15% 0); }
-    85% { opacity: 0; transform: none; }
+    0%, 72%, 84%, 100% { opacity: 0; transform: none; }
+    73% { opacity: 0.9; transform: translate(-5px, 2px); clip-path: inset(8% 0 72% 0); }
+    74% { opacity: 1; transform: translate(6px, -1px); clip-path: inset(42% 0 28% 0); }
+    75% { opacity: 0.8; transform: translate(-3px, 0); clip-path: inset(68% 0 8% 0); }
+    76% { opacity: 0; transform: none; }
+    77% { opacity: 0.9; transform: translate(4px, 2px); clip-path: inset(15% 0 55% 0); }
+    78% { opacity: 1; transform: translate(-6px, -2px); clip-path: inset(52% 0 18% 0); }
+    79% { opacity: 0.7; transform: translate(3px, 1px); clip-path: inset(78% 0 2% 0); }
+    80% { opacity: 0; transform: none; }
+    81% { opacity: 0.9; transform: translate(-4px, -1px); clip-path: inset(25% 0 45% 0); }
+    82% { opacity: 1; transform: translate(5px, 2px); clip-path: inset(60% 0 12% 0); }
+    83% { opacity: 0; transform: none; }
   }
 
   @keyframes glitch-2 {
-    0%, 78%, 86%, 100% { opacity: 0; transform: none; }
-    79.5% { opacity: 0.7; transform: translate(3px, -2px); clip-path: inset(30% 0 40% 0); }
-    80.5% { opacity: 0.9; transform: translate(-4px, 1px); clip-path: inset(60% 0 15% 0); }
-    81.5% { opacity: 0.6; transform: translate(2px, 2px); clip-path: inset(5% 0 75% 0); }
-    82.5% { opacity: 0; transform: none; }
-    83.5% { opacity: 0.7; transform: translate(-3px, -1px); clip-path: inset(40% 0 30% 0); }
-    84.5% { opacity: 0.8; transform: translate(4px, 0); clip-path: inset(70% 0 5% 0); }
+    0%, 72%, 84%, 100% { opacity: 0; transform: none; }
+    73.5% { opacity: 0.8; transform: translate(5px, -2px); clip-path: inset(22% 0 48% 0); }
+    74.5% { opacity: 1; transform: translate(-6px, 1px); clip-path: inset(55% 0 15% 0); }
+    75.5% { opacity: 0.7; transform: translate(3px, 2px); clip-path: inset(5% 0 78% 0); }
+    76.5% { opacity: 0; transform: none; }
+    77.5% { opacity: 0.8; transform: translate(-4px, -2px); clip-path: inset(35% 0 35% 0); }
+    78.5% { opacity: 1; transform: translate(6px, 0); clip-path: inset(70% 0 5% 0); }
+    79.5% { opacity: 0.9; transform: translate(-3px, 1px); clip-path: inset(12% 0 62% 0); }
+    80.5% { opacity: 0; transform: none; }
+    81.5% { opacity: 0.8; transform: translate(4px, -1px); clip-path: inset(48% 0 22% 0); }
+    82.5% { opacity: 1; transform: translate(-5px, 2px); clip-path: inset(75% 0 3% 0); }
+    83.5% { opacity: 0; transform: none; }
   }
 
   .hero-content {
