@@ -33,13 +33,7 @@ const navLinks = [
       </svg>
       <span class="nav-text">pixelium<span class="nav-dot">.</span>win</span>
     </a>
-    <div class="nav-links">
-      {navLinks.map(({ path, label }) => {
-        const href = getLocalizedPath(lang, path);
-        const localizedPath = getLocalizedPath(lang, path);
-        const isActive = currentPath === localizedPath || currentPath === localizedPath + '/';
-        return <a href={href} class:list={[{ active: isActive }]}>{label}</a>;
-      })}
+    <div class="nav-right">
       <span class="lang-switch">
         <svg class="lang-globe" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
           <circle cx="8" cy="8" r="6.5" stroke="currentColor" stroke-width="1.2" />
@@ -50,13 +44,35 @@ const navLinks = [
           <a href={href} class:list={['lang-link', { 'lang-active': active }]} aria-label={`Switch to ${label}`}>{label}</a>
         ))}
       </span>
+      <button class="nav-toggle" aria-label="Menu" aria-expanded="false">
+        <span class="hamburger"></span>
+      </button>
+    </div>
+    <div class="nav-links">
+      {navLinks.map(({ path, label }) => {
+        const href = getLocalizedPath(lang, path);
+        const localizedPath = getLocalizedPath(lang, path);
+        const isActive = currentPath === localizedPath || currentPath === localizedPath + '/';
+        return <a href={href} class:list={[{ active: isActive }]}>{label}</a>;
+      })}
     </div>
   </div>
 </nav>
 
+<script>
+  const toggle = document.querySelector('.nav-toggle');
+  const links = document.querySelector('.nav-links');
+  if (toggle && links) {
+    toggle.addEventListener('click', () => {
+      const open = links.classList.toggle('open');
+      toggle.setAttribute('aria-expanded', String(open));
+    });
+  }
+</script>
+
 <style>
   .site-nav {
-    padding: 1.25rem 0;
+    padding: 0.75rem 0;
     position: sticky;
     top: 0;
     z-index: 100;
@@ -73,6 +89,7 @@ const navLinks = [
     display: flex;
     align-items: center;
     justify-content: space-between;
+    flex-wrap: wrap;
   }
 
   .nav-brand {
@@ -113,6 +130,12 @@ const navLinks = [
     color: var(--color-accent);
   }
 
+  .nav-right {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+  }
+
   .nav-links {
     display: flex;
     gap: 1.5rem;
@@ -140,14 +163,61 @@ const navLinks = [
     border-bottom-color: var(--color-accent);
   }
 
+  /* Hamburger button — hidden on desktop */
+  .nav-toggle {
+    display: none;
+    background: none;
+    border: 1px solid var(--color-border);
+    border-radius: 4px;
+    padding: 0.4rem;
+    cursor: pointer;
+    width: 2rem;
+    height: 2rem;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .hamburger,
+  .hamburger::before,
+  .hamburger::after {
+    display: block;
+    width: 1rem;
+    height: 2px;
+    background: var(--color-text);
+    border-radius: 1px;
+    transition: transform 0.2s, opacity 0.2s;
+    position: relative;
+  }
+
+  .hamburger::before,
+  .hamburger::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    width: 100%;
+  }
+
+  .hamburger::before { top: -5px; }
+  .hamburger::after { top: 5px; }
+
+  /* Open state */
+  .nav-toggle[aria-expanded="true"] .hamburger {
+    background: transparent;
+  }
+  .nav-toggle[aria-expanded="true"] .hamburger::before {
+    top: 0;
+    transform: rotate(45deg);
+  }
+  .nav-toggle[aria-expanded="true"] .hamburger::after {
+    top: 0;
+    transform: rotate(-45deg);
+  }
+
   /* Language switcher */
   .lang-switch {
     display: flex;
     align-items: center;
     gap: 0.3rem;
-    margin-left: 0.5rem;
-    padding-left: 1rem;
-    border-left: 1px solid var(--color-border);
   }
 
   .lang-globe {
@@ -166,6 +236,8 @@ const navLinks = [
     border-radius: 3px !important;
     border-bottom: none !important;
     letter-spacing: 0.05em !important;
+    text-decoration: none;
+    color: var(--color-text-muted);
   }
 
   .lang-link.lang-active {
@@ -182,49 +254,52 @@ const navLinks = [
     color: var(--color-accent) !important;
   }
 
-  @media (max-width: 768px) {
-    .nav-container {
-      flex-direction: column;
-      gap: 0.6rem;
-      padding: 0.75rem 1rem;
-    }
-
-    .nav-links {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 0.25rem;
-      width: 100%;
-    }
-
-    .nav-links a {
-      font-size: 0.78rem;
-      padding: 0.35rem 0.15rem;
-      text-align: center;
-      border-bottom: none;
-    }
-
+  /* Desktop: lang-switch has left border separator */
+  @media (min-width: 769px) {
     .lang-switch {
-      grid-column: 1 / -1;
-      justify-self: center;
-      margin-left: 0;
-      padding-left: 0;
-      border-left: none;
-      padding-top: 0.25rem;
-      border-top: 1px solid var(--color-border);
+      margin-left: 0.5rem;
+      padding-left: 1rem;
+      border-left: 1px solid var(--color-border);
     }
   }
 
-  @media (max-width: 400px) {
+  /* Mobile */
+  @media (max-width: 768px) {
+    .nav-container {
+      padding: 0.5rem 1rem;
+    }
+
+    .nav-toggle {
+      display: flex;
+    }
+
     .nav-links {
-      grid-template-columns: repeat(3, 1fr);
+      display: none;
+      width: 100%;
+      flex-direction: column;
+      gap: 0;
+      padding-top: 0.5rem;
+      border-top: 1px solid var(--color-border);
+      margin-top: 0.5rem;
+    }
+
+    .nav-links.open {
+      display: flex;
     }
 
     .nav-links a {
-      font-size: 0.72rem;
+      font-size: 0.9rem;
+      padding: 0.6rem 0;
+      border-bottom: none;
+      border-bottom: 1px solid rgba(51, 65, 85, 0.3);
     }
 
-    .nav-brand {
-      font-size: 0.95rem;
+    .nav-links a:last-child {
+      border-bottom: none;
+    }
+
+    .nav-links a.active {
+      color: var(--color-accent);
     }
   }
 </style>
