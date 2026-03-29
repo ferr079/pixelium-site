@@ -547,4 +547,24 @@ const skills = [
     color: var(--color-accent);
     flex-shrink: 0;
   }
+
+  @media (max-width: 640px) {
+    .hero-mini { padding: 2rem 0 1.5rem; }
+    h1 { font-size: clamp(1.5rem, 5vw, 2.5rem); }
+    .subtitle { font-size: 0.95rem; }
+    .track-grid { grid-template-columns: repeat(2, 1fr); gap: 0.5rem; }
+    .track-stat { padding: 0.6rem 0.75rem; }
+    .track-number { font-size: 1.3rem; }
+    .track-label { font-size: 0.65rem; }
+    .details-grid, .skills-grid { grid-template-columns: 1fr; gap: 0.75rem; }
+    .detail, .skill-group { padding: 1rem; }
+    .detail h4, .skill-group h4 { font-size: 0.85rem; }
+    .detail p { font-size: 0.82rem; }
+    .origin-punchline { font-size: 0.8rem; padding-left: 0.75rem; }
+    .contact-links { flex-direction: column; width: 100%; }
+    .contact-link { width: 100%; justify-content: center; padding: 0.6rem 1rem; font-size: 0.85rem; }
+    .crosslink-block { flex-direction: column; gap: 1rem; padding: 1.25rem; }
+    .crosslink-block p { font-size: 0.82rem; }
+    .layer-header { flex-wrap: wrap; gap: 0.5rem; }
+  }
 </style>

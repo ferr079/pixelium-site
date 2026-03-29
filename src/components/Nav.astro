@@ -182,18 +182,49 @@ const navLinks = [
     color: var(--color-accent) !important;
   }
 
-  @media (max-width: 640px) {
+  @media (max-width: 768px) {
+    .nav-container {
+      flex-direction: column;
+      gap: 0.6rem;
+      padding: 0.75rem 1rem;
+    }
+
     .nav-links {
-      gap: 0.5rem;
-      flex-wrap: wrap;
-      justify-content: flex-end;
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 0.25rem;
+      width: 100%;
     }
+
     .nav-links a {
-      font-size: 0.8rem;
+      font-size: 0.78rem;
+      padding: 0.35rem 0.15rem;
+      text-align: center;
+      border-bottom: none;
     }
+
     .lang-switch {
-      margin-left: 0.25rem;
-      padding-left: 0.5rem;
+      grid-column: 1 / -1;
+      justify-self: center;
+      margin-left: 0;
+      padding-left: 0;
+      border-left: none;
+      padding-top: 0.25rem;
+      border-top: 1px solid var(--color-border);
+    }
+  }
+
+  @media (max-width: 400px) {
+    .nav-links {
+      grid-template-columns: repeat(3, 1fr);
+    }
+
+    .nav-links a {
+      font-size: 0.72rem;
+    }
+
+    .nav-brand {
+      font-size: 0.95rem;
     }
   }
 </style>

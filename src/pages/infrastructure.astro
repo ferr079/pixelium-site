@@ -1085,15 +1085,17 @@ import SectionHeading from '../components/SectionHeading.astro';
     }
   }
 
-  @media (max-width: 480px) {
-    .details-grid,
-    .obs-grid,
-    .absent-grid {
-      grid-template-columns: 1fr;
-    }
-
-    .palette {
-      justify-content: center;
-    }
+  @media (max-width: 640px) {
+    .hero-mini { padding: 2rem 0 1.5rem; }
+    h1 { font-size: clamp(1.5rem, 5vw, 2.5rem); }
+    .subtitle { font-size: 0.95rem; }
+    .details-grid, .obs-grid, .absent-grid { grid-template-columns: 1fr; gap: 0.75rem; }
+    .detail, .tech-detail { padding: 0.75rem 1rem; }
+    .screenshots-grid { grid-template-columns: 1fr; }
+    .node-badge { padding: 0.5rem 0.75rem; font-size: 0.75rem; }
+    .palette { justify-content: center; }
+    .crosslink-block { flex-direction: column; gap: 1rem; padding: 1.25rem; }
+    .crosslink-block p { font-size: 0.82rem; }
+    .layer-header { flex-wrap: wrap; gap: 0.5rem; }
   }
 </style>
