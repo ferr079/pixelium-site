@@ -21,6 +21,7 @@ jobs:
           HTB_API_TOKEN: ${{ secrets.HTB_API_TOKEN }}
           ROOTME_API_KEY: ${{ secrets.ROOTME_API_KEY }}
           ROOTME_UID: ${{ secrets.ROOTME_UID }}
+          FORGEJO_TOKEN: ${{ secrets.FORGEJO_TOKEN }}
 
       - run: npx wrangler deploy
         env:

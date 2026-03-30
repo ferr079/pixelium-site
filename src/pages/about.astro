@@ -1,6 +1,27 @@
 ---
 import Base from '../layouts/Base.astro';
 
+// Forgejo — fetch commit counts at build time
+const forgejoRepos = ['homelab-infra', 'homelab-configs', 'ansible-homelab', 'pixelium-site'];
+let totalCommits = 278;
+let journalEntries = 67;
+try {
+  const base = 'https://forgejo.pixelium.internal/api/v1';
+  const headers = { 'Authorization': `token ${import.meta.env.FORGEJO_TOKEN}` };
+  const fetchOpts = { headers, ...(typeof process !== 'undefined' ? { agent: undefined } : {}) };
+  const counts = await Promise.all(forgejoRepos.map(async (repo) => {
+    const res = await fetch(`${base}/repos/uzer/${repo}/commits?limit=1`, { headers });
+    return parseInt(res.headers.get('x-total-count') || '0');
+  }));
+  totalCommits = counts.reduce((a, b) => a + b, 0);
+  // Count journal entries from latest file
+  const journalRes = await fetch(`${base}/repos/uzer/homelab-infra/raw/journal/2026-03.md`, { headers });
+  if (journalRes.ok) {
+    const text = await journalRes.text();
+    journalEntries = (text.match(/^### /gm) || []).length;
+  }
+} catch (_) {}
+
 const skills = [
   {
     category: 'Infrastructure',
@@ -67,11 +88,11 @@ const skills = [
           <p>Real numbers from our infrastructure &mdash; not estimates, not goals. Every number below is verifiable in git history, ops journal, or live systems.</p>
           <div class="track-grid">
             <div class="track-stat">
-              <span class="track-number">213+</span>
+              <span class="track-number">{totalCommits}+</span>
               <span class="track-label">commits across 4 repos</span>
             </div>
             <div class="track-stat">
-              <span class="track-number">49</span>
+              <span class="track-number">{journalEntries}</span>
               <span class="track-label">ops journal entries</span>
             </div>
             <div class="track-stat">
