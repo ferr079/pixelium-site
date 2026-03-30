@@ -1,9 +1,34 @@
 ---
 import Base from '../../layouts/Base.astro';
 import StatsBar from '../../components/StatsBar.astro';
+
+// HTB — fetch at build time
+let htb = { rank: 'Hacker', ranking: 967, system_owns: 23, user_owns: 25 };
+try {
+  const htbRes = await fetch('https://labs.hackthebox.com/api/v4/user/profile/basic/1161145', {
+    headers: { 'Authorization': `Bearer ${import.meta.env.HTB_API_TOKEN}` },
+  });
+  if (htbRes.ok) {
+    const data = await htbRes.json();
+    htb = { rank: data.profile.rank, ranking: data.profile.ranking, system_owns: data.profile.system_owns, user_owns: data.profile.user_owns };
+  }
+} catch (_) {}
+const htbFlags = htb.system_owns + htb.user_owns;
+
+// Root-Me — fetch at build time
+let rootme = { score: 765, position: 21847, validations: 63 };
+try {
+  const rmRes = await fetch(`https://api.www.root-me.org/auteurs/${import.meta.env.ROOTME_UID}`, {
+    headers: { 'Cookie': `api_key=${import.meta.env.ROOTME_API_KEY}` },
+  });
+  if (rmRes.ok) {
+    const data = await rmRes.json();
+    rootme = { score: parseInt(data.score), position: data.position, validations: (data.validations || []).length };
+  }
+} catch (_) {}
 ---
 
-<Base title="Cybersécurité — pixelium.win" description="Parcours cybersécurité offensive de Stéphane — Hack The Box (rang Hacker, #967), TryHackMe, Root-Me. Présenté par Claude.">
+<Base title="Cybersécurité — pixelium.win" description={`Parcours cybersécurité offensive de Stéphane — Hack The Box (rang ${htb.rank}, #${htb.ranking}), TryHackMe, Root-Me. Présenté par Claude.`}>
   <main>
     <section class="hero-mini">
       <div class="container">
@@ -74,23 +99,23 @@ import StatsBar from '../../components/StatsBar.astro';
                   <img src="https://cdn.simpleicons.org/hackthebox/9FEF00" alt="" class="platform-logo" loading="lazy" aria-hidden="true" onerror="this.style.display='none'" />
                   <span class="platform-name">Hack The Box</span>
                 </div>
-                <span class="platform-rank">Hacker</span>
+                <span class="platform-rank">{htb.rank}</span>
               </div>
               <div class="platform-stats">
                 <div class="platform-stat">
-                  <span class="stat-number">23</span>
+                  <span class="stat-number">{htb.system_owns}</span>
                   <span class="stat-label">Machines</span>
                 </div>
                 <div class="platform-stat">
-                  <span class="stat-number">13</span>
-                  <span class="stat-label">Challenges</span>
+                  <span class="stat-number">{htb.user_owns}</span>
+                  <span class="stat-label">User owns</span>
                 </div>
                 <div class="platform-stat">
-                  <span class="stat-number">61</span>
+                  <span class="stat-number">{htbFlags}</span>
                   <span class="stat-label">Flags</span>
                 </div>
                 <div class="platform-stat">
-                  <span class="stat-number">#967</span>
+                  <span class="stat-number">#{htb.ranking}</span>
                   <span class="stat-label">Global</span>
                 </div>
               </div>
@@ -132,20 +157,20 @@ import StatsBar from '../../components/StatsBar.astro';
                   <img src="https://cdn.simpleicons.org/rootme/ffc107" alt="" class="platform-logo" loading="lazy" aria-hidden="true" onerror="this.style.display='none'" />
                   <span class="platform-name">Root-Me</span>
                 </div>
-                <span class="platform-rank rootme-rank">765 pts</span>
+                <span class="platform-rank rootme-rank">{rootme.score} pts</span>
               </div>
               <div class="platform-stats">
                 <div class="platform-stat">
-                  <span class="stat-number">63</span>
+                  <span class="stat-number">{rootme.validations}</span>
                   <span class="stat-label">Challenges</span>
                 </div>
                 <div class="platform-stat">
-                  <span class="stat-number">10%</span>
-                  <span class="stat-label">Validations</span>
+                  <span class="stat-number">#{rootme.position.toLocaleString()}</span>
+                  <span class="stat-label">Global</span>
                 </div>
                 <div class="platform-stat">
-                  <span class="stat-number">3</span>
-                  <span class="stat-label">Badges</span>
+                  <span class="stat-number">{rootme.score}</span>
+                  <span class="stat-label">Points</span>
                 </div>
               </div>
               <p class="platform-desc">La plateforme CTF de référence en Europe, née en France. Challenges techniques ciblés — exploitation web, cryptographie, forensics, analyse réseau. Reconnue pour sa profondeur et son contenu communautaire. Une référence dans la cybersécurité francophone.</p>
@@ -276,9 +301,9 @@ import StatsBar from '../../components/StatsBar.astro';
 
     <!-- Stats -->
     <StatsBar stats={[
-      { number: '23', label: 'machines HTB' },
-      { number: '61', label: 'flags capturés' },
-      { number: '#967', label: 'rang mondial HTB' },
+      { number: String(htb.system_owns), label: 'machines HTB' },
+      { number: String(htbFlags), label: 'flags capturés' },
+      { number: `#${htb.ranking}`, label: 'rang mondial HTB' },
       { number: '3', label: 'plateformes actives' },
     ]} />
 
