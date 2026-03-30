@@ -1,8 +1,30 @@
 ---
 import Base from '../layouts/Base.astro';
 import Screenshot from '../components/Screenshot.astro';
+import Carousel from '../components/Carousel.astro';
 import StatsBar from '../components/StatsBar.astro';
 import SectionHeading from '../components/SectionHeading.astro';
+
+const serviceSlides = [
+  { src: '/images/services/traefik.webp', alt: 'Traefik dashboard — routers, services, middlewares', title: 'Traefik — Reverse Proxy' },
+  { src: '/images/services/authentik.webp', alt: 'Authentik admin — SSO dashboard with login stats', title: 'Authentik — SSO / IdP' },
+  { src: '/images/services/technitium.webp', alt: 'TechnitiumDNS — query stats and top clients', title: 'TechnitiumDNS — DNS Server' },
+  { src: '/images/services/semaphore.webp', alt: 'Semaphore — 13 Ansible task templates', title: 'Semaphore — Ansible UI' },
+  { src: '/images/services/netbox.webp', alt: 'NetBox — IPAM inventory and changelog', title: 'NetBox — IPAM / DCIM' },
+  { src: '/images/services/immich.webp', alt: 'Immich — photo gallery with AI classification', title: 'Immich — Photo Library' },
+  { src: '/images/services/bytestash.webp', alt: 'ByteStash — code snippet manager', title: 'ByteStash — Snippets' },
+  { src: '/images/services/joplin.webp', alt: 'Joplin desktop — notes and documentation', title: 'Joplin — Notes' },
+  { src: '/images/services/omv.webp', alt: 'OpenMediaVault — NAS dashboard', title: 'OMV — NAS' },
+  { src: '/images/services/netboot.webp', alt: 'netboot.xyz — PXE boot menu', title: 'netboot.xyz — PXE Boot' },
+];
+
+const monitoringSlides = [
+  { src: '/images/monitoring/beszel.webp', alt: 'Beszel — all systems monitoring dashboard', title: 'Beszel — System Monitoring' },
+  { src: '/images/monitoring/wazuh.webp', alt: 'Wazuh — 34 agents, endpoints overview', title: 'Wazuh — SIEM (Agents)' },
+  { src: '/images/monitoring/wazuh2.webp', alt: 'Wazuh — security alerts and threat intelligence', title: 'Wazuh — SIEM (Overview)' },
+  { src: '/images/monitoring/victoriametrics.webp', alt: 'VictoriaMetrics — CPU, memory, disk metrics', title: 'VictoriaMetrics — Metrics TSDB' },
+  { src: '/images/monitoring/patchmon.webp', alt: 'Patchmon — patch compliance dashboard', title: 'Patchmon — Patch Compliance' },
+];
 ---
 
 <Base title="Infrastructure — pixelium.win" description="30+ LXC containers on 3 Proxmox nodes, fully self-hosted — DNS, TLS, monitoring, SIEM, AI agents. Complete homelab architecture.">
@@ -249,6 +271,8 @@ import SectionHeading from '../components/SectionHeading.astro';
             </div>
 
           </div>
+
+          <Carousel slides={serviceSlides} id="services-carousel" />
         </div>
       </div>
     </section>
@@ -388,6 +412,8 @@ import SectionHeading from '../components/SectionHeading.astro';
             </div>
           </div>
 
+          <Carousel slides={monitoringSlides} id="monitoring-carousel" />
+
           <Screenshot src="/images/homepage-dashboard.webp" alt="Homepage dashboard — 30+ services" title="homepage.pixelium.internal" caption="Homepage — 13 active widgets, 3 sections, real-time monitoring" />
 
           <div class="agent-block">
@@ -410,7 +436,7 @@ import SectionHeading from '../components/SectionHeading.astro';
           <h2>This site</h2>
         </div>
         <div class="layer-content">
-          <p>The site you are reading runs on Astro 6, deployed as a Cloudflare Worker. Zero client-side JavaScript (except 15 lines of IntersectionObserver for scroll animations). Pure CSS, no framework. Code versioned on two Git forges in parallel.</p>
+          <p>The site you are reading runs on Astro 6, deployed as a Cloudflare Worker. Under 50 lines of vanilla JavaScript total — scroll animations and image carousels, no framework. Pure CSS for styling. Code versioned on two Git forges in parallel.</p>
 
           <div class="flow-diagram">
             <div class="flow-step">
@@ -496,7 +522,7 @@ import SectionHeading from '../components/SectionHeading.astro';
             <li>Astro 6</li>
             <li>Cloudflare Workers</li>
             <li>Pure CSS</li>
-            <li>0 client JS</li>
+            <li>&lt; 50 lines vanilla JS</li>
             <li>Dual-remote Git</li>
           </ul>
         </div>

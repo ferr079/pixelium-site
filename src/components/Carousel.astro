@@ -1,0 +1,193 @@
+---
+interface Slide {
+  src: string;
+  alt: string;
+  title: string;
+}
+
+interface Props {
+  slides: Slide[];
+  id: string;
+}
+
+const { slides, id } = Astro.props;
+---
+
+<div class="carousel" id={id} data-carousel>
+  <div class="carousel-track">
+    {slides.map((slide, i) => (
+      <a href={slide.src} target="_blank" rel="noopener" class="carousel-slide" title="Click to enlarge">
+        <div class="carousel-window">
+          <div class="carousel-bar">
+            <span class="carousel-dot"></span>
+            <span class="carousel-dot"></span>
+            <span class="carousel-dot"></span>
+            <span class="carousel-bar-title">{slide.title}</span>
+            <span class="carousel-expand" aria-hidden="true">&#8599;</span>
+          </div>
+          <img src={slide.src} alt={slide.alt} loading="lazy" />
+        </div>
+      </a>
+    ))}
+  </div>
+  <button class="carousel-btn carousel-prev" aria-label="Previous">&larr;</button>
+  <button class="carousel-btn carousel-next" aria-label="Next">&rarr;</button>
+  <div class="carousel-dots">
+    {slides.map((_, i) => (
+      <button class:list={['carousel-dot-nav', { active: i === 0 }]} aria-label={`Slide ${i + 1}`} data-index={i}></button>
+    ))}
+  </div>
+</div>
+
+<script>
+  document.querySelectorAll('[data-carousel]').forEach((carousel) => {
+    const track = carousel.querySelector('.carousel-track') as HTMLElement;
+    const slides = carousel.querySelectorAll('.carousel-slide');
+    const dots = carousel.querySelectorAll('.carousel-dot-nav');
+    const prev = carousel.querySelector('.carousel-prev') as HTMLElement;
+    const next = carousel.querySelector('.carousel-next') as HTMLElement;
+    let current = 0;
+
+    function goTo(i: number) {
+      current = (i + slides.length) % slides.length;
+      track.style.transform = `translateX(-${current * 100}%)`;
+      dots.forEach((d, j) => d.classList.toggle('active', j === current));
+    }
+
+    prev.addEventListener('click', () => goTo(current - 1));
+    next.addEventListener('click', () => goTo(current + 1));
+    dots.forEach((dot) => dot.addEventListener('click', () => goTo(Number((dot as HTMLElement).dataset.index))));
+
+    let startX = 0;
+    track.addEventListener('touchstart', (e) => { startX = (e as TouchEvent).touches[0].clientX; }, { passive: true });
+    track.addEventListener('touchend', (e) => {
+      const dx = (e as TouchEvent).changedTouches[0].clientX - startX;
+      if (Math.abs(dx) > 50) goTo(current + (dx < 0 ? 1 : -1));
+    });
+  });
+</script>
+
+<style>
+  .carousel {
+    position: relative;
+    overflow: hidden;
+    margin: 2rem 0;
+    border-radius: 8px;
+  }
+
+  .carousel-track {
+    display: flex;
+    transition: transform 0.4s ease;
+  }
+
+  .carousel-slide {
+    min-width: 100%;
+    text-decoration: none;
+    color: inherit;
+  }
+
+  .carousel-window {
+    border: 1px solid var(--color-border);
+    border-radius: 8px;
+    overflow: hidden;
+    background: rgba(0, 0, 0, 0.3);
+    margin: 0 0.25rem;
+  }
+
+  .carousel-bar {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    padding: 0.5rem 0.75rem;
+    background: rgba(0, 0, 0, 0.2);
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  .carousel-dot {
+    width: 0.55rem;
+    height: 0.55rem;
+    border-radius: 50%;
+    background: var(--color-border);
+  }
+
+  .carousel-dot:nth-child(1) { background: #ef4444; }
+  .carousel-dot:nth-child(2) { background: #eab308; }
+  .carousel-dot:nth-child(3) { background: #22c55e; }
+
+  .carousel-bar-title {
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    color: var(--color-text-muted);
+    margin-left: 0.5rem;
+  }
+
+  .carousel-expand {
+    font-size: 0.7rem;
+    color: var(--color-text-muted);
+    margin-left: auto;
+    opacity: 0.5;
+  }
+
+  .carousel-slide img {
+    width: 100%;
+    height: auto;
+    display: block;
+  }
+
+  .carousel-btn {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background: rgba(15, 23, 42, 0.85);
+    border: 1px solid var(--color-border);
+    color: var(--color-accent);
+    font-size: 1.2rem;
+    width: 2.5rem;
+    height: 2.5rem;
+    border-radius: 50%;
+    cursor: pointer;
+    transition: background 0.2s, border-color 0.2s;
+    z-index: 2;
+  }
+
+  .carousel-btn:hover {
+    background: rgba(15, 23, 42, 0.95);
+    border-color: var(--color-accent);
+  }
+
+  .carousel-prev { left: 0.75rem; }
+  .carousel-next { right: 0.75rem; }
+
+  .carousel-dots {
+    display: flex;
+    justify-content: center;
+    gap: 0.5rem;
+    margin-top: 1rem;
+  }
+
+  .carousel-dot-nav {
+    width: 0.5rem;
+    height: 0.5rem;
+    border-radius: 50%;
+    border: 1px solid var(--color-border);
+    background: transparent;
+    cursor: pointer;
+    padding: 0;
+    transition: background 0.2s, border-color 0.2s;
+  }
+
+  .carousel-dot-nav.active {
+    background: var(--color-accent);
+    border-color: var(--color-accent);
+  }
+
+  .carousel-dot-nav:hover {
+    border-color: var(--color-accent);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .carousel-track {
+      transition: none;
+    }
+  }
+</style>
