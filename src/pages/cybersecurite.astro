@@ -3,17 +3,24 @@ import Base from '../layouts/Base.astro';
 import StatsBar from '../components/StatsBar.astro';
 
 // HTB — fetch at build time
-let htb = { rank: 'Hacker', ranking: 967, system_owns: 23, user_owns: 25 };
+let htb = { rank: 'Hacker', ranking: 967, system_owns: 23, user_owns: 25, challenges: 13 };
 try {
   const htbRes = await fetch('https://labs.hackthebox.com/api/v4/user/profile/basic/1161145', {
     headers: { 'Authorization': `Bearer ${import.meta.env.HTB_API_TOKEN}` },
   });
   if (htbRes.ok) {
     const data = await htbRes.json();
-    htb = { rank: data.profile.rank, ranking: data.profile.ranking, system_owns: data.profile.system_owns, user_owns: data.profile.user_owns };
+    htb = { ...htb, rank: data.profile.rank, ranking: data.profile.ranking, system_owns: data.profile.system_owns, user_owns: data.profile.user_owns };
+  }
+  const actRes = await fetch('https://labs.hackthebox.com/api/v4/user/profile/activity/1161145', {
+    headers: { 'Authorization': `Bearer ${import.meta.env.HTB_API_TOKEN}` },
+  });
+  if (actRes.ok) {
+    const actData = await actRes.json();
+    htb.challenges = (actData.profile?.activity || []).filter((a: any) => a.object_type === 'challenge').length;
   }
 } catch (_) {}
-const htbFlags = htb.system_owns + htb.user_owns;
+const htbFlags = htb.system_owns + htb.user_owns + htb.challenges;
 
 // Root-Me — fetch at build time
 let rootme = { score: 765, position: 21847, validations: 63 };
