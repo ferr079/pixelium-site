@@ -49,8 +49,29 @@ URL slugs are shared between languages (same paths, just `/fr/` prefix).
 - **Accent**: `#38bdf8` (sky blue)
 - **Font**: `JetBrains Mono` (monospace), `system-ui` (body)
 - **Zero JS framework** — pure CSS only, 0 Tailwind, 0 React
-- **Only JS**: ~15 lines IntersectionObserver in `Base.astro` (scroll reveal)
-- **Components**: Nav, Footer, Terminal, StatsBar, Card, SectionHeading, Screenshot in `src/components/`
+- **Only JS**: < 50 lines vanilla JS — IntersectionObserver in `Base.astro` (scroll reveal) + Carousel navigation
+- **Components**: Nav, Footer, Terminal, StatsBar, Card, SectionHeading, Screenshot, Carousel in `src/components/`
+- **Icons**: Simple Icons CDN (`cdn.simpleicons.org`) — verify 200 OK before adding new ones (some brands missing: wazuh, openai)
+
+## CTF APIs (build-time fetch)
+
+Pages `cybersecurite.astro` (EN + FR) fetch live stats at build time:
+- **HTB**: `labs.hackthebox.com/api/v4/user/profile/basic/1161145` — needs `HTB_API_TOKEN` env var
+- **Root-Me**: `api.www.root-me.org/auteurs/108492` — needs `ROOTME_API_KEY` + `ROOTME_UID` env vars
+- **THM**: no public API — stats hardcoded, update manually after sessions
+- Fallback values if API unreachable (last known stats hardcoded in `let` declarations)
+- GitHub secrets configured: `HTB_API_TOKEN`, `ROOTME_API_KEY`, `ROOTME_UID`
+- Local build: `source ~/.claude/secrets.env && HTB_API_TOKEN="$HTB_API_TOKEN" ROOTME_API_KEY="$ROOTME_API_KEY" ROOTME_UID="$ROOTME_UID" npm run build`
+
+## Images organization
+
+```
+public/images/
+  *.webp              — PVE dashboards, homepage, neofetch, architecture SVG
+  services/           — 10 screenshots (Traefik, Authentik, Technitium, Semaphore, NetBox, Immich, ByteStash, Joplin, OMV, netboot)
+  monitoring/         — 5 screenshots (Beszel, Wazuh×2, VictoriaMetrics, Patchmon)
+```
+All images in WebP format. Convert with: `magick input.png -resize '1200x>' -quality 80 output.webp`
 
 ## Deploy procedure
 
