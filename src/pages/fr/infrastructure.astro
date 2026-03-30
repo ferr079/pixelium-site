@@ -9,7 +9,7 @@ const serviceSlides = [
   { src: '/images/services/traefik.webp', alt: 'Dashboard Traefik — routers, services, middlewares', title: 'Traefik — Reverse Proxy' },
   { src: '/images/services/authentik.webp', alt: 'Admin Authentik — dashboard SSO avec stats connexion', title: 'Authentik — SSO / IdP' },
   { src: '/images/services/technitium.webp', alt: 'TechnitiumDNS — stats requêtes et top clients', title: 'TechnitiumDNS — Serveur DNS' },
-  { src: '/images/services/semaphore.webp', alt: 'Semaphore — 13 templates de tâches Ansible', title: 'Semaphore — UI Ansible' },
+  { src: '/images/services/semaphore.webp', alt: 'Semaphore — 12 templates de tâches Ansible', title: 'Semaphore — UI Ansible' },
   { src: '/images/services/netbox.webp', alt: 'NetBox — inventaire IPAM et changelog', title: 'NetBox — IPAM / DCIM' },
   { src: '/images/services/immich.webp', alt: 'Immich — galerie photo avec classification IA', title: 'Immich — Photothèque' },
   { src: '/images/services/bytestash.webp', alt: 'ByteStash — gestionnaire de snippets', title: 'ByteStash — Snippets' },
@@ -171,7 +171,7 @@ const monitoringSlides = [
               <div class="tech-card-body">
                 <p class="tech-why"><strong>Pourquoi :</strong> Config dynamique en YAML rechargee a chaud — j'ajoute un service HTTPS en deposant un fichier dans <code>conf.d/</code>, sans restart. ACME natif avec step-ca.</p>
                 <p class="tech-alt"><span class="alt-label">Ecartes :</span> Nginx Proxy Manager (UI-only, pas IaC), Caddy (moins d'integrations reverse proxy)</p>
-                <p class="tech-result"><span class="result-label">Resultat :</span> 20+ services HTTPS, certificats auto-renouveles, zero intervention manuelle</p>
+                <p class="tech-result"><span class="result-label">Resultat :</span> 25+ services HTTPS, certificats auto-renouveles, zero intervention manuelle</p>
               </div>
             </div>
 
@@ -207,7 +207,7 @@ const monitoringSlides = [
               <div class="tech-card-body">
                 <p class="tech-why"><strong>Pourquoi :</strong> OAuth2/OIDC universel — chaque service a son propre provider. Forward-auth proxy pour les services sans SSO natif. WebAuthn (YubiKey) pour le MFA.</p>
                 <p class="tech-alt"><span class="alt-label">Ecartes :</span> Keycloak (Java lourd, 1 Go+ RAM), Authelia (moins flexible sur les flows custom)</p>
-                <p class="tech-result"><span class="result-label">Resultat :</span> SSO sur 8 services hétérogènes, un seul login pour tout le homelab</p>
+                <p class="tech-result"><span class="result-label">Resultat :</span> SSO sur 6 services hétérogènes, un seul login pour tout le homelab</p>
               </div>
             </div>
 
@@ -219,7 +219,7 @@ const monitoringSlides = [
               <div class="tech-card-body">
                 <p class="tech-why"><strong>Pourquoi :</strong> Agentless — SSH suffit, pas de daemon a installer sur 30+ CTs. Idempotent — je relance un playbook sans risque. Semaphore ajoute une UI web pour les lancements en 1 clic.</p>
                 <p class="tech-alt"><span class="alt-label">Ecartes :</span> Puppet/Chef (agents sur chaque hote), Terraform (provisioning, pas config management)</p>
-                <p class="tech-result"><span class="result-label">Resultat :</span> 13 playbooks operationnels, deploiement d'agent Wazuh/Beszel en 1 commande</p>
+                <p class="tech-result"><span class="result-label">Resultat :</span> 12 playbooks operationnels, deploiement d'agent Wazuh/Beszel en 1 commande</p>
               </div>
             </div>
 
