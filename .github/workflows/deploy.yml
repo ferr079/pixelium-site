@@ -17,6 +17,10 @@ jobs:
       - run: npm ci
 
       - run: npm run build
+        env:
+          HTB_API_TOKEN: ${{ secrets.HTB_API_TOKEN }}
+          ROOTME_API_KEY: ${{ secrets.ROOTME_API_KEY }}
+          ROOTME_UID: ${{ secrets.ROOTME_UID }}
 
       - run: npx wrangler deploy
         env:
