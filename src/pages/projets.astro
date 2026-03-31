@@ -2,7 +2,7 @@
 import Base from '../layouts/Base.astro';
 ---
 
-<Base title="Projects — pixelium.win" description="11 production projects: SSO Authentik, AI-powered monitoring (OpenFang), RSS intelligence agent, observability stack, defense-in-depth, CI/CD, PXE boot. Real ops, real debugging.">
+<Base title="Projects — pixelium.win" description="12 production projects: SSO Authentik, AI-powered monitoring (OpenFang), autonomous pentest (PentAGI), RSS intelligence, observability stack, defense-in-depth, CI/CD. Real ops, real debugging.">
   <main>
     <section class="hero-mini">
       <div class="container">
@@ -414,6 +414,45 @@ import Base from '../layouts/Base.astro';
               <li>Dual-remote</li>
             </ul>
             <span class="project-services">5 pages, 6 components, 0 dependencies, 1.25s build</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Project 11: PentAGI -->
+    <section class="project" id="pentagi">
+      <div class="container">
+        <div class="project-header">
+          <span class="project-tag">Security</span>
+          <h2>PentAGI — Autonomous pentest that found a real misconfiguration</h2>
+        </div>
+        <div class="project-body">
+          <div class="project-intro">
+            <p>An AI-powered autonomous penetration testing platform deployed on the homelab. Agents orchestrate offensive tools inside sandboxed Kali containers, powered by local LLM inference. The first scan found a real security issue &mdash; fixed in minutes.</p>
+          </div>
+          <div class="project-details">
+            <div class="detail-block">
+              <h4>Architecture</h4>
+              <p>PentAGI (CT 198, pve2) runs 4 Docker containers: Go backend + React UI, PostgreSQL with pgvector, a Playwright-based web scraper, and on-demand Kali Linux worker containers for executing offensive tools. LLM inference runs locally on the RTX 3090 via Ollama &mdash; zero API cost, zero data leaving the network.</p>
+            </div>
+            <div class="detail-block">
+              <h4>First finding: CrowdSec LAPI exposure</h4>
+              <p>The very first scan targeted Traefik (192.168.1.110). PentAGI's agents discovered port 8081 (CrowdSec LAPI) was listening on <code>0.0.0.0</code> instead of <code>127.0.0.1</code> &mdash; accessible from the entire LAN. Not critical (token-protected), but unnecessary attack surface. Fixed immediately: <code>listen_uri: 127.0.0.1:8081</code>. The tool paid for itself on day one.</p>
+            </div>
+            <div class="detail-block">
+              <h4>Companion: PentestAgent MCP</h4>
+              <p>For interactive CTF sessions, PentestAgent runs inside the Kali distrobox and connects to Claude Code via MCP (STDIO). During Hack The Box sessions, Claude can directly invoke pentest tools &mdash; nmap, sqlmap, hashcat &mdash; through natural language. Two tools, two modes: autonomous audit (PentAGI) and guided pentest (PentestAgent).</p>
+            </div>
+          </div>
+          <div class="project-stack">
+            <ul class="tags">
+              <li>PentAGI</li>
+              <li>PentestAgent</li>
+              <li>Docker Kali</li>
+              <li>Ollama (RTX 3090)</li>
+              <li>MCP</li>
+            </ul>
+            <span class="project-services">4 containers, local LLM, 31 cybersec skills, 1 real finding on day one</span>
           </div>
         </div>
       </div>

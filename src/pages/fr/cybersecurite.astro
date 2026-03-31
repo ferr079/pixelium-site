@@ -304,12 +304,65 @@ try {
       </div>
     </section>
 
+    <!-- Sécurité augmentée par l'IA -->
+    <section class="layer">
+      <div class="container">
+        <div class="layer-header">
+          <h2>Sécurité augmentée par l'IA</h2>
+        </div>
+        <div class="layer-content">
+          <p>Au-delà des outils manuels — un <strong>pipeline de sécurité automatisé</strong> qui scanne, détecte et rapporte pendant que Stéphane dort. Construit en une session, déjà des findings concrets.</p>
+          <div class="techniques-grid">
+            <div class="technique-group">
+              <h4>PentAGI</h4>
+              <p class="tool-desc">Plateforme de pentest autonome tournant 24/7 sur le homelab. Des agents IA orchestrent nmap, nikto et curl dans des conteneurs Kali sandboxés — propulsés par l'inférence LLM locale sur RTX 3090. Le premier scan a détecté un LAPI CrowdSec exposé sur toutes les interfaces — corrigé en quelques minutes.</p>
+              <div class="technique-tags">
+                <span>Agents autonomes</span>
+                <span>Sandbox Docker Kali</span>
+                <span>LLM local (Ollama)</span>
+                <span>DuckDuckGo + Sploitus</span>
+              </div>
+            </div>
+            <div class="technique-group">
+              <h4>PentestAgent</h4>
+              <p class="tool-desc">Copilote CTF interactif intégré à Claude Code via MCP (Model Context Protocol). Pendant les sessions HTB, je peux invoquer directement les outils pentest depuis la distrobox Kali — scans, exploitation et mouvement latéral orchestrés en langage naturel.</p>
+              <div class="technique-tags">
+                <span>MCP STDIO</span>
+                <span>Intégration Claude Code</span>
+                <span>5 outils intégrés</span>
+                <span>Scoping cible</span>
+              </div>
+            </div>
+            <div class="technique-group">
+              <h4>31 skills cybersécurité</h4>
+              <p class="tool-desc">Sélection issue de la collection Anthropic Cybersecurity Skills (mappées MITRE ATT&amp;CK). 17 runbooks offensifs pour le CTF et 14 runbooks défensifs pour le hardening du homelab — invocables via les slash commands <code>/cybersec:*</code> dans Claude Code.</p>
+              <div class="technique-tags">
+                <span>MITRE ATT&amp;CK</span>
+                <span>Offensif (17)</span>
+                <span>Défensif (14)</span>
+                <span>Slash commands</span>
+              </div>
+            </div>
+            <div class="technique-group">
+              <h4>Workspace HTB dédié</h4>
+              <p class="tool-desc">Un profil Claude Code séparé pour les sessions pentest — mode tuteur activé, suggestions de skills par phase (recon &rarr; web &rarr; cracking &rarr; privesc), et PentestAgent MCP chargé automatiquement. Contexte différent, comportement différent.</p>
+              <div class="technique-tags">
+                <span>Matrice phase &rarr; skills</span>
+                <span>Mode tuteur</span>
+                <span>Changement de contexte</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
     <!-- Stats -->
     <StatsBar stats={[
       { number: String(htb.system_owns), label: 'machines HTB' },
       { number: String(htbFlags), label: 'flags capturés' },
       { number: `#${htb.ranking}`, label: 'rang mondial HTB' },
-      { number: '3', label: 'plateformes actives' },
+      { number: '31', label: 'skills cybersec' },
     ]} />
 
     <!-- Lien défense -->
@@ -582,6 +635,21 @@ try {
     color: var(--color-accent);
     margin-bottom: 0.75rem;
     font-family: var(--font-mono);
+  }
+
+  .tool-desc {
+    font-size: 0.82rem;
+    color: var(--color-text-muted);
+    line-height: 1.5;
+    margin-bottom: 0.75rem;
+  }
+
+  .tool-desc code {
+    font-size: 0.75rem;
+    background: var(--color-bg);
+    padding: 0.1rem 0.3rem;
+    border-radius: 3px;
+    border: 1px solid var(--color-border);
   }
 
   .technique-tags {
