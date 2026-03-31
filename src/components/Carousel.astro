@@ -1,4 +1,6 @@
 ---
+import { assetUrl } from '../config';
+
 interface Slide {
   src: string;
   alt: string;
@@ -10,7 +12,11 @@ interface Props {
   id: string;
 }
 
-const { slides, id } = Astro.props;
+const { slides: rawSlides, id } = Astro.props;
+const slides = rawSlides.map(s => ({
+  ...s,
+  src: s.src.startsWith('/images/') ? assetUrl(s.src) : s.src,
+}));
 ---
 
 <div class="carousel" id={id} data-carousel>

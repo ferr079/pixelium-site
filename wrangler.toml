@@ -3,3 +3,11 @@ compatibility_date = "2025-01-01"
 
 [assets]
 directory = "./dist"
+
+[[kv_namespaces]]
+binding = "STATUS_KV"
+id = "52300c6bc4a548af882ee63b6422a471"
+
+[[kv_namespaces]]
+binding = "STATS_KV"
+id = "299a7b4537b04964736e23b84753a6a"

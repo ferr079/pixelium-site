@@ -1,4 +1,6 @@
 ---
+import { assetUrl } from '../config';
+
 interface Props {
   src: string;
   alt: string;
@@ -8,7 +10,8 @@ interface Props {
   panHeight?: string;
 }
 
-const { src, alt, title = '', caption, pan = false, panHeight = '20rem' } = Astro.props;
+const { src: rawSrc, alt, title = '', caption, pan = false, panHeight = '20rem' } = Astro.props;
+const src = rawSrc.startsWith('/images/') ? assetUrl(rawSrc) : rawSrc;
 ---
 
 <figure class="screenshot reveal">
