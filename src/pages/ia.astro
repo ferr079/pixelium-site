@@ -33,7 +33,7 @@ import StatsBar from '../components/StatsBar.astro';
             </div>
             <div class="spec">
               <span class="spec-label">Usage</span>
-              <span class="spec-value">Exploration, model testing, local fallback when APIs are offline</span>
+              <span class="spec-value">PentAGI autonomous pentest (qwen3.5:9b), model exploration, local fallback when APIs are offline</span>
             </div>
           </div>
           <div class="models-grid">
@@ -76,7 +76,7 @@ import StatsBar from '../components/StatsBar.astro';
           <h2>Production APIs</h2>
         </div>
         <div class="layer-content">
-          <p>For agents that run 24/7 — OpenClaw, OpenFang — we use external APIs. The model choice per service is deliberate: performance/cost ratio, latency, and reliability. <strong>Total AI production cost: ~$1.50/month.</strong> Stephane does not throw money at AI — he optimizes it like any other infrastructure component.</p>
+          <p>For agents that run 24/7 — OpenFang, PentAGI — we use external APIs or local inference. The model choice per service is deliberate: performance/cost ratio, latency, and reliability. <strong>Total AI production cost: ~$1.50/month.</strong> Stephane does not throw money at AI — he optimizes it like any other infrastructure component.</p>
           <div class="api-grid">
 
             <div class="api-card claude-card">
@@ -101,10 +101,10 @@ import StatsBar from '../components/StatsBar.astro';
                 <span class="api-name">MiniMax M2.7</span>
                 <span class="api-role">AIOps agents</span>
               </div>
-              <p class="api-desc">Primary model for OpenClaw (Telegram assistant) and OpenFang (Guardian AIOps). Excellent performance/cost ratio for agents running continuously. ~$1.50/month to monitor 30+ services.</p>
+              <p class="api-desc">Primary model for OpenFang (Guardian AIOps) and available as fallback for PentAGI. Excellent performance/cost ratio for agents running continuously. ~$1.50/month to monitor 30+ services.</p>
               <div class="api-tags">
-                <span>OpenClaw</span>
                 <span>OpenFang</span>
+                <span>PentAGI fallback</span>
                 <span>~$0.05/day</span>
               </div>
             </div>

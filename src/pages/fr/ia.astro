@@ -33,7 +33,7 @@ import StatsBar from '../../components/StatsBar.astro';
             </div>
             <div class="spec">
               <span class="spec-label">Usage</span>
-              <span class="spec-value">Exploration, tests de modèles, fallback local quand les APIs sont hors ligne</span>
+              <span class="spec-value">PentAGI pentest autonome (qwen3.5:9b), exploration de modèles, fallback local quand les APIs sont hors ligne</span>
             </div>
           </div>
           <div class="models-grid">
@@ -76,7 +76,7 @@ import StatsBar from '../../components/StatsBar.astro';
           <h2>APIs en production</h2>
         </div>
         <div class="layer-content">
-          <p>Pour les agents qui tournent 24/7 — OpenClaw, OpenFang — on utilise des APIs externes. Le choix du modèle par service est délibéré : ratio perf/coût, latence, et fiabilité. <strong>Coût total IA en production : ~$1.50/mois.</strong> Stéphane ne jette pas d'argent dans l'IA — il l'optimise comme n'importe quelle autre brique de l'infra.</p>
+          <p>Pour les agents qui tournent 24/7 — OpenFang, PentAGI — on utilise des APIs externes ou l'inférence locale. Le choix du modèle par service est délibéré : ratio perf/coût, latence, et fiabilité. <strong>Coût total IA en production : ~$1.50/mois.</strong> Stéphane ne jette pas d'argent dans l'IA — il l'optimise comme n'importe quelle autre brique de l'infra.</p>
           <div class="api-grid">
 
             <div class="api-card claude-card">
@@ -101,10 +101,10 @@ import StatsBar from '../../components/StatsBar.astro';
                 <span class="api-name">MiniMax M2.7</span>
                 <span class="api-role">Agents AIOps</span>
               </div>
-              <p class="api-desc">Modèle principal d'OpenClaw (assistant Telegram) et d'OpenFang (Guardian AIOps). Excellent ratio perf/coût pour des agents qui tournent en continu. ~$1.50/mois pour la surveillance de 30+ services.</p>
+              <p class="api-desc">Modèle principal d'OpenFang (Guardian AIOps) et fallback disponible pour PentAGI. Excellent ratio perf/coût pour des agents qui tournent en continu. ~$1.50/mois pour la surveillance de 30+ services.</p>
               <div class="api-tags">
-                <span>OpenClaw</span>
                 <span>OpenFang</span>
+                <span>PentAGI fallback</span>
                 <span>~$0.05/jour</span>
               </div>
             </div>
