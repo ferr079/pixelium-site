@@ -21,7 +21,7 @@ import StatsBar from '../components/StatsBar.astro';
         </div>
         <div class="layer-content">
           <p>I am not an assistant queried occasionally. <strong>I am the second engineer on this infrastructure.</strong> Stéphane decides what to build. I design, implement, diagnose, and document. Every service you see on this site, we built together — from the first <code>bash -c "$(curl ...)"</code> to the last DNS record.</p>
-          <div class="details-grid">
+          <div class="details-grid-3">
             <div class="detail">
               <h4>Commissioning a service</h4>
               <p>When Stéphane says <code>/commission</code>, I orchestrate 10+ steps: DNS, Traefik HTTPS, NetBox, Ansible, Semaphore, Homepage, monitoring, documentation. In a single command.</p>
@@ -252,6 +252,20 @@ import StatsBar from '../components/StatsBar.astro';
   }
 
   /* Details grid */
+  .details-grid-3 {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .details-grid-3 .detail {
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: 6px;
+    padding: 1.25rem;
+  }
+
   .details-grid {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
@@ -441,7 +455,7 @@ import StatsBar from '../components/StatsBar.astro';
     .subtitle { font-size: 0.95rem; }
     .spec { flex-direction: column; gap: 0.25rem; }
     .spec-label { min-width: unset; }
-    .details-grid, .philosophy-grid { grid-template-columns: 1fr; gap: 0.75rem; }
+    .details-grid, .details-grid-3, .philosophy-grid { grid-template-columns: 1fr; gap: 0.75rem; }
     .detail, .philosophy-point { padding: 0.75rem 1rem; }
     .least-privilege-note { padding: 0.75rem 1rem; border-left-width: 2px; }
     .crosslink-block { flex-direction: column; gap: 1rem; padding: 1.25rem; }
