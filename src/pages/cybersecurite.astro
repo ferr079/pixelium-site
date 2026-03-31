@@ -312,7 +312,7 @@ try {
         </div>
         <div class="layer-content">
           <p>Beyond manual tools &mdash; an <strong>automated security pipeline</strong> that scans, detects, and reports while Stéphane sleeps. Built in one session, already producing real findings.</p>
-          <div class="techniques-grid">
+          <div class="ai-tools-grid">
             <div class="technique-group">
               <h4>PentAGI</h4>
               <p class="tool-desc">Autonomous pentest platform running 24/7 on the homelab. AI agents orchestrate nmap, nikto, and curl inside sandboxed Kali containers &mdash; powered by local LLM inference on an RTX 3090. First scan found a CrowdSec LAPI exposed on all interfaces &mdash; fixed within minutes.</p>
@@ -637,6 +637,12 @@ try {
     font-family: var(--font-mono);
   }
 
+  .ai-tools-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem;
+  }
+
   .tool-desc {
     font-size: 0.82rem;
     color: var(--color-text-muted);
@@ -749,7 +755,7 @@ try {
     .spec-label { min-width: unset; }
     .loop-item > div { flex-direction: column; align-items: flex-start; }
     .loop-item { padding: 0.5rem 0.75rem; }
-    .platforms-grid, .techniques-grid, .details-grid { grid-template-columns: 1fr; gap: 0.75rem; }
+    .platforms-grid, .techniques-grid, .details-grid, .ai-tools-grid { grid-template-columns: 1fr; gap: 0.75rem; }
     .platform-card { padding: 1rem; }
     .platform-stats { grid-template-columns: repeat(2, 1fr); }
     .crosslink-block { flex-direction: column; gap: 1rem; padding: 1.25rem; }

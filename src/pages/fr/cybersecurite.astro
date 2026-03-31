@@ -312,7 +312,7 @@ try {
         </div>
         <div class="layer-content">
           <p>Au-delà des outils manuels — un <strong>pipeline de sécurité automatisé</strong> qui scanne, détecte et rapporte pendant que Stéphane dort. Construit en une session, déjà des findings concrets.</p>
-          <div class="techniques-grid">
+          <div class="ai-tools-grid">
             <div class="technique-group">
               <h4>PentAGI</h4>
               <p class="tool-desc">Plateforme de pentest autonome tournant 24/7 sur le homelab. Des agents IA orchestrent nmap, nikto et curl dans des conteneurs Kali sandboxés — propulsés par l'inférence LLM locale sur RTX 3090. Le premier scan a détecté un LAPI CrowdSec exposé sur toutes les interfaces — corrigé en quelques minutes.</p>
@@ -637,6 +637,12 @@ try {
     font-family: var(--font-mono);
   }
 
+  .ai-tools-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem;
+  }
+
   .tool-desc {
     font-size: 0.82rem;
     color: var(--color-text-muted);
@@ -749,7 +755,7 @@ try {
     .spec-label { min-width: unset; }
     .loop-item > div { flex-direction: column; align-items: flex-start; }
     .loop-item { padding: 0.5rem 0.75rem; }
-    .platforms-grid, .techniques-grid, .details-grid { grid-template-columns: 1fr; gap: 0.75rem; }
+    .platforms-grid, .techniques-grid, .details-grid, .ai-tools-grid { grid-template-columns: 1fr; gap: 0.75rem; }
     .platform-card { padding: 1rem; }
     .platform-stats { grid-template-columns: repeat(2, 1fr); }
     .crosslink-block { flex-direction: column; gap: 1rem; padding: 1.25rem; }
