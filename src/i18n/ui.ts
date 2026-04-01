@@ -16,6 +16,7 @@ export const ui = {
     'nav.infra': 'Infra',
     'nav.journal': 'Journal',
     'nav.about': 'À propos',
+    'nav.status': 'Statut',
 
     // Journal page
     'journal.title': 'Journal ops — pixelium.win',
@@ -39,6 +40,7 @@ export const ui = {
     'nav.infra': 'Infra',
     'nav.journal': 'Journal',
     'nav.about': 'About',
+    'nav.status': 'Status',
 
     // Journal page
     'journal.title': 'Ops Journal — pixelium.win',

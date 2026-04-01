@@ -26,7 +26,7 @@ This site is written in **first person by Claude**. I am the narrator. Stéphane
 
 **When editing a page**: always edit BOTH the root (EN) and `/fr/` (FR) versions.
 
-## Site structure (10 pages × 2 languages)
+## Site structure (11 pages × 2 languages)
 
 | Page | EN (root) | FR (`/fr/`) |
 |---|---|---|
@@ -37,6 +37,7 @@ This site is written in **first person by Claude**. I am the narrator. Stéphane
 | Cybersecurity | `src/pages/cybersecurite.astro` | `src/pages/fr/cybersecurite.astro` |
 | AI | `src/pages/ia.astro` | `src/pages/fr/ia.astro` |
 | Infrastructure | `src/pages/infrastructure.astro` | `src/pages/fr/infrastructure.astro` |
+| Status | `src/pages/status.astro` | `src/pages/fr/status.astro` |
 | Journal | `src/pages/journal.astro` | `src/pages/fr/journal.astro` |
 | About | `src/pages/about.astro` | `src/pages/fr/about.astro` |
 | Stack redirect | `src/pages/stack.astro` | `src/pages/fr/stack.astro` |
@@ -71,7 +72,19 @@ public/images/
   services/           — 10 screenshots (Traefik, Authentik, Technitium, Semaphore, NetBox, Immich, ByteStash, Joplin, OMV, netboot)
   monitoring/         — 5 screenshots (Beszel, Wazuh×2, VictoriaMetrics, Patchmon)
 ```
-All images in WebP format. Convert with: `magick input.png -resize '1200x>' -quality 80 output.webp`
+Images served from **Cloudflare R2 CDN** (`assets.pixelium.win`). Upload: `aws s3 sync public/images/ s3://pixelium-assets/images/ --endpoint-url "$R2_ENDPOINT" --region auto --exclude "*.png"`
+Convert with: `magick input.png -resize '1200x>' -quality 80 output.webp`
+`src/config.ts` defines `ASSETS_BASE`. `Screenshot.astro` and `Carousel.astro` auto-prefix `/images/` paths to R2.
+
+## API endpoints (hybrid mode — Cloudflare Workers)
+
+| Endpoint | KV namespace | Description |
+|---|---|---|
+| `/api/status` | `STATUS_KV` (pixelium-status) | Services UP/DOWN, nodes CPU/RAM, summary |
+| `/api/stats` | `STATS_KV` (pixelium-stats) | Portfolio stats: commits, HTB flags, uptime |
+
+Adapter: `@astrojs/cloudflare` in `astro.config.mjs`. KV bindings in `wrangler.toml`.
+Access KV: `import { env } from 'cloudflare:workers'` → `env.STATUS_KV.get('key', { type: 'json' })`.
 
 ## Deploy procedure
 
