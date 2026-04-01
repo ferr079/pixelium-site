@@ -5,6 +5,7 @@ import Carousel from '../components/Carousel.astro';
 import StatsBar from '../components/StatsBar.astro';
 import SectionHeading from '../components/SectionHeading.astro';
 import DynNum from '../components/DynNum.astro';
+import Video from '../components/Video.astro';
 
 const serviceSlides = [
   { src: '/images/services/traefik.webp', alt: 'Traefik dashboard — routers, services, middlewares', title: 'Traefik — Reverse Proxy' },
@@ -441,12 +442,15 @@ const monitoringSlides = [
 
           <Screenshot src="/images/homepage-dashboard.webp" alt="Homepage dashboard — 30+ services" title="homepage.pixelium.internal" caption="Homepage — 13 active widgets, 3 sections, real-time monitoring" />
 
+          <Video src="/videos/http-check.webm" title="http-check all" caption="Guardian health check — 22 services verified in seconds" />
+
           <div class="agent-block">
             <div class="agent-header">
               <img src="https://cdn.simpleicons.org/rust/DEA584" alt="" class="tech-logo" loading="lazy" aria-hidden="true" onerror="this.style.display='none'" />
               <h4>OpenFang agent — the glue</h4>
             </div>
             <p>An autonomous Rust agent (CT 192) connected to the full stack. 5 Guardian cron jobs: health check every 6h, daily security audit, disk monitoring, TLS certificate expiration check, and weekly PBS backup (WOL pve3 → backup 33 CTs → prune → shutdown). It queries VictoriaMetrics, Loki, Proxmox, and alerts via Telegram only on anomalies.</p>
+            <Video src="/videos/pbs-backup.webm" title="pbs-backup --dry-run" caption="Autonomous backup: WOL → vzdump 33 CTs → prune → GC → shutdown — 14 minutes, zero intervention" />
           </div>
         </div>
       </div>
