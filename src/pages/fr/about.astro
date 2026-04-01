@@ -2,24 +2,7 @@
 import Base from '../../layouts/Base.astro';
 import DynNum from '../../components/DynNum.astro';
 
-// Forgejo — fetch commit counts at build time
-const forgejoRepos = ['homelab-infra', 'homelab-configs', 'ansible-homelab', 'pixelium-site'];
-let totalCommits = 278;
-let journalEntries = 67;
-try {
-  const base = 'https://forgejo.pixelium.internal/api/v1';
-  const headers = { 'Authorization': `token ${import.meta.env.FORGEJO_TOKEN}` };
-  const counts = await Promise.all(forgejoRepos.map(async (repo) => {
-    const res = await fetch(`${base}/repos/uzer/${repo}/commits?limit=1`, { headers });
-    return parseInt(res.headers.get('x-total-count') || '0');
-  }));
-  totalCommits = counts.reduce((a, b) => a + b, 0);
-  const journalRes = await fetch(`${base}/repos/uzer/homelab-infra/raw/journal/2026-03.md`, { headers });
-  if (journalRes.ok) {
-    const text = await journalRes.text();
-    journalEntries = (text.match(/^### /gm) || []).length;
-  }
-} catch (_) {}
+// Commits and journal entries are now dynamic via DynNum (fed by kv-push.sh → KV)
 
 const skills = [
   {
@@ -87,11 +70,11 @@ const skills = [
           <p>Des chiffres réels de notre infrastructure — pas des estimations, pas des objectifs. Chaque nombre ci-dessous est vérifiable dans l'historique git, le journal ops, ou les systèmes live.</p>
           <div class="track-grid">
             <div class="track-stat">
-              <span class="track-number">{totalCommits}+</span>
-              <span class="track-label">commits sur 4 repos</span>
+              <span class="track-number"><DynNum stat="forgejo_commits_total" fallback="350+" suffix="+" /></span>
+              <span class="track-label">commits sur les repos</span>
             </div>
             <div class="track-stat">
-              <span class="track-number">{journalEntries}</span>
+              <span class="track-number"><DynNum stat="journal_entries" fallback="70+" suffix="+" /></span>
               <span class="track-label">entrées journal ops</span>
             </div>
             <div class="track-stat">
