@@ -40,6 +40,28 @@ import SectionHeading from '../../components/SectionHeading.astro';
       </div>
     </section>
 
+    <!-- Historique uptime 30j -->
+    <section class="layer reveal" data-lang="fr">
+      <div class="container">
+        <SectionHeading id="uptime" title="Disponibilité — 30 jours" />
+        <div id="uptime-loading" class="uptime-placeholder">
+          <div class="uptime-skeleton"></div>
+          <p class="uptime-wait">Chargement de l'historique...</p>
+        </div>
+        <div id="uptime-timeline" style="display:none;">
+          <div class="uptime-header">
+            <span class="uptime-avg" id="uptime-avg">--</span>
+            <span class="uptime-period" id="uptime-period"></span>
+          </div>
+          <div class="uptime-bars" id="uptime-bars"></div>
+          <div class="uptime-labels">
+            <span>il y a 30j</span>
+            <span>aujourd'hui</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
     <!-- Services -->
     <section class="layer reveal">
       <div class="container">
@@ -203,6 +225,63 @@ import SectionHeading from '../../components/SectionHeading.astro';
   })();
 </script>
 
+<script>
+  // Uptime 30-day timeline
+  (async function loadHistory() {
+    const section = document.querySelector('[data-lang]') as HTMLElement;
+    const lang = section?.dataset.lang || 'en';
+    const l = lang === 'fr'
+      ? { avg: 'Moyenne', days: 'jours', nodata: 'Pas de données', down: 'down' }
+      : { avg: 'Average', days: 'days', nodata: 'No data', down: 'down' };
+
+    try {
+      const res = await fetch('/api/history?days=30');
+      if (!res.ok) return;
+      const data = await res.json();
+      if (!data.days || !data.days.length) return;
+
+      const barsEl = document.getElementById('uptime-bars');
+      const avgEl = document.getElementById('uptime-avg');
+      const periodEl = document.getElementById('uptime-period');
+      if (!barsEl) return;
+
+      // Fill missing days in the 30-day range
+      const dayMap = new Map(data.days.map((d: any) => [d.date, d]));
+      const bars: any[] = [];
+      for (let i = 29; i >= 0; i--) {
+        const date = new Date(Date.now() - i * 86_400_000).toISOString().slice(0, 10);
+        bars.push(dayMap.get(date) || { date, uptime_pct: null, down_services: [] });
+      }
+
+      for (const day of bars) {
+        const bar = document.createElement('div');
+        bar.className = 'ubar';
+        if (day.uptime_pct === null) {
+          bar.classList.add('ubar-nodata');
+          bar.title = `${day.date}: ${l.nodata}`;
+        } else {
+          const pct = day.uptime_pct;
+          if (pct >= 99.5) bar.classList.add('ubar-perfect');
+          else if (pct >= 95) bar.classList.add('ubar-good');
+          else if (pct >= 90) bar.classList.add('ubar-degraded');
+          else bar.classList.add('ubar-bad');
+
+          const downText = day.down_services.length
+            ? ` — ${day.down_services.join(', ')} ${l.down}` : '';
+          bar.title = `${day.date}: ${pct}%${downText}`;
+        }
+        barsEl.appendChild(bar);
+      }
+
+      if (avgEl) avgEl.textContent = data.avg_uptime + '%';
+      if (periodEl) periodEl.textContent = `${l.avg} ${data.total_days} ${l.days}`;
+
+      document.getElementById('uptime-loading')!.style.display = 'none';
+      document.getElementById('uptime-timeline')!.style.display = 'block';
+    } catch (_) { /* keep loading state */ }
+  })();
+</script>
+
 <style>
   .status-summary { padding: 2rem 0; border-bottom: 1px solid var(--color-border); }
   .summary-grid { display: flex; justify-content: center; align-items: center; gap: 2.5rem; flex-wrap: wrap; }
@@ -213,6 +292,15 @@ import SectionHeading from '../../components/SectionHeading.astro';
   .summary-sep { font-family: var(--font-mono); font-size: 1.5rem; color: var(--color-border); }
   .summary-label { font-size: 0.8rem; color: var(--color-text-muted); }
   .summary-timestamp { font-size: 1rem; font-weight: 600; }
+
+  /* Uptime timeline */
+  .uptime-placeholder { padding: 1rem 0; }
+  .uptime-skeleton { height: 2.5rem; background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 6px; animation: skeleton-pulse 1.5s ease-in-out infinite; }
+  .uptime-wait { text-align: center; color: var(--color-text-muted); font-family: var(--font-mono); font-size: 0.8rem; margin-top: 0.75rem; }
+  .uptime-header { display: flex; align-items: baseline; gap: 0.75rem; margin-bottom: 0.75rem; }
+  .uptime-avg { font-family: var(--font-mono); font-size: 2rem; font-weight: 800; color: #22c55e; }
+  .uptime-period { font-family: var(--font-mono); font-size: 0.8rem; color: var(--color-text-muted); }
+  .uptime-labels { display: flex; justify-content: space-between; margin-top: 0.4rem; font-family: var(--font-mono); font-size: 0.7rem; color: var(--color-text-muted); }
 
   .skeleton-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 0.75rem; }
   .skeleton-card { height: 2.5rem; background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 6px; animation: skeleton-pulse 1.5s ease-in-out infinite; }
@@ -232,6 +320,16 @@ import SectionHeading from '../../components/SectionHeading.astro';
 <style is:global>
   @keyframes pulse-dot { 0%, 100% { opacity: 1; } 50% { opacity: 0.6; } }
   @keyframes skeleton-pulse { 0%, 100% { opacity: 0.4; } 50% { opacity: 0.8; } }
+
+  /* Uptime bars (created by JS) */
+  .uptime-bars { display: flex; gap: 3px; height: 2.5rem; align-items: stretch; }
+  .ubar { flex: 1; border-radius: 3px; cursor: pointer; transition: transform 0.15s, opacity 0.15s; min-width: 0; }
+  .ubar:hover { transform: scaleY(1.15); opacity: 0.85; }
+  .ubar-perfect { background: #22c55e; }
+  .ubar-good { background: #86efac; }
+  .ubar-degraded { background: #eab308; }
+  .ubar-bad { background: #ef4444; }
+  .ubar-nodata { background: var(--color-border); opacity: 0.4; }
 
   .summary-dot.healthy { background: #22c55e; box-shadow: 0 0 8px rgba(34, 197, 94, 0.6); animation: pulse-dot 2s ease-in-out infinite; }
   .summary-dot.degraded { background: #eab308; box-shadow: 0 0 8px rgba(234, 179, 8, 0.6); animation: pulse-dot 2s ease-in-out infinite; }

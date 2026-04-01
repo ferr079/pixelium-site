@@ -20,3 +20,7 @@ id = "299a7b4537b049649736e23b84753a6a"
 binding = "HISTORY_DB"
 database_name = "pixelium-history"
 database_id = "3b74f11d-4be8-42aa-b303-2885ba5b52a3"
+
+[vars]
+HISTORY_KEY = "dev-only-key"
+# Production: set via `wrangler secret put HISTORY_KEY`
