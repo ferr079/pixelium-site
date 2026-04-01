@@ -87,6 +87,27 @@ const siteUrl = 'https://pixelium.win';
   </body>
 </html>
 
+<!-- Dynamic stats hydration — updates all [data-stat] elements from /api/stats -->
+<script>
+  (async function hydrateStats() {
+    const els = document.querySelectorAll('[data-stat]');
+    if (!els.length) return;
+    try {
+      const res = await fetch('/api/stats');
+      if (!res.ok) return;
+      const data = await res.json();
+      if (!data.stats) return;
+      els.forEach(el => {
+        const key = (el as HTMLElement).dataset.stat!;
+        const val = data.stats[key];
+        if (val == null) return;
+        const suffix = (el as HTMLElement).dataset.statSuffix || '';
+        (el as HTMLElement).textContent = val + suffix;
+      });
+    } catch (_) { /* graceful — keep fallbacks */ }
+  })();
+</script>
+
 <!-- Scroll reveal - global -->
 <script>
   const observer = new IntersectionObserver(

@@ -1,5 +1,6 @@
 ---
 import Base from '../../layouts/Base.astro';
+import DynNum from '../../components/DynNum.astro';
 ---
 
 <Base title="Projets — pixelium.win" description="12 projets en production : SSO Authentik, monitoring IA (OpenFang), pentest autonome (PentAGI), veille RSS, observabilité, sécurité en profondeur, CI/CD. Vrais ops, vrai debugging.">
@@ -69,7 +70,7 @@ import Base from '../../layouts/Base.astro';
             </div>
             <div class="detail-block">
               <h4>Le contournement shell_exec</h4>
-              <p>Le sanitizer d'OpenFang bloque les accolades <code>{}</code>, les pipes et les semicolons dans les commandes shell. Impossible d'exécuter du LogQL ou du PromQL directement. Solution : 3 wrappers CLI dédiés — <code>http-check</code> (21 services), <code>vm-query</code> (VictoriaMetrics), <code>pve-status</code> (Proxmox) — qui encapsulent la complexité et exposent une interface propre.</p>
+              <p>Le sanitizer d'OpenFang bloque les accolades <code>{}</code>, les pipes et les semicolons dans les commandes shell. Impossible d'exécuter du LogQL ou du PromQL directement. Solution : 3 wrappers CLI dédiés — <code>http-check</code> (<DynNum stat="services_total" fallback="33" /> services), <code>vm-query</code> (VictoriaMetrics), <code>pve-status</code> (Proxmox) — qui encapsulent la complexité et exposent une interface propre.</p>
             </div>
             <div class="detail-block">
               <h4>WOL pve3 — l'agent qui allume les machines</h4>
@@ -85,7 +86,7 @@ import Base from '../../layouts/Base.astro';
               <li>VictoriaMetrics</li>
               <li>Loki</li>
             </ul>
-            <span class="project-services">~0,05€/jour — 4 cron jobs, 2 agents, 21 services monitorés, alertes Telegram</span>
+            <span class="project-services">~0,05€/jour — 4 cron jobs, 2 agents, <DynNum stat="services_total" fallback="33" /> services monitorés, alertes Telegram</span>
           </div>
         </div>
       </div>

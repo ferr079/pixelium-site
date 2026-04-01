@@ -4,12 +4,13 @@ import Screenshot from '../components/Screenshot.astro';
 import Carousel from '../components/Carousel.astro';
 import StatsBar from '../components/StatsBar.astro';
 import SectionHeading from '../components/SectionHeading.astro';
+import DynNum from '../components/DynNum.astro';
 
 const serviceSlides = [
   { src: '/images/services/traefik.webp', alt: 'Traefik dashboard — routers, services, middlewares', title: 'Traefik — Reverse Proxy' },
   { src: '/images/services/authentik.webp', alt: 'Authentik admin — SSO dashboard with login stats', title: 'Authentik — SSO / IdP' },
   { src: '/images/services/technitium.webp', alt: 'TechnitiumDNS — query stats and top clients', title: 'TechnitiumDNS — DNS Server' },
-  { src: '/images/services/semaphore.webp', alt: 'Semaphore — 12 Ansible task templates', title: 'Semaphore — Ansible UI' },
+  { src: '/images/services/semaphore.webp', alt: 'Semaphore — 14 Ansible task templates', title: 'Semaphore — Ansible UI' },
   { src: '/images/services/netbox.webp', alt: 'NetBox — IPAM inventory and changelog', title: 'NetBox — IPAM / DCIM' },
   { src: '/images/services/immich.webp', alt: 'Immich — photo gallery with AI classification', title: 'Immich — Photo Library' },
   { src: '/images/services/bytestash.webp', alt: 'ByteStash — code snippet manager', title: 'ByteStash — Snippets' },
@@ -34,13 +35,13 @@ const monitoringSlides = [
       <div class="container">
         <p class="terminal-prompt">$ cat infrastructure.md</p>
         <h1>Infrastructure<span class="dot">.</span></h1>
-        <p class="subtitle">3 Proxmox nodes, 30+ LXC containers, fully self-hosted. Not a single paid cloud service.</p>
+        <p class="subtitle">3 Proxmox nodes, <DynNum stat="lxc_count" fallback="30+" suffix="+" /> LXC containers, fully self-hosted. Not a single paid cloud service.</p>
       </div>
     </section>
 
     <StatsBar stats={[
       { number: "3", label: "Proxmox nodes" },
-      { number: "30+", label: "LXC containers" },
+      { number: "30+", label: "LXC containers", stat: "lxc_count", suffix: "+" },
       { number: "13", label: "Homepage widgets" },
       { number: "0", label: "external cloud spend" },
     ]} />
@@ -160,7 +161,7 @@ const monitoringSlides = [
               <div class="tech-card-body">
                 <p class="tech-why"><strong>Why:</strong> Open source hypervisor with native LXC — containers start in 2 seconds and consume 50 MB of RAM. Integrated PBS for backups. Full API.</p>
                 <p class="tech-alt"><span class="alt-label">Rejected:</span> ESXi (paid since 2024), Hyper-V (Windows only), XCP-ng (smaller community)</p>
-                <p class="tech-result"><span class="result-label">Result:</span> 3 heterogeneous nodes, 30+ CTs, incremental backups via PBS</p>
+                <p class="tech-result"><span class="result-label">Result:</span> 3 heterogeneous nodes, <DynNum stat="lxc_count" fallback="30+" suffix="+" /> CTs, incremental backups via PBS</p>
               </div>
             </div>
 
@@ -172,7 +173,7 @@ const monitoringSlides = [
               <div class="tech-card-body">
                 <p class="tech-why"><strong>Why:</strong> Dynamic YAML config hot-reloaded — I add an HTTPS service by dropping a file in <code>conf.d/</code>, no restart needed. Native ACME with step-ca.</p>
                 <p class="tech-alt"><span class="alt-label">Rejected:</span> Nginx Proxy Manager (UI-only, not IaC), Caddy (fewer reverse proxy integrations)</p>
-                <p class="tech-result"><span class="result-label">Result:</span> 25+ HTTPS services, auto-renewed certificates, zero manual intervention</p>
+                <p class="tech-result"><span class="result-label">Result:</span> <DynNum stat="https_services" fallback="25+" suffix="+" /> HTTPS services, auto-renewed certificates, zero manual intervention</p>
               </div>
             </div>
 
@@ -220,7 +221,7 @@ const monitoringSlides = [
               <div class="tech-card-body">
                 <p class="tech-why"><strong>Why:</strong> Agentless — SSH is enough, no daemon to install on 30+ CTs. Idempotent — I rerun a playbook without risk. Semaphore adds a web UI for one-click launches.</p>
                 <p class="tech-alt"><span class="alt-label">Rejected:</span> Puppet/Chef (agents on every host), Terraform (provisioning, not config management)</p>
-                <p class="tech-result"><span class="result-label">Result:</span> 12 operational playbooks, Wazuh/Beszel agent deployment in 1 command</p>
+                <p class="tech-result"><span class="result-label">Result:</span> <DynNum stat="ansible_playbooks" fallback="14" /> operational playbooks, Wazuh/Beszel agent deployment in 1 command</p>
               </div>
             </div>
 

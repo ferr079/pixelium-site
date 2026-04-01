@@ -1,6 +1,6 @@
 ---
 interface Props {
-  stats: Array<{ number: string; label: string }>;
+  stats: Array<{ number: string; label: string; stat?: string; suffix?: string }>;
 }
 
 const { stats } = Astro.props;
@@ -9,12 +9,14 @@ const { stats } = Astro.props;
 <section class="stats">
   <div class="stats-container">
     <div class="stats-grid">
-      {stats.map((stat, i) => (
+      {stats.map((s, i) => (
         <>
           {i > 0 && <div class="stat-sep"></div>}
           <div class="stat reveal">
-            <span class="stat-number" data-target={stat.number}>{stat.number}</span>
-            <span class="stat-label">{stat.label}</span>
+            <span class="stat-number" data-target={s.number}
+              {...(s.stat ? { 'data-stat': s.stat, 'data-stat-suffix': s.suffix || '' } : {})}
+            >{s.number}</span>
+            <span class="stat-label">{s.label}</span>
           </div>
         </>
       ))}

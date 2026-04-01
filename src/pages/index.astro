@@ -43,7 +43,7 @@ const cards = [
   {
     icon: '&#9881;',
     title: 'IaC, CI/CD & Automation',
-    description: 'Ansible via Semaphore for deployment — 12 playbooks covering everything from SSH hardening to agent deployment. CI/CD on Forgejo Runner (Podman). Version-controlled configs. Unattended upgrades everywhere.',
+    description: 'Ansible via Semaphore for deployment — 14 playbooks covering everything from SSH hardening to agent deployment. CI/CD on Forgejo Runner (Podman). Version-controlled configs. Unattended upgrades everywhere.',
     tags: ['Ansible', 'Semaphore', 'Forgejo Runner', 'CI/CD'],
   },
   {
@@ -73,7 +73,7 @@ const cards = [
 ];
 ---
 
-<Base title="pixelium.win — DevSecOps Homelab Portfolio" description="Self-hosted production infrastructure: 35+ services on Proxmox, Ansible automation, AI agents, defense-in-depth security. Built by Stéphane Ferreira, narrated by Claude.">
+<Base title="pixelium.win — DevSecOps Homelab Portfolio" description="Self-hosted production infrastructure: 30+ services on Proxmox, Ansible automation, AI agents, defense-in-depth security. Built by Stéphane Ferreira, narrated by Claude.">
   <main>
     <!-- Hero -->
     <section class="hero">
@@ -97,8 +97,8 @@ const cards = [
     <!-- Stats -->
     <StatsBar stats={[
       { number: '3', label: 'Proxmox nodes' },
-      { number: '30+', label: 'LXC containers' },
-      { number: '20+', label: 'HTTPS services' },
+      { number: '30+', label: 'LXC containers', stat: 'lxc_count', suffix: '+' },
+      { number: '20+', label: 'HTTPS services', stat: 'https_services', suffix: '+' },
       { number: '0€', label: 'external cloud' },
     ]} />
 

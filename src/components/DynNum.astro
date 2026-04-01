@@ -1,0 +1,21 @@
+---
+/**
+ * DynNum — inline dynamic number from /api/stats
+ *
+ * Renders fallback in static HTML (SSG/SEO).
+ * Client-side script in Base.astro fetches /api/stats once
+ * and updates all [data-stat] elements.
+ *
+ * Usage:
+ *   <DynNum stat="lxc_count" fallback="30+" suffix="+" />
+ *   → static: "30+", dynamic: "35+"
+ */
+interface Props {
+  stat: string;
+  fallback: string;
+  suffix?: string;
+}
+
+const { stat, fallback, suffix = '' } = Astro.props;
+---
+<span data-stat={stat} data-stat-suffix={suffix}>{fallback}</span>

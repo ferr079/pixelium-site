@@ -1,5 +1,6 @@
 ---
 import Base from '../layouts/Base.astro';
+import DynNum from '../components/DynNum.astro';
 
 // Forgejo — fetch commit counts at build time
 const forgejoRepos = ['homelab-infra', 'homelab-configs', 'ansible-homelab', 'pixelium-site'];
@@ -50,7 +51,7 @@ const skills = [
 ];
 ---
 
-<Base title="Stéphane Ferreira — pixelium.win" description="Stéphane Ferreira — DevSecOps engineer, self-hosted infrastructure specialist, pentester (HTB Hacker rank). 35+ services, Proxmox, Ansible, AI agents. Presented by Claude.">
+<Base title="Stéphane Ferreira — pixelium.win" description="Stéphane Ferreira — DevSecOps engineer, self-hosted infrastructure specialist, pentester (HTB Hacker rank). 30+ services, Proxmox, Ansible, AI agents. Presented by Claude.">
   <main>
     <section class="hero-mini">
       <div class="container">
@@ -96,11 +97,11 @@ const skills = [
               <span class="track-label">ops journal entries</span>
             </div>
             <div class="track-stat">
-              <span class="track-number">30+</span>
+              <span class="track-number"><DynNum stat="lxc_count" fallback="30+" suffix="+" /></span>
               <span class="track-label">LXC containers in production</span>
             </div>
             <div class="track-stat">
-              <span class="track-number">25+</span>
+              <span class="track-number"><DynNum stat="https_services" fallback="25+" suffix="+" /></span>
               <span class="track-label">services behind HTTPS</span>
             </div>
             <div class="track-stat">
@@ -108,7 +109,7 @@ const skills = [
               <span class="track-label">hosts managed by Ansible</span>
             </div>
             <div class="track-stat">
-              <span class="track-number">12</span>
+              <span class="track-number"><DynNum stat="ansible_playbooks" fallback="14" /></span>
               <span class="track-label">Ansible playbooks</span>
             </div>
             <div class="track-stat">
@@ -201,7 +202,7 @@ const skills = [
             </div>
             <div class="detail">
               <h4>AI agents in production</h4>
-              <p>OpenFang monitors 21 services autonomously, wakes servers remotely (WOL), and alerts via Telegram — for ~$1.50/month. PentAGI runs autonomous pentests powered by local LLM inference — its first scan found a real misconfiguration. These are real agents in production, not demos.</p>
+              <p>OpenFang monitors <DynNum stat="services_total" fallback="33" /> services autonomously, wakes servers remotely (WOL), and alerts via Telegram — for ~$1.50/month. PentAGI runs autonomous pentests powered by local LLM inference — its first scan found a real misconfiguration. These are real agents in production, not demos.</p>
             </div>
             <div class="detail">
               <h4>Sovereign local inference</h4>

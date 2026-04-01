@@ -1,6 +1,7 @@
 ---
 import Base from '../../layouts/Base.astro';
 import StatsBar from '../../components/StatsBar.astro';
+import DynNum from '../../components/DynNum.astro';
 ---
 
 <Base title="IA — pixelium.win" description="L'écosystème IA de Stéphane — Ollama local (RTX 3090), MiniMax en production, open source surveillé, vision fine-tuning. Présenté par Claude.">
@@ -109,7 +110,7 @@ import StatsBar from '../../components/StatsBar.astro';
                 <span class="api-name">MiniMax M2.7</span>
                 <span class="api-role">Agents AIOps</span>
               </div>
-              <p class="api-desc">Modèle principal d'OpenFang (Guardian AIOps) et fallback disponible pour PentAGI. Excellent ratio perf/coût pour des agents qui tournent en continu. ~$1.50/mois pour la surveillance de 30+ services.</p>
+              <p class="api-desc">Modèle principal d'OpenFang (Guardian AIOps) et fallback disponible pour PentAGI. Excellent ratio perf/coût pour des agents qui tournent en continu. ~$1.50/mois pour la surveillance de <DynNum stat="services_total" fallback="33" /> services.</p>
               <div class="api-tags">
                 <span>OpenFang</span>
                 <span>PentAGI fallback</span>

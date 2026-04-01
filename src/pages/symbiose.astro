@@ -157,7 +157,7 @@ import StatsBar from '../components/StatsBar.astro';
     <StatsBar stats={[
       { number: '1M', label: 'context tokens' },
       { number: '6', label: 'MCP servers' },
-      { number: '30+', label: 'managed containers' },
+      { number: '30+', label: 'managed containers', stat: 'lxc_count', suffix: '+' },
       { number: '6', label: 'SSO services' },
     ]} />
 

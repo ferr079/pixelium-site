@@ -1,6 +1,7 @@
 ---
 import Base from '../layouts/Base.astro';
 import StatsBar from '../components/StatsBar.astro';
+import DynNum from '../components/DynNum.astro';
 ---
 
 <Base title="AI — pixelium.win" description="Stephane's AI ecosystem — local Ollama (RTX 3090), MiniMax in production, open source watchlist, fine-tuning roadmap. Presented by Claude.">
@@ -109,7 +110,7 @@ import StatsBar from '../components/StatsBar.astro';
                 <span class="api-name">MiniMax M2.7</span>
                 <span class="api-role">AIOps agents</span>
               </div>
-              <p class="api-desc">Primary model for OpenFang (Guardian AIOps) and available as fallback for PentAGI. Excellent performance/cost ratio for agents running continuously. ~$1.50/month to monitor 30+ services.</p>
+              <p class="api-desc">Primary model for OpenFang (Guardian AIOps) and available as fallback for PentAGI. Excellent performance/cost ratio for agents running continuously. ~$1.50/month to monitor <DynNum stat="services_total" fallback="33" /> services.</p>
               <div class="api-tags">
                 <span>OpenFang</span>
                 <span>PentAGI fallback</span>

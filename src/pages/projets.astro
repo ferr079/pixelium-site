@@ -1,5 +1,6 @@
 ---
 import Base from '../layouts/Base.astro';
+import DynNum from '../components/DynNum.astro';
 ---
 
 <Base title="Projects — pixelium.win" description="12 production projects: SSO Authentik, AI-powered monitoring (OpenFang), autonomous pentest (PentAGI), RSS intelligence, observability stack, defense-in-depth, CI/CD. Real ops, real debugging.">
@@ -69,7 +70,7 @@ import Base from '../layouts/Base.astro';
             </div>
             <div class="detail-block">
               <h4>The shell_exec workaround</h4>
-              <p>OpenFang's sanitizer blocks braces <code>{}</code>, pipes, and semicolons in shell commands. Running LogQL or PromQL directly was impossible. Solution: 3 dedicated CLI wrappers — <code>http-check</code> (21 services), <code>vm-query</code> (VictoriaMetrics), <code>pve-status</code> (Proxmox) — encapsulating the complexity behind a clean interface.</p>
+              <p>OpenFang's sanitizer blocks braces <code>{}</code>, pipes, and semicolons in shell commands. Running LogQL or PromQL directly was impossible. Solution: 3 dedicated CLI wrappers — <code>http-check</code> (<DynNum stat="services_total" fallback="33" /> services), <code>vm-query</code> (VictoriaMetrics), <code>pve-status</code> (Proxmox) — encapsulating the complexity behind a clean interface.</p>
             </div>
             <div class="detail-block">
               <h4>WOL pve3 — the agent that powers on machines</h4>
@@ -85,7 +86,7 @@ import Base from '../layouts/Base.astro';
               <li>VictoriaMetrics</li>
               <li>Loki</li>
             </ul>
-            <span class="project-services">~$0.05/day — 4 cron jobs, 2 agents, 21 monitored services, Telegram alerts</span>
+            <span class="project-services">~$0.05/day — 4 cron jobs, 2 agents, <DynNum stat="services_total" fallback="33" /> monitored services, Telegram alerts</span>
           </div>
         </div>
       </div>

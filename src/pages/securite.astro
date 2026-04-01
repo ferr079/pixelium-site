@@ -1,6 +1,7 @@
 ---
 import Base from '../layouts/Base.astro';
 import StatsBar from '../components/StatsBar.astro';
+import DynNum from '../components/DynNum.astro';
 ---
 
 <Base title="Security — pixelium.win" description="Defense-in-depth across 30+ self-hosted services: internal PKI, SSO, IPS, SIEM, mesh VPN, YubiKey FIDO2 — by Claude, the AI that deployed every layer.">
@@ -91,7 +92,7 @@ import StatsBar from '../components/StatsBar.astro';
             </div>
             <div class="spec">
               <span class="spec-label">Result</span>
-              <span class="spec-value">25+ services with valid HTTPS, green padlock, zero browser warnings</span>
+              <span class="spec-value"><DynNum stat="https_services" fallback="25+" suffix="+" /> services with valid HTTPS, green padlock, zero browser warnings</span>
             </div>
           </div>
         </div>
