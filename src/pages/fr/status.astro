@@ -1,0 +1,266 @@
+---
+import Base from '../../layouts/Base.astro';
+import SectionHeading from '../../components/SectionHeading.astro';
+---
+
+<Base title="Statut — pixelium.win" description="Statut live de l'infrastructure : 30+ services, 3 nœuds Proxmox, monitoring temps réel. Données poussées depuis le homelab par OpenFang toutes les 5 minutes.">
+  <main>
+    <section class="hero-mini">
+      <div class="container">
+        <p class="terminal-prompt">$ ping --all</p>
+        <h1>Statut<span class="dot">.</span></h1>
+        <p class="subtitle">Dashboard infrastructure live. Données poussées par OpenFang toutes les 5 minutes — zéro port exposé.</p>
+      </div>
+    </section>
+
+    <!-- Résumé -->
+    <section class="status-summary reveal">
+      <div class="container">
+        <div class="summary-grid">
+          <div class="summary-card">
+            <span class="summary-dot" id="global-dot"></span>
+            <span class="summary-value" id="summary-up">--</span>
+            <span class="summary-sep">/</span>
+            <span class="summary-value summary-total" id="summary-total">--</span>
+            <span class="summary-label">services UP</span>
+          </div>
+          <div class="summary-card">
+            <span class="summary-value" id="summary-uptime">--</span>
+            <span class="summary-label">disponibilité</span>
+          </div>
+          <div class="summary-card">
+            <span class="summary-value" id="summary-nodes">--</span>
+            <span class="summary-label">nœuds PVE</span>
+          </div>
+          <div class="summary-card">
+            <span class="summary-value summary-timestamp" id="summary-updated">en attente de synchronisation</span>
+            <span class="summary-label">dernière vérification</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Services -->
+    <section class="layer reveal">
+      <div class="container">
+        <SectionHeading id="services" title="Services" />
+        <div id="services-loading" class="status-loading">
+          <div class="skeleton-grid">
+            {Array.from({ length: 12 }).map(() => (
+              <div class="skeleton-card"></div>
+            ))}
+          </div>
+          <p class="status-waiting">En attente des premières données d'OpenFang...</p>
+        </div>
+        <div id="services-grid" class="services-container" style="display:none;"></div>
+      </div>
+    </section>
+
+    <!-- Nœuds -->
+    <section class="layer reveal">
+      <div class="container">
+        <SectionHeading id="nodes" title="Nœuds Proxmox" />
+        <div id="nodes-loading" class="status-loading">
+          <div class="skeleton-grid skeleton-nodes">
+            {Array.from({ length: 3 }).map(() => (
+              <div class="skeleton-card skeleton-node"></div>
+            ))}
+          </div>
+        </div>
+        <div id="nodes-grid" class="nodes-grid" style="display:none;"></div>
+      </div>
+    </section>
+
+    <!-- Note de bas de page -->
+    <section class="status-footer reveal">
+      <div class="container">
+        <p class="status-note">Données poussées depuis le homelab par <strong>OpenFang</strong> (agent IA, CT 192) via l'API Cloudflare KV. Zéro port exposé — push HTTPS sortant uniquement.</p>
+      </div>
+    </section>
+  </main>
+</Base>
+
+<script>
+  // Category display order and labels — data is trusted (from our own KV, pushed by OpenFang)
+  const categoryLabels: Record<string, string> = {
+    infra: 'INFRASTRUCTURE',
+    apps: 'APPLICATIONS',
+    monitoring: 'MONITORING & SÉCURITÉ',
+    storage: 'STOCKAGE & SAUVEGARDE',
+  };
+
+  function barColor(pct: number): string {
+    if (pct > 85) return '#ef4444';
+    if (pct > 65) return '#eab308';
+    return '#38bdf8';
+  }
+
+  function el(tag: string, className: string, text?: string): HTMLElement {
+    const e = document.createElement(tag);
+    e.className = className;
+    if (text) e.textContent = text;
+    return e;
+  }
+
+  (async function loadStatus() {
+    try {
+      const res = await fetch('/api/status');
+      if (!res.ok) return;
+      const data = await res.json();
+      if (!data.services || !data.services.length) return;
+
+      // Summary
+      const s = data.summary;
+      if (s) {
+        const upEl = document.getElementById('summary-up');
+        const totalEl = document.getElementById('summary-total');
+        const uptimeEl = document.getElementById('summary-uptime');
+        const nodesEl = document.getElementById('summary-nodes');
+        const dot = document.getElementById('global-dot');
+        if (upEl) upEl.textContent = String(s.up);
+        if (totalEl) totalEl.textContent = String(s.total);
+        if (uptimeEl) uptimeEl.textContent = s.uptime_pct + '%';
+        if (nodesEl) nodesEl.textContent = data.nodes ? String(data.nodes.filter((n: any) => n.status !== 'offline').length) : '--';
+        if (dot) dot.classList.add(s.down > 0 ? 'degraded' : 'healthy');
+      }
+
+      // Timestamp
+      if (data.updated_at) {
+        const mins = Math.round((Date.now() - new Date(data.updated_at).getTime()) / 60000);
+        const tsEl = document.getElementById('summary-updated');
+        if (tsEl) tsEl.textContent = mins < 1 ? "à l'instant" : 'il y a ' + mins + ' min';
+      }
+
+      // Services grouped by category
+      const grouped: Record<string, any[]> = {};
+      for (const svc of data.services) {
+        const cat = svc.category || 'apps';
+        if (!grouped[cat]) grouped[cat] = [];
+        grouped[cat].push(svc);
+      }
+
+      const container = document.getElementById('services-grid');
+      if (!container) return;
+
+      for (const [cat, label] of Object.entries(categoryLabels)) {
+        const svcs = grouped[cat];
+        if (!svcs || !svcs.length) continue;
+
+        const section = el('div', 'service-category');
+        section.appendChild(el('h3', 'category-title', label));
+
+        const grid = el('div', 'service-grid');
+        for (const svc of svcs) {
+          const isUp = svc.status === 'up';
+          const card = el('div', 'service-card');
+          card.appendChild(el('span', 'svc-dot ' + (isUp ? 'up' : 'down')));
+          card.appendChild(el('span', 'svc-name', svc.name));
+          card.appendChild(el('span', 'svc-latency', svc.latency != null ? svc.latency + 'ms' : '--'));
+          grid.appendChild(card);
+        }
+
+        section.appendChild(grid);
+        container.appendChild(section);
+      }
+
+      document.getElementById('services-loading')!.style.display = 'none';
+      container.style.display = 'block';
+
+      // Nodes
+      if (data.nodes && data.nodes.length) {
+        const nodesContainer = document.getElementById('nodes-grid');
+        if (!nodesContainer) return;
+
+        for (const node of data.nodes) {
+          const card = el('div', 'node-card');
+          card.appendChild(el('h4', 'node-name', node.name));
+
+          if (node.status === 'offline') {
+            card.appendChild(el('span', 'node-offline', 'offline'));
+          } else {
+            for (const [metric, value] of [['CPU', node.cpu], ['RAM', node.ram]] as [string, number][]) {
+              const row = el('div', 'node-metric');
+              row.appendChild(el('span', 'metric-label', metric));
+              const bar = el('div', 'bar');
+              const fill = el('div', 'bar-fill');
+              (fill as HTMLElement).style.width = value + '%';
+              (fill as HTMLElement).style.background = barColor(value);
+              bar.appendChild(fill);
+              row.appendChild(bar);
+              row.appendChild(el('span', 'metric-value', value + '%'));
+              card.appendChild(row);
+            }
+            card.appendChild(el('div', 'node-uptime', node.uptime_days + 'd uptime'));
+          }
+
+          nodesContainer.appendChild(card);
+        }
+
+        document.getElementById('nodes-loading')!.style.display = 'none';
+        nodesContainer.style.display = 'grid';
+      }
+    } catch (_) { /* keep skeletons */ }
+  })();
+</script>
+
+<style>
+  .status-summary { padding: 2rem 0; border-bottom: 1px solid var(--color-border); }
+  .summary-grid { display: flex; justify-content: center; align-items: center; gap: 2.5rem; flex-wrap: wrap; }
+  .summary-card { display: flex; align-items: center; gap: 0.5rem; }
+  .summary-dot { width: 10px; height: 10px; border-radius: 50%; background: var(--color-text-muted); flex-shrink: 0; }
+  .summary-dot.healthy { background: #22c55e; box-shadow: 0 0 8px rgba(34, 197, 94, 0.6); animation: pulse-dot 2s ease-in-out infinite; }
+  .summary-dot.degraded { background: #eab308; box-shadow: 0 0 8px rgba(234, 179, 8, 0.6); animation: pulse-dot 2s ease-in-out infinite; }
+  @keyframes pulse-dot { 0%, 100% { opacity: 1; } 50% { opacity: 0.6; } }
+  .summary-value { font-family: var(--font-mono); font-size: 1.75rem; font-weight: 800; color: var(--color-accent); }
+  .summary-total { color: var(--color-text-muted); font-weight: 400; }
+  .summary-sep { font-family: var(--font-mono); font-size: 1.5rem; color: var(--color-border); }
+  .summary-label { font-size: 0.8rem; color: var(--color-text-muted); }
+  .summary-timestamp { font-size: 1rem; font-weight: 600; }
+
+  .skeleton-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 0.75rem; }
+  .skeleton-card { height: 2.5rem; background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 6px; animation: skeleton-pulse 1.5s ease-in-out infinite; }
+  .skeleton-nodes { grid-template-columns: repeat(3, 1fr); }
+  .skeleton-node { height: 8rem; }
+  @keyframes skeleton-pulse { 0%, 100% { opacity: 0.4; } 50% { opacity: 0.8; } }
+  .status-waiting { text-align: center; color: var(--color-text-muted); font-family: var(--font-mono); font-size: 0.85rem; margin-top: 1.5rem; }
+  .status-loading { padding: 1rem 0; }
+
+  .service-category { margin-bottom: 2rem; }
+  .category-title { font-family: var(--font-mono); font-size: 0.9rem; color: var(--color-accent); margin-bottom: 0.75rem; letter-spacing: 0.05em; }
+  .service-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 0.5rem; }
+  .service-card { display: flex; align-items: center; gap: 0.6rem; padding: 0.6rem 0.9rem; background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 6px; transition: border-color 0.2s; }
+  .service-card:hover { border-color: var(--color-accent); }
+  .svc-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+  .svc-dot.up { background: #22c55e; }
+  .svc-dot.down { background: #ef4444; box-shadow: 0 0 6px rgba(239, 68, 68, 0.5); }
+  .svc-name { font-family: var(--font-mono); font-size: 0.85rem; color: var(--color-text); flex: 1; }
+  .svc-latency { font-family: var(--font-mono); font-size: 0.75rem; color: var(--color-text-muted); }
+
+  .nodes-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; }
+  .node-card { background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 8px; padding: 1.25rem; transition: border-color 0.2s; }
+  .node-card:hover { border-color: var(--color-accent); }
+  .node-name { font-family: var(--font-mono); font-size: 1rem; font-weight: 700; color: var(--color-text); margin: 0 0 1rem; }
+  .node-metric { display: flex; align-items: center; gap: 0.6rem; margin-bottom: 0.5rem; }
+  .metric-label { font-family: var(--font-mono); font-size: 0.75rem; color: var(--color-text-muted); width: 2.5rem; }
+  .bar { flex: 1; height: 6px; background: var(--color-border); border-radius: 3px; overflow: hidden; }
+  .bar-fill { height: 100%; border-radius: 3px; transition: width 0.8s ease-out; }
+  .metric-value { font-family: var(--font-mono); font-size: 0.8rem; color: var(--color-text); width: 3rem; text-align: right; }
+  .node-uptime { font-family: var(--font-mono); font-size: 0.75rem; color: var(--color-text-muted); margin-top: 0.5rem; }
+  .node-offline { font-family: var(--font-mono); font-size: 0.85rem; color: var(--color-text-muted); font-style: italic; }
+
+  .status-footer { padding: 2rem 0; }
+  .status-note { font-size: 0.8rem; color: var(--color-text-muted); text-align: center; font-family: var(--font-mono); }
+
+  @media (max-width: 640px) {
+    .summary-grid { gap: 1.5rem; }
+    .summary-value { font-size: 1.25rem; }
+    .nodes-grid { grid-template-columns: 1fr; }
+    .service-grid { grid-template-columns: 1fr; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .summary-dot.healthy, .summary-dot.degraded { animation: none; }
+    .skeleton-card { animation: none; opacity: 0.6; }
+    .bar-fill { transition: none; }
+  }
+</style>
