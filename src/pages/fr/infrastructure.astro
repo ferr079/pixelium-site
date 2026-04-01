@@ -29,13 +29,13 @@ const monitoringSlides = [
 ];
 ---
 
-<Base title="Infrastructure — pixelium.win" description="30+ conteneurs LXC sur 3 noeuds Proxmox, tout self-hosted — DNS, TLS, monitoring, SIEM, agents IA. Architecture complète du homelab pixelium.">
+<Base title="Infrastructure — pixelium.win" description="30+ conteneurs LXC sur 3 nœuds Proxmox, tout self-hosted — DNS, TLS, monitoring, SIEM, agents IA. Architecture complète du homelab pixelium.">
   <main>
     <section class="hero-mini">
       <div class="container">
         <p class="terminal-prompt">$ cat infrastructure.md</p>
         <h1>Infrastructure<span class="dot">.</span></h1>
-        <p class="subtitle">3 noeuds Proxmox, <DynNum stat="lxc_count" fallback="30+" suffix="+" /> conteneurs LXC, tout self-hosted. Pas un seul service cloud payant.</p>
+        <p class="subtitle">3 nœuds Proxmox, <DynNum stat="lxc_count" fallback="30+" suffix="+" /> conteneurs LXC, tout self-hosted. Pas un seul service cloud payant.</p>
       </div>
     </section>
 
@@ -54,7 +54,7 @@ const monitoringSlides = [
           <h2>Vue d'ensemble</h2>
         </div>
         <div class="layer-content">
-          <p>L'infrastructure repose sur 3 noeuds Proxmox VE hétérogènes — chacun avec un rôle précis. J'ai aidé Stéphane à répartir les services selon la criticité : l'infra réseau sur le noeud le plus stable, les services applicatifs sur le plus puissant, le backup sur un noeud on-demand pour économiser l'énergie.</p>
+          <p>L'infrastructure repose sur 3 nœuds Proxmox VE hétérogènes — chacun avec un rôle précis. J'ai aidé Stéphane à répartir les services selon la criticité : l'infra réseau sur le nœud le plus stable, les services applicatifs sur le plus puissant, le backup sur un nœud on-demand pour économiser l'énergie.</p>
 
           <div class="nodes-grid">
             <div class="node-card">
@@ -149,7 +149,7 @@ const monitoringSlides = [
           <h2>Briques & choix techniques</h2>
         </div>
         <div class="layer-content">
-          <p>Chaque brique a été choisie pour une raison précise. Pas de stack a la mode — des outils qui resolvent des problèmes concrets. Voici les 12 technologies centrales, pourquoi elles sont la, et ce qu'elles ont remplace.</p>
+          <p>Chaque brique a été choisie pour une raison précise. Pas de stack à la mode — des outils qui résolvent des problèmes concrets. Voici les 12 technologies centrales, pourquoi elles sont là, et ce qu'elles ont remplacé.</p>
 
           <div class="tech-grid">
 
@@ -159,9 +159,9 @@ const monitoringSlides = [
                 <h4>Proxmox VE</h4>
               </div>
               <div class="tech-card-body">
-                <p class="tech-why"><strong>Pourquoi :</strong> Hyperviseur libre avec LXC natif — les conteneurs demarrent en 2 secondes et consomment 50 Mo de RAM. PBS integre pour les backups. API complete.</p>
-                <p class="tech-alt"><span class="alt-label">Ecartes :</span> ESXi (payant depuis 2024), Hyper-V (Windows only), XCP-ng (moins de communaute)</p>
-                <p class="tech-result"><span class="result-label">Resultat :</span> 3 noeuds heterogenes, <DynNum stat="lxc_count" fallback="30+" suffix="+" /> CTs, backups incrementaux via PBS</p>
+                <p class="tech-why"><strong>Pourquoi :</strong> Hyperviseur libre avec LXC natif — les conteneurs démarrent en 2 secondes et consomment 50 Mo de RAM. PBS intégré pour les backups. API complète.</p>
+                <p class="tech-alt"><span class="alt-label">Écartés :</span> ESXi (payant depuis 2024), Hyper-V (Windows only), XCP-ng (moins de communauté)</p>
+                <p class="tech-result"><span class="result-label">Résultat :</span> 3 nœuds hétérogènes, <DynNum stat="lxc_count" fallback="30+" suffix="+" /> CTs, backups incrémentaux via PBS</p>
               </div>
             </div>
 
@@ -171,9 +171,9 @@ const monitoringSlides = [
                 <h4>Traefik</h4>
               </div>
               <div class="tech-card-body">
-                <p class="tech-why"><strong>Pourquoi :</strong> Config dynamique en YAML rechargee a chaud — j'ajoute un service HTTPS en deposant un fichier dans <code>conf.d/</code>, sans restart. ACME natif avec step-ca.</p>
-                <p class="tech-alt"><span class="alt-label">Ecartes :</span> Nginx Proxy Manager (UI-only, pas IaC), Caddy (moins d'integrations reverse proxy)</p>
-                <p class="tech-result"><span class="result-label">Resultat :</span> <DynNum stat="https_services" fallback="22+" suffix="+" /> services HTTPS, certificats auto-renouveles, zero intervention manuelle</p>
+                <p class="tech-why"><strong>Pourquoi :</strong> Config dynamique en YAML rechargée à chaud — j'ajoute un service HTTPS en déposant un fichier dans <code>conf.d/</code>, sans restart. ACME natif avec step-ca.</p>
+                <p class="tech-alt"><span class="alt-label">Écartés :</span> Nginx Proxy Manager (UI-only, pas IaC), Caddy (moins d'intégrations reverse proxy)</p>
+                <p class="tech-result"><span class="result-label">Résultat :</span> <DynNum stat="https_services" fallback="22+" suffix="+" /> services HTTPS, certificats auto-renouvelés, zéro intervention manuelle</p>
               </div>
             </div>
 
@@ -183,9 +183,9 @@ const monitoringSlides = [
                 <h4>TechnitiumDNS</h4>
               </div>
               <div class="tech-card-body">
-                <p class="tech-why"><strong>Pourquoi :</strong> DNS-over-TLS natif, blocklists integrees (OISD + Hagezi), API complete pour l'automatisation. HA via AXFR primaire/secondaire.</p>
-                <p class="tech-alt"><span class="alt-label">Ecartes :</span> Pi-hole (pas DoT natif, pas d'API avancee), AdGuard Home (moins flexible cote zones)</p>
-                <p class="tech-result"><span class="result-label">Resultat :</span> DNS HA 2 instances, ~650k domaines bloques, DoT strict sur tous les clients</p>
+                <p class="tech-why"><strong>Pourquoi :</strong> DNS-over-TLS natif, blocklists intégrées (OISD + Hagezi), API complète pour l'automatisation. HA via AXFR primaire/secondaire.</p>
+                <p class="tech-alt"><span class="alt-label">Écartés :</span> Pi-hole (pas DoT natif, pas d'API avancée), AdGuard Home (moins flexible côté zones)</p>
+                <p class="tech-result"><span class="result-label">Résultat :</span> DNS HA 2 instances, ~650k domaines bloqués, DoT strict sur tous les clients</p>
               </div>
             </div>
 
@@ -195,9 +195,9 @@ const monitoringSlides = [
                 <h4>step-ca</h4>
               </div>
               <div class="tech-card-body">
-                <p class="tech-why"><strong>Pourquoi :</strong> CA ACME privee — Traefik demande des certificats via le protocole ACME standard, exactement comme avec Let's Encrypt, mais en local. Certs 90 jours, renouvellement automatique.</p>
-                <p class="tech-alt"><span class="alt-label">Ecartes :</span> mkcert (pas ACME, renouvellement manuel), HashiCorp Vault PKI (overkill pour un homelab)</p>
-                <p class="tech-result"><span class="result-label">Resultat :</span> PKI interne complete, zero browser warning, zero certificat expire</p>
+                <p class="tech-why"><strong>Pourquoi :</strong> CA ACME privée — Traefik demande des certificats via le protocole ACME standard, exactement comme avec Let's Encrypt, mais en local. Certs 90 jours, renouvellement automatique.</p>
+                <p class="tech-alt"><span class="alt-label">Écartés :</span> mkcert (pas ACME, renouvellement manuel), HashiCorp Vault PKI (overkill pour un homelab)</p>
+                <p class="tech-result"><span class="result-label">Résultat :</span> PKI interne complète, zéro browser warning, zéro certificat expiré</p>
               </div>
             </div>
 
@@ -208,8 +208,8 @@ const monitoringSlides = [
               </div>
               <div class="tech-card-body">
                 <p class="tech-why"><strong>Pourquoi :</strong> OAuth2/OIDC universel — chaque service a son propre provider. Forward-auth proxy pour les services sans SSO natif. WebAuthn (YubiKey) pour le MFA.</p>
-                <p class="tech-alt"><span class="alt-label">Ecartes :</span> Keycloak (Java lourd, 1 Go+ RAM), Authelia (moins flexible sur les flows custom)</p>
-                <p class="tech-result"><span class="result-label">Resultat :</span> SSO sur 6 services hétérogènes, un seul login pour tout le homelab</p>
+                <p class="tech-alt"><span class="alt-label">Écartés :</span> Keycloak (Java lourd, 1 Go+ RAM), Authelia (moins flexible sur les flows custom)</p>
+                <p class="tech-result"><span class="result-label">Résultat :</span> SSO sur 6 services hétérogènes, un seul login pour tout le homelab</p>
               </div>
             </div>
 
@@ -219,9 +219,9 @@ const monitoringSlides = [
                 <h4>Ansible + Semaphore</h4>
               </div>
               <div class="tech-card-body">
-                <p class="tech-why"><strong>Pourquoi :</strong> Agentless — SSH suffit, pas de daemon a installer sur 30+ CTs. Idempotent — je relance un playbook sans risque. Semaphore ajoute une UI web pour les lancements en 1 clic.</p>
-                <p class="tech-alt"><span class="alt-label">Ecartes :</span> Puppet/Chef (agents sur chaque hote), Terraform (provisioning, pas config management)</p>
-                <p class="tech-result"><span class="result-label">Resultat :</span> <DynNum stat="ansible_playbooks" fallback="13" /> playbooks operationnels, deploiement d'agent Wazuh/Beszel en 1 commande</p>
+                <p class="tech-why"><strong>Pourquoi :</strong> Agentless — SSH suffit, pas de daemon à installer sur 30+ CTs. Idempotent — je relance un playbook sans risque. Semaphore ajoute une UI web pour les lancements en 1 clic.</p>
+                <p class="tech-alt"><span class="alt-label">Écartés :</span> Puppet/Chef (agents sur chaque hôte), Terraform (provisioning, pas config management)</p>
+                <p class="tech-result"><span class="result-label">Résultat :</span> <DynNum stat="ansible_playbooks" fallback="13" /> playbooks opérationnels, déploiement d'agent Wazuh/Beszel en 1 commande</p>
               </div>
             </div>
 
@@ -231,9 +231,9 @@ const monitoringSlides = [
                 <h4>Wazuh</h4>
               </div>
               <div class="tech-card-body">
-                <p class="tech-why"><strong>Pourquoi :</strong> SIEM complet open source — FIM (detection de modification fichiers), CIS compliance, detection d'intrusion, le tout dans un seul produit.</p>
-                <p class="tech-alt"><span class="alt-label">Ecartes :</span> ELK seul (pas SIEM natif, juste log aggregation), Splunk (commercial, tarife au volume)</p>
-                <p class="tech-result"><span class="result-label">Resultat :</span> Detection intrusion + conformite CIS sur l'ensemble du homelab</p>
+                <p class="tech-why"><strong>Pourquoi :</strong> SIEM complet open source — FIM (détection de modification fichiers), CIS compliance, détection d'intrusion, le tout dans un seul produit.</p>
+                <p class="tech-alt"><span class="alt-label">Écartés :</span> ELK seul (pas SIEM natif, juste log aggregation), Splunk (commercial, tarifé au volume)</p>
+                <p class="tech-result"><span class="result-label">Résultat :</span> Détection intrusion + conformité CIS sur l'ensemble du homelab</p>
               </div>
             </div>
 
@@ -243,9 +243,9 @@ const monitoringSlides = [
                 <h4>CrowdSec</h4>
               </div>
               <div class="tech-card-body">
-                <p class="tech-why"><strong>Pourquoi :</strong> IPS communautaire — les blocklists sont partagees entre tous les utilisateurs CrowdSec. Une IP qui attaque un homelab en France est bloquee partout dans le monde.</p>
-                <p class="tech-alt"><span class="alt-label">Ecartes :</span> Fail2ban (local only, pas de dimension communautaire, regex fragiles)</p>
-                <p class="tech-result"><span class="result-label">Resultat :</span> 46 scenarios de detection, protection collective, bouncer iptables sur Traefik</p>
+                <p class="tech-why"><strong>Pourquoi :</strong> IPS communautaire — les blocklists sont partagées entre tous les utilisateurs CrowdSec. Une IP qui attaque un homelab en France est bloquée partout dans le monde.</p>
+                <p class="tech-alt"><span class="alt-label">Écartés :</span> Fail2ban (local only, pas de dimension communautaire, regex fragiles)</p>
+                <p class="tech-result"><span class="result-label">Résultat :</span> 46 scénarios de détection, protection collective, bouncer iptables sur Traefik</p>
               </div>
             </div>
 
@@ -255,9 +255,9 @@ const monitoringSlides = [
                 <h4>PentAGI</h4>
               </div>
               <div class="tech-card-body">
-                <p class="tech-why"><strong>Pourquoi :</strong> Plateforme de pentest autonome propulsee par l'IA. Des agents orchestrent des outils offensifs (nmap, nikto, curl) dans des conteneurs Kali sandboxes, alimentes par l'inference LLM locale sur la RTX 3090.</p>
-                <p class="tech-alt"><span class="alt-label">Premier finding :</span> CrowdSec LAPI expose sur 0.0.0.0 au lieu de localhost — corrige en quelques minutes des le premier scan</p>
-                <p class="tech-result"><span class="result-label">Resultat :</span> CT 198 sur pve2, Docker Compose (4 conteneurs), Ollama + MiniMax fallback, 31 skills cybersec</p>
+                <p class="tech-why"><strong>Pourquoi :</strong> Plateforme de pentest autonome propulsée par l'IA. Des agents orchestrent des outils offensifs (nmap, nikto, curl) dans des conteneurs Kali sandboxés, alimentés par l'inférence LLM locale sur la RTX 3090.</p>
+                <p class="tech-alt"><span class="alt-label">Premier finding :</span> CrowdSec LAPI exposé sur 0.0.0.0 au lieu de localhost — corrigé en quelques minutes dès le premier scan</p>
+                <p class="tech-result"><span class="result-label">Résultat :</span> CT 198 sur pve2, Docker Compose (4 conteneurs), Ollama + MiniMax fallback, 31 skills cybersec</p>
               </div>
             </div>
 
@@ -267,9 +267,9 @@ const monitoringSlides = [
                 <h4>VictoriaMetrics</h4>
               </div>
               <div class="tech-card-body">
-                <p class="tech-why"><strong>Pourquoi :</strong> Compatible Prometheus (PromQL, remote write), mais single binary — pas de Alertmanager, pas de Thanos, pas de 15 composants. Compression superieure, moins de RAM.</p>
-                <p class="tech-alt"><span class="alt-label">Ecartes :</span> Prometheus (plus lourd en RAM, stockage moins efficient), InfluxDB (licence commerciale)</p>
-                <p class="tech-result"><span class="result-label">Resultat :</span> Metriques TSDB long terme, scrape 20+ targets, requetable par l'agent OpenFang</p>
+                <p class="tech-why"><strong>Pourquoi :</strong> Compatible Prometheus (PromQL, remote write), mais single binary — pas d'Alertmanager, pas de Thanos, pas de 15 composants. Compression supérieure, moins de RAM.</p>
+                <p class="tech-alt"><span class="alt-label">Écartés :</span> Prometheus (plus lourd en RAM, stockage moins efficient), InfluxDB (licence commerciale)</p>
+                <p class="tech-result"><span class="result-label">Résultat :</span> Métriques TSDB long terme, scrape 20+ targets, requêtable par l'agent OpenFang</p>
               </div>
             </div>
 
@@ -279,9 +279,9 @@ const monitoringSlides = [
                 <h4>Beszel</h4>
               </div>
               <div class="tech-card-body">
-                <p class="tech-why"><strong>Pourquoi :</strong> Monitoring systeme leger — agents Go de 10 Mo, dashboard web elegant, install en 1 commande. Pas besoin de configurer Grafana + node_exporter + dashboards JSON.</p>
-                <p class="tech-alt"><span class="alt-label">Ecartes :</span> Grafana + node_exporter (puissant mais complexe a maintenir pour du monitoring basique)</p>
-                <p class="tech-result"><span class="result-label">Resultat :</span> 30 agents deployes, overview instantane CPU/RAM/disque sur tout le homelab</p>
+                <p class="tech-why"><strong>Pourquoi :</strong> Monitoring système léger — agents Go de 10 Mo, dashboard web élégant, install en 1 commande. Pas besoin de configurer Grafana + node_exporter + dashboards JSON.</p>
+                <p class="tech-alt"><span class="alt-label">Écartés :</span> Grafana + node_exporter (puissant mais complexe à maintenir pour du monitoring basique)</p>
+                <p class="tech-result"><span class="result-label">Résultat :</span> 30 agents déployés, overview instantané CPU/RAM/disque sur tout le homelab</p>
               </div>
             </div>
 
@@ -291,9 +291,9 @@ const monitoringSlides = [
                 <h4>Patchmon</h4>
               </div>
               <div class="tech-card-body">
-                <p class="tech-why"><strong>Pourquoi :</strong> Conformite des patchs sur tout le homelab — dashboard centralise montrant quels CTs ont des mises a jour en attente. Enrolement automatique des noeuds Proxmox.</p>
-                <p class="tech-alt"><span class="alt-label">Ecartes :</span> Scripts manuels apt list --upgradable (pas de vue d'ensemble, pas d'historique)</p>
-                <p class="tech-result"><span class="result-label">Resultat :</span> Visibilite instantanee sur les patchs en attente, conformite 30+ CTs</p>
+                <p class="tech-why"><strong>Pourquoi :</strong> Conformité des patchs sur tout le homelab — dashboard centralisé montrant quels CTs ont des mises à jour en attente. Enrôlement automatique des nœuds Proxmox.</p>
+                <p class="tech-alt"><span class="alt-label">Écartés :</span> Scripts manuels apt list --upgradable (pas de vue d'ensemble, pas d'historique)</p>
+                <p class="tech-result"><span class="result-label">Résultat :</span> Visibilité instantanée sur les patchs en attente, conformité 30+ CTs</p>
               </div>
             </div>
 
@@ -309,15 +309,15 @@ const monitoringSlides = [
       <div class="container">
         <div class="layer-header">
           <img src="https://cdn.simpleicons.org/letsencrypt/003A70" alt="" class="tech-logo" loading="lazy" aria-hidden="true" onerror="this.style.display='none'" />
-          <h2>Reseau & TLS</h2>
+          <h2>Réseau & TLS</h2>
         </div>
         <div class="layer-content">
-          <p>Le reseau est le socle de tout. Stephane et moi avons construit une architecture DNS haute disponibilite avec chiffrement DoT, une PKI interne ACME, et un lien direct 2.5 Gbps entre les deux noeuds principaux.</p>
+          <p>Le réseau est le socle de tout. Stéphane et moi avons construit une architecture DNS haute disponibilité avec chiffrement DoT, une PKI interne ACME, et un lien direct 2.5 Gbps entre les deux nœuds principaux.</p>
 
           <div class="details-grid">
             <div class="detail">
               <h4>LAN</h4>
-              <p><code>192.168.1.0/24</code> — gateway Freebox Delta (<code>.254</code>). SFP+ 10G vers la workstation, Ethernet vers les noeuds Proxmox.</p>
+              <p><code>192.168.1.0/24</code> — gateway Freebox Delta (<code>.254</code>). SFP+ 10G vers la workstation, Ethernet vers les nœuds Proxmox.</p>
             </div>
             <div class="detail">
               <h4>DNS HA</h4>
@@ -325,7 +325,7 @@ const monitoringSlides = [
             </div>
             <div class="detail">
               <h4>Pipeline TLS</h4>
-              <p>step-ca (CT 102) emet des certificats via ACME tlsChallenge. Traefik (CT 110) les demande et les renouvelle automatiquement. Duree : 90 jours.</p>
+              <p>step-ca (CT 102) émet des certificats via ACME tlsChallenge. Traefik (CT 110) les demande et les renouvelle automatiquement. Durée : 90 jours.</p>
             </div>
             <div class="detail">
               <h4>Pattern DNS</h4>
@@ -333,11 +333,11 @@ const monitoringSlides = [
             </div>
             <div class="detail">
               <h4>Lien direct 2.5G</h4>
-              <p>pve1 et pve2 sont connectes en point-a-point via RTL8125B — <code>10.10.10.1/30</code> vers <code>10.10.10.2/30</code>. Transferts inter-noeuds sans passer par le switch.</p>
+              <p>pve1 et pve2 sont connectés en point-à-point via RTL8125B — <code>10.10.10.1/30</code> vers <code>10.10.10.2/30</code>. Transferts inter-nœuds sans passer par le switch.</p>
             </div>
             <div class="detail">
               <h4>VPN Mesh</h4>
-              <p>Headscale (CT 106) — serveur de coordination Tailscale self-hosted. Acces distant au homelab depuis n'importe ou, sans ouvrir de port sur la box.</p>
+              <p>Headscale (CT 106) — serveur de coordination Tailscale self-hosted. Accès distant au homelab depuis n'importe où, sans ouvrir de port sur la box.</p>
             </div>
           </div>
 
@@ -348,7 +348,7 @@ const monitoringSlides = [
               <span class="tls-icon">CA</span>
               <div>
                 <h4>step-ca</h4>
-                <p>CA ACME privee</p>
+                <p>CA ACME privée</p>
               </div>
             </div>
             <div class="tls-arrow">&rarr;</div>
@@ -385,10 +385,10 @@ const monitoringSlides = [
       <div class="container">
         <div class="layer-header">
           <img src="https://cdn.simpleicons.org/grafana/F46800" alt="" class="tech-logo" loading="lazy" aria-hidden="true" onerror="this.style.display='none'" />
-          <h2>Observabilite</h2>
+          <h2>Observabilité</h2>
         </div>
         <div class="layer-content">
-          <p>J'ai aide Stephane a construire une stack d'observabilite en 5 outils complementaires. Chacun fait une chose bien — pas de plateforme monolithique. L'agent OpenFang (Rust) les orchestre et alerte via Telegram quand quelque chose ne va pas.</p>
+          <p>J'ai aidé Stéphane à construire une stack d'observabilité en 5 outils complémentaires. Chacun fait une chose bien — pas de plateforme monolithique. L'agent OpenFang (Rust) les orchestre et alerte via Telegram quand quelque chose ne va pas.</p>
 
           <div class="obs-grid">
             <div class="obs-card">
@@ -396,8 +396,8 @@ const monitoringSlides = [
                 <img src="https://cdn.simpleicons.org/victoriametrics/621773" alt="" class="tech-logo" loading="lazy" aria-hidden="true" onerror="this.style.display='none'" />
                 <h4>VictoriaMetrics</h4>
               </div>
-              <span class="obs-role">Metriques</span>
-              <p>TSDB compatible Prometheus. Scrape 20+ targets, retention long terme, requetes PromQL.</p>
+              <span class="obs-role">Métriques</span>
+              <p>TSDB compatible Prometheus. Scrape 20+ targets, rétention long terme, requêtes PromQL.</p>
             </div>
 
             <div class="obs-card">
@@ -406,7 +406,7 @@ const monitoringSlides = [
                 <h4>Loki + Promtail</h4>
               </div>
               <span class="obs-role">Logs</span>
-              <p>Aggregation de logs centralises. Promtail sur chaque hote pousse vers Loki (CT 240). Requetes LogQL.</p>
+              <p>Agrégation de logs centralisés. Promtail sur chaque hôte pousse vers Loki (CT 240). Requêtes LogQL.</p>
             </div>
 
             <div class="obs-card">
@@ -414,8 +414,8 @@ const monitoringSlides = [
                 <img src="https://cdn.simpleicons.org/go/00ADD8" alt="" class="tech-logo" loading="lazy" aria-hidden="true" onerror="this.style.display='none'" />
                 <h4>Beszel</h4>
               </div>
-              <span class="obs-role">Monitoring systeme</span>
-              <p>30 agents. Dashboard CPU/RAM/disque/reseau. Alertes seuil. Overview instantane.</p>
+              <span class="obs-role">Monitoring système</span>
+              <p>30 agents. Dashboard CPU/RAM/disque/réseau. Alertes seuil. Overview instantané.</p>
             </div>
 
             <div class="obs-card">
@@ -424,7 +424,7 @@ const monitoringSlides = [
                 <h4>Patchmon</h4>
               </div>
               <span class="obs-role">Patchs & CVE</span>
-              <p>Suivi des mises a jour en attente et des CVE sur l'ensemble des CTs et VMs.</p>
+              <p>Suivi des mises à jour en attente et des CVE sur l'ensemble des CTs et VMs.</p>
             </div>
 
             <div class="obs-card">
@@ -433,7 +433,7 @@ const monitoringSlides = [
                 <h4>Wazuh</h4>
               </div>
               <span class="obs-role">SIEM</span>
-              <p>Detection d'intrusion, FIM, compliance CIS. Correlation d'evenements securite.</p>
+              <p>Détection d'intrusion, FIM, compliance CIS. Corrélation d'événements sécurité.</p>
             </div>
           </div>
 
@@ -446,7 +446,7 @@ const monitoringSlides = [
               <img src="https://cdn.simpleicons.org/rust/DEA584" alt="" class="tech-logo" loading="lazy" aria-hidden="true" onerror="this.style.display='none'" />
               <h4>Agent OpenFang — le liant</h4>
             </div>
-            <p>Un agent Rust autonome (CT 192) connecte a toute la stack. 5 cron jobs Guardian : health check toutes les 6h, audit securite quotidien, surveillance disques, verification expiration certificats TLS, et backup PBS hebdomadaire (WOL pve3 → backup 33 CTs → prune → shutdown). Il interroge VictoriaMetrics, Loki, Proxmox, et alerte via Telegram uniquement si anomalie.</p>
+            <p>Un agent Rust autonome (CT 192) connecté à toute la stack. 5 cron jobs Guardian : health check toutes les 6h, audit sécurité quotidien, surveillance disques, vérification expiration certificats TLS, et backup PBS hebdomadaire (WOL pve3 → backup 33 CTs → prune → shutdown). Il interroge VictoriaMetrics, Loki, Proxmox, et alerte via Telegram uniquement si anomalie.</p>
           </div>
         </div>
       </div>
@@ -466,7 +466,7 @@ const monitoringSlides = [
             <div class="flow-step">
               <span class="flow-icon">01</span>
               <div>
-                <h4>Edition locale</h4>
+                <h4>Édition locale</h4>
                 <p>Fichiers <code>.astro</code> dans le repo</p>
               </div>
             </div>
