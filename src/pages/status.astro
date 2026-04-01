@@ -204,13 +204,11 @@ import SectionHeading from '../components/SectionHeading.astro';
 </script>
 
 <style>
+  /* Static elements (Astro-scoped) */
   .status-summary { padding: 2rem 0; border-bottom: 1px solid var(--color-border); }
   .summary-grid { display: flex; justify-content: center; align-items: center; gap: 2.5rem; flex-wrap: wrap; }
   .summary-card { display: flex; align-items: center; gap: 0.5rem; }
   .summary-dot { width: 10px; height: 10px; border-radius: 50%; background: var(--color-text-muted); flex-shrink: 0; }
-  .summary-dot.healthy { background: #22c55e; box-shadow: 0 0 8px rgba(34, 197, 94, 0.6); animation: pulse-dot 2s ease-in-out infinite; }
-  .summary-dot.degraded { background: #eab308; box-shadow: 0 0 8px rgba(234, 179, 8, 0.6); animation: pulse-dot 2s ease-in-out infinite; }
-  @keyframes pulse-dot { 0%, 100% { opacity: 1; } 50% { opacity: 0.6; } }
   .summary-value { font-family: var(--font-mono); font-size: 1.75rem; font-weight: 800; color: var(--color-accent); }
   .summary-total { color: var(--color-text-muted); font-weight: 400; }
   .summary-sep { font-family: var(--font-mono); font-size: 1.5rem; color: var(--color-border); }
@@ -221,9 +219,24 @@ import SectionHeading from '../components/SectionHeading.astro';
   .skeleton-card { height: 2.5rem; background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 6px; animation: skeleton-pulse 1.5s ease-in-out infinite; }
   .skeleton-nodes { grid-template-columns: repeat(3, 1fr); }
   .skeleton-node { height: 8rem; }
-  @keyframes skeleton-pulse { 0%, 100% { opacity: 0.4; } 50% { opacity: 0.8; } }
   .status-waiting { text-align: center; color: var(--color-text-muted); font-family: var(--font-mono); font-size: 0.85rem; margin-top: 1.5rem; }
   .status-loading { padding: 1rem 0; }
+  .status-footer { padding: 2rem 0; }
+  .status-note { font-size: 0.8rem; color: var(--color-text-muted); text-align: center; font-family: var(--font-mono); }
+
+  @media (max-width: 640px) {
+    .summary-grid { gap: 1.5rem; }
+    .summary-value { font-size: 1.25rem; }
+  }
+</style>
+
+<style is:global>
+  /* Dynamic elements (created by JS — must be global) */
+  @keyframes pulse-dot { 0%, 100% { opacity: 1; } 50% { opacity: 0.6; } }
+  @keyframes skeleton-pulse { 0%, 100% { opacity: 0.4; } 50% { opacity: 0.8; } }
+
+  .summary-dot.healthy { background: #22c55e; box-shadow: 0 0 8px rgba(34, 197, 94, 0.6); animation: pulse-dot 2s ease-in-out infinite; }
+  .summary-dot.degraded { background: #eab308; box-shadow: 0 0 8px rgba(234, 179, 8, 0.6); animation: pulse-dot 2s ease-in-out infinite; }
 
   .service-category { margin-bottom: 2rem; }
   .category-title { font-family: var(--font-mono); font-size: 0.9rem; color: var(--color-accent); margin-bottom: 0.75rem; letter-spacing: 0.05em; }
@@ -248,12 +261,7 @@ import SectionHeading from '../components/SectionHeading.astro';
   .node-uptime { font-family: var(--font-mono); font-size: 0.75rem; color: var(--color-text-muted); margin-top: 0.5rem; }
   .node-offline { font-family: var(--font-mono); font-size: 0.85rem; color: var(--color-text-muted); font-style: italic; }
 
-  .status-footer { padding: 2rem 0; }
-  .status-note { font-size: 0.8rem; color: var(--color-text-muted); text-align: center; font-family: var(--font-mono); }
-
   @media (max-width: 640px) {
-    .summary-grid { gap: 1.5rem; }
-    .summary-value { font-size: 1.25rem; }
     .nodes-grid { grid-template-columns: 1fr; }
     .service-grid { grid-template-columns: 1fr; }
   }
