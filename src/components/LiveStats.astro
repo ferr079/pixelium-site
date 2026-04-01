@@ -1,0 +1,193 @@
+---
+interface Brick {
+  key: string;
+  label: string;
+  suffix?: string;
+  fallback: string;
+}
+
+interface Props {
+  bricks: Brick[];
+  heading: string;
+  no_data_label: string;
+}
+
+const { bricks, heading, no_data_label } = Astro.props;
+const lang = Astro.url.pathname.startsWith('/fr') ? 'fr' : 'en';
+---
+
+<section class="live-stats reveal" data-lang={lang}>
+  <div class="container">
+    <div class="live-stats-header">
+      <span class="live-dot" id="live-dot"></span>
+      <h2 class="live-heading">{heading}</h2>
+      <span class="live-timestamp" id="live-timestamp">{no_data_label}</span>
+    </div>
+    <div class="live-grid">
+      {bricks.map((brick, i) => (
+        <div class="live-brick" style={`--delay: ${i * 80}ms`}>
+          <span class="brick-value" data-key={brick.key} data-suffix={brick.suffix || ''} data-fallback={brick.fallback}>
+            {brick.fallback}
+          </span>
+          <span class="brick-label">{brick.label}</span>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>
+
+<script>
+  function animateValue(el: Element, target: number, suffix: string) {
+    const dur = 1500, start = performance.now();
+    const isFloat = target % 1 !== 0;
+    (function step(now: number) {
+      const p = Math.min((now - start) / dur, 1);
+      const e = 1 - Math.pow(1 - p, 3);
+      (el as HTMLElement).textContent = (isFloat ? (e * target).toFixed(1) : String(Math.round(e * target))) + suffix;
+      if (p < 1) requestAnimationFrame(step);
+    })(performance.now());
+  }
+
+  (async function loadLiveStats() {
+    const bricks = document.querySelectorAll('.brick-value[data-key]');
+    const dot = document.getElementById('live-dot');
+    const ts = document.getElementById('live-timestamp');
+    const section = document.querySelector('.live-stats');
+    if (!bricks.length) return;
+
+    const lang = section?.getAttribute('data-lang') || 'en';
+    const labels = lang === 'fr'
+      ? { just: "à l'instant", ago: ' min', waiting: 'en attente de sync' }
+      : { just: 'just now', ago: ' min ago', waiting: 'awaiting first sync' };
+
+    const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    try {
+      const res = await fetch('/api/stats');
+      if (!res.ok) return;
+      const data = await res.json();
+      if (!data.stats) return;
+
+      bricks.forEach(el => {
+        const key = (el as HTMLElement).dataset.key!;
+        const val = data.stats[key];
+        if (val == null) return;
+        const suffix = (el as HTMLElement).dataset.suffix || '';
+        const num = parseFloat(val);
+        if (!isNaN(num) && !reducedMotion) {
+          animateValue(el, num, suffix);
+        } else {
+          (el as HTMLElement).textContent = val + suffix;
+        }
+      });
+
+      if (dot) dot.classList.add('live');
+      if (ts && data.updated_at) {
+        const mins = Math.round((Date.now() - new Date(data.updated_at).getTime()) / 60000);
+        ts.textContent = mins < 1 ? labels.just : mins + labels.ago;
+      }
+    } catch (_) { /* graceful — keep fallbacks */ }
+  })();
+</script>
+
+<style>
+  .live-stats {
+    padding: 3rem 0 2rem;
+  }
+
+  .live-stats-header {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin-bottom: 2rem;
+    flex-wrap: wrap;
+  }
+
+  .live-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--color-text-muted);
+    flex-shrink: 0;
+  }
+
+  .live-dot.live {
+    background: #22c55e;
+    box-shadow: 0 0 6px rgba(34, 197, 94, 0.6);
+    animation: pulse-dot 2s ease-in-out infinite;
+  }
+
+  @keyframes pulse-dot {
+    0%, 100% { opacity: 1; box-shadow: 0 0 6px rgba(34, 197, 94, 0.6); }
+    50% { opacity: 0.6; box-shadow: 0 0 12px rgba(34, 197, 94, 0.4); }
+  }
+
+  .live-heading {
+    font-size: 1.1rem;
+    font-family: var(--font-mono);
+    color: var(--color-text);
+    font-weight: 600;
+    margin: 0;
+  }
+
+  .live-timestamp {
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    color: var(--color-text-muted);
+    margin-left: auto;
+  }
+
+  .live-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1rem;
+  }
+
+  .live-brick {
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: 8px;
+    padding: 1.25rem 1rem;
+    text-align: center;
+    transition: border-color 0.3s, transform 0.3s, box-shadow 0.3s;
+  }
+
+  .live-brick:hover {
+    border-color: var(--color-accent);
+    transform: translateY(-2px);
+    box-shadow: 0 0 12px rgba(56, 189, 248, 0.08), 0 4px 16px rgba(0, 0, 0, 0.2);
+  }
+
+  .brick-value {
+    display: block;
+    font-family: var(--font-mono);
+    font-size: 1.75rem;
+    font-weight: 800;
+    color: var(--color-accent);
+    line-height: 1;
+    margin-bottom: 0.4rem;
+  }
+
+  .brick-label {
+    display: block;
+    font-size: 0.8rem;
+    color: var(--color-text-muted);
+    line-height: 1.3;
+  }
+
+  @media (max-width: 640px) {
+    .live-grid {
+      grid-template-columns: repeat(2, 1fr);
+      gap: 0.75rem;
+    }
+    .live-brick { padding: 1rem 0.75rem; }
+    .brick-value { font-size: 1.5rem; }
+    .live-timestamp { margin-left: 0; width: 100%; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .live-dot.live { animation: none; }
+    .live-brick { transition: none; }
+    .live-brick:hover { transform: none; }
+  }
+</style>

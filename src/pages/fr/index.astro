@@ -2,6 +2,7 @@
 import Base from '../../layouts/Base.astro';
 import HeroTerminal from '../../components/HeroTerminal.astro';
 import StatsBar from '../../components/StatsBar.astro';
+import LiveStats from '../../components/LiveStats.astro';
 import Card from '../../components/Card.astro';
 import SectionHeading from '../../components/SectionHeading.astro';
 
@@ -100,6 +101,22 @@ const cards = [
       { number: '20+', label: 'services HTTPS' },
       { number: '0€', label: 'cloud externe' },
     ]} />
+
+    <!-- Infrastructure live -->
+    <LiveStats
+      heading="Infrastructure live"
+      no_data_label="en attente de synchronisation"
+      bricks={[
+        { key: 'services_up', label: 'Services UP', fallback: '--' },
+        { key: 'uptime_pct', label: 'Disponibilité', suffix: '%', fallback: '--' },
+        { key: 'forgejo_commits_30d', label: 'Commits (30j)', fallback: '--' },
+        { key: 'proxmox_nodes', label: 'Nœuds PVE', fallback: '--' },
+        { key: 'htb_flags', label: 'Flags HTB', fallback: '--' },
+        { key: 'rootme_score', label: 'Pts Root-Me', fallback: '--' },
+        { key: 'ansible_playbooks', label: 'Playbooks Ansible', fallback: '--' },
+        { key: 'services_total', label: 'Services total', fallback: '--' },
+      ]}
+    />
 
     <!-- Open source -->
     <section class="opensource reveal">
