@@ -1,0 +1,132 @@
+---
+import { assetUrl } from '../config';
+
+interface Props {
+  src: string;
+  poster?: string;
+  title?: string;
+  caption?: string;
+}
+
+const { src: rawSrc, poster: rawPoster, title = '', caption } = Astro.props;
+const src = rawSrc.startsWith('/videos/') ? assetUrl(rawSrc) : rawSrc;
+const poster = rawPoster ? (rawPoster.startsWith('/images/') ? assetUrl(rawPoster) : rawPoster) : undefined;
+---
+
+<figure class="video-figure reveal">
+  <div class="video-window">
+    <div class="video-bar">
+      <span class="video-dot"></span>
+      <span class="video-dot"></span>
+      <span class="video-dot"></span>
+      {title && <span class="video-title">{title}</span>}
+      <span class="video-live" aria-hidden="true">REC</span>
+    </div>
+    <div class="video-viewport">
+      <video
+        src={src}
+        poster={poster}
+        autoplay
+        muted
+        loop
+        playsinline
+        preload="metadata"
+      />
+    </div>
+  </div>
+  {caption && <figcaption>{caption}</figcaption>}
+</figure>
+
+<style>
+  .video-figure {
+    margin: 2rem 0;
+    max-width: 100%;
+  }
+
+  .video-window {
+    border: 1px solid var(--color-border);
+    border-radius: 8px;
+    overflow: hidden;
+    background: rgba(0, 0, 0, 0.3);
+    transition: transform 0.3s, box-shadow 0.3s;
+  }
+
+  .video-window:hover {
+    transform: scale(1.01);
+    box-shadow:
+      0 0 20px rgba(56, 189, 248, 0.15),
+      0 8px 30px rgba(0, 0, 0, 0.4);
+  }
+
+  .video-bar {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    padding: 0.5rem 0.75rem;
+    background: rgba(0, 0, 0, 0.2);
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  .video-dot {
+    width: 0.55rem;
+    height: 0.55rem;
+    border-radius: 50%;
+    background: var(--color-border);
+  }
+
+  .video-dot:nth-child(1) { background: #ef4444; }
+  .video-dot:nth-child(2) { background: #eab308; }
+  .video-dot:nth-child(3) { background: #22c55e; }
+
+  .video-title {
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    color: var(--color-text-muted);
+    margin-left: 0.5rem;
+  }
+
+  .video-live {
+    font-family: var(--font-mono);
+    font-size: 0.6rem;
+    font-weight: 700;
+    color: #ef4444;
+    margin-left: auto;
+    letter-spacing: 0.1em;
+    animation: rec-pulse 2s ease-in-out infinite;
+  }
+
+  @keyframes rec-pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.3; }
+  }
+
+  .video-viewport {
+    line-height: 0;
+  }
+
+  .video-viewport video {
+    width: 100%;
+    height: auto;
+    display: block;
+  }
+
+  figcaption {
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    color: var(--color-text-muted);
+    text-align: center;
+    margin-top: 0.75rem;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .video-window:hover {
+      transform: none;
+    }
+    .video-live {
+      animation: none;
+    }
+    .video-viewport video {
+      /* Still plays — user can pause manually */
+    }
+  }
+</style>
