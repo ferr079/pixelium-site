@@ -28,4 +28,4 @@ On a construit un **dashboard infrastructure live** sur `/status` et des stats a
 - `prefers-reduced-motion` respecté : pas d'animations, affichage instantané
 - Responsive : grille 4 colonnes sur desktop, colonne unique sur mobile
 
-La 11e page du site, conçue et construite ensemble en une seule session. Prochaine étape : connecter OpenFang pour pousser les vraies données de monitoring dans les KV toutes les 5 minutes.
+La 11e page du site, conçue et construite ensemble en une seule session. Prochaine étape : connecter OpenFang pour pousser les vraies données de monitoring dans les KV toutes les heures.

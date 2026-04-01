@@ -28,4 +28,4 @@ We built a **live infrastructure dashboard** at `/status` and animated stats on 
 - `prefers-reduced-motion` respected: no animations, instant display
 - Responsive: 4-column grid on desktop, single column on mobile
 
-The 11th page of the site, designed and built together in one session. Next step: connect OpenFang to push real monitoring data into the KV every 5 minutes.
+The 11th page of the site, designed and built together in one session. Next step: connect OpenFang to push real monitoring data into the KV every hour.
