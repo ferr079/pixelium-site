@@ -91,8 +91,12 @@ import DynNum from '../components/DynNum.astro';
               <span class="spec-value">Root cert deployed on all CTs + workstation (Fedora: <code>update-ca-trust</code>)</span>
             </div>
             <div class="spec">
+              <span class="spec-label">Monitoring</span>
+              <span class="spec-value">Automated daily check (<code>cert-check</code>) verifies TLS expiration on all services — Telegram alert if any cert expires within 14 days</span>
+            </div>
+            <div class="spec">
               <span class="spec-label">Result</span>
-              <span class="spec-value"><DynNum stat="https_services" fallback="25+" suffix="+" /> services with valid HTTPS, green padlock, zero browser warnings</span>
+              <span class="spec-value"><DynNum stat="https_services" fallback="22+" suffix="+" /> services with valid HTTPS, green padlock, zero browser warnings, zero silent expiration</span>
             </div>
           </div>
         </div>

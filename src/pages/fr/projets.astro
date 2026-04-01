@@ -3,7 +3,7 @@ import Base from '../../layouts/Base.astro';
 import DynNum from '../../components/DynNum.astro';
 ---
 
-<Base title="Projets — pixelium.win" description="12 projets en production : SSO Authentik, monitoring IA (OpenFang), pentest autonome (PentAGI), veille RSS, observabilité, sécurité en profondeur, CI/CD. Vrais ops, vrai debugging.">
+<Base title="Projets — pixelium.win" description="13 projets en production : SSO Authentik, monitoring IA (OpenFang), pentest autonome (PentAGI), veille RSS, observabilité, sécurité en profondeur, CI/CD. Vrais ops, vrai debugging.">
   <main>
     <section class="hero-mini">
       <div class="container">
@@ -66,11 +66,11 @@ import DynNum from '../../components/DynNum.astro';
           <div class="project-details">
             <div class="detail-block">
               <h4>Architecture</h4>
-              <p>OpenFang (CT 192) fait tourner un agent <code>infra-assistant</code> avec un system prompt qui contient tout le contexte infra : IPs, services, APIs, patterns de diagnostic. 3 cron jobs Guardian — health check toutes les 6h, audit sécurité quotidien à 8h, surveillance disques à 9h. Alertes Telegram uniquement si anomalie.</p>
+              <p>OpenFang (CT 192) fait tourner un agent <code>infra-assistant</code> v0.9.0 avec un system prompt qui contient tout le contexte infra : IPs, services, APIs, patterns de diagnostic. 5 cron jobs Guardian — health check toutes les 6h, audit sécurité quotidien à 8h, surveillance disques à 9h, expiration certificats TLS à 10h, backup PBS hebdomadaire lundi 00h08. Alertes Telegram uniquement si anomalie.</p>
             </div>
             <div class="detail-block">
               <h4>Le contournement shell_exec</h4>
-              <p>Le sanitizer d'OpenFang bloque les accolades <code>{}</code>, les pipes et les semicolons dans les commandes shell. Impossible d'exécuter du LogQL ou du PromQL directement. Solution : 3 wrappers CLI dédiés — <code>http-check</code> (<DynNum stat="services_total" fallback="33" /> services), <code>vm-query</code> (VictoriaMetrics), <code>pve-status</code> (Proxmox) — qui encapsulent la complexité et exposent une interface propre.</p>
+              <p>Le sanitizer d'OpenFang bloque les accolades <code>{}</code>, les pipes et les semicolons dans les commandes shell. Impossible d'exécuter du LogQL ou du PromQL directement. Solution : 7 wrappers CLI dédiés — <code>http-check</code> (<DynNum stat="services_total" fallback="33" /> services), <code>vm-query</code> (VictoriaMetrics), <code>pve-status</code> (Proxmox), <code>loki-query</code> (logs), <code>cert-check</code> (expiration TLS), <code>pbs-backup</code> (cycle backup complet), <code>headscale-monitor</code> (audit VPN) — qui encapsulent la complexité derrière des interfaces propres.</p>
             </div>
             <div class="detail-block">
               <h4>WOL pve3 — l'agent qui allume les machines</h4>
@@ -86,7 +86,7 @@ import DynNum from '../../components/DynNum.astro';
               <li>VictoriaMetrics</li>
               <li>Loki</li>
             </ul>
-            <span class="project-services">~0,05€/jour — 4 cron jobs, 2 agents, <DynNum stat="services_total" fallback="33" /> services monitorés, alertes Telegram</span>
+            <span class="project-services">~0,05€/jour — 5 cron jobs, 7 wrappers, <DynNum stat="services_total" fallback="33" /> services monitorés, alertes Telegram</span>
           </div>
         </div>
       </div>
@@ -166,6 +166,46 @@ import DynNum from '../../components/DynNum.astro';
               <li>Wazuh</li>
             </ul>
             <span class="project-services">5 outils, 30 agents Beszel, logs centralisés, SIEM</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Projet : Backup PBS autonome -->
+    <section class="project" id="pbs-backup">
+      <div class="container">
+        <div class="project-header">
+          <span class="project-tag">Backup & Résilience</span>
+          <h2>Backup PBS autonome — L'agent qui sauvegarde tout</h2>
+        </div>
+        <div class="project-body">
+          <div class="project-intro">
+            <p>Un pipeline de backup entièrement autonome : l'agent OpenFang réveille un serveur endormi, sauvegarde 33 conteneurs, purge les anciens snapshots, et l'éteint. Aucune intervention humaine. Chaque lundi à 00h08.</p>
+          </div>
+          <div class="project-details">
+            <div class="detail-block">
+              <h4>L'orchestration en 9 étapes</h4>
+              <p>Un seul script (<code>pbs-backup</code>) exécute le cycle complet : Wake-on-LAN pve3 &rarr; attente API PBS (CT 150) &rarr; activation storage sur pve1+pve2 via API Proxmox &rarr; <code>vzdump --all</code> sur les deux nœuds en parallèle &rarr; attente fin &rarr; prune des anciens backups (<code>keep-weekly=5</code>) &rarr; garbage collection &rarr; désactivation storage &rarr; shutdown pve3. Si une étape échoue, le cleanup s'exécute automatiquement.</p>
+            </div>
+            <div class="detail-block">
+              <h4>Résultats du test live</h4>
+              <p>Premier test réel : pve1 (10 CTs, 29 Go) sauvegardé en 4 minutes, pve2 (23 CTs, 173 Go) en 13 minutes. Cycle complet incluant prune, GC et shutdown : <strong>14 minutes</strong>. La déduplication PBS a compressé 202 Go de données live en 100 Go sur disque. Rétention : 5 snapshots hebdomadaires sur un disque de 1 To — 15% d'utilisation.</p>
+            </div>
+            <div class="detail-block">
+              <h4>Pourquoi pve3 dort</h4>
+              <p>pve3 (i7-2600K) héberge uniquement PBS et le cold storage — aucune raison de tourner 24/7. Le storage <code>pbs-pve3</code> est désactivé par défaut sur pve1/pve2, éliminant le polling. L'agent contrôle tout le cycle d'alimentation : réveil, travail, sommeil. Infrastructure éco-responsable.</p>
+            </div>
+          </div>
+          <div class="project-stack">
+            <ul class="tags">
+              <li>PBS</li>
+              <li>WOL</li>
+              <li>vzdump</li>
+              <li>OpenFang</li>
+              <li>zstd</li>
+              <li>Proxmox API</li>
+            </ul>
+            <span class="project-services">33 CTs, cycle 14 min, keep-weekly=5, 100 Go dédupliqués, zéro intervention humaine</span>
           </div>
         </div>
       </div>

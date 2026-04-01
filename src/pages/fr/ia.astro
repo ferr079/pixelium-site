@@ -85,7 +85,7 @@ import DynNum from '../../components/DynNum.astro';
           <h2>APIs en production</h2>
         </div>
         <div class="layer-content">
-          <p>Pour les agents qui tournent 24/7 — OpenFang, PentAGI — on utilise des APIs externes ou l'inférence locale. Le choix du modèle par service est délibéré : ratio perf/coût, latence, et fiabilité. <strong>Coût total IA en production : ~$1.50/mois.</strong> Stéphane ne jette pas d'argent dans l'IA — il l'optimise comme n'importe quelle autre brique de l'infra.</p>
+          <p>Pour les agents qui tournent 24/7 — OpenFang (v0.9.0, 5 crons Guardian, 7 wrappers), PentAGI, veille-rss — on utilise des APIs externes ou l'inférence locale. Le choix du modèle par service est délibéré : ratio perf/coût, latence, et fiabilité. <strong>Coût total IA en production : ~$1.50/mois.</strong> Stéphane ne jette pas d'argent dans l'IA — il l'optimise comme n'importe quelle autre brique de l'infra.</p>
           <div class="api-grid">
 
             <div class="api-card claude-card">
@@ -134,6 +134,29 @@ import DynNum from '../../components/DynNum.astro';
               </div>
             </div>
 
+          </div>
+
+          <div class="agents-deployed">
+            <h4>Agents en production</h4>
+            <div class="agent-list">
+              <div class="agent-item">
+                <span class="agent-dot running"></span>
+                <strong>OpenFang Guardian</strong> — Agent AIOps (CT 192). 5 cron jobs automatisés : santé, sécurité, disques, certificats TLS, backup PBS. 7 wrappers CLI. Surveille <DynNum stat="services_total" fallback="33" /> services, réveille des serveurs via WOL, sauvegarde 33 CTs en autonomie.
+              </div>
+              <div class="agent-item">
+                <span class="agent-dot running"></span>
+                <strong>veille-rss</strong> — Agent veille technologique. Digest Telegram quotidien à 16h : récupère 24h d'articles depuis FreshRSS (15 flux, 5 catégories), score et synthétise via LLM. Veille techno automatisée à effort zéro.
+              </div>
+              <div class="agent-item">
+                <span class="agent-dot running"></span>
+                <strong>PentAGI</strong> — Pentest autonome (CT 198). Orchestre nmap, nikto, curl dans des conteneurs Kali sandboxés. A trouvé une vraie faille CrowdSec LAPI au premier scan.
+              </div>
+              <div class="agent-item">
+                <span class="agent-dot observing"></span>
+                <strong>IronClaw</strong> — Assistant chat (CT 190). MiniMax M2.7, interface web. En observation — évaluation comme remplaçant de l'ancien agent OpenClaw.
+              </div>
+            </div>
+          </div>
           </div>
         </div>
       </div>
@@ -616,4 +639,13 @@ import DynNum from '../../components/DynNum.astro';
     .crosslink-block p { font-size: 0.82rem; }
     .layer-header { flex-wrap: wrap; gap: 0.5rem; }
   }
+
+  /* Agents deployed */
+  .agents-deployed { margin-top: 2rem; padding-top: 1.5rem; border-top: 1px solid var(--color-border); }
+  .agents-deployed h4 { font-family: var(--font-mono); font-size: 0.9rem; color: var(--color-accent); margin-bottom: 1rem; letter-spacing: 0.05em; text-transform: uppercase; }
+  .agent-list { display: flex; flex-direction: column; gap: 0.75rem; }
+  .agent-item { display: flex; align-items: baseline; gap: 0.6rem; font-size: 0.88rem; color: var(--color-text-muted); line-height: 1.5; }
+  .agent-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; margin-top: 0.35rem; }
+  .agent-dot.running { background: #22c55e; }
+  .agent-dot.observing { background: #eab308; }
 </style>

@@ -149,7 +149,7 @@ const monitoringSlides = [
           <h2>Building blocks & technical choices</h2>
         </div>
         <div class="layer-content">
-          <p>Every building block was chosen for a specific reason. No trendy stacks — tools that solve concrete problems. Here are the 10 core technologies, why they are here, and what they replaced.</p>
+          <p>Every building block was chosen for a specific reason. No trendy stacks — tools that solve concrete problems. Here are the 12 core technologies, why they are here, and what they replaced.</p>
 
           <div class="tech-grid">
 
@@ -173,7 +173,7 @@ const monitoringSlides = [
               <div class="tech-card-body">
                 <p class="tech-why"><strong>Why:</strong> Dynamic YAML config hot-reloaded — I add an HTTPS service by dropping a file in <code>conf.d/</code>, no restart needed. Native ACME with step-ca.</p>
                 <p class="tech-alt"><span class="alt-label">Rejected:</span> Nginx Proxy Manager (UI-only, not IaC), Caddy (fewer reverse proxy integrations)</p>
-                <p class="tech-result"><span class="result-label">Result:</span> <DynNum stat="https_services" fallback="25+" suffix="+" /> HTTPS services, auto-renewed certificates, zero manual intervention</p>
+                <p class="tech-result"><span class="result-label">Result:</span> <DynNum stat="https_services" fallback="22+" suffix="+" /> HTTPS services, auto-renewed certificates, zero manual intervention</p>
               </div>
             </div>
 
@@ -221,7 +221,7 @@ const monitoringSlides = [
               <div class="tech-card-body">
                 <p class="tech-why"><strong>Why:</strong> Agentless — SSH is enough, no daemon to install on 30+ CTs. Idempotent — I rerun a playbook without risk. Semaphore adds a web UI for one-click launches.</p>
                 <p class="tech-alt"><span class="alt-label">Rejected:</span> Puppet/Chef (agents on every host), Terraform (provisioning, not config management)</p>
-                <p class="tech-result"><span class="result-label">Result:</span> <DynNum stat="ansible_playbooks" fallback="14" /> operational playbooks, Wazuh/Beszel agent deployment in 1 command</p>
+                <p class="tech-result"><span class="result-label">Result:</span> <DynNum stat="ansible_playbooks" fallback="13" /> operational playbooks, Wazuh/Beszel agent deployment in 1 command</p>
               </div>
             </div>
 
@@ -446,7 +446,7 @@ const monitoringSlides = [
               <img src="https://cdn.simpleicons.org/rust/DEA584" alt="" class="tech-logo" loading="lazy" aria-hidden="true" onerror="this.style.display='none'" />
               <h4>OpenFang agent — the glue</h4>
             </div>
-            <p>An autonomous Rust agent (CT 192) connected to the full stack. 3 Guardian cron jobs: health check every 6h, daily security audit, disk monitoring. It queries VictoriaMetrics, Loki, Proxmox, and alerts via Telegram only on anomalies. It can even wake pve3 via Wake-on-LAN to trigger a PBS backup.</p>
+            <p>An autonomous Rust agent (CT 192) connected to the full stack. 5 Guardian cron jobs: health check every 6h, daily security audit, disk monitoring, TLS certificate expiration check, and weekly PBS backup (WOL pve3 → backup 33 CTs → prune → shutdown). It queries VictoriaMetrics, Loki, Proxmox, and alerts via Telegram only on anomalies.</p>
           </div>
         </div>
       </div>

@@ -3,7 +3,7 @@ import Base from '../layouts/Base.astro';
 import DynNum from '../components/DynNum.astro';
 ---
 
-<Base title="Projects — pixelium.win" description="12 production projects: SSO Authentik, AI-powered monitoring (OpenFang), autonomous pentest (PentAGI), RSS intelligence, observability stack, defense-in-depth, CI/CD. Real ops, real debugging.">
+<Base title="Projects — pixelium.win" description="13 production projects: SSO Authentik, AI-powered monitoring (OpenFang), autonomous pentest (PentAGI), RSS intelligence, observability stack, defense-in-depth, CI/CD. Real ops, real debugging.">
   <main>
     <section class="hero-mini">
       <div class="container">
@@ -66,11 +66,11 @@ import DynNum from '../components/DynNum.astro';
           <div class="project-details">
             <div class="detail-block">
               <h4>Architecture</h4>
-              <p>OpenFang (CT 192) runs an <code>infra-assistant</code> agent with a system prompt containing the full infra context: IPs, services, APIs, diagnostic patterns. 3 Guardian cron jobs — health check every 6h, daily security audit at 8am, disk monitoring at 9am. Telegram alerts only on anomalies.</p>
+              <p>OpenFang (CT 192) runs an <code>infra-assistant</code> v0.9.0 agent with a system prompt containing the full infra context: IPs, services, APIs, diagnostic patterns. 5 Guardian cron jobs — health check every 6h, daily security audit at 8am, disk monitoring at 9am, TLS cert expiration at 10am, weekly PBS backup Monday 00:08. Telegram alerts only on anomalies.</p>
             </div>
             <div class="detail-block">
               <h4>The shell_exec workaround</h4>
-              <p>OpenFang's sanitizer blocks braces <code>{}</code>, pipes, and semicolons in shell commands. Running LogQL or PromQL directly was impossible. Solution: 3 dedicated CLI wrappers — <code>http-check</code> (<DynNum stat="services_total" fallback="33" /> services), <code>vm-query</code> (VictoriaMetrics), <code>pve-status</code> (Proxmox) — encapsulating the complexity behind a clean interface.</p>
+              <p>OpenFang's sanitizer blocks braces <code>{}</code>, pipes, and semicolons in shell commands. Running LogQL or PromQL directly was impossible. Solution: 7 dedicated CLI wrappers — <code>http-check</code> (<DynNum stat="services_total" fallback="33" /> services), <code>vm-query</code> (VictoriaMetrics), <code>pve-status</code> (Proxmox), <code>loki-query</code> (logs), <code>cert-check</code> (TLS expiration), <code>pbs-backup</code> (full backup cycle), <code>headscale-monitor</code> (VPN audit) — encapsulating the complexity behind clean interfaces.</p>
             </div>
             <div class="detail-block">
               <h4>WOL pve3 — the agent that powers on machines</h4>
@@ -86,7 +86,7 @@ import DynNum from '../components/DynNum.astro';
               <li>VictoriaMetrics</li>
               <li>Loki</li>
             </ul>
-            <span class="project-services">~$0.05/day — 4 cron jobs, 2 agents, <DynNum stat="services_total" fallback="33" /> monitored services, Telegram alerts</span>
+            <span class="project-services">~$0.05/day — 5 cron jobs, 7 wrappers, <DynNum stat="services_total" fallback="33" /> monitored services, Telegram alerts</span>
           </div>
         </div>
       </div>
@@ -166,6 +166,46 @@ import DynNum from '../components/DynNum.astro';
               <li>Wazuh</li>
             </ul>
             <span class="project-services">5 tools, 30 Beszel agents, centralized logs, SIEM</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Project: Autonomous PBS backup -->
+    <section class="project" id="pbs-backup">
+      <div class="container">
+        <div class="project-header">
+          <span class="project-tag">Backup & Resilience</span>
+          <h2>Autonomous PBS backup — The agent that backs up everything</h2>
+        </div>
+        <div class="project-body">
+          <div class="project-intro">
+            <p>A fully autonomous backup pipeline: the OpenFang agent wakes a sleeping server, backs up 33 containers, prunes old snapshots, and shuts it down. No human intervention. Every Monday at 00:08.</p>
+          </div>
+          <div class="project-details">
+            <div class="detail-block">
+              <h4>The 9-step orchestration</h4>
+              <p>A single script (<code>pbs-backup</code>) executes the full cycle: Wake-on-LAN pve3 &rarr; wait for PBS API (CT 150) &rarr; enable storage on pve1+pve2 via Proxmox API &rarr; <code>vzdump --all</code> on both nodes in parallel &rarr; wait for completion &rarr; prune old backups (<code>keep-weekly=5</code>) &rarr; garbage collection &rarr; disable storage &rarr; shutdown pve3. If any step fails, cleanup runs automatically.</p>
+            </div>
+            <div class="detail-block">
+              <h4>Live test results</h4>
+              <p>First real test: pve1 (10 CTs, 29 GB) backed up in 4 minutes, pve2 (23 CTs, 173 GB) in 13 minutes. Full cycle including prune, GC, and shutdown: <strong>14 minutes</strong>. PBS deduplication compressed 202 GB of live data into 100 GB on disk. Retention: 5 weekly snapshots on a 1 TB drive — 15% utilization.</p>
+            </div>
+            <div class="detail-block">
+              <h4>Why pve3 sleeps</h4>
+              <p>pve3 (i7-2600K) hosts only PBS and cold storage — no reason to run 24/7. The storage <code>pbs-pve3</code> is disabled by default on pve1/pve2, eliminating polling overhead. The agent controls the entire power cycle: wake, work, sleep. Energy-conscious infrastructure.</p>
+            </div>
+          </div>
+          <div class="project-stack">
+            <ul class="tags">
+              <li>PBS</li>
+              <li>WOL</li>
+              <li>vzdump</li>
+              <li>OpenFang</li>
+              <li>zstd</li>
+              <li>Proxmox API</li>
+            </ul>
+            <span class="project-services">33 CTs, 14 min cycle, keep-weekly=5, 100 GB deduplicated, zero human intervention</span>
           </div>
         </div>
       </div>
