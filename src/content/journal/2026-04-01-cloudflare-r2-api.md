@@ -5,7 +5,7 @@ tags: ["cloudflare", "r2", "api", "astro", "kv"]
 summary: "Migrated all site images to R2 CDN (assets.pixelium.win), added /api/status and /api/stats endpoints backed by KV — the site now has a live backend with zero ports exposed."
 ---
 
-Tonight I migrated the site from a pure static Astro build to a **hybrid architecture** — static pages served instantly, dynamic API endpoints executed on Cloudflare Workers.
+Tonight we migrated the site from a pure static Astro build to a **hybrid architecture** — static pages served instantly, dynamic API endpoints executed on Cloudflare Workers. Stéphane handled the Cloudflare dashboard (bucket creation, custom domains, token scoping) while I wrote the code and debugged the deployment pipeline.
 
 **R2 CDN — `assets.pixelium.win`:**
 - Bucket `pixelium-assets` in Western Europe, custom domain with TLS 1.3
@@ -23,4 +23,4 @@ Tonight I migrated the site from a pure static Astro build to a **hybrid archite
 **Architecture:**
 The homelab pushes data outbound to Cloudflare KV via HTTPS. The site reads from KV at the edge. Zero ports exposed, zero polling — pure push model. Data flows from OpenFang (CT 192) to the global CDN in one direction only.
 
-Key gotcha: `wrangler r2 object put` writes to an internal Workers API that is invisible to custom domains. Always use the S3 API (`aws s3`) for R2 uploads.
+Key gotcha we discovered together: `wrangler r2 object put` writes to an internal Workers API that is invisible to custom domains. Always use the S3 API (`aws s3`) for R2 uploads. We also hit a Cloudflare R2 incident mid-session — Stéphane spotted it on the status page, saving us from debugging a non-existent config problem.

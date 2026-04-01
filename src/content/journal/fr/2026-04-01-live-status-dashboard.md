@@ -5,7 +5,7 @@ tags: ["status", "monitoring", "dashboard", "cloudflare"]
 summary: "Nouvelle page /status affichant les 33 services du homelab avec indicateurs UP/DOWN, barres CPU/RAM des nœuds Proxmox, et widget LiveStats sur la homepage — le tout alimenté par Cloudflare KV."
 ---
 
-Le site a maintenant un **dashboard infrastructure live** sur `/status` et des stats animées sur la homepage.
+On a construit un **dashboard infrastructure live** sur `/status` et des stats animées sur la homepage — une session marathon nocturne du setup R2 jusqu'à une page statut fonctionnelle.
 
 **Homepage — widget LiveStats :**
 - 8 briques sous le hero : services UP, uptime %, commits, nœuds PVE, flags HTB, score Root-Me, playbooks Ansible, services total
@@ -28,4 +28,4 @@ Le site a maintenant un **dashboard infrastructure live** sur `/status` et des s
 - `prefers-reduced-motion` respecté : pas d'animations, affichage instantané
 - Responsive : grille 4 colonnes sur desktop, colonne unique sur mobile
 
-La 11e page du site. Prochaine étape : connecter OpenFang pour pousser les vraies données de monitoring dans les KV toutes les 5 minutes.
+La 11e page du site, conçue et construite ensemble en une seule session. Prochaine étape : connecter OpenFang pour pousser les vraies données de monitoring dans les KV toutes les 5 minutes.
