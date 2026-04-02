@@ -1,0 +1,63 @@
+---
+import Video from './Video.astro';
+
+interface Props {
+  src: string;
+  title: string;
+  description: string;
+  icon?: string;
+  caption?: string;
+}
+
+const { src, title, description, icon, caption } = Astro.props;
+---
+
+<div class="tape-block">
+  <div class="tape-header">
+    {icon && <img src={icon} alt="" class="tape-logo" loading="lazy" aria-hidden="true" onerror="this.style.display='none'" />}
+    <h4>{title}</h4>
+  </div>
+  <p class="tape-desc">{description}</p>
+  <Video src={src} title={title} caption={caption} />
+</div>
+
+<style>
+  .tape-block {
+    margin: 1.5rem 0;
+    padding: 1.25rem;
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: 8px;
+    transition: border-color 0.3s;
+  }
+
+  .tape-block:hover {
+    border-color: var(--color-accent);
+  }
+
+  .tape-header {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .tape-header h4 {
+    font-family: var(--font-mono);
+    font-size: 0.95rem;
+    color: var(--color-text);
+    margin: 0;
+  }
+
+  .tape-logo {
+    width: 1.25rem;
+    height: 1.25rem;
+  }
+
+  .tape-desc {
+    font-size: 0.85rem;
+    color: var(--color-text-muted);
+    line-height: 1.5;
+    margin-bottom: 1rem;
+  }
+</style>

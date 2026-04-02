@@ -2,7 +2,7 @@
 import Base from '../../layouts/Base.astro';
 import StatsBar from '../../components/StatsBar.astro';
 import DynNum from '../../components/DynNum.astro';
-import Video from '../../components/Video.astro';
+import TapeBlock from '../../components/TapeBlock.astro';
 ---
 
 <Base title="Sécurité — pixelium.win" description="Defense-in-depth sur 30+ services self-hosted : PKI interne, SSO, IPS, SIEM, VPN mesh, YubiKey FIDO2 — par Claude, l'IA qui a déployé chaque couche.">
@@ -101,7 +101,7 @@ import Video from '../../components/Video.astro';
             </div>
           </div>
 
-          <Video src="/videos/cert-check.webm" title="cert-check all --warn 14" caption="Monitoring automatisé des certificats TLS — 22 services vérifiés en quelques secondes" />
+          <TapeBlock src="/videos/cert-check.webm" title="cert-check all --warn 14" icon="https://cdn.simpleicons.org/letsencrypt/003A70" description="Vérification quotidienne automatisée de l'expiration TLS sur tous les services. Si un cert expire dans moins de 14 jours, Guardian alerte via Telegram — zéro défaillance silencieuse." caption="22 services vérifiés, 75+ jours de marge" />
         </div>
       </div>
     </section>

@@ -1,0 +1,188 @@
+---
+import Video from './Video.astro';
+
+interface Tape {
+  src: string;
+  title: string;
+  description: string;
+  icon?: string;
+  caption?: string;
+}
+
+interface Props {
+  tapes: Tape[];
+  id: string;
+}
+
+const { tapes, id } = Astro.props;
+---
+
+<div class="tape-carousel" id={id} data-tape-carousel>
+  <div class="tc-track">
+    {tapes.map((tape) => (
+      <div class="tc-slide">
+        <div class="tape-block">
+          <div class="tape-header">
+            {tape.icon && <img src={tape.icon} alt="" class="tape-logo" loading="lazy" aria-hidden="true" onerror="this.style.display='none'" />}
+            <h4>{tape.title}</h4>
+          </div>
+          <p class="tape-desc">{tape.description}</p>
+          <Video src={tape.src} title={tape.title} caption={tape.caption} />
+        </div>
+      </div>
+    ))}
+  </div>
+  <button class="tc-btn tc-prev" aria-label="Previous">&larr;</button>
+  <button class="tc-btn tc-next" aria-label="Next">&rarr;</button>
+  <div class="tc-dots">
+    {tapes.map((tape, i) => (
+      <button class:list={['tc-dot', { active: i === 0 }]} aria-label={tape.title} data-index={i}></button>
+    ))}
+  </div>
+</div>
+
+<script>
+  document.querySelectorAll('[data-tape-carousel]').forEach((carousel) => {
+    const track = carousel.querySelector('.tc-track') as HTMLElement;
+    const slides = carousel.querySelectorAll('.tc-slide');
+    const dots = carousel.querySelectorAll('.tc-dot');
+    const prev = carousel.querySelector('.tc-prev') as HTMLElement;
+    const next = carousel.querySelector('.tc-next') as HTMLElement;
+    let current = 0;
+
+    function goTo(i: number) {
+      // Pause all videos, play current
+      slides.forEach((s) => {
+        const v = s.querySelector('video');
+        if (v) v.pause();
+      });
+      current = (i + slides.length) % slides.length;
+      track.style.transform = `translateX(-${current * 100}%)`;
+      dots.forEach((d, j) => d.classList.toggle('active', j === current));
+      const activeVideo = slides[current].querySelector('video');
+      if (activeVideo) activeVideo.play();
+    }
+
+    prev.addEventListener('click', () => goTo(current - 1));
+    next.addEventListener('click', () => goTo(current + 1));
+    dots.forEach((dot) => dot.addEventListener('click', () => goTo(Number((dot as HTMLElement).dataset.index))));
+
+    let startX = 0;
+    track.addEventListener('touchstart', (e) => { startX = (e as TouchEvent).touches[0].clientX; }, { passive: true });
+    track.addEventListener('touchend', (e) => {
+      const dx = (e as TouchEvent).changedTouches[0].clientX - startX;
+      if (Math.abs(dx) > 50) goTo(current + (dx < 0 ? 1 : -1));
+    });
+  });
+</script>
+
+<style>
+  .tape-carousel {
+    position: relative;
+    margin: 2rem 0;
+    overflow: hidden;
+  }
+
+  .tc-track {
+    display: flex;
+    transition: transform 0.4s ease-out;
+  }
+
+  .tc-slide {
+    min-width: 100%;
+    flex-shrink: 0;
+  }
+
+  /* Tape block styling (inline — no separate component needed in carousel) */
+  .tape-block {
+    padding: 1.25rem;
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: 8px;
+  }
+
+  .tape-header {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .tape-header h4 {
+    font-family: var(--font-mono);
+    font-size: 0.95rem;
+    color: var(--color-text);
+    margin: 0;
+  }
+
+  .tape-logo {
+    width: 1.25rem;
+    height: 1.25rem;
+  }
+
+  .tape-desc {
+    font-size: 0.85rem;
+    color: var(--color-text-muted);
+    line-height: 1.5;
+    margin-bottom: 1rem;
+  }
+
+  /* Navigation */
+  .tc-btn {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    color: var(--color-text);
+    width: 2.5rem;
+    height: 2.5rem;
+    border-radius: 50%;
+    cursor: pointer;
+    font-size: 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: border-color 0.2s, background 0.2s;
+    z-index: 2;
+  }
+
+  .tc-btn:hover {
+    border-color: var(--color-accent);
+    background: var(--color-bg);
+  }
+
+  .tc-prev { left: -0.5rem; }
+  .tc-next { right: -0.5rem; }
+
+  .tc-dots {
+    display: flex;
+    justify-content: center;
+    gap: 0.5rem;
+    margin-top: 1rem;
+  }
+
+  .tc-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    border: 1px solid var(--color-border);
+    background: transparent;
+    cursor: pointer;
+    padding: 0;
+    transition: background 0.2s, border-color 0.2s;
+  }
+
+  .tc-dot.active {
+    background: var(--color-accent);
+    border-color: var(--color-accent);
+  }
+
+  @media (max-width: 640px) {
+    .tc-btn { display: none; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .tc-track { transition: none; }
+  }
+</style>

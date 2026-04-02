@@ -5,7 +5,8 @@ import Carousel from '../../components/Carousel.astro';
 import StatsBar from '../../components/StatsBar.astro';
 import SectionHeading from '../../components/SectionHeading.astro';
 import DynNum from '../../components/DynNum.astro';
-import Video from '../../components/Video.astro';
+import TapeBlock from '../../components/TapeBlock.astro';
+import TapeCarousel from '../../components/TapeCarousel.astro';
 
 const serviceSlides = [
   { src: '/images/services/traefik.webp', alt: 'Dashboard Traefik — routers, services, middlewares', title: 'Traefik — Reverse Proxy' },
@@ -139,7 +140,7 @@ const monitoringSlides = [
 
           <Screenshot src="/images/neofetch-terre2.webp" alt="Neofetch terre2 — Bluefin, Ryzen 7 5800X, RTX 3090" title="terre2 — neofetch" caption="Workstation terre2 — Bluefin immutable, RTX 3090 24 Go, 3 écrans" />
 
-          <Video src="/videos/pve-status.webm" title="pve-status all" caption="Vue cluster — 33 CTs sur 3 nœuds, utilisation CPU/RAM, distribution conteneurs" />
+          <TapeBlock src="/videos/pve-status.webm" title="pve-status all" icon="https://cdn.simpleicons.org/proxmox/E57000" description="Une commande pour voir tout le cluster — CPU, RAM, uptime, et chaque conteneur sur les 3 nœuds. C'est ce wrapper que Guardian exécute toutes les 6 heures." caption="Vue cluster — 33 CTs sur 3 nœuds" />
         </div>
       </div>
     </section>
@@ -444,18 +445,19 @@ const monitoringSlides = [
 
           <Screenshot src="/images/homepage-dashboard.webp" alt="Dashboard Homepage — 30+ services" title="homepage.pixelium.internal" caption="Homepage — 13 widgets actifs, 3 sections, monitoring temps réel" />
 
-          <Video src="/videos/http-check.webm" title="http-check all" caption="Health check Guardian — 22 services vérifiés en quelques secondes" />
-
-          <Video src="/videos/loki-query.webm" title="loki-query headscale 24h" caption="Requêtes logs centralisées — VPN Headscale + DNS via Loki/LogQL" />
-
           <div class="agent-block">
             <div class="agent-header">
               <img src="https://cdn.simpleicons.org/rust/DEA584" alt="" class="tech-logo" loading="lazy" aria-hidden="true" onerror="this.style.display='none'" />
               <h4>Agent OpenFang — le liant</h4>
             </div>
             <p>Un agent Rust autonome (CT 192) connecté à toute la stack. 5 cron jobs Guardian : health check toutes les 6h, audit sécurité quotidien, surveillance disques, vérification expiration certificats TLS, et backup PBS hebdomadaire (WOL pve3 → backup 33 CTs → prune → shutdown). Il interroge VictoriaMetrics, Loki, Proxmox, et alerte via Telegram uniquement si anomalie.</p>
-            <Video src="/videos/pbs-backup.webm" title="pbs-backup --dry-run" caption="Backup autonome : WOL → vzdump 33 CTs → prune → GC → shutdown — 14 minutes, zéro intervention" />
           </div>
+
+          <TapeCarousel id="guardian-tapes" tapes={[
+            { src: '/videos/http-check.webm', title: 'http-check all', icon: 'https://cdn.simpleicons.org/curl/073551', description: 'Health check sur tous les services HTTPS — la première chose que Guardian exécute toutes les 6 heures. Chaque service reçoit une vraie requête HTTP.', caption: '22 services vérifiés en quelques secondes' },
+            { src: '/videos/loki-query.webm', title: 'loki-query headscale 24h', icon: 'https://cdn.simpleicons.org/grafana/F46800', description: 'Requêtes logs centralisées via Loki. L\'agent vérifie les connexions VPN Headscale, l\'activité DNS, les erreurs Traefik — le tout en une commande.', caption: 'Logs Headscale + DNS via LogQL' },
+            { src: '/videos/pbs-backup.webm', title: 'pbs-backup --dry-run', icon: 'https://cdn.simpleicons.org/proxmox/E57000', description: 'Backup autonome en 9 étapes : Wake-on-LAN pve3, vzdump 33 CTs sur les deux nœuds, prune, garbage collection, shutdown. Tourne chaque lundi à 00h08.', caption: 'Cycle complet : WOL → backup → prune → shutdown' },
+          ]} />
         </div>
       </div>
     </section>
