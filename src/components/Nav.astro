@@ -18,9 +18,10 @@ const navLinks = [
   { path: '/ia', label: t('nav.ia') },
   { path: '/infrastructure', label: t('nav.infra') },
   { path: '/status', label: t('nav.status') },
-  { path: '/journal', label: t('nav.journal') },
   { path: '/about', label: t('nav.about') },
 ];
+
+const blogUrl = 'https://blog.pixelium.win';
 ---
 
 <nav class="site-nav">
@@ -56,6 +57,7 @@ const navLinks = [
         const isActive = currentPath === localizedPath || currentPath === localizedPath + '/';
         return <a href={href} class:list={[{ active: isActive }]}>{label}</a>;
       })}
+      <a href={blogUrl} class="nav-blog-link" target="_blank" rel="noopener">Blog <span class="nav-arrow">&nearr;</span></a>
     </div>
   </div>
 </nav>
@@ -163,6 +165,23 @@ const navLinks = [
     color: var(--color-accent);
     border-bottom-color: var(--color-accent);
   }
+
+  .nav-blog-link {
+    font-family: var(--font-mono) !important;
+    font-size: 0.8rem !important;
+    padding: 0.2rem 0.6rem !important;
+    border: 1px solid var(--color-border) !important;
+    border-radius: 4px !important;
+    color: var(--color-accent) !important;
+    transition: all 0.2s !important;
+  }
+
+  .nav-blog-link:hover {
+    border-color: var(--color-accent) !important;
+    background: rgba(56, 189, 248, 0.08);
+  }
+
+  .nav-arrow { font-size: 0.65rem; }
 
   /* Hamburger button — hidden on desktop */
   .nav-toggle {
