@@ -5,8 +5,6 @@ import Carousel from '../components/Carousel.astro';
 import StatsBar from '../components/StatsBar.astro';
 import SectionHeading from '../components/SectionHeading.astro';
 import DynNum from '../components/DynNum.astro';
-import TapeBlock from '../components/TapeBlock.astro';
-import TapeCarousel from '../components/TapeCarousel.astro';
 
 const serviceSlides = [
   { src: '/images/services/traefik.webp', alt: 'Traefik dashboard — routers, services, middlewares', title: 'Traefik — Reverse Proxy' },
@@ -140,8 +138,6 @@ const monitoringSlides = [
           </div>
 
           <Screenshot src="/images/neofetch-terre2.webp" alt="Neofetch terre2 — Bluefin, Ryzen 7 5800X, RTX 3090" title="terre2 — neofetch" caption="Workstation terre2 — immutable Bluefin, RTX 3090 24 GB, 3 monitors" />
-
-          <TapeBlock src="/videos/pve-status.webm" title="pve-status all" icon="https://cdn.simpleicons.org/proxmox/E57000" description="One command to see the entire cluster — CPU, RAM, uptime, and every container across all 3 nodes. This wrapper is what Guardian runs every 6 hours." caption="Cluster overview — 33 CTs across 3 nodes" />
         </div>
       </div>
     </section>
@@ -443,12 +439,6 @@ const monitoringSlides = [
           </div>
 
           <Carousel slides={monitoringSlides} id="monitoring-carousel" />
-
-          <TapeCarousel id="guardian-tapes" tapes={[
-            { src: '/videos/http-check.webm', title: 'http-check all', icon: 'https://cdn.simpleicons.org/curl/073551', description: 'Health check across all HTTPS services — the first thing Guardian runs every 6 hours. Each service is pinged with a real HTTP request.', caption: '22 services verified in seconds' },
-            { src: '/videos/loki-query.webm', title: 'loki-query headscale 24h', icon: 'https://cdn.simpleicons.org/grafana/F46800', description: 'Centralized log querying via Loki. The agent checks Headscale VPN connections, DNS activity, and Traefik errors — all from one command.', caption: 'Headscale + DNS logs via LogQL' },
-            { src: '/videos/pbs-backup.webm', title: 'pbs-backup --dry-run', icon: 'https://cdn.simpleicons.org/proxmox/E57000', description: '9-step autonomous backup: Wake-on-LAN pve3, vzdump 33 CTs on both nodes, prune, garbage collection, shutdown. Runs every Monday at 00:08.', caption: 'Full cycle: WOL → backup → prune → shutdown' },
-          ]} />
         </div>
       </div>
     </section>
