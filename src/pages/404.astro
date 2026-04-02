@@ -6,6 +6,14 @@ import Base from '../layouts/Base.astro';
   <main>
     <section class="notfound">
       <div class="container">
+        <div class="notfound-logo" aria-hidden="true">
+          <svg viewBox="0 0 32 32" class="logo-svg">
+            <rect x="4" y="4" width="11" height="11" rx="2" fill="#38bdf8" opacity="0.9"/>
+            <rect x="17" y="4" width="11" height="11" rx="2" fill="#38bdf8" opacity="0.5"/>
+            <rect x="4" y="17" width="11" height="11" rx="2" fill="#38bdf8" opacity="0.5"/>
+            <rect x="17" y="17" width="11" height="11" rx="2" fill="#38bdf8" opacity="0.15"/>
+          </svg>
+        </div>
         <pre class="notfound-ascii" aria-hidden="true">
   ██╗  ██╗ ██████╗ ██╗  ██╗
   ██║  ██║██╔═══██╗██║  ██║
@@ -32,6 +40,21 @@ import Base from '../layouts/Base.astro';
     align-items: center;
     justify-content: center;
     text-align: center;
+  }
+
+  .notfound-logo {
+    margin-bottom: 1.5rem;
+  }
+
+  .logo-svg {
+    width: 5rem;
+    height: 5rem;
+    animation: logo-pulse 3s ease-in-out infinite;
+  }
+
+  @keyframes logo-pulse {
+    0%, 100% { opacity: 0.6; filter: drop-shadow(0 0 8px rgba(56, 189, 248, 0.3)); }
+    50% { opacity: 1; filter: drop-shadow(0 0 20px rgba(56, 189, 248, 0.5)); }
   }
 
   .notfound-ascii {
