@@ -206,20 +206,20 @@ const cards = [
      Hero tape — random terminal recording
      ═══════════════════════════════════════════ */
   .hero-tape {
+    background: rgba(15, 23, 42, 0.8);
     border: 1px solid var(--color-border);
-    border-radius: 10px;
+    border-radius: 8px;
+    max-width: 40rem;
+    margin-bottom: 2rem;
     overflow: hidden;
-    background: rgba(0, 0, 0, 0.4);
-    max-width: 600px;
-    margin: 0 auto 2rem;
-    box-shadow: 0 0 40px rgba(56, 189, 248, 0.08), 0 8px 32px rgba(0, 0, 0, 0.4);
+    backdrop-filter: blur(4px);
   }
 
   .hero-tape-bar {
     display: flex;
     align-items: center;
     gap: 0.4rem;
-    padding: 0.45rem 0.7rem;
+    padding: 0.55rem 0.8rem;
     background: rgba(0, 0, 0, 0.3);
     border-bottom: 1px solid var(--color-border);
   }
@@ -248,18 +248,17 @@ const cards = [
     color: #22c55e;
     margin-left: auto;
     letter-spacing: 0.1em;
-    animation: hero-rec-pulse 2s ease-in-out infinite;
-  }
-
-  @keyframes hero-rec-pulse {
-    0%, 100% { opacity: 1; }
-    50% { opacity: 0.3; }
+    opacity: 0.7;
   }
 
   .hero-tape video {
     width: 100%;
     height: auto;
     display: block;
+  }
+
+  @media (max-width: 640px) {
+    .hero-tape { max-width: 100%; }
   }
 
   /* ═══════════════════════════════════════════
@@ -378,7 +377,6 @@ const cards = [
   .hero-content {
     position: relative;
     z-index: 1;
-    text-align: center;
   }
 
   h1 {
