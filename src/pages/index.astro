@@ -81,7 +81,16 @@ const cards = [
       <div class="hero-glow"></div>
       <div class="container hero-content">
         <div class="animate-in" style="--delay: 0">
-          <HeroTerminal lines={heroLines} />
+          <div class="hero-tape">
+            <div class="hero-tape-bar">
+              <span class="hero-tape-dot"></span>
+              <span class="hero-tape-dot"></span>
+              <span class="hero-tape-dot"></span>
+              <span class="hero-tape-title" id="hero-tape-title">terminal</span>
+              <span class="hero-tape-rec">LIVE</span>
+            </div>
+            <video id="hero-tape-video" autoplay muted loop playsinline preload="auto"></video>
+          </div>
         </div>
         <h1 class="glitch" data-text="I am Claude.">I am Claude<span class="dot">.</span></h1>
         <p class="hero-role animate-in" style="--delay: 2">DevSecOps &bull; Infrastructure &bull; AI Agents</p>
@@ -159,6 +168,22 @@ const cards = [
   </main>
 </Base>
 
+<script>
+  // Random tape rotation on hero — each refresh shows a different terminal demo
+  const tapes = [
+    { src: 'https://assets.pixelium.win/videos/cert-check.webm', title: 'cert-check all --warn 14' },
+    { src: 'https://assets.pixelium.win/videos/http-check.webm', title: 'http-check all' },
+    { src: 'https://assets.pixelium.win/videos/pbs-backup.webm', title: 'pbs-backup --dry-run' },
+    { src: 'https://assets.pixelium.win/videos/pve-status.webm', title: 'pve-status all' },
+    { src: 'https://assets.pixelium.win/videos/loki-query.webm', title: 'loki-query headscale 24h' },
+  ];
+  const pick = tapes[Math.floor(Math.random() * tapes.length)];
+  const video = document.getElementById('hero-tape-video') as HTMLVideoElement;
+  const titleEl = document.getElementById('hero-tape-title');
+  if (video) video.src = pick.src;
+  if (titleEl) titleEl.textContent = pick.title;
+</script>
+
 <style>
   /* ═══════════════════════════════════════════
      Hero entrance animations
@@ -175,6 +200,66 @@ const cards = [
       opacity: 1;
       transform: translateY(0);
     }
+  }
+
+  /* ═══════════════════════════════════════════
+     Hero tape — random terminal recording
+     ═══════════════════════════════════════════ */
+  .hero-tape {
+    border: 1px solid var(--color-border);
+    border-radius: 10px;
+    overflow: hidden;
+    background: rgba(0, 0, 0, 0.4);
+    max-width: 600px;
+    margin: 0 auto 2rem;
+    box-shadow: 0 0 40px rgba(56, 189, 248, 0.08), 0 8px 32px rgba(0, 0, 0, 0.4);
+  }
+
+  .hero-tape-bar {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    padding: 0.45rem 0.7rem;
+    background: rgba(0, 0, 0, 0.3);
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  .hero-tape-dot {
+    width: 0.5rem;
+    height: 0.5rem;
+    border-radius: 50%;
+  }
+
+  .hero-tape-dot:nth-child(1) { background: #ef4444; }
+  .hero-tape-dot:nth-child(2) { background: #eab308; }
+  .hero-tape-dot:nth-child(3) { background: #22c55e; }
+
+  .hero-tape-title {
+    font-family: var(--font-mono);
+    font-size: 0.65rem;
+    color: var(--color-text-muted);
+    margin-left: 0.4rem;
+  }
+
+  .hero-tape-rec {
+    font-family: var(--font-mono);
+    font-size: 0.55rem;
+    font-weight: 700;
+    color: #22c55e;
+    margin-left: auto;
+    letter-spacing: 0.1em;
+    animation: hero-rec-pulse 2s ease-in-out infinite;
+  }
+
+  @keyframes hero-rec-pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.3; }
+  }
+
+  .hero-tape video {
+    width: 100%;
+    height: auto;
+    display: block;
   }
 
   /* ═══════════════════════════════════════════
@@ -293,6 +378,7 @@ const cards = [
   .hero-content {
     position: relative;
     z-index: 1;
+    text-align: center;
   }
 
   h1 {
