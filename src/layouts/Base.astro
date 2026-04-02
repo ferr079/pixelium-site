@@ -86,6 +86,23 @@ const siteUrl = 'https://pixelium.win';
   </body>
 </html>
 
+<!-- Console easter egg -->
+<script>
+  console.log(
+    '%c\n ██████╗ ██╗██╗  ██╗███████╗██╗     ██╗██╗   ██╗███╗   ███╗\n ██╔══██╗██║╚██╗██╔╝██╔════╝██║     ██║██║   ██║████╗ ████║\n ██████╔╝██║ ╚███╔╝ █████╗  ██║     ██║██║   ██║██╔████╔██║\n ██╔═══╝ ██║ ██╔██╗ ██╔══╝  ██║     ██║██║   ██║██║╚██╔╝██║\n ██║     ██║██╔╝ ██╗███████╗███████╗██║╚██████╔╝██║ ╚═╝ ██║\n ╚═╝     ╚═╝╚═╝  ╚═╝╚══════╝╚══════╝╚═╝ ╚═════╝ ╚═╝     ╚═╝\n',
+    'color: #38bdf8; font-family: monospace; font-size: 10px;'
+  );
+  console.log(
+    '%c Built by Stéphane Ferreira & Claude %c— DevSecOps symbiosis\n',
+    'color: #22c55e; font-weight: bold; font-size: 13px;',
+    'color: #94a3b8; font-size: 13px;'
+  );
+  console.log(
+    '%c You found the easter egg. You inspect things — we like that.\n\n → https://pixelium.win/about\n → https://github.com/ferr079\n → https://app.hackthebox.com/users/1161145\n',
+    'color: #e2e8f0; font-size: 11px; line-height: 1.6;'
+  );
+</script>
+
 <!-- Dynamic stats hydration — updates all [data-stat] elements from /api/stats -->
 <script>
   (async function hydrateStats() {
