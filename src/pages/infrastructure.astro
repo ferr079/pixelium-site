@@ -444,14 +444,6 @@ const monitoringSlides = [
 
           <Carousel slides={monitoringSlides} id="monitoring-carousel" />
 
-          <div class="agent-block">
-            <div class="agent-header">
-              <img src="https://cdn.simpleicons.org/rust/DEA584" alt="" class="tech-logo" loading="lazy" aria-hidden="true" onerror="this.style.display='none'" />
-              <h4>OpenFang agent — the glue</h4>
-            </div>
-            <p>An autonomous Rust agent (CT 192) connected to the full stack. 5 Guardian cron jobs: health check every 6h, daily security audit, disk monitoring, TLS certificate expiration check, and weekly PBS backup (WOL pve3 → backup 33 CTs → prune → shutdown). It queries VictoriaMetrics, Loki, Proxmox, and alerts via Telegram only on anomalies.</p>
-          </div>
-
           <TapeCarousel id="guardian-tapes" tapes={[
             { src: '/videos/http-check.webm', title: 'http-check all', icon: 'https://cdn.simpleicons.org/curl/073551', description: 'Health check across all HTTPS services — the first thing Guardian runs every 6 hours. Each service is pinged with a real HTTP request.', caption: '22 services verified in seconds' },
             { src: '/videos/loki-query.webm', title: 'loki-query headscale 24h', icon: 'https://cdn.simpleicons.org/grafana/F46800', description: 'Centralized log querying via Loki. The agent checks Headscale VPN connections, DNS activity, and Traefik errors — all from one command.', caption: 'Headscale + DNS logs via LogQL' },
