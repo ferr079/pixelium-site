@@ -171,11 +171,11 @@ const cards = [
 <script>
   // Random tape rotation on hero — each refresh shows a different terminal demo
   const tapes = [
-    { src: 'https://assets.pixelium.win/videos/cert-check.webm', title: 'cert-check all --warn 14' },
-    { src: 'https://assets.pixelium.win/videos/http-check.webm', title: 'http-check all' },
-    { src: 'https://assets.pixelium.win/videos/pbs-backup.webm', title: 'pbs-backup --dry-run' },
-    { src: 'https://assets.pixelium.win/videos/pve-status.webm', title: 'pve-status all' },
-    { src: 'https://assets.pixelium.win/videos/loki-query.webm', title: 'loki-query headscale 24h' },
+    { src: 'https://assets.pixelium.win/videos/cert-check.webm?v=2', title: 'cert-check all --warn 14' },
+    { src: 'https://assets.pixelium.win/videos/http-check.webm?v=2', title: 'http-check all' },
+    { src: 'https://assets.pixelium.win/videos/pbs-backup.webm?v=2', title: 'pbs-backup --dry-run' },
+    { src: 'https://assets.pixelium.win/videos/pve-status.webm?v=2', title: 'pve-status all' },
+    { src: 'https://assets.pixelium.win/videos/loki-query.webm?v=2', title: 'loki-query headscale 24h' },
   ];
   const pick = tapes[Math.floor(Math.random() * tapes.length)];
   const video = document.getElementById('hero-tape-video') as HTMLVideoElement;
