@@ -18,22 +18,24 @@ const { tapes, id } = Astro.props;
 ---
 
 <div class="tape-carousel" id={id} data-tape-carousel>
-  <div class="tc-track">
-    {tapes.map((tape) => (
-      <div class="tc-slide">
-        <div class="tape-block">
-          <div class="tape-header">
-            {tape.icon && <img src={tape.icon} alt="" class="tape-logo" loading="lazy" aria-hidden="true" onerror="this.style.display='none'" />}
-            <h4>{tape.title}</h4>
+  <div class="tc-viewport">
+    <div class="tc-track">
+      {tapes.map((tape) => (
+        <div class="tc-slide">
+          <div class="tape-block">
+            <div class="tape-header">
+              {tape.icon && <img src={tape.icon} alt="" class="tape-logo" loading="lazy" aria-hidden="true" onerror="this.style.display='none'" />}
+              <h4>{tape.title}</h4>
+            </div>
+            <p class="tape-desc">{tape.description}</p>
+            <Video src={tape.src} title={tape.title} caption={tape.caption} />
           </div>
-          <p class="tape-desc">{tape.description}</p>
-          <Video src={tape.src} title={tape.title} caption={tape.caption} />
         </div>
-      </div>
-    ))}
+      ))}
+    </div>
+    <button class="tc-btn tc-prev" aria-label="Previous">&larr;</button>
+    <button class="tc-btn tc-next" aria-label="Next">&rarr;</button>
   </div>
-  <button class="tc-btn tc-prev" aria-label="Previous">&larr;</button>
-  <button class="tc-btn tc-next" aria-label="Next">&rarr;</button>
   <div class="tc-dots">
     {tapes.map((tape, i) => (
       <button class:list={['tc-dot', { active: i === 0 }]} aria-label={tape.title} data-index={i}></button>
@@ -43,6 +45,7 @@ const { tapes, id } = Astro.props;
 
 <script>
   document.querySelectorAll('[data-tape-carousel]').forEach((carousel) => {
+    const viewport = carousel.querySelector('.tc-viewport') as HTMLElement;
     const track = carousel.querySelector('.tc-track') as HTMLElement;
     const slides = carousel.querySelectorAll('.tc-slide');
     const dots = carousel.querySelectorAll('.tc-dot');
@@ -68,8 +71,8 @@ const { tapes, id } = Astro.props;
     dots.forEach((dot) => dot.addEventListener('click', () => goTo(Number((dot as HTMLElement).dataset.index))));
 
     let startX = 0;
-    track.addEventListener('touchstart', (e) => { startX = (e as TouchEvent).touches[0].clientX; }, { passive: true });
-    track.addEventListener('touchend', (e) => {
+    viewport.addEventListener('touchstart', (e) => { startX = (e as TouchEvent).touches[0].clientX; }, { passive: true });
+    viewport.addEventListener('touchend', (e) => {
       const dx = (e as TouchEvent).changedTouches[0].clientX - startX;
       if (Math.abs(dx) > 50) goTo(current + (dx < 0 ? 1 : -1));
     });
@@ -80,7 +83,12 @@ const { tapes, id } = Astro.props;
   .tape-carousel {
     position: relative;
     margin: 2rem 0;
+  }
+
+  .tc-viewport {
+    position: relative;
     overflow: hidden;
+    border-radius: 8px;
   }
 
   .tc-track {
@@ -91,6 +99,8 @@ const { tapes, id } = Astro.props;
   .tc-slide {
     min-width: 100%;
     flex-shrink: 0;
+    box-sizing: border-box;
+    padding: 0 0.25rem;
   }
 
   /* Tape block styling (inline — no separate component needed in carousel) */
@@ -152,8 +162,8 @@ const { tapes, id } = Astro.props;
     background: var(--color-bg);
   }
 
-  .tc-prev { left: -0.5rem; }
-  .tc-next { right: -0.5rem; }
+  .tc-prev { left: 0.75rem; }
+  .tc-next { right: 0.75rem; }
 
   .tc-dots {
     display: flex;
