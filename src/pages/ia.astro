@@ -138,22 +138,46 @@ import DynNum from '../components/DynNum.astro';
 
           <div class="agents-deployed">
             <h4>Agents in production</h4>
-            <div class="agent-list">
-              <div class="agent-item">
-                <span class="agent-dot running"></span>
-                <strong>OpenFang Guardian</strong> — AIOps agent (CT 192). 5 automated cron jobs: health, security, disk, TLS certs, PBS backup. 7 CLI wrappers. Monitors <DynNum stat="services_total" fallback="33" /> services, wakes servers via WOL, backs up 33 CTs autonomously.
+            <div class="agents-grid">
+              <div class="agent-card">
+                <div class="agent-card-header">
+                  <span class="agent-badge running">running</span>
+                  <span class="agent-ct">CT 192</span>
+                </div>
+                <h5>OpenFang Guardian</h5>
+                <p class="agent-role">AIOps & Infrastructure</p>
+                <p class="agent-desc">5 automated cron jobs, 7 CLI wrappers. Monitors <DynNum stat="services_total" fallback="33" /> services, wakes servers via WOL, backs up 33 CTs autonomously every Monday.</p>
+                <div class="agent-tags"><span>Rust</span><span>MiniMax M2.7</span><span>Telegram</span><span>~$0.05/day</span></div>
               </div>
-              <div class="agent-item">
-                <span class="agent-dot running"></span>
-                <strong>veille-rss</strong> — RSS intelligence agent. Daily 4pm Telegram digest: fetches 24h of articles from FreshRSS (15 feeds, 5 categories), scores and synthesizes via LLM. Automated tech watch at zero effort.
+              <div class="agent-card">
+                <div class="agent-card-header">
+                  <span class="agent-badge running">running</span>
+                  <span class="agent-ct">CT 192</span>
+                </div>
+                <h5>veille-rss</h5>
+                <p class="agent-role">Tech Intelligence</p>
+                <p class="agent-desc">Daily 4pm Telegram digest. Fetches 24h articles from FreshRSS (15 feeds, 5 categories), scores and synthesizes via LLM. Zero-effort tech watch.</p>
+                <div class="agent-tags"><span>FreshRSS</span><span>GReader API</span><span>Telegram</span></div>
               </div>
-              <div class="agent-item">
-                <span class="agent-dot running"></span>
-                <strong>PentAGI</strong> — Autonomous pentest (CT 198). Orchestrates nmap, nikto, curl in sandboxed Kali containers. Found a real CrowdSec LAPI misconfiguration on first scan.
+              <div class="agent-card">
+                <div class="agent-card-header">
+                  <span class="agent-badge running">running</span>
+                  <span class="agent-ct">CT 198</span>
+                </div>
+                <h5>PentAGI</h5>
+                <p class="agent-role">Autonomous Pentest</p>
+                <p class="agent-desc">Orchestrates nmap, nikto, curl in sandboxed Kali containers powered by local LLM. Found a CrowdSec LAPI misconfiguration on first scan.</p>
+                <div class="agent-tags"><span>Kali</span><span>Docker</span><span>Ollama</span><span>RTX 3090</span></div>
               </div>
-              <div class="agent-item">
-                <span class="agent-dot observing"></span>
-                <strong>IronClaw</strong> — Chat assistant (CT 190). MiniMax M2.7, web UI. In observation — evaluating as a replacement for the previous OpenClaw agent.
+              <div class="agent-card">
+                <div class="agent-card-header">
+                  <span class="agent-badge observing">observing</span>
+                  <span class="agent-ct">CT 190</span>
+                </div>
+                <h5>IronClaw</h5>
+                <p class="agent-role">Chat Assistant</p>
+                <p class="agent-desc">MiniMax M2.7, web UI. In evaluation as a replacement for the previous OpenClaw agent. General-purpose assistant for quick queries.</p>
+                <div class="agent-tags"><span>MiniMax M2.7</span><span>Web UI</span></div>
               </div>
             </div>
           </div>
@@ -643,9 +667,18 @@ import DynNum from '../components/DynNum.astro';
   /* Agents deployed */
   .agents-deployed { margin-top: 2rem; padding-top: 1.5rem; border-top: 1px solid var(--color-border); }
   .agents-deployed h4 { font-family: var(--font-mono); font-size: 0.9rem; color: var(--color-accent); margin-bottom: 1rem; letter-spacing: 0.05em; text-transform: uppercase; }
-  .agent-list { display: flex; flex-direction: column; gap: 0.75rem; }
-  .agent-item { display: flex; align-items: baseline; gap: 0.6rem; font-size: 0.88rem; color: var(--color-text-muted); line-height: 1.5; }
-  .agent-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; margin-top: 0.35rem; }
-  .agent-dot.running { background: #22c55e; }
-  .agent-dot.observing { background: #eab308; }
+  .agents-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1rem; }
+  .agent-card { background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 8px; padding: 1.25rem; transition: border-color 0.3s, transform 0.3s; }
+  .agent-card:hover { border-color: var(--color-accent); transform: translateY(-2px); }
+  .agent-card-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 0.5rem; }
+  .agent-badge { font-family: var(--font-mono); font-size: 0.65rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; padding: 0.2rem 0.5rem; border-radius: 4px; }
+  .agent-badge.running { background: rgba(34, 197, 94, 0.15); color: #22c55e; }
+  .agent-badge.observing { background: rgba(234, 179, 8, 0.15); color: #eab308; }
+  .agent-ct { font-family: var(--font-mono); font-size: 0.7rem; color: var(--color-text-muted); }
+  .agent-card h5 { font-size: 1.05rem; margin: 0 0 0.15rem; color: var(--color-text); }
+  .agent-role { font-family: var(--font-mono); font-size: 0.75rem; color: var(--color-accent); margin-bottom: 0.6rem; }
+  .agent-desc { font-size: 0.85rem; color: var(--color-text-muted); line-height: 1.5; margin-bottom: 0.75rem; }
+  .agent-tags { display: flex; flex-wrap: wrap; gap: 0.35rem; }
+  .agent-tags span { font-family: var(--font-mono); font-size: 0.7rem; background: var(--color-bg); color: var(--color-accent); padding: 0.15rem 0.5rem; border-radius: 4px; border: 1px solid var(--color-border); }
+  @media (max-width: 640px) { .agents-grid { grid-template-columns: 1fr; } }
 </style>
