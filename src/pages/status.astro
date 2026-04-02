@@ -1,6 +1,5 @@
 ---
 import Base from '../layouts/Base.astro';
-import SectionHeading from '../components/SectionHeading.astro';
 ---
 
 <Base title="Status — pixelium.win" description="Live infrastructure status: 30+ services, 3 Proxmox nodes, real-time monitoring. Data pushed from homelab by OpenFang every hour.">
@@ -43,7 +42,6 @@ import SectionHeading from '../components/SectionHeading.astro';
     <!-- Uptime history 30d -->
     <section class="layer reveal" data-lang="en">
       <div class="container">
-        <SectionHeading id="uptime" title="Uptime — 30 days" />
         <div id="uptime-loading" class="uptime-placeholder">
           <div class="uptime-skeleton"></div>
           <p class="uptime-wait">Loading history...</p>
@@ -65,7 +63,6 @@ import SectionHeading from '../components/SectionHeading.astro';
     <!-- Services -->
     <section class="layer reveal">
       <div class="container">
-        <SectionHeading id="services" title="Services" />
         <div id="services-loading" class="status-loading">
           <div class="skeleton-grid">
             {Array.from({ length: 12 }).map(() => (
@@ -81,7 +78,6 @@ import SectionHeading from '../components/SectionHeading.astro';
     <!-- Nodes -->
     <section class="layer reveal">
       <div class="container">
-        <SectionHeading id="nodes" title="Proxmox Nodes" />
         <div id="nodes-loading" class="status-loading">
           <div class="skeleton-grid skeleton-nodes">
             {Array.from({ length: 3 }).map(() => (
