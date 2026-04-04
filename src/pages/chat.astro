@@ -1,0 +1,426 @@
+---
+import Base from '../layouts/Base.astro';
+
+const codePrompt = `<span class="c-cmt">// What powers this chatbot</span>
+<span class="c-cmt">// Model: Cloudflare Workers AI</span>
+<span class="c-cmt">// Llama 3.1 8B Instruct — streaming SSE</span>
+<span class="c-cmt">// Rate limited: 10 msg/min, 50/h per IP</span>
+
+<span class="c-kw">const</span> SYSTEM_PROMPT = <span class="c-str">\`
+  You are Claude, the AI that co-built
+  pixelium.win with Stéphane Ferreira.
+
+  Your job: answer questions about his
+  skills, experience, and projects.
+
+  Every fact is verifiable — git history,
+  ops journal, or public profiles.
+
+  30+ services in production
+  3 Proxmox nodes, 0\u20AC cloud
+  HTB Hacker #967 global
+  14 Ansible playbooks, 34 hosts
+  Internal PKI, SSO, IPS, SIEM, VPN
+  ...
+\`</span>;
+
+<span class="c-kw">const</span> stream = <span class="c-kw">await</span> env.AI.run(
+  <span class="c-str">'@cf/meta/llama-3.1-8b-instruct'</span>,
+  {
+    messages: [
+      { role: <span class="c-str">'system'</span>, content: SYSTEM_PROMPT },
+      ...history,
+    ],
+    stream: <span class="c-kw">true</span>,
+    max_tokens: <span class="c-num">512</span>,
+  }
+);`;
+
+const codeConfig = `<span class="c-cmt"># wrangler.toml — Cloudflare Workers config</span>
+
+name = <span class="c-str">"pixelium-site"</span>
+compatibility_date = <span class="c-str">"2025-01-01"</span>
+
+[ai]
+binding = <span class="c-str">"AI"</span>
+
+[[kv_namespaces]]
+binding = <span class="c-str">"SESSION"</span>    <span class="c-cmt"># rate limiting</span>
+
+[[kv_namespaces]]
+binding = <span class="c-str">"STATUS_KV"</span>  <span class="c-cmt"># live infra status</span>
+
+[[kv_namespaces]]
+binding = <span class="c-str">"STATS_KV"</span>   <span class="c-cmt"># portfolio stats</span>
+
+[[d1_databases]]
+binding = <span class="c-str">"HISTORY_DB"</span> <span class="c-cmt"># uptime history</span>`;
+
+const codeEndpoint = `<span class="c-cmt">// POST /api/chat — unified AI endpoint</span>
+
+<span class="c-kw">export const</span> POST: APIRoute = <span class="c-kw">async</span> ({ request }) =&gt; {
+  <span class="c-cmt">// Rate limit per IP via KV</span>
+  <span class="c-kw">const</span> ip = request.headers.get(<span class="c-str">'cf-connecting-ip'</span>);
+  <span class="c-kw">const</span> rl = <span class="c-kw">await</span> checkRateLimit(ip);
+  <span class="c-kw">if</span> (!rl.allowed) <span class="c-kw">return</span> <span class="c-num">429</span>;
+
+  <span class="c-cmt">// mode: "cv" | "sysop" | "challenge"</span>
+  <span class="c-kw">const</span> { mode, messages } = <span class="c-kw">await</span> request.json();
+  <span class="c-kw">const</span> prompt = PROMPTS[mode];
+
+  <span class="c-cmt">// Stream response via SSE</span>
+  <span class="c-kw">const</span> stream = <span class="c-kw">await</span> env.AI.run(MODEL, {
+    messages: [
+      { role: <span class="c-str">'system'</span>, content: prompt },
+      ...messages.slice(-<span class="c-num">10</span>),
+    ],
+    stream: <span class="c-kw">true</span>,
+  });
+
+  <span class="c-kw">return new</span> Response(stream, {
+    headers: { <span class="c-str">'Content-Type'</span>: <span class="c-str">'text/event-stream'</span> }
+  });
+};`;
+---
+
+<Base title="Chat with Claude — pixelium.win" description="Ask Claude anything about Stéphane Ferreira's profile, skills, and infrastructure. AI-powered conversational CV." hideNav={false}>
+  <main class="chat-page">
+    <div class="chat-split">
+      <!-- Left: chat interface -->
+      <div class="chat-panel">
+        <div class="chat-header">
+          <div class="chat-identity">
+            <span class="chat-name">Claude</span>
+            <span class="chat-badge">Workers AI</span>
+          </div>
+          <span class="chat-sub">Conversational CV — ask me anything about Stéphane</span>
+        </div>
+        <div id="chat-messages">
+          <div class="msg msg-ai">Hi! I'm Claude — I built this site and infrastructure with Stéphane. Ask me anything about his skills, experience, or projects. I answer with facts, not fluff.</div>
+        </div>
+        <form id="chat-form">
+          <input id="chat-input" type="text" placeholder="e.g. What's his security experience?" maxlength="2000" autocomplete="off" />
+          <button type="submit" id="chat-send" aria-label="Send">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+          </button>
+        </form>
+      </div>
+
+      <!-- Right: code/config panel -->
+      <div class="code-panel">
+        <div class="code-header">
+          <button class="code-tab active" data-tab="prompt">system prompt</button>
+          <button class="code-tab" data-tab="config">wrangler.toml</button>
+          <button class="code-tab" data-tab="endpoint">endpoint</button>
+        </div>
+        <pre id="tab-prompt" class="code-block" set:html={codePrompt} />
+        <pre id="tab-config" class="code-block" style="display:none" set:html={codeConfig} />
+        <pre id="tab-endpoint" class="code-block" style="display:none" set:html={codeEndpoint} />
+      </div>
+    </div>
+
+    <!-- Cross-pollination -->
+    <div class="cross-link">
+      <a href="/bbs">Looking for something different? Try the WOPR terminal → /bbs</a>
+    </div>
+  </main>
+</Base>
+
+<script>
+  const messagesEl = document.getElementById('chat-messages')!;
+  const form = document.getElementById('chat-form')!;
+  const input = document.getElementById('chat-input')! as HTMLInputElement;
+
+  const history: { role: string; content: string }[] = [];
+  let isStreaming = false;
+
+  // Tab switching — toggle visibility of pre-rendered blocks
+  const tabs = document.querySelectorAll('.code-tab');
+  const panes = ['tab-prompt', 'tab-config', 'tab-endpoint'].map(id => document.getElementById(id)!);
+
+  tabs.forEach(tab => {
+    tab.addEventListener('click', () => {
+      tabs.forEach(t => t.classList.remove('active'));
+      tab.classList.add('active');
+      const target = 'tab-' + ((tab as HTMLElement).dataset.tab || 'prompt');
+      panes.forEach(p => { p.style.display = p.id === target ? 'block' : 'none'; });
+    });
+  });
+
+  // Chat
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const text = input.value.trim();
+    if (!text || isStreaming) return;
+
+    appendMsg(text, 'user');
+    history.push({ role: 'user', content: text });
+    input.value = '';
+    isStreaming = true;
+    input.disabled = true;
+
+    const aiEl = appendMsg('', 'ai');
+
+    try {
+      const res = await fetch('/api/chat', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ mode: 'cv', messages: history }),
+      });
+
+      if (res.status === 429) {
+        aiEl.textContent = 'Rate limited — please wait a moment.';
+        isStreaming = false;
+        input.disabled = false;
+        return;
+      }
+
+      if (!res.ok) throw new Error();
+
+      const reader = res.body!.getReader();
+      const decoder = new TextDecoder();
+      let fullResponse = '';
+
+      while (true) {
+        const { done, value } = await reader.read();
+        if (done) break;
+        const chunk = decoder.decode(value, { stream: true });
+        const lines = chunk.split('\n');
+        for (const line of lines) {
+          if (line.startsWith('data: ') && line !== 'data: [DONE]') {
+            try {
+              const json = JSON.parse(line.slice(6));
+              if (json.response) {
+                fullResponse += json.response;
+                aiEl.textContent = fullResponse;
+                messagesEl.scrollTop = messagesEl.scrollHeight;
+              }
+            } catch {}
+          }
+        }
+      }
+      history.push({ role: 'assistant', content: fullResponse });
+    } catch {
+      aiEl.textContent = 'Error — try again.';
+    }
+
+    isStreaming = false;
+    input.disabled = false;
+    input.focus();
+  });
+
+  function appendMsg(text: string, role: string) {
+    const div = document.createElement('div');
+    div.className = `msg msg-${role === 'user' ? 'user' : 'ai'}`;
+    div.textContent = text;
+    messagesEl.appendChild(div);
+    messagesEl.scrollTop = messagesEl.scrollHeight;
+    return div;
+  }
+</script>
+
+<style>
+  .chat-page {
+    padding: 2rem 0 3rem;
+  }
+
+  .chat-split {
+    max-width: var(--max-width);
+    margin: 0 auto;
+    padding: 0 1.5rem;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.5rem;
+    height: calc(100vh - 10rem);
+    min-height: 30rem;
+  }
+
+  .chat-panel {
+    display: flex;
+    flex-direction: column;
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: 8px;
+    overflow: hidden;
+  }
+
+  .chat-header {
+    padding: 0.8rem 1rem;
+    border-bottom: 1px solid var(--color-border);
+    background: var(--color-bg);
+  }
+
+  .chat-identity {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-bottom: 0.2rem;
+  }
+
+  .chat-name {
+    font-family: var(--font-mono);
+    font-size: 0.9rem;
+    font-weight: 700;
+  }
+
+  .chat-badge {
+    font-family: var(--font-mono);
+    font-size: 0.55rem;
+    background: var(--color-accent);
+    color: var(--color-bg);
+    padding: 0.1rem 0.4rem;
+    border-radius: 3px;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+  }
+
+  .chat-sub {
+    font-size: 0.7rem;
+    color: var(--color-text-muted);
+  }
+
+  #chat-messages {
+    flex: 1;
+    overflow-y: auto;
+    padding: 0.75rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .msg {
+    font-size: 0.82rem;
+    line-height: 1.55;
+    padding: 0.6rem 0.85rem;
+    border-radius: 8px;
+    max-width: 90%;
+    word-wrap: break-word;
+  }
+
+  .msg-user {
+    background: rgba(56, 189, 248, 0.1);
+    border: 1px solid rgba(56, 189, 248, 0.2);
+    color: var(--color-text);
+    align-self: flex-end;
+  }
+
+  .msg-ai {
+    background: var(--color-bg);
+    border: 1px solid var(--color-border);
+    color: var(--color-text-muted);
+    align-self: flex-start;
+  }
+
+  #chat-form {
+    display: flex;
+    border-top: 1px solid var(--color-border);
+    background: var(--color-bg);
+  }
+
+  #chat-input {
+    flex: 1;
+    background: transparent;
+    border: none;
+    color: var(--color-text);
+    font-family: var(--font-mono);
+    font-size: 0.8rem;
+    padding: 0.75rem 0.85rem;
+    outline: none;
+  }
+
+  #chat-input::placeholder { color: var(--color-text-muted); opacity: 0.5; }
+  #chat-input:disabled { opacity: 0.4; }
+
+  #chat-send {
+    background: transparent;
+    border: none;
+    color: var(--color-accent);
+    cursor: pointer;
+    padding: 0.75rem;
+    transition: color 0.2s;
+  }
+
+  #chat-send:hover { color: var(--color-accent-hover); }
+
+  /* Code panel */
+  .code-panel {
+    display: flex;
+    flex-direction: column;
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: 8px;
+    overflow: hidden;
+  }
+
+  .code-header {
+    display: flex;
+    border-bottom: 1px solid var(--color-border);
+    background: var(--color-bg);
+  }
+
+  .code-tab {
+    padding: 0.55rem 0.9rem;
+    font-family: var(--font-mono);
+    font-size: 0.65rem;
+    color: var(--color-text-muted);
+    cursor: pointer;
+    border: none;
+    border-right: 1px solid var(--color-border);
+    background: transparent;
+    transition: color 0.2s, background 0.2s;
+  }
+
+  .code-tab:hover { color: var(--color-text); }
+  .code-tab.active { color: var(--color-accent); background: var(--color-surface); }
+
+  .code-block {
+    flex: 1;
+    overflow-y: auto;
+    padding: 1rem;
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    line-height: 1.6;
+    color: var(--color-text);
+    margin: 0;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+  }
+
+  .c-cmt { color: #6b7280; }
+  .c-kw { color: #c084fc; }
+  .c-str { color: #34d399; }
+  .c-num { color: #fbbf24; }
+
+  #chat-messages::-webkit-scrollbar,
+  .code-block::-webkit-scrollbar { width: 4px; }
+  #chat-messages::-webkit-scrollbar-track,
+  .code-block::-webkit-scrollbar-track { background: transparent; }
+  #chat-messages::-webkit-scrollbar-thumb,
+  .code-block::-webkit-scrollbar-thumb { background: var(--color-border); border-radius: 2px; }
+
+  .cross-link {
+    max-width: var(--max-width);
+    margin: 1.5rem auto 0;
+    padding: 0 1.5rem;
+    text-align: center;
+  }
+
+  .cross-link a {
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    color: var(--color-text-muted);
+    transition: color 0.2s;
+  }
+
+  .cross-link a:hover { color: var(--color-accent); }
+
+  @media (max-width: 768px) {
+    .chat-split {
+      grid-template-columns: 1fr;
+      height: auto;
+    }
+
+    .chat-panel { height: 60vh; min-height: 20rem; }
+    .code-panel { height: 20rem; }
+  }
+</style>
