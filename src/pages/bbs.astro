@@ -721,9 +721,9 @@ import Base from '../layouts/Base.astro';
 </script>
 
 <style>
-  /* Hero */
+  /* Hero — compact to maximize terminal space */
   .hero-mini {
-    padding: 3rem 0 2rem;
+    padding: 1.5rem 0 1rem;
   }
 
   .terminal-prompt {
@@ -748,9 +748,9 @@ import Base from '../layouts/Base.astro';
     font-size: 1rem;
   }
 
-  /* Terminal section */
+  /* Terminal section — fill remaining viewport */
   .terminal-section {
-    padding: 0 0 3rem;
+    padding: 0 0 1rem;
   }
 
   #monitor {
@@ -785,7 +785,10 @@ import Base from '../layouts/Base.astro';
     position: relative;
     display: flex;
     flex-direction: column;
-    height: 32rem;
+    /* Fill available space: viewport minus nav(~3.5rem) + hero(~5rem) + bezel padding + footer(~4rem) + margins */
+    height: calc(100vh - 14rem);
+    min-height: 20rem;
+    max-height: 50rem;
     padding: 0.8rem 1rem;
     overflow: hidden;
     border-radius: 6px;
@@ -882,11 +885,14 @@ import Base from '../layouts/Base.astro';
   #terminal .white { color: var(--color-text); }
 
   @media (max-width: 640px) {
-    .hero-mini { padding: 2rem 0 1rem; }
+    .hero-mini { padding: 1rem 0 0.5rem; }
     .bbs-page h1 { font-size: clamp(1.5rem, 5vw, 2.5rem); }
+    .subtitle { font-size: 0.85rem; }
 
     #crt {
-      height: 28rem;
+      height: calc(100vh - 12rem);
+      min-height: 16rem;
+      max-height: none;
       padding: 0.5rem 0.6rem;
     }
 
