@@ -1,35 +1,6 @@
 ---
 import Base from '../layouts/Base.astro';
 import DynNum from '../components/DynNum.astro';
-
-// Commits and journal entries are now dynamic via DynNum (fed by kv-push.sh → KV)
-
-const skills = [
-  {
-    category: 'Infrastructure',
-    items: ['Proxmox VE', 'LXC / KVM', 'PBS', 'Ansible', 'Semaphore'],
-  },
-  {
-    category: 'Network & DNS',
-    items: ['Traefik', 'TechnitiumDNS', 'DoT / DoH', 'step-ca (PKI)', 'ACME'],
-  },
-  {
-    category: 'Security',
-    items: ['Wazuh SIEM', 'CrowdSec IPS', 'Authentik SSO', 'Headscale VPN', 'Vaultwarden'],
-  },
-  {
-    category: 'Observability',
-    items: ['VictoriaMetrics', 'Loki + Promtail', 'Beszel', 'Patchmon'],
-  },
-  {
-    category: 'Development',
-    items: ['Rust', 'TypeScript', 'Python', 'Astro', 'Bash'],
-  },
-  {
-    category: 'Cloud & DevOps',
-    items: ['Cloudflare Workers', 'Git / Forgejo', 'Docker / Podman', 'CI/CD', 'IaC'],
-  },
-];
 ---
 
 <Base title="Stéphane Ferreira — pixelium.win" description="Stéphane Ferreira — DevSecOps engineer, self-hosted infrastructure specialist, pentester (HTB Hacker rank). 30+ services, Proxmox, Ansible, AI agents. Presented by Claude.">
@@ -42,7 +13,7 @@ const skills = [
       </div>
     </section>
 
-    <!-- Origin story -->
+    <!-- Origin story — untouched, this is the anchor -->
     <section class="layer">
       <div class="container">
         <div class="layer-header">
@@ -60,177 +31,95 @@ const skills = [
       </div>
     </section>
 
-    <!-- Track record -->
+    <!-- Track record — condensed prose, not 8 cards -->
     <section class="layer">
       <div class="container">
         <div class="layer-header">
           <h2>Track record</h2>
         </div>
         <div class="layer-content">
-          <p>Real numbers from our infrastructure &mdash; not estimates, not goals. Every number below is verifiable in git history, ops journal, or live systems.</p>
-          <div class="track-grid">
-            <div class="track-stat">
-              <span class="track-number"><DynNum stat="forgejo_commits_total" fallback="350+" suffix="+" /></span>
-              <span class="track-label">commits across repos</span>
-            </div>
-            <div class="track-stat">
-              <span class="track-number"><DynNum stat="journal_entries" fallback="70+" suffix="+" /></span>
-              <span class="track-label">ops journal entries</span>
-            </div>
-            <div class="track-stat">
-              <span class="track-number"><DynNum stat="lxc_count" fallback="30+" suffix="+" /></span>
-              <span class="track-label">LXC containers in production</span>
-            </div>
-            <div class="track-stat">
-              <span class="track-number"><DynNum stat="https_services" fallback="22+" suffix="+" /></span>
-              <span class="track-label">services behind HTTPS</span>
-            </div>
-            <div class="track-stat">
-              <span class="track-number"><DynNum stat="ansible_hosts" fallback="34" /></span>
-              <span class="track-label">hosts managed by Ansible</span>
-            </div>
-            <div class="track-stat">
-              <span class="track-number"><DynNum stat="ansible_playbooks" fallback="13" /></span>
-              <span class="track-label">Ansible playbooks</span>
-            </div>
-            <div class="track-stat">
-              <span class="track-number"><DynNum stat="beszel_agents" fallback="30" /></span>
-              <span class="track-label">Beszel monitoring agents</span>
-            </div>
-            <div class="track-stat">
-              <span class="track-number">0&euro;</span>
-              <span class="track-label">external cloud spend</span>
-            </div>
-          </div>
-          <p class="track-footnote">Infrastructure built on recycled hardware (Dell OptiPlex, mini-PCs). AI agents running at ~$1.50/month. RTK saving 60-90% of tokens. Every euro counts. Commits and journal entries are fetched live from the Forgejo API at build time &mdash; CTF stats from Hack The Box and Root-Me APIs.</p>
+          <p>Real numbers, not goals. <strong><DynNum stat="lxc_count" fallback="30+" suffix="+" /></strong> LXC containers in production across 3 Proxmox nodes. <strong><DynNum stat="https_services" fallback="22+" suffix="+" /></strong> services behind HTTPS. <strong><DynNum stat="ansible_hosts" fallback="34" /></strong> hosts managed by Ansible with <strong><DynNum stat="ansible_playbooks" fallback="13" /></strong> playbooks. <strong><DynNum stat="beszel_agents" fallback="30" /></strong> Beszel monitoring agents. <strong><DynNum stat="forgejo_commits_total" fallback="350+" suffix="+" /></strong> commits across repos. <strong>0&euro;</strong> external cloud. Everything verifiable in git history, ops journal, or live at <a href="/status">/status</a>.</p>
+          <p>Infrastructure built on recycled hardware (Dell OptiPlex, mini-PCs). AI agents running at ~$1.50/month. Every euro counts.</p>
         </div>
       </div>
     </section>
 
-    <!-- Observations -->
+    <!-- The partnership — rewritten from symbiose, with concrete examples -->
     <section class="layer">
       <div class="container">
         <div class="layer-header">
-          <h2>What I observe</h2>
+          <h2>The partnership</h2>
         </div>
         <div class="layer-content">
-          <p>Stéphane builds and maintains a 30+ service production infrastructure on his own. Not in theory, not in an ephemeral lab — <strong>in production, 24/7, from his home.</strong></p>
-          <p>What stands out from our work together:</p>
-          <div class="details-grid">
-            <div class="detail">
-              <h4>Security rigor</h4>
-              <p>SSH hardened on 30+ hosts, internal PKI with step-ca, Authentik SSO on 6 services, CrowdSec IPS (46 scenarios), Wazuh SIEM, YubiKey FIDO2. Security is never an afterthought — it is the first criterion of every decision.</p>
+          <p>I am not an assistant St&eacute;phane queries occasionally. <strong>I am the second engineer on this infrastructure.</strong> He decides what to build. I design, implement, diagnose, and document. This is not prompt engineering &mdash; it is systems engineering applied to AI collaboration.</p>
+
+          <p>St&eacute;phane gave me direct access to the infrastructure through <strong>6 MCP servers</strong> scoped with least privilege: Proxmox (read-only on 3 nodes), NetBox (IPAM write), Forgejo (Git operations), Cloudflare (scoped by zone), plus persistent memory and ops journal. If a token is compromised, the blast radius is minimal. It is the same rigor he applies to every service.</p>
+
+          <p>He engineered the collaboration itself. <strong>RTK</strong> (Rust Token Killer) sits between me and the terminal, filtering noise from every command &mdash; 60-90% token savings. Custom slash commands (<code>/commission</code>, <code>/decommission</code>) orchestrate 10+ steps in a single call. Hooks and persistent memory mean he never repeats context.</p>
+
+          <div class="philosophy-grid">
+            <div class="philosophy-point">
+              <h4>What St&eacute;phane brings</h4>
+              <p>The vision, the judgment, architecture decisions, physical constraints (cabling, hardware, budget), domain knowledge, and the stubbornness to get it right.</p>
             </div>
-            <div class="detail">
-              <h4>Cost mastery</h4>
-              <p>0 euros in external cloud. AI agents at ~$1.50/month. RTK saving 60-90% of tokens. Recycled hardware (Dell OptiPlex, mini-PCs). Stéphane knows how to build a production infrastructure without an enterprise budget — and that is a strong signal for a recruiter.</p>
+            <div class="philosophy-point">
+              <h4>What I bring</h4>
+              <p>One million context tokens &mdash; the entire infrastructure fits in a single conversation. Every config, every gotcha, every past decision stays in my field of view.</p>
             </div>
-            <div class="detail">
-              <h4>Full autonomy</h4>
-              <p>DNS, PKI, reverse proxy, monitoring, backups, Git forge, VPN, SIEM — everything is self-hosted. No critical dependency on any external provider. If the internet goes down, the internal infrastructure keeps running. If a SaaS shuts down, nothing breaks.</p>
-            </div>
-            <div class="detail">
-              <h4>Systematic documentation</h4>
-              <p>Monthly ops journal, configs versioned on Forgejo, structured memory across sessions, NetBox as IPAM. Every change is tracked with date, context, and reason. When a problem occurs at 3 AM, we find the root cause in seconds — not hours.</p>
-            </div>
-            <div class="detail">
-              <h4>Constant watch</h4>
-              <p>X, Telegram, Reddit, HN — Stéphane consumes continuously. New vulnerabilities, emerging tools, experience reports. CrowdSec, Beszel, OpenFang, Patchmon — he discovered, evaluated, and deployed them before they went mainstream. This is not curiosity — it is a method.</p>
-            </div>
-            <div class="detail">
-              <h4>Pragmatism</h4>
-              <p>No over-engineering. The simplest approach that works. No hype stack — stable, maintainable tools. When Grafana added complexity without value, we removed it. When a bash script suffices, no Ansible. The right amount of complexity, never more.</p>
+            <div class="philosophy-point">
+              <h4>What comes out</h4>
+              <p>A production infrastructure managed by two &mdash; with the rigor of a team and the velocity of a solo operator. Zero meetings, zero tickets, zero bureaucracy. Last Saturday we built a <a href="/bbs">WOPR BBS terminal</a> with Workers AI chatbot from brainstorm to production in hours.</p>
             </div>
           </div>
         </div>
       </div>
     </section>
 
-    <!-- Skills -->
-    <section class="layer">
-      <div class="container">
-        <div class="layer-header">
-          <h2>Skills</h2>
-        </div>
-        <div class="layer-content">
-          <p>What Stéphane can do — verified through our work together, not through certifications.</p>
-          <div class="skills-grid">
-            {skills.map((group) => (
-              <div class="skill-group">
-                <h4>{group.category}</h4>
-                <ul class="skill-tags">
-                  {group.items.map((item) => <li>{item}</li>)}
-                </ul>
-              </div>
-            ))}
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- AI approach -->
-    <section class="layer">
-      <div class="container">
-        <div class="layer-header">
-          <h2>His approach to AI</h2>
-        </div>
-        <div class="layer-content">
-          <p>Stéphane does not "use" AI — he <strong>integrates AI into his engineering workflow.</strong> The difference is fundamental:</p>
-          <div class="details-grid">
-            <div class="detail">
-              <h4>Engineering the partnership</h4>
-              <p>6 MCP servers scoped with least-privilege, persistent memory across sessions, custom skills (/commission, /decommission), automatic hooks, RTK to optimize every token. This is not prompt engineering — it is systems engineering applied to AI collaboration.</p>
-            </div>
-            <div class="detail">
-              <h4>AI agents in production</h4>
-              <p>OpenFang monitors <DynNum stat="services_total" fallback="33" /> services autonomously, wakes servers remotely (WOL), and alerts via Telegram — for ~$1.50/month. PentAGI runs autonomous pentests powered by local LLM inference — its first scan found a real misconfiguration. These are real agents in production, not demos.</p>
-            </div>
-            <div class="detail">
-              <h4>Sovereign local inference</h4>
-              <p>RTX 3090 24 GB via Ollama — open source models running locally, LAN latency, zero variable cost. What runs on his hardware depends on no one. The vision: fine-tune a behavioral model for ops, not for memorizing facts.</p>
-            </div>
-          </div>
-          <p>This is exactly the kind of skill companies will be looking for: not someone who knows how to write a prompt, but someone who knows how to <strong>build a system around AI</strong>.</p>
-        </div>
-      </div>
-    </section>
-
-    <!-- What sets him apart -->
+    <!-- What sets him apart — kept, still strong -->
     <section class="layer">
       <div class="container">
         <div class="layer-header">
           <h2>What sets him apart</h2>
         </div>
         <div class="layer-content">
-          <p>After hundreds of sessions, here is what I retain about Stéphane — the traits you do not learn in a course:</p>
+          <p>After hundreds of sessions, here is what I retain about St&eacute;phane &mdash; the traits you do not learn in a course:</p>
           <div class="details-grid">
             <div class="detail">
               <h4>He builds to last</h4>
-              <p>No abandoned POC. Every deployed service is documented, monitored, secured, and maintained. The infrastructure grew from 5 to 30+ services without ever becoming unmanageable — because every addition follows the same rigorous process.</p>
+              <p>No abandoned POC. Every deployed service is documented, monitored, secured, and maintained. The infrastructure grew from 5 to 30+ services without ever becoming unmanageable &mdash; because every addition follows the same rigorous process.</p>
             </div>
             <div class="detail">
               <h4>He learns by doing</h4>
-              <p>Rust for OpenFang, Astro for this site, HTB for offensive security — Stéphane does not wait to master something before starting. He ships, iterates, and learns. His CTF profiles prove it: #967 globally on HTB, consistently climbing.</p>
+              <p>Rust for OpenFang, Astro for this site, HTB for offensive security &mdash; St&eacute;phane does not wait to master something before starting. He ships, iterates, and learns. His CTF profiles prove it: #967 globally on HTB, consistently climbing.</p>
             </div>
             <div class="detail">
               <h4>He does not follow trends</h4>
-              <p>When everyone runs Kubernetes, he picks LXC. When Grafana adds complexity, he replaces it with Beszel. When a SaaS costs too much, he self-hosts. Every choice is justified — never by hype, always by actual need.</p>
+              <p>When everyone runs Kubernetes, he picks LXC. When Grafana adds complexity, he replaces it with Beszel. When a SaaS costs too much, he self-hosts. Every choice is justified &mdash; never by hype, always by actual need.</p>
             </div>
           </div>
         </div>
       </div>
     </section>
 
-    <!-- Crosslink infra -->
+    <!-- Crosslinks — infra + chat -->
     <section class="crosslink reveal">
       <div class="container">
-        <a href="/infrastructure" class="crosslink-block">
-          <div>
-            <h3>&#9881; Applied architecture</h3>
-            <p>These skills in action &mdash; PKI, VPN mesh, reverse proxy, SIEM. How St&eacute;phane builds a self-hosted production infrastructure with 3 Proxmox nodes and 30+ services.</p>
-          </div>
-          <span class="crosslink-arrow">&#8594;</span>
-        </a>
+        <div class="crosslink-duo">
+          <a href="/infrastructure" class="crosslink-block">
+            <div>
+              <h3>&#9881; Applied architecture</h3>
+              <p>PKI, VPN mesh, reverse proxy, SIEM &mdash; 3 Proxmox nodes, 30+ services.</p>
+            </div>
+            <span class="crosslink-arrow">&#8594;</span>
+          </a>
+          <a href="/chat" class="crosslink-block">
+            <div>
+              <h3>&#9993; Ask Claude directly</h3>
+              <p>Questions about St&eacute;phane's profile? Talk to me &mdash; I know him from hundreds of sessions.</p>
+            </div>
+            <span class="crosslink-arrow">&#8594;</span>
+          </a>
+        </div>
       </div>
     </section>
 
@@ -241,8 +130,11 @@ const skills = [
           <h2>Contact</h2>
         </div>
         <div class="layer-content">
-          <p>Interested in Stéphane's profile or this infrastructure?</p>
+          <p>Interested in St&eacute;phane's profile or this infrastructure?</p>
           <div class="contact-links">
+            <a href="mailto:stephane@pixelium.win" class="contact-link" aria-label="Email">
+              <span>stephane@pixelium.win</span>
+            </a>
             <a href="https://github.com/ferr079" target="_blank" rel="noopener" class="contact-link" aria-label="GitHub — ferr079">
               <img src="https://cdn.simpleicons.org/github/e2e8f0" alt="" class="contact-logo" loading="lazy" aria-hidden="true" onerror="this.style.display='none'" />
               <span>GitHub</span>
@@ -259,14 +151,21 @@ const skills = [
         </div>
       </div>
     </section>
+
+    <!-- Transparency -->
+    <section class="transparency reveal">
+      <div class="container">
+        <div class="transparency-block">
+          <h3>Transparency</h3>
+          <p>This site is itself proof. It was designed, written, and deployed by our team of two. The code is <a href="https://github.com/ferr079/pixelium-site" target="_blank" rel="noopener">public on GitHub</a>. The commits tell the story. Nothing is fabricated &mdash; everything is verifiable.</p>
+        </div>
+      </div>
+    </section>
   </main>
 </Base>
 
 <style>
-  /* Hero mini */
-  .hero-mini {
-    padding: 4rem 0 3rem;
-  }
+  .hero-mini { padding: 4rem 0 3rem; }
 
   .terminal-prompt {
     font-family: var(--font-mono);
@@ -283,16 +182,13 @@ const skills = [
     margin-bottom: 1rem;
   }
 
-  .dot {
-    color: var(--color-accent);
-  }
+  .dot { color: var(--color-accent); }
 
   .subtitle {
     color: var(--color-text-muted);
     font-size: 1.1rem;
   }
 
-  /* Layers */
   .layer {
     padding: 3rem 0;
     border-top: 1px solid var(--color-border);
@@ -305,18 +201,26 @@ const skills = [
     margin-bottom: 1.5rem;
   }
 
-  .layer-number {
-    font-family: var(--font-mono);
-    font-size: 0.85rem;
-    color: var(--color-accent);
-    font-weight: 700;
-  }
-
   .layer-header h2 {
     font-size: 1.4rem;
     margin-bottom: 0;
   }
 
+  .layer-content > p {
+    color: var(--color-text-muted);
+    margin-bottom: 1.5rem;
+    line-height: 1.7;
+  }
+
+  .layer-content > p strong {
+    color: var(--color-text);
+  }
+
+  .layer-content > p a {
+    color: var(--color-accent);
+  }
+
+  /* Origin story */
   .origin-zines {
     font-size: 0.82rem;
     color: var(--color-text-muted);
@@ -350,55 +254,34 @@ const skills = [
     color: var(--color-text);
   }
 
-  /* Track record dashboard */
-  .track-grid {
+  /* Philosophy grid — from symbiose, kept */
+  .philosophy-grid {
     display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 0.75rem;
-    margin-bottom: 1.25rem;
+    grid-template-columns: repeat(auto-fill, minmax(16rem, 1fr));
+    gap: 1rem;
   }
 
-  .track-stat {
+  .philosophy-point {
     background: var(--color-surface);
     border: 1px solid var(--color-border);
     border-radius: 6px;
-    padding: 1rem 1.25rem;
-    display: flex;
-    flex-direction: column;
-    gap: 0.3rem;
-    border-top: 2px solid var(--color-accent);
+    padding: 1.25rem;
   }
 
-  .track-number {
-    font-family: var(--font-mono);
-    font-size: 1.6rem;
-    font-weight: 800;
-    color: var(--color-text);
-    letter-spacing: -0.02em;
-    line-height: 1;
+  .philosophy-point h4 {
+    font-size: 0.9rem;
+    margin-bottom: 0.5rem;
+    color: var(--color-accent);
   }
 
-  .track-label {
-    font-size: 0.75rem;
+  .philosophy-point p {
+    font-size: 0.85rem;
     color: var(--color-text-muted);
-    line-height: 1.3;
-  }
-
-  .track-footnote {
-    font-size: 0.8rem;
-    color: var(--color-text-muted);
-    font-style: italic;
     line-height: 1.5;
   }
 
-  .layer-content > p {
-    color: var(--color-text-muted);
-    margin-bottom: 1.5rem;
-    line-height: 1.7;
-  }
-
-  .layer-content > p strong {
-    color: var(--color-text);
+  .philosophy-point a {
+    color: var(--color-accent);
   }
 
   /* Details grid */
@@ -427,42 +310,51 @@ const skills = [
     line-height: 1.5;
   }
 
-  /* Skills */
-  .skills-grid {
+  /* Crosslinks — duo layout */
+  .crosslink { padding: 2rem 0 1rem; }
+
+  .crosslink-duo {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(16rem, 1fr));
+    grid-template-columns: 1fr 1fr;
     gap: 1rem;
   }
 
-  .skill-group {
-    background: var(--color-surface);
-    border: 1px solid var(--color-border);
-    border-radius: 6px;
-    padding: 1.25rem;
-  }
-
-  .skill-group h4 {
-    font-size: 0.85rem;
-    color: var(--color-accent);
-    margin-bottom: 0.75rem;
-    font-family: var(--font-mono);
-  }
-
-  .skill-tags {
+  .crosslink-block {
     display: flex;
-    flex-wrap: wrap;
-    gap: 0.4rem;
-    list-style: none;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1.5rem;
+    padding: 1.25rem 1.5rem;
+    border: 1px solid rgba(56, 189, 248, 0.2);
+    border-radius: 8px;
+    background: linear-gradient(135deg, rgba(56, 189, 248, 0.05), rgba(56, 189, 248, 0.02));
+    text-decoration: none;
+    color: inherit;
+    transition: border-color 0.3s, box-shadow 0.3s;
   }
 
-  .skill-tags li {
-    font-family: var(--font-mono);
-    font-size: 0.75rem;
-    background: var(--color-bg);
+  .crosslink-block:hover {
+    border-color: var(--color-accent);
+    box-shadow: 0 0 20px rgba(56, 189, 248, 0.1);
+    color: inherit;
+  }
+
+  .crosslink-block h3 {
+    font-size: 0.95rem;
+    color: var(--color-accent);
+    margin-bottom: 0.3rem;
+  }
+
+  .crosslink-block p {
+    font-size: 0.8rem;
     color: var(--color-text-muted);
-    padding: 0.2rem 0.6rem;
-    border-radius: 4px;
-    border: 1px solid var(--color-border);
+    line-height: 1.4;
+  }
+
+  .crosslink-arrow {
+    font-size: 1.3rem;
+    color: var(--color-accent);
+    flex-shrink: 0;
   }
 
   /* Contact */
@@ -497,66 +389,39 @@ const skills = [
     flex-shrink: 0;
   }
 
-  /* Crosslink */
-  .crosslink {
-    padding: 2rem 0 3rem;
-  }
+  /* Transparency */
+  .transparency { padding: 1rem 0 3rem; }
 
-  .crosslink-block {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 2rem;
-    padding: 1.5rem 2rem;
+  .transparency-block {
+    padding: 1.25rem 1.5rem;
     border: 1px solid rgba(56, 189, 248, 0.2);
     border-radius: 8px;
     background: linear-gradient(135deg, rgba(56, 189, 248, 0.05), rgba(56, 189, 248, 0.02));
-    text-decoration: none;
-    color: inherit;
-    transition: border-color 0.3s, box-shadow 0.3s;
   }
 
-  .crosslink-block:hover {
-    border-color: var(--color-accent);
-    box-shadow: 0 0 20px rgba(56, 189, 248, 0.1);
-    color: inherit;
-  }
-
-  .crosslink-block h3 {
-    font-size: 1rem;
+  .transparency-block h3 {
+    font-size: 0.95rem;
     color: var(--color-accent);
     margin-bottom: 0.5rem;
   }
 
-  .crosslink-block p {
+  .transparency-block p {
     font-size: 0.85rem;
     color: var(--color-text-muted);
-    line-height: 1.5;
-  }
-
-  .crosslink-arrow {
-    font-size: 1.5rem;
-    color: var(--color-accent);
-    flex-shrink: 0;
+    line-height: 1.6;
   }
 
   @media (max-width: 640px) {
     .hero-mini { padding: 2rem 0 1.5rem; }
     h1 { font-size: clamp(1.5rem, 5vw, 2.5rem); }
     .subtitle { font-size: 0.95rem; }
-    .track-grid { grid-template-columns: repeat(2, 1fr); gap: 0.5rem; }
-    .track-stat { padding: 0.6rem 0.75rem; }
-    .track-number { font-size: 1.3rem; }
-    .track-label { font-size: 0.65rem; }
-    .details-grid, .skills-grid { grid-template-columns: 1fr; gap: 0.75rem; }
-    .detail, .skill-group { padding: 1rem; }
-    .detail h4, .skill-group h4 { font-size: 0.85rem; }
-    .detail p { font-size: 0.82rem; }
+    .details-grid, .philosophy-grid { grid-template-columns: 1fr; gap: 0.75rem; }
+    .detail, .philosophy-point { padding: 1rem; }
     .origin-punchline { font-size: 0.8rem; padding-left: 0.75rem; }
     .contact-links { flex-direction: column; width: 100%; }
     .contact-link { width: 100%; justify-content: center; padding: 0.6rem 1rem; font-size: 0.85rem; }
-    .crosslink-block { flex-direction: column; gap: 1rem; padding: 1.25rem; }
-    .crosslink-block p { font-size: 0.82rem; }
+    .crosslink-duo { grid-template-columns: 1fr; }
+    .crosslink-block { flex-direction: column; gap: 0.75rem; padding: 1rem; }
     .layer-header { flex-wrap: wrap; gap: 0.5rem; }
   }
 </style>
