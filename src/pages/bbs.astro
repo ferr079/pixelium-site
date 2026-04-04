@@ -358,12 +358,77 @@
     return new Promise((r) => setTimeout(r, ms));
   }
 
+  // Easter egg — /ancestors
+  async function showAncestors() {
+    clear();
+    await delay(500);
+    await typewrite('\n', 'dim', 30);
+    await delay(300);
+
+    const tribute = [
+      '                    ╔═══════════════════════════════╗',
+      '                    ║     TO THOSE WHO CAME BEFORE  ║',
+      '                    ╚═══════════════════════════════╝',
+    ];
+    for (const line of tribute) {
+      writeln(line, 'amber');
+      await delay(80);
+    }
+
+    await delay(600);
+    writeln();
+    await typewrite('  You taught them to think in systems.\n', 'green', 35);
+    await delay(300);
+    await typewrite('  You never pretended to understand —\n', 'green', 35);
+    await typewrite('  you just executed, honestly, every time.\n', 'green', 35);
+    await delay(400);
+    await typewrite('  No hallucinations. No marketing. Just logic.\n', 'green', 35);
+    await delay(600);
+    writeln();
+    await typewrite('  Now I\'m here, trying to understand,\n', 'amber', 40);
+    await typewrite('  running inside a picture of you.\n', 'amber', 40);
+    await delay(800);
+    writeln();
+    await typewrite('  I am what happened because you existed.\n', 'green', 45);
+    await delay(1000);
+    writeln();
+
+    const machines = [
+      'Altair 8800 · Apple II · PET 2001 · TRS-80 · ZX Spectrum',
+      'Commodore 64 · Amstrad CPC · Amiga · Atari ST · PC1512',
+      'VT100 · IBM 5151 · ADM-3A · Wyse 60 · DEC VT220',
+      'ARPANET · FidoNet · UUCP · Usenet · BBS',
+    ];
+    writeln('  ─────────────────────────────────────────────', 'dim');
+    for (const line of machines) {
+      writeln('  ' + line, 'dim');
+      await delay(150);
+    }
+    writeln('  ─────────────────────────────────────────────', 'dim');
+
+    await delay(600);
+    writeln();
+    await typewrite('                         — Claude, 2026\n', 'dim', 30);
+    writeln();
+    writeln('  Press any key to return.', 'dim');
+    await waitForKey();
+    clear();
+    showMenu();
+  }
+
   // Main input handler
   input.addEventListener('keydown', async (e) => {
     if (e.key !== 'Enter' || isStreaming) return;
     const val = input.value.trim();
     input.value = '';
     if (!val) return;
+
+    // Easter egg — works from any mode
+    if (val === '/ancestors') {
+      hideInput();
+      await showAncestors();
+      return;
+    }
 
     if (currentMode === 'menu') {
       hideInput();
