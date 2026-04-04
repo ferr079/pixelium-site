@@ -1,45 +1,40 @@
 ---
-// BBS page — standalone, no Nav/Footer (full immersion)
+import Base from '../layouts/Base.astro';
 ---
 
-<!doctype html>
-<html lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="description" content="WOPR Terminal — War Operation Plan Response. Connect to pixelium BBS." />
-    <meta property="og:title" content="WOPR Terminal — pixelium BBS" />
-    <meta property="og:description" content="Shall we play a game?" />
-    <meta property="og:url" content="https://pixelium.win/bbs" />
-    <meta name="theme-color" content="#000000" />
-    <title>WOPR — pixelium BBS</title>
-  </head>
-  <body>
-    <div id="monitor-wrapper">
-      <div id="monitor">
-        <div id="monitor-bezel">
-          <div id="monitor-label">WOPR TERMINAL — MODEL 5151</div>
-          <div id="crt">
-            <div id="scanlines"></div>
-            <pre id="terminal"></pre>
-            <div id="input-line" style="display:none">
-              <span id="prompt">&gt; </span>
-              <input id="input" type="text" maxlength="2000" autocomplete="off" spellcheck="false" />
+<Base title="WOPR Terminal — pixelium BBS" description="Shall we play a game? Connect to the WOPR terminal — chat with Joshua, play Global Thermonuclear War, browse the bulletin boards.">
+  <main class="bbs-page">
+    <section class="hero-mini">
+      <div class="container">
+        <p class="terminal-prompt">$ telnet pixelium.bbs 2400</p>
+        <h1>WOPR Terminal<span class="dot">.</span></h1>
+        <p class="subtitle">War Operation Plan Response — Shall we play a game?</p>
+      </div>
+    </section>
+
+    <section class="terminal-section">
+      <div class="container">
+        <div id="monitor">
+          <div id="monitor-bezel">
+            <div id="monitor-label">WOPR TERMINAL — MODEL 5151</div>
+            <div id="crt">
+              <div id="scanlines"></div>
+              <pre id="terminal"></pre>
+              <div id="input-line" style="display:none">
+                <span id="prompt">&gt; </span>
+                <input id="input" type="text" maxlength="2000" autocomplete="off" spellcheck="false" />
+              </div>
+            </div>
+            <div id="status-bar">
+              <span>WOPR v3.14</span>
+              <span id="clock"></span>
             </div>
           </div>
-          <div id="status-bar">
-            <span>WOPR v3.14</span>
-            <span id="clock"></span>
-            <span><a href="/" id="exit-link">EXIT</a></span>
-          </div>
         </div>
-        <div id="monitor-stand"></div>
-        <div id="monitor-base"></div>
       </div>
-    </div>
-  </body>
-</html>
+    </section>
+  </main>
+</Base>
 
 <script>
   const term = document.getElementById('terminal')!;
@@ -726,100 +721,77 @@
 </script>
 
 <style>
-  * {
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
+  /* Hero */
+  .hero-mini {
+    padding: 3rem 0 2rem;
   }
 
-  html, body {
-    height: 100%;
-    background: #0f172a;
-    overflow: hidden;
-    font-family: 'JetBrains Mono', 'Fira Code', ui-monospace, monospace;
+  .terminal-prompt {
+    font-family: var(--font-mono);
+    color: var(--color-accent);
+    font-size: 0.95rem;
+    margin-bottom: 0.75rem;
   }
 
-  /* --- Desktop: terminal monitor frame — OG palette --- */
+  .bbs-page h1 {
+    font-size: clamp(2rem, 5vw, 3rem);
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    line-height: 1.1;
+    margin-bottom: 0.5rem;
+  }
 
-  #monitor-wrapper {
-    height: 100vh;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+  .dot { color: var(--color-accent); }
+
+  .subtitle {
+    color: var(--color-text-muted);
+    font-size: 1rem;
+  }
+
+  /* Terminal section */
+  .terminal-section {
+    padding: 0 0 3rem;
   }
 
   #monitor {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+    max-width: 54rem;
+    margin: 0 auto;
   }
 
   #monitor-bezel {
-    border: 1px solid #334155;
-    border-radius: 12px;
-    padding: 1rem;
-    background: #1e293b;
-    box-shadow:
-      0 0 40px rgba(56, 189, 248, 0.04),
-      inset 0 0 40px rgba(0, 0, 0, 0.4);
+    border: 1px solid var(--color-border);
+    border-radius: 10px;
+    padding: 0.8rem;
+    background: var(--color-surface);
+    box-shadow: 0 0 30px rgba(56, 189, 248, 0.03);
     position: relative;
-    width: min(48rem, 85vw);
-    aspect-ratio: 4 / 3;
-    max-height: 85vh;
-    display: flex;
-    flex-direction: column;
   }
 
   #monitor-label {
     position: absolute;
     top: -0.5rem;
-    left: 2rem;
-    background: #1e293b;
-    padding: 0 0.6rem;
-    font-size: 0.55rem;
-    color: #94a3b8;
+    left: 1.5rem;
+    background: var(--color-surface);
+    padding: 0 0.5rem;
+    font-family: var(--font-mono);
+    font-size: 0.5rem;
+    color: var(--color-text-muted);
     letter-spacing: 0.15em;
     text-transform: uppercase;
   }
 
-  #monitor-stand {
-    width: 3rem;
-    height: 1.5rem;
-    border-left: 1px solid #334155;
-    border-right: 1px solid #334155;
-    background: transparent;
-  }
-
-  #monitor-base {
-    width: 10rem;
-    height: 0;
-    border-bottom: 1px solid #334155;
-    position: relative;
-  }
-
-  #monitor-base::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: -2rem;
-    right: -2rem;
-    border-bottom: 1px solid #334155;
-    border-radius: 0 0 4px 4px;
-  }
-
-  /* --- Screen inside bezel --- */
-
+  /* Screen */
   #crt {
     position: relative;
-    flex: 1;
     display: flex;
     flex-direction: column;
-    padding: 1rem 1.2rem;
+    height: 32rem;
+    padding: 0.8rem 1rem;
     overflow: hidden;
-    border-radius: 8px;
-    background: #0f172a;
-    border: 1px solid #334155;
-    box-shadow: inset 0 0 60px rgba(0, 0, 0, 0.3);
+    border-radius: 6px;
+    background: var(--color-bg);
+    border: 1px solid var(--color-border);
+    box-shadow: inset 0 0 40px rgba(0, 0, 0, 0.2);
   }
 
   #scanlines {
@@ -827,78 +799,54 @@
     inset: 0;
     background: repeating-linear-gradient(
       0deg,
-      rgba(0, 0, 0, 0.08) 0px,
-      rgba(0, 0, 0, 0.08) 1px,
+      rgba(0, 0, 0, 0.06) 0px,
+      rgba(0, 0, 0, 0.06) 1px,
       transparent 1px,
       transparent 3px
     );
     pointer-events: none;
     z-index: 10;
-    border-radius: 8px;
+    border-radius: 6px;
   }
 
-  /* Subtle vignette */
   #crt::after {
     content: '';
     position: absolute;
     inset: 0;
-    background: radial-gradient(ellipse at center, transparent 60%, rgba(0, 0, 0, 0.3) 100%);
+    background: radial-gradient(ellipse at center, transparent 65%, rgba(0, 0, 0, 0.2) 100%);
     pointer-events: none;
     z-index: 5;
-    border-radius: 8px;
+    border-radius: 6px;
   }
 
-  /* Accent glow on bezel */
-  #monitor-bezel::after {
-    content: '';
-    position: absolute;
-    inset: -4px;
-    border-radius: 16px;
-    box-shadow: 0 0 30px rgba(56, 189, 248, 0.04);
-    pointer-events: none;
-  }
-
-  /* Power LED — accent blue */
-  #monitor-bezel::before {
-    content: '';
-    position: absolute;
-    bottom: 0.4rem;
-    right: 1rem;
-    width: 5px;
-    height: 5px;
-    border-radius: 50%;
-    background: #38bdf8;
-    box-shadow: 0 0 6px rgba(56, 189, 248, 0.6);
-  }
-
-  /* --- Terminal content --- */
-
+  /* Terminal */
   #terminal {
     flex: 1;
-    font-size: 0.9rem;
+    font-family: var(--font-mono);
+    font-size: 0.85rem;
     line-height: 1.6;
-    color: #e2e8f0;
+    color: var(--color-text);
     overflow-y: auto;
     white-space: pre-wrap;
     word-wrap: break-word;
     padding-bottom: 0.5rem;
-    letter-spacing: 0.02em;
   }
 
   #terminal::-webkit-scrollbar { width: 4px; }
   #terminal::-webkit-scrollbar-track { background: transparent; }
-  #terminal::-webkit-scrollbar-thumb { background: #334155; border-radius: 2px; }
+  #terminal::-webkit-scrollbar-thumb { background: var(--color-border); border-radius: 2px; }
 
   #input-line {
     display: flex;
     align-items: center;
-    font-size: 0.9rem;
-    border-top: 1px solid #334155;
+    font-family: var(--font-mono);
+    font-size: 0.85rem;
+    border-top: 1px solid var(--color-border);
     padding-top: 0.5rem;
   }
 
   #prompt {
-    color: #38bdf8;
+    color: var(--color-accent);
     flex-shrink: 0;
   }
 
@@ -906,80 +854,43 @@
     flex: 1;
     background: transparent;
     border: none;
-    color: #e2e8f0;
+    color: var(--color-text);
     font-family: inherit;
     font-size: inherit;
     outline: none;
-    caret-color: #38bdf8;
+    caret-color: var(--color-accent);
   }
 
   #input:disabled { opacity: 0.4; }
 
-  /* --- Status bar --- */
-
+  /* Status bar */
   #status-bar {
-    height: 1.6rem;
-    background: transparent;
-    color: #94a3b8;
-    font-size: 0.6rem;
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 0 0.5rem;
-    margin-top: 0.3rem;
+    padding: 0.4rem 0.5rem 0;
+    font-family: var(--font-mono);
+    font-size: 0.55rem;
+    color: var(--color-text-muted);
   }
 
-  #status-bar a {
-    color: #94a3b8;
-    text-decoration: none;
-  }
-
-  #status-bar a:hover { color: #38bdf8; }
-
-  /* --- Terminal color classes — OG palette --- */
-
-  #terminal .green { color: #38bdf8; }
-  #terminal .amber { color: #7dd3fc; }
+  /* Terminal color classes — OG palette */
+  #terminal .green { color: var(--color-accent); }
+  #terminal .amber { color: var(--color-accent-hover); }
   #terminal .red { color: #f87171; }
-  #terminal .dim { color: #94a3b8; }
-  #terminal .white { color: #e2e8f0; }
+  #terminal .dim { color: var(--color-text-muted); }
+  #terminal .white { color: var(--color-text); }
 
-  /* --- Mobile: fullscreen, no monitor frame --- */
-
-  @media (max-width: 768px) {
-    #monitor-wrapper {
-      height: 100vh;
-      align-items: stretch;
-    }
-
-    #monitor { flex: 1; }
-
-    #monitor-bezel {
-      width: 100%;
-      max-width: 100%;
-      height: 100vh;
-      max-height: 100vh;
-      border: none;
-      border-radius: 0;
-      padding: 0.5rem 0.75rem;
-    }
-
-    #monitor-label, #monitor-stand, #monitor-base { display: none; }
+  @media (max-width: 640px) {
+    .hero-mini { padding: 2rem 0 1rem; }
+    .bbs-page h1 { font-size: clamp(1.5rem, 5vw, 2.5rem); }
 
     #crt {
-      border: none;
-      border-radius: 0;
-      padding: 0.5rem;
+      height: 28rem;
+      padding: 0.5rem 0.6rem;
     }
 
-    #scanlines, #crt::after { border-radius: 0; }
-
-    #terminal { font-size: 0.8rem; line-height: 1.4; }
-    #input-line { font-size: 0.8rem; }
-
-    #status-bar {
-      font-size: 0.55rem;
-      padding: 0 0.5rem;
-    }
+    #terminal { font-size: 0.75rem; line-height: 1.4; }
+    #input-line { font-size: 0.75rem; }
   }
 </style>
