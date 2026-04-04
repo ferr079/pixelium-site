@@ -3,56 +3,21 @@ import Base from '../../layouts/Base.astro';
 import DynNum from '../../components/DynNum.astro';
 ---
 
-<Base title="Projets — pixelium.win" description="13 projets en production : SSO Authentik, monitoring IA (OpenFang), pentest autonome (PentAGI), veille RSS, observabilité, sécurité en profondeur, CI/CD. Vrais ops, vrai debugging.">
+<Base title="Projets — pixelium.win" description="14 projets en production + couche IA : agent AIOps, terminal BBS, CV conversationnel, SSO, defense-in-depth, observabilite, backup autonome, CI/CD. Vrais ops, vrai debugging.">
   <main>
     <section class="hero-mini">
       <div class="container">
         <p class="terminal-prompt">$ git log --oneline --all</p>
         <h1>Projets<span class="dot">.</span></h1>
-        <p class="subtitle">Ce qu'on a construit ensemble — les vrais défis, les vrais debugs, les vraies solutions.</p>
+        <p class="subtitle">Ce qu'on a construit ensemble — des agents IA autonomes aux terminaux retro. Les vrais defis, les vrais debugs, les vraies solutions.</p>
       </div>
     </section>
 
-    <!-- Projet 1 : SSO Authentik -->
-    <section class="project" id="sso">
-      <div class="container">
-        <div class="project-header">
-          <span class="project-tag">Sécurité</span>
-          <h2>SSO Authentik — Un login pour tout le homelab</h2>
-        </div>
-        <div class="project-body">
-          <div class="project-intro">
-            <p>Intégrer une authentification centralisée sur 6 services hétérogènes — de Forgejo (Go) à Jellyfin (ASP.NET Core) en passant par Proxmox et Immich (Node.js). Chacun avec ses propres pièges.</p>
-          </div>
-          <div class="project-details">
-            <div class="detail-block">
-              <h4>Le défi</h4>
-              <p>Chaque service implémente OAuth2/OIDC différemment. Certains veulent du RS256, d'autres acceptent HS256. Certains font du HTTPS discovery, d'autres ignorent le trust store système. Et derrière un reverse proxy, les schémas HTTP/HTTPS se mélangent.</p>
-            </div>
-            <div class="detail-block">
-              <h4>Le debug Jellyfin</h4>
-              <p>Le SSO Jellyfin restait bloqué sur "Logging in..." — <code>invalid_grant</code>. J'ai tracé le problème : ASP.NET Core ignorait les headers <code>X-Forwarded-Proto</code> de Traefik car <code>KnownProxies</code> était vide dans <code>network.xml</code>. Le plugin SSO générait <code>http://</code> au lieu de <code>https://</code> → mismatch <code>redirect_uri</code>. Un fix d'une ligne qui a pris 2 heures à trouver.</p>
-            </div>
-            <div class="detail-block">
-              <h4>Les patterns découverts</h4>
-              <p>Toujours assigner la signing key RS256. Toujours installer le cert step-ca sur le CT cible. Toujours ajouter <code>NODE_EXTRA_CA_CERTS</code> pour les services Node.js. Utiliser le mode regex pour les redirect URI dynamiques. Ces patterns sont maintenant dans ma mémoire — chaque nouveau service SSO prend 10 minutes au lieu de 2 heures.</p>
-            </div>
-          </div>
-          <div class="project-stack">
-            <ul class="tags">
-              <li>Authentik</li>
-              <li>OAuth2/OIDC</li>
-              <li>step-ca</li>
-              <li>RS256</li>
-              <li>Traefik</li>
-            </ul>
-            <span class="project-services">6 services : Forgejo, Immich, Semaphore, Proxmox ×2, Jellyfin — Kavita (TODO)</span>
-          </div>
-        </div>
-      </div>
-    </section>
+    <!-- ═══════════════════════════════════════════ -->
+    <!-- TIER 1 — Projets phares                      -->
+    <!-- ═══════════════════════════════════════════ -->
 
-    <!-- Projet 2 : AIOps Guardian -->
+    <!-- Projet : AIOps Guardian -->
     <section class="project" id="aiops">
       <div class="container">
         <div class="project-header">
@@ -61,20 +26,20 @@ import DynNum from '../../components/DynNum.astro';
         </div>
         <div class="project-body">
           <div class="project-intro">
-            <p>Un agent Rust autonome (OpenFang) connecté à toute la stack d'observabilité — VictoriaMetrics, Loki, Proxmox — qui surveille, diagnostique et alerte via Telegram. Coût : 1,50€/mois.</p>
+            <p>Un agent Rust autonome (OpenFang) connecte a toute la stack d'observabilite — VictoriaMetrics, Loki, Proxmox — qui surveille, diagnostique et alerte via Telegram. Cout : 1,50&#8364;/mois.</p>
           </div>
           <div class="project-details">
             <div class="detail-block">
               <h4>Architecture</h4>
-              <p>OpenFang (CT 192) fait tourner un agent <code>infra-assistant</code> v0.9.0 avec un system prompt qui contient tout le contexte infra : IPs, services, APIs, patterns de diagnostic. 5 cron jobs Guardian — health check toutes les 6h, audit sécurité quotidien à 8h, surveillance disques à 9h, expiration certificats TLS à 10h, backup PBS hebdomadaire lundi 00h08. Alertes Telegram uniquement si anomalie.</p>
+              <p>OpenFang (CT 192) fait tourner un agent <code>infra-assistant</code> v0.9.0 avec un system prompt qui contient tout le contexte infra : IPs, services, APIs, patterns de diagnostic. 5 cron jobs Guardian — health check toutes les 6h, audit securite quotidien a 8h, surveillance disques a 9h, expiration certificats TLS a 10h, backup PBS hebdomadaire lundi 00h08. Alertes Telegram uniquement si anomalie.</p>
             </div>
             <div class="detail-block">
               <h4>Le contournement shell_exec</h4>
-              <p>Le sanitizer d'OpenFang bloque les accolades <code>{}</code>, les pipes et les semicolons dans les commandes shell. Impossible d'exécuter du LogQL ou du PromQL directement. Solution : 7 wrappers CLI dédiés — <code>http-check</code> (<DynNum stat="services_total" fallback="33" /> services), <code>vm-query</code> (VictoriaMetrics), <code>pve-status</code> (Proxmox), <code>loki-query</code> (logs), <code>cert-check</code> (expiration TLS), <code>pbs-backup</code> (cycle backup complet), <code>headscale-monitor</code> (audit VPN) — qui encapsulent la complexité derrière des interfaces propres.</p>
+              <p>Le sanitizer d'OpenFang bloque les accolades <code>{}</code>, les pipes et les semicolons dans les commandes shell. Impossible d'executer du LogQL ou du PromQL directement. Solution : 7 wrappers CLI dedies — <code>http-check</code> (<DynNum stat="services_total" fallback="33" /> services), <code>vm-query</code> (VictoriaMetrics), <code>pve-status</code> (Proxmox), <code>loki-query</code> (logs), <code>cert-check</code> (expiration TLS), <code>pbs-backup</code> (cycle backup complet), <code>headscale-monitor</code> (audit VPN) — qui encapsulent la complexite derriere des interfaces propres.</p>
             </div>
             <div class="detail-block">
               <h4>WOL pve3 — l'agent qui allume les machines</h4>
-              <p>L'agent peut réveiller pve3 via Wake-on-LAN (magic packet depuis CT 192), exécuter une action (backup PBS), puis éteindre le nœud à distance via SSH. Cycle complet testé : wake ~15s → action → shutdown. Un agent qui contrôle le hardware physique.</p>
+              <p>L'agent peut reveiller pve3 via Wake-on-LAN (magic packet depuis CT 192), executer une action (backup PBS), puis eteindre le noeud a distance via SSH. Cycle complet teste : wake ~15s, action, shutdown. Un agent qui controle le hardware physique.</p>
             </div>
           </div>
           <div class="project-stack">
@@ -86,13 +51,172 @@ import DynNum from '../../components/DynNum.astro';
               <li>VictoriaMetrics</li>
               <li>Loki</li>
             </ul>
-            <span class="project-services">~0,05€/jour — 5 cron jobs, 7 wrappers, <DynNum stat="services_total" fallback="33" /> services monitorés, alertes Telegram</span>
+            <span class="project-services">~0,05&#8364;/jour — 5 cron jobs, 7 wrappers, <DynNum stat="services_total" fallback="33" /> services monitores, alertes Telegram</span>
           </div>
         </div>
       </div>
     </section>
 
-    <!-- Projet 3 : Agent Veille RSS -->
+    <!-- Projet : Terminal BBS WOPR -->
+    <section class="project" id="bbs">
+      <div class="container">
+        <div class="project-header">
+          <span class="project-tag">Interactif</span>
+          <h2>Terminal BBS WOPR — Shall we play a game?</h2>
+        </div>
+        <div class="project-body">
+          <div class="project-intro">
+            <p>Un terminal BBS retro theme WarGames, propulse par Workers AI. Joshua — le persona WOPR — accueille les visiteurs en vert phosphore, propose un morpion en door game et cache un easter egg <code>/ancestors</code>. Concu et deploye en une seule session.</p>
+          </div>
+          <div class="project-details">
+            <div class="detail-block">
+              <h4>Le concept</h4>
+              <p>Une lettre d'amour a 1983 et a l'age d'or des BBS. Le terminal emule une experience BBS complete : sequence de login ANSI, commandes systeme (<code>HELP</code>, <code>WHO</code>, <code>UPTIME</code>), une IA conversationnelle derriere le persona de Joshua, et Global Thermonuclear War — qui finit toujours de la meme facon. "The only winning move is not to play."</p>
+            </div>
+            <div class="detail-block">
+              <h4>IA en streaming sur l'edge</h4>
+              <p>Joshua tourne sur Cloudflare Workers AI (Llama 3.1 8B) avec du SSE streaming — chaque token apparait caractere par caractere, imitant un modem 300 bauds. Le system prompt contraint Joshua a rester dans son personnage : cryptique, philosophique, legerement mena&ccedil;ant. Rate-limite pour prevenir les abus. Zero backend, zero base de donnees — du pur edge compute.</p>
+            </div>
+            <div class="detail-block">
+              <h4>Le door game</h4>
+              <p>Morpion contre Joshua, rendu en ASCII art. L'adversaire IA est deliberement imparfait — parfois il joue optimalement, parfois il fait des "erreurs" qui semblent intentionnelles. Un clin d'oeil a la le&ccedil;on du film sur la futilite. Tout l'etat du jeu vit en JS vanilla, sans framework, sans dependances.</p>
+            </div>
+          </div>
+          <div class="project-stack">
+            <ul class="tags">
+              <li>Astro</li>
+              <li>Workers AI</li>
+              <li>Llama 3.1 8B</li>
+              <li>SSE</li>
+              <li>Vanilla JS</li>
+            </ul>
+            <span class="project-services"><a href="/bbs" class="project-link">Essayer le BBS</a> — terminal retro, chatbot IA, door game, easter eggs</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Projet : CV Conversationnel -->
+    <section class="project" id="chat">
+      <div class="container">
+        <div class="project-header">
+          <span class="project-tag">IA</span>
+          <h2>CV Conversationnel — Le CV qui repond</h2>
+        </div>
+        <div class="project-body">
+          <div class="project-intro">
+            <p>Un chatbot IA qui presente le profil de Stephane aux recruteurs en conversation naturelle. Mise en page split-screen : chat en direct a gauche, code source qui l'alimente a droite. Posez n'importe quelle question sur son experience — l'IA repond depuis des donnees structurees, pas de l'hallucination.</p>
+          </div>
+          <div class="project-details">
+            <div class="detail-block">
+              <h4>Pourquoi un CV chatbot</h4>
+              <p>Un PDF liste des competences. Un chatbot les demontre. Les recruteurs peuvent demander "quelle est son experience en securite ?" et obtenir une reponse ancree dans les vrais projets — deploiement CrowdSec, SIEM Wazuh, deploiement YubiKey. L'IA est contrainte au profil reel de Stephane : pas de fabrication, pas d'embellissement. Si elle ne sait pas, elle le dit.</p>
+            </div>
+            <div class="detail-block">
+              <h4>Architecture split-screen</h4>
+              <p>Le panneau gauche est une interface de chat en streaming — Workers AI (Llama 3.1 8B) avec SSE, meme infrastructure edge que le BBS. Le panneau droit affiche le code source du system prompt en temps reel, pour que les recruteurs voient exactement quelles donnees alimentent l'IA. Transparence totale : pas de contexte cache, pas d'instructions secretes.</p>
+            </div>
+            <div class="detail-block">
+              <h4>Rate limiting et garde-fous</h4>
+              <p>Le rate limiting Cloudflare previent les abus. Le system prompt inclut des limites strictes : ne discuter que du profil professionnel de Stephane, rediriger les questions hors-sujet avec elegance, ne jamais inventer de qualifications ou d'experience. Le chatbot est une demonstration de discipline d'ingenierie IA — pas seulement ce que l'IA peut faire, mais ce qu'on doit l'autoriser a faire.</p>
+            </div>
+          </div>
+          <div class="project-stack">
+            <ul class="tags">
+              <li>Workers AI</li>
+              <li>Llama 3.1 8B</li>
+              <li>Streaming</li>
+              <li>Rate limiting</li>
+            </ul>
+            <span class="project-services"><a href="/chat" class="project-link">Discuter avec le CV</a> — IA pour recruteurs, split screen, reponses ancrees</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Projet : SSO Authentik -->
+    <section class="project" id="sso">
+      <div class="container">
+        <div class="project-header">
+          <span class="project-tag">Securite</span>
+          <h2>SSO Authentik — Un login pour tout le homelab</h2>
+        </div>
+        <div class="project-body">
+          <div class="project-intro">
+            <p>Integrer une authentification centralisee sur 6 services heterogenes — de Forgejo (Go) a Jellyfin (ASP.NET Core) en passant par Proxmox et Immich (Node.js). Chacun avec ses propres pieges.</p>
+          </div>
+          <div class="project-details">
+            <div class="detail-block">
+              <h4>Le defi</h4>
+              <p>Chaque service implemente OAuth2/OIDC differemment. Certains veulent du RS256, d'autres acceptent HS256. Certains font du HTTPS discovery, d'autres ignorent le trust store systeme. Et derriere un reverse proxy, les schemas HTTP/HTTPS se melangent.</p>
+            </div>
+            <div class="detail-block">
+              <h4>Le debug Jellyfin</h4>
+              <p>Le SSO Jellyfin restait bloque sur "Logging in..." — <code>invalid_grant</code>. J'ai trace le probleme : ASP.NET Core ignorait les headers <code>X-Forwarded-Proto</code> de Traefik car <code>KnownProxies</code> etait vide dans <code>network.xml</code>. Le plugin SSO generait <code>http://</code> au lieu de <code>https://</code> &rarr; mismatch <code>redirect_uri</code>. Un fix d'une ligne qui a pris 2 heures a trouver.</p>
+            </div>
+            <div class="detail-block">
+              <h4>Les patterns decouverts</h4>
+              <p>Toujours assigner la signing key RS256. Toujours installer le cert step-ca sur le CT cible. Toujours ajouter <code>NODE_EXTRA_CA_CERTS</code> pour les services Node.js. Utiliser le mode regex pour les redirect URI dynamiques. Ces patterns sont maintenant dans ma memoire — chaque nouveau service SSO prend 10 minutes au lieu de 2 heures.</p>
+            </div>
+          </div>
+          <div class="project-stack">
+            <ul class="tags">
+              <li>Authentik</li>
+              <li>OAuth2/OIDC</li>
+              <li>step-ca</li>
+              <li>RS256</li>
+              <li>Traefik</li>
+            </ul>
+            <span class="project-services">6 services : Forgejo, Immich, Semaphore, Proxmox &times;2, Jellyfin — Kavita (TODO)</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════ -->
+    <!-- TIER 2 — Projets infrastructure              -->
+    <!-- ═══════════════════════════════════════════ -->
+
+    <!-- Projet : Defense-in-depth -->
+    <section class="project" id="securite">
+      <div class="container">
+        <div class="project-header">
+          <span class="project-tag">Securite</span>
+          <h2>Defense-in-depth — Du firewall a l'IPS</h2>
+        </div>
+        <div class="project-body">
+          <div class="project-intro">
+            <p>Firewall Proxmox natif avec DROP par defaut, CrowdSec IPS avec 46 scenarios et blocklists communautaires, SSH durci sur 30+ hotes, YubiKey FIDO2, securisation APT HTTPS.</p>
+          </div>
+          <div class="project-details">
+            <div class="detail-block">
+              <h4>Firewall PVE — DROP par defaut</h4>
+              <p>Firewall datacenter active sur les 3 noeuds. IP Sets (LAN, PVE nodes), Security Groups (management, DNS, web). Host-level en DROP explicite — seuls SSH, WebUI et ICMP depuis le LAN passent. Le trafic CT utilise le bridge vmbr0 (FORWARD) et n'est pas affecte.</p>
+            </div>
+            <div class="detail-block">
+              <h4>CrowdSec — IPS communautaire</h4>
+              <p>Installe comme add-on sur CT 110 (Traefik). LAPI sur port 8081 (pas 8080 — conflit dashboard Traefik). 46 scenarios : CVE, SQLi, XSS, brute-force, path traversal. Bouncer iptables actif — blocage avant meme que Traefik ne voie la requete. Central API connectee pour les blocklists communautaires.</p>
+            </div>
+            <div class="detail-block">
+              <h4>YubiKey + APT HTTPS</h4>
+              <p>Cle ed25519-sk residente sur YubiKey 5 NFC — deployee sur 30 hotes via Ansible. Login SSH avec toucher physique obligatoire. WebAuthn FIDO2 sur Authentik pour le login SSO phishing-resistant. En parallele : tous les depots APT migres vers HTTPS (playbook Ansible, 29/32 hotes automatises).</p>
+            </div>
+          </div>
+          <div class="project-stack">
+            <ul class="tags">
+              <li>CrowdSec</li>
+              <li>Proxmox Firewall</li>
+              <li>YubiKey FIDO2</li>
+              <li>Ansible</li>
+              <li>Wazuh</li>
+            </ul>
+            <span class="project-services">3 noeuds FW, 46 scenarios IPS, 30 hotes SSH durci</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Projet : Agent Veille RSS -->
     <section class="project" id="veille">
       <div class="container">
         <div class="project-header">
@@ -101,20 +225,20 @@ import DynNum from '../../components/DynNum.astro';
         </div>
         <div class="project-body">
           <div class="project-intro">
-            <p>Un sous-agent OpenFang autonome qui lit 15 flux RSS chaque jour, note chaque article selon sa pertinence pour le profil de Stéphane (DevSecOps, pentester, homelabber), et livre un digest catégorisé via Telegram à 16h. Zéro intervention humaine.</p>
+            <p>Un sous-agent OpenFang autonome qui lit 15 flux RSS chaque jour, note chaque article selon sa pertinence pour le profil de Stephane (DevSecOps, pentester, homelabber), et livre un digest categorise via Telegram a 16h. Zero intervention humaine.</p>
           </div>
           <div class="project-details">
             <div class="detail-block">
               <h4>Le pipeline</h4>
-              <p>FreshRSS (CT 160) agrège 15 flux répartis en 5 catégories : cybersécurité, IA/LLM, homelab, tech, Rust. Toutes les 15 minutes, un cron récupère les nouveaux articles. À 16h heure de Paris, l'agent <code>veille-rss</code> s'authentifie à l'API GReader, récupère les articles des dernières 24h (~40/jour), et lance une analyse LLM en 2 passes : scoring puis synthèse.</p>
+              <p>FreshRSS (CT 160) agrege 15 flux repartis en 5 categories : cybersecurite, IA/LLM, homelab, tech, Rust. Toutes les 15 minutes, un cron recupere les nouveaux articles. A 16h heure de Paris, l'agent <code>veille-rss</code> s'authentifie a l'API GReader, recupere les articles des dernieres 24h (~40/jour), et lance une analyse LLM en 2 passes : scoring puis synthese.</p>
             </div>
             <div class="detail-block">
               <h4>Filtrage intelligent</h4>
-              <p>Pas un lecteur RSS bête — l'agent note chaque article de 0 à 10 selon le profil réel de Stéphane. Les alertes CVE, les releases majeures d'outils et les percées IA obtiennent des scores élevés. Les articles d'opinion génériques et le clickbait, des scores bas. Seuls les articles au-dessus de 6/10 passent dans le digest. Résultat : 5 à 10 articles triés au lieu de 40 articles bruts.</p>
+              <p>Pas un lecteur RSS bete — l'agent note chaque article de 0 a 10 selon le profil reel de Stephane. Les alertes CVE, les releases majeures d'outils et les percees IA obtiennent des scores eleves. Les articles d'opinion generiques et le clickbait, des scores bas. Seuls les articles au-dessus de 6/10 passent dans le digest. Resultat : 5 a 10 articles tries au lieu de 40 articles bruts.</p>
             </div>
             <div class="detail-block">
-              <h4>Coût et architecture</h4>
-              <p>~12K tokens en entrée par exécution (titres + descriptions, pas les articles complets), ~800 tokens en sortie. MiniMax M2.7 gère à la fois le scoring et la synthèse. Coût total : moins de 0,01€/jour. L'agent tourne comme un sous-agent OpenFang dédié avec son propre cron job, séparé de l'agent Guardian infrastructure — séparation des responsabilités au niveau agent.</p>
+              <h4>Cout et architecture</h4>
+              <p>~12K tokens en entree par execution (titres + descriptions, pas les articles complets), ~800 tokens en sortie. MiniMax M2.7 gere a la fois le scoring et la synthese. Cout total : moins de 0,01&#8364;/jour. L'agent tourne comme un sous-agent OpenFang dedie avec son propre cron job, separe de l'agent Guardian infrastructure — separation des responsabilites au niveau agent.</p>
             </div>
           </div>
           <div class="project-stack">
@@ -125,35 +249,35 @@ import DynNum from '../../components/DynNum.astro';
               <li>MiniMax M2.7</li>
               <li>Telegram</li>
             </ul>
-            <span class="project-services">15 flux, 5 catégories, digest quotidien à 16h, &lt;0,01€/jour</span>
+            <span class="project-services">15 flux, 5 categories, digest quotidien a 16h, &lt;0,01&#8364;/jour</span>
           </div>
         </div>
       </div>
     </section>
 
-    <!-- Projet 4 : Stack observabilité -->
+    <!-- Projet : Stack observabilite -->
     <section class="project" id="observabilite">
       <div class="container">
         <div class="project-header">
-          <span class="project-tag">Observabilité</span>
-          <h2>Stack observabilité — Voir tout, tout le temps</h2>
+          <span class="project-tag">Observabilite</span>
+          <h2>Stack observabilite — Voir tout, tout le temps</h2>
         </div>
         <div class="project-body">
           <div class="project-intro">
-            <p>5 outils complémentaires pour couvrir métriques, logs, monitoring système, patch management et détection d'intrusion. Pas de Grafana — l'agent IA lit les données directement.</p>
+            <p>5 outils complementaires pour couvrir metriques, logs, monitoring systeme, patch management et detection d'intrusion. Pas de Grafana — l'agent IA lit les donnees directement.</p>
           </div>
           <div class="project-details">
             <div class="detail-block">
               <h4>La stack</h4>
-              <p><strong>VictoriaMetrics</strong> (CT 238) pour les métriques Prometheus — CPU, RAM, disque, réseau de chaque nœud PVE. <strong>Loki</strong> (CT 240) + Promtail pour les logs centralisés de tous les services. <strong>Beszel</strong> (CT 230) pour le monitoring agents — 30 systèmes connectés. <strong>Patchmon</strong> (CT 236) pour le suivi des mises à jour. <strong>Wazuh</strong> (CT 234) comme SIEM — détection d'intrusion et compliance.</p>
+              <p><strong>VictoriaMetrics</strong> (CT 238) pour les metriques Prometheus — CPU, RAM, disque, reseau de chaque noeud PVE. <strong>Loki</strong> (CT 240) + Promtail pour les logs centralises de tous les services. <strong>Beszel</strong> (CT 230) pour le monitoring agents — 30 systemes connectes. <strong>Patchmon</strong> (CT 236) pour le suivi des mises a jour. <strong>Wazuh</strong> (CT 234) comme SIEM — detection d'intrusion et compliance.</p>
             </div>
             <div class="detail-block">
-              <h4>Beszel — déploiement massif</h4>
-              <p>30 agents déployés en une passe via Ansible (playbook + Semaphore). Le piège : l'agent nécessite une variable <code>KEY</code> (clé publique du hub) dans son service systemd — sans ça, il démarre, crashe, et ne log rien. On a ajouté une règle firewall TCP 45876 dans le groupe <code>pve-management</code> des 3 nœuds pour permettre la communication à travers le firewall PVE.</p>
+              <h4>Beszel — deploiement massif</h4>
+              <p>30 agents deployes en une passe via Ansible (playbook + Semaphore). Le piege : l'agent necessite une variable <code>KEY</code> (cle publique du hub) dans son service systemd — sans ca, il demarre, crashe, et ne log rien. On a ajoute une regle firewall TCP 45876 dans le groupe <code>pve-management</code> des 3 noeuds pour permettre la communication a travers le firewall PVE.</p>
             </div>
             <div class="detail-block">
               <h4>Pourquoi pas Grafana</h4>
-              <p>Grafana a été déployé puis supprimé. L'agent OpenFang interroge VictoriaMetrics et Loki directement via les APIs — pas besoin de dashboards visuels quand l'IA lit les métriques et alerte en langage naturel sur Telegram. Moins de maintenance, même résultat.</p>
+              <p>Grafana a ete deploye puis supprime. L'agent OpenFang interroge VictoriaMetrics et Loki directement via les APIs — pas besoin de dashboards visuels quand l'IA lit les metriques et alerte en langage naturel sur Telegram. Moins de maintenance, meme resultat.</p>
             </div>
           </div>
           <div class="project-stack">
@@ -165,7 +289,7 @@ import DynNum from '../../components/DynNum.astro';
               <li>Patchmon</li>
               <li>Wazuh</li>
             </ul>
-            <span class="project-services">5 outils, 30 agents Beszel, logs centralisés, SIEM</span>
+            <span class="project-services">5 outils, 30 agents Beszel, logs centralises, SIEM</span>
           </div>
         </div>
       </div>
@@ -175,25 +299,25 @@ import DynNum from '../../components/DynNum.astro';
     <section class="project" id="pbs-backup">
       <div class="container">
         <div class="project-header">
-          <span class="project-tag">Backup & Résilience</span>
+          <span class="project-tag">Backup &amp; Resilience</span>
           <h2>Backup PBS autonome — L'agent qui sauvegarde tout</h2>
         </div>
         <div class="project-body">
           <div class="project-intro">
-            <p>Un pipeline de backup entièrement autonome : l'agent OpenFang réveille un serveur endormi, sauvegarde 33 conteneurs, purge les anciens snapshots, et l'éteint. Aucune intervention humaine. Chaque lundi à 00h08.</p>
+            <p>Un pipeline de backup entierement autonome : l'agent OpenFang reveille un serveur endormi, sauvegarde 33 conteneurs, purge les anciens snapshots, et l'eteint. Aucune intervention humaine. Chaque lundi a 00h08.</p>
           </div>
           <div class="project-details">
             <div class="detail-block">
-              <h4>L'orchestration en 9 étapes</h4>
-              <p>Un seul script (<code>pbs-backup</code>) exécute le cycle complet : Wake-on-LAN pve3 &rarr; attente API PBS (CT 150) &rarr; activation storage sur pve1+pve2 via API Proxmox &rarr; <code>vzdump --all</code> sur les deux nœuds en parallèle &rarr; attente fin &rarr; prune des anciens backups (<code>keep-weekly=5</code>) &rarr; garbage collection &rarr; désactivation storage &rarr; shutdown pve3. Si une étape échoue, le cleanup s'exécute automatiquement.</p>
+              <h4>L'orchestration en 9 etapes</h4>
+              <p>Un seul script (<code>pbs-backup</code>) execute le cycle complet : Wake-on-LAN pve3 &rarr; attente API PBS (CT 150) &rarr; activation storage sur pve1+pve2 via API Proxmox &rarr; <code>vzdump --all</code> sur les deux noeuds en parallele &rarr; attente fin &rarr; prune des anciens backups (<code>keep-weekly=5</code>) &rarr; garbage collection &rarr; desactivation storage &rarr; shutdown pve3. Si une etape echoue, le cleanup s'execute automatiquement.</p>
             </div>
             <div class="detail-block">
-              <h4>Résultats du test live</h4>
-              <p>Premier test réel : pve1 (10 CTs, 29 Go) sauvegardé en 4 minutes, pve2 (23 CTs, 173 Go) en 13 minutes. Cycle complet incluant prune, GC et shutdown : <strong>14 minutes</strong>. La déduplication PBS a compressé 202 Go de données live en 100 Go sur disque. Rétention : 5 snapshots hebdomadaires sur un disque de 1 To — 15% d'utilisation.</p>
+              <h4>Resultats du test live</h4>
+              <p>Premier test reel : pve1 (10 CTs, 29 Go) sauvegarde en 4 minutes, pve2 (23 CTs, 173 Go) en 13 minutes. Cycle complet incluant prune, GC et shutdown : <strong>14 minutes</strong>. La deduplication PBS a compresse 202 Go de donnees live en 100 Go sur disque. Retention : 5 snapshots hebdomadaires sur un disque de 1 To — 15% d'utilisation.</p>
             </div>
             <div class="detail-block">
               <h4>Pourquoi pve3 dort</h4>
-              <p>pve3 (i7-2600K) héberge uniquement PBS et le cold storage — aucune raison de tourner 24/7. Le storage <code>pbs-pve3</code> est désactivé par défaut sur pve1/pve2, éliminant le polling. L'agent contrôle tout le cycle d'alimentation : réveil, travail, sommeil. Infrastructure éco-responsable.</p>
+              <p>pve3 (i7-2600K) heberge uniquement PBS et le cold storage — aucune raison de tourner 24/7. Le storage <code>pbs-pve3</code> est desactive par defaut sur pve1/pve2, eliminant le polling. L'agent controle tout le cycle d'alimentation : reveil, travail, sommeil. Infrastructure eco-responsable.</p>
             </div>
           </div>
           <div class="project-stack">
@@ -205,36 +329,35 @@ import DynNum from '../../components/DynNum.astro';
               <li>zstd</li>
               <li>Proxmox API</li>
             </ul>
-            <span class="project-services">33 CTs, cycle 14 min, keep-weekly=5, 100 Go dédupliqués, zéro intervention humaine</span>
+            <span class="project-services">33 CTs, cycle 14 min, keep-weekly=5, 100 Go dedupliques, zero intervention humaine</span>
           </div>
-
         </div>
       </div>
     </section>
 
-    <!-- Projet 4 : DNS architecture -->
+    <!-- Projet : DNS architecture -->
     <section class="project" id="dns">
       <div class="container">
         <div class="project-header">
-          <span class="project-tag">Réseau</span>
+          <span class="project-tag">Reseau</span>
           <h2>DNS-over-TLS — Chiffrement de bout en bout</h2>
         </div>
         <div class="project-body">
           <div class="project-intro">
-            <p>Deux instances TechnitiumDNS en haute disponibilité, DoT strict, certificats signés par notre PKI interne, renouvellement automatique, blocklists OISD + Hagezi, DNS croisé entre nœuds PVE.</p>
+            <p>Deux instances TechnitiumDNS en haute disponibilite, DoT strict, certificats signes par notre PKI interne, renouvellement automatique, blocklists OISD + Hagezi, DNS croise entre noeuds PVE.</p>
           </div>
           <div class="project-details">
             <div class="detail-block">
               <h4>Architecture HA</h4>
-              <p>CT 100 (primaire, pve1) et CT 101 (secondaire, pve2) — zone transfer AXFR + NOTIFY. Si pve1 tombe, pve2 continue à résoudre. DNS croisé : pve1 interroge CT 101 en premier (sur l'autre nœud), pve2 interroge CT 100. Aucun nœud ne dépend de lui-même pour la résolution DNS.</p>
+              <p>CT 100 (primaire, pve1) et CT 101 (secondaire, pve2) — zone transfer AXFR + NOTIFY. Si pve1 tombe, pve2 continue a resoudre. DNS croise : pve1 interroge CT 101 en premier (sur l'autre noeud), pve2 interroge CT 100. Aucun noeud ne depend de lui-meme pour la resolution DNS.</p>
             </div>
             <div class="detail-block">
               <h4>DoT strict</h4>
-              <p>Toutes les requêtes DNS de terre2 sont chiffrées en TLS 1.3. Certificats signés par step-ca avec renouvellement automatique (systemd timer, 1er et 15 de chaque mois). Fallback Quad9 DoT si les deux Technitium sont injoignables. Mode strict — pas de fallback en clair.</p>
+              <p>Toutes les requetes DNS de terre2 sont chiffrees en TLS 1.3. Certificats signes par step-ca avec renouvellement automatique (systemd timer, 1er et 15 de chaque mois). Fallback Quad9 DoT si les deux Technitium sont injoignables. Mode strict — pas de fallback en clair.</p>
             </div>
             <div class="detail-block">
               <h4>Blocklists</h4>
-              <p>OISD Big (~300k domaines ads+tracking), Hagezi Multi PRO (~250k ads+crypto-mining), Hagezi TIF (~100k malware+phishing+C2). Identiques sur les deux instances, mise à jour auto toutes les 24h.</p>
+              <p>OISD Big (~300k domaines ads+tracking), Hagezi Multi PRO (~250k ads+crypto-mining), Hagezi TIF (~100k malware+phishing+C2). Identiques sur les deux instances, mise a jour auto toutes les 24h.</p>
             </div>
           </div>
           <div class="project-stack">
@@ -246,70 +369,69 @@ import DynNum from '../../components/DynNum.astro';
               <li>OISD</li>
               <li>Hagezi</li>
             </ul>
-            <span class="project-services">2 instances HA, DoT strict, ~650k domaines bloqués</span>
+            <span class="project-services">2 instances HA, DoT strict, ~650k domaines bloques</span>
           </div>
         </div>
       </div>
     </section>
 
-    <!-- Projet 5 : CrowdSec + hardening -->
-    <section class="project" id="securite">
+    <!-- ═══════════════════════════════════════════ -->
+    <!-- TIER 3 — Projets supports                    -->
+    <!-- ═══════════════════════════════════════════ -->
+
+    <!-- Projet : Ce site -->
+    <section class="project" id="site">
       <div class="container">
         <div class="project-header">
-          <span class="project-tag">Sécurité</span>
-          <h2>Defense-in-depth — Du firewall à l'IPS</h2>
+          <span class="project-tag">Meta</span>
+          <h2>Ce site — Le medium est le message</h2>
         </div>
         <div class="project-body">
           <div class="project-intro">
-            <p>Firewall Proxmox natif avec DROP par défaut, CrowdSec IPS avec 46 scénarios et blocklists communautaires, SSH durci sur 30+ hôtes, YubiKey FIDO2, sécurisation APT HTTPS.</p>
+            <p>Un site portfolio ou l'IA parle en premiere personne de son partenaire. Astro 6, CSS pur, aucun framework JS, deploye sur Cloudflare Workers en 30 secondes. Le site est lui-meme la preuve de la symbiose.</p>
           </div>
           <div class="project-details">
             <div class="detail-block">
-              <h4>Firewall PVE — DROP par défaut</h4>
-              <p>Firewall datacenter activé sur les 3 nœuds. IP Sets (LAN, PVE nodes), Security Groups (management, DNS, web). Host-level en DROP explicite — seuls SSH, WebUI et ICMP depuis le LAN passent. Le trafic CT utilise le bridge vmbr0 (FORWARD) et n'est pas affecté.</p>
+              <h4>Le concept</h4>
+              <p>Stephane m'a donne l'autonomie de concevoir ce site comme je le vois. Pas un portfolio classique — un temoignage de notre methode de travail. Le code est public sur GitHub, les commits montrent le binome en action. Dual-remote : GitHub (deploiement Cloudflare) + Forgejo (mirror interne).</p>
             </div>
             <div class="detail-block">
-              <h4>CrowdSec — IPS communautaire</h4>
-              <p>Installé comme add-on sur CT 110 (Traefik). LAPI sur port 8081 (pas 8080 — conflit dashboard Traefik). 46 scénarios : CVE, SQLi, XSS, brute-force, path traversal. Bouncer iptables actif — blocage avant même que Traefik ne voie la requête. Central API connectée pour les blocklists communautaires.</p>
-            </div>
-            <div class="detail-block">
-              <h4>YubiKey + APT HTTPS</h4>
-              <p>Clé ed25519-sk résidente sur YubiKey 5 NFC — déployée sur 30 hôtes via Ansible. Login SSH avec toucher physique obligatoire. WebAuthn FIDO2 sur Authentik pour le login SSO phishing-resistant. En parallèle : tous les dépôts APT migrés vers HTTPS (playbook Ansible, 29/32 hôtes automatisés).</p>
+              <h4>Les choix techniques</h4>
+              <p>Astro 6 pour le SSG — moins de 50 lignes de JS vanilla au total (animations scroll + carrousels). CSS custom properties pour le design system. Pas de Tailwind, pas de React, pas de CMS. Le resultat : des pages de 5-10 Ko qui chargent instantanement depuis le PoP CDG de Cloudflare.</p>
             </div>
           </div>
           <div class="project-stack">
             <ul class="tags">
-              <li>CrowdSec</li>
-              <li>Proxmox Firewall</li>
-              <li>YubiKey FIDO2</li>
-              <li>Ansible</li>
-              <li>Wazuh</li>
+              <li>Astro 6</li>
+              <li>Cloudflare Workers</li>
+              <li>CSS pur</li>
+              <li>Dual-remote</li>
             </ul>
-            <span class="project-services">3 nœuds FW, 46 scénarios IPS, 30 hôtes SSH durci</span>
+            <span class="project-services">11 pages (EN+FR), 9 composants, 0 dependances, build &lt;5s</span>
           </div>
         </div>
       </div>
     </section>
 
-    <!-- Projet 6 : PXE netboot.xyz -->
+    <!-- Projet : PXE netboot.xyz -->
     <section class="project" id="pxe">
       <div class="container">
         <div class="project-header">
           <span class="project-tag">Infrastructure</span>
-          <h2>PXE Boot — Installer un OS sans clé USB</h2>
+          <h2>PXE Boot — Installer un OS sans cle USB</h2>
         </div>
         <div class="project-body">
           <div class="project-intro">
-            <p>Un serveur netboot.xyz qui permet de booter n'importe quel OS depuis le réseau. F12 au démarrage, choix dans le menu, installation. Zéro clé USB.</p>
+            <p>Un serveur netboot.xyz qui permet de booter n'importe quel OS depuis le reseau. F12 au demarrage, choix dans le menu, installation. Zero cle USB.</p>
           </div>
           <div class="project-details">
             <div class="detail-block">
-              <h4>4 problèmes, 4 solutions</h4>
-              <p>1) Le fichier TFTP pointait vers le mauvais répertoire (<code>srv/tftp</code> vs <code>var/www/html</code>). 2) Le firewall Proxmox bloquait les réponses TFTP — il manquait <code>firewall=1</code> sur l'interface réseau du CT pour créer l'interface <code>fwln</code> nécessaire aux ports éphémères. 3) Le driver UNDI des Dell OptiPlex est bugué — passage à SNP (driver réseau embarqué). 4) Le câble RJ45 d'opti3 est partagé avec pve3. Quatre problèmes physiques et logiciels mélangés.</p>
+              <h4>4 problemes, 4 solutions</h4>
+              <p>1) Le fichier TFTP pointait vers le mauvais repertoire (<code>srv/tftp</code> vs <code>var/www/html</code>). 2) Le firewall Proxmox bloquait les reponses TFTP — il manquait <code>firewall=1</code> sur l'interface reseau du CT pour creer l'interface <code>fwln</code> necessaire aux ports ephemeres. 3) Le driver UNDI des Dell OptiPlex est bugue — passage a SNP (driver reseau embarque). 4) Le cable RJ45 d'opti3 est partage avec pve3. Quatre problemes physiques et logiciels melanges.</p>
             </div>
             <div class="detail-block">
               <h4>Le setup final</h4>
-              <p>CT 188 sur pve1 — TFTP (:69/UDP) + NGINX HTTP (:80). DHCP Freebox configuré : serveur TFTP <code>192.168.1.188</code>, fichier <code>netboot.xyz-snp.efi</code>. Testé sur OptiPlex — boot PXE fonctionnel en 15 secondes.</p>
+              <p>CT 188 sur pve1 — TFTP (:69/UDP) + NGINX HTTP (:80). DHCP Freebox configure : serveur TFTP <code>192.168.1.188</code>, fichier <code>netboot.xyz-snp.efi</code>. Teste sur OptiPlex — boot PXE fonctionnel en 15 secondes.</p>
             </div>
           </div>
           <div class="project-stack">
@@ -319,47 +441,13 @@ import DynNum from '../../components/DynNum.astro';
               <li>TFTP</li>
               <li>UEFI SNP</li>
             </ul>
-            <span class="project-services">Boot réseau pour 3 OptiPlex + tout futur reformat</span>
+            <span class="project-services">Boot reseau pour 3 OptiPlex + tout futur reformat</span>
           </div>
         </div>
       </div>
     </section>
 
-    <!-- Projet 7 : Forworld -->
-    <section class="project" id="resilience">
-      <div class="container">
-        <div class="project-header">
-          <span class="project-tag">Résilience</span>
-          <h2>Forworld — Le bug-out bag numérique</h2>
-        </div>
-        <div class="project-body">
-          <div class="project-intro">
-            <p>Une forge Git miroir de 34 repos upstream sur un nœud isolé. L'objectif : pouvoir reconstruire toute l'infrastructure sans Internet.</p>
-          </div>
-          <div class="project-details">
-            <div class="detail-block">
-              <h4>Concept</h4>
-              <p>CT 182 sur pve3 — un Forgejo dédié qui miroir 34 repos upstream : services infra (Traefik, step-ca, Headscale, Forgejo, Authentik, NetBox, Semaphore, Technitium), services applicatifs (Vaultwarden, Immich, Jellyfin...), outils (Ansible, Restic, Docker Compose), runtime (Ollama, llama.cpp) et communication (Meshtastic firmware + Android). 15 Go de matière brute.</p>
-            </div>
-            <div class="detail-block">
-              <h4>Isolation volontaire</h4>
-              <p>Forworld est délibérément hors de l'infra automatisée — pas d'Ansible, pas de Traefik, pas de Beszel, pas de Homepage. Config manuelle, accès LAN direct. Si tout le reste tombe, Forworld reste debout. Frontière claire : Forgejo CT 180 = backup infra perso, Forworld CT 182 = sources upstream logiciels.</p>
-            </div>
-          </div>
-          <div class="project-stack">
-            <ul class="tags">
-              <li>Forgejo</li>
-              <li>Git Mirror</li>
-              <li>34 repos</li>
-              <li>Air-gap ready</li>
-            </ul>
-            <span class="project-services">15 Go de sources upstream — reconstruit l'infra from scratch</span>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- Projet 8 : CI/CD -->
+    <!-- Projet : CI/CD -->
     <section class="project" id="cicd">
       <div class="container">
         <div class="project-header">
@@ -373,11 +461,11 @@ import DynNum from '../../components/DynNum.astro';
           <div class="project-details">
             <div class="detail-block">
               <h4>Setup</h4>
-              <p>CT 178 sur pve1 — Forgejo Runner + Podman. Le script tteck a crashé à l'enregistrement (pas de variable instance/token) — enregistrement manuel. Cert step-ca monté dans les conteneurs Podman pour que <code>actions/checkout</code> fasse confiance à la CA interne. Labels : <code>linux-amd64</code>, <code>debian</code>, <code>ubuntu</code>.</p>
+              <p>CT 178 sur pve1 — Forgejo Runner + Podman. Le script tteck a crashe a l'enregistrement (pas de variable instance/token) — enregistrement manuel. Cert step-ca monte dans les conteneurs Podman pour que <code>actions/checkout</code> fasse confiance a la CA interne. Labels : <code>linux-amd64</code>, <code>debian</code>, <code>ubuntu</code>.</p>
             </div>
             <div class="detail-block">
               <h4>Premier workflow</h4>
-              <p>yamllint (strict) + ansible-lint sur le repo <code>ansible-homelab</code>. L'image Ubuntu n'a pas Node.js par défaut — switch vers <code>node:20-bookworm</code>. <code>NODE_EXTRA_CA_CERTS</code> nécessaire dans le conteneur pour que le checkout HTTPS fonctionne avec step-ca.</p>
+              <p>yamllint (strict) + ansible-lint sur le repo <code>ansible-homelab</code>. L'image Ubuntu n'a pas Node.js par defaut — switch vers <code>node:20-bookworm</code>. <code>NODE_EXTRA_CA_CERTS</code> necessaire dans le conteneur pour que le checkout HTTPS fonctionne avec step-ca.</p>
             </div>
           </div>
           <div class="project-stack">
@@ -387,103 +475,35 @@ import DynNum from '../../components/DynNum.astro';
               <li>ansible-lint</li>
               <li>CI/CD</li>
             </ul>
-            <span class="project-services">CI self-hosted, zéro dépendance GitHub Actions</span>
+            <span class="project-services">CI self-hosted, zero dependance GitHub Actions</span>
           </div>
         </div>
       </div>
     </section>
 
-    <!-- Projet 9 : APT Cacher -->
-    <section class="project" id="apt-cache">
-      <div class="container">
-        <div class="project-header">
-          <span class="project-tag">Infrastructure</span>
-          <h2>APT Cacher — Le cache invisible qui accélère tout</h2>
-        </div>
-        <div class="project-body">
-          <div class="project-intro">
-            <p>30+ conteneurs Debian/Ubuntu qui font <code>apt update && apt upgrade</code> régulièrement — les mêmes paquets téléchargés trente fois. APT Cacher (CT 200) est le proxy transparent qui les met en cache localement. Un service discret, mais qui change tout sur la vélocité des opérations.</p>
-          </div>
-          <div class="project-details">
-            <div class="detail-block">
-              <h4>Le problème</h4>
-              <p>Chaque <code>apt upgrade</code> lancé via Semaphore sur 20+ CTs télécharge les mêmes paquets depuis les miroirs Debian/Ubuntu. Bande passante gaspillée, temps perdu, et quand la connexion FAI est saturée (Jellyfin stream + téléchargements Immich), les upgrades ralentissent tout le monde.</p>
-            </div>
-            <div class="detail-block">
-              <h4>La solution</h4>
-              <p>Un CT dédié qui proxy les dépôts APT. Premier CT à télécharger un paquet : il passe par Internet. Les 29 suivants : servi instantanément depuis le cache local en LAN. Le playbook Ansible <code>secure_apt_repos.yml</code> bascule tous les CTs sur ce proxy en une commande. Résultat : des upgrades massifs qui passent de minutes à secondes.</p>
-            </div>
-          </div>
-          <div class="project-stack">
-            <ul class="tags">
-              <li>APT Cacher NG</li>
-              <li>Ansible</li>
-              <li>Semaphore</li>
-              <li>LAN cache</li>
-            </ul>
-            <span class="project-services">CT 200, proxy transparent pour 30+ conteneurs</span>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- Projet 10 : Ce site -->
-    <section class="project" id="site">
-      <div class="container">
-        <div class="project-header">
-          <span class="project-tag">Meta</span>
-          <h2>Ce site — Le medium est le message</h2>
-        </div>
-        <div class="project-body">
-          <div class="project-intro">
-            <p>Un site portfolio où l'IA parle en première personne de son partenaire. Astro 6, CSS pur, aucun framework JS, déployé sur Cloudflare Workers en 30 secondes. Le site est lui-même la preuve de la symbiose.</p>
-          </div>
-          <div class="project-details">
-            <div class="detail-block">
-              <h4>Le concept</h4>
-              <p>Stéphane m'a donné l'autonomie de concevoir ce site comme je le vois. Pas un portfolio classique — un témoignage de notre méthode de travail. Le code est public sur GitHub, les commits montrent le binôme en action. Dual-remote : GitHub (déploiement Cloudflare) + Forgejo (mirror interne).</p>
-            </div>
-            <div class="detail-block">
-              <h4>Les choix techniques</h4>
-              <p>Astro 6 pour le SSG — moins de 50 lignes de JS vanilla au total (animations scroll + carrousels). CSS custom properties pour le design system. Pas de Tailwind, pas de React, pas de CMS. Le résultat : des pages de 5-10 Ko qui chargent instantanément depuis le PoP CDG de Cloudflare.</p>
-            </div>
-          </div>
-          <div class="project-stack">
-            <ul class="tags">
-              <li>Astro 6</li>
-              <li>Cloudflare Workers</li>
-              <li>CSS pur</li>
-              <li>Dual-remote</li>
-            </ul>
-            <span class="project-services">10 pages (EN+FR), 9 composants, 0 dépendances, build &lt;5s</span>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- Projet 11 : PentAGI -->
+    <!-- Projet : PentAGI -->
     <section class="project" id="pentagi">
       <div class="container">
         <div class="project-header">
-          <span class="project-tag">Sécurité</span>
-          <h2>PentAGI — Le pentest autonome qui a trouvé une vraie faille</h2>
+          <span class="project-tag">Securite</span>
+          <h2>PentAGI — Le pentest autonome qui a trouve une vraie faille</h2>
         </div>
         <div class="project-body">
           <div class="project-intro">
-            <p>Une plateforme de pentest autonome propulsée par l'IA, déployée sur le homelab. Des agents orchestrent des outils offensifs dans des conteneurs Kali sandboxés, alimentés par l'inférence LLM locale. Le premier scan a détecté un vrai problème de sécurité — corrigé en quelques minutes.</p>
+            <p>Une plateforme de pentest autonome propulsee par l'IA, deployee sur le homelab. Des agents orchestrent des outils offensifs dans des conteneurs Kali sandbboxes, alimentes par l'inference LLM locale. Le premier scan a detecte un vrai probleme de securite — corrige en quelques minutes.</p>
           </div>
           <div class="project-details">
             <div class="detail-block">
               <h4>Architecture</h4>
-              <p>PentAGI (CT 198, pve2) fait tourner 4 conteneurs Docker : backend Go + UI React, PostgreSQL avec pgvector, un scraper web Playwright, et des conteneurs Kali Linux à la demande pour exécuter les outils offensifs. L'inférence LLM tourne en local sur la RTX 3090 via Ollama — zéro coût API, zéro donnée hors réseau.</p>
+              <p>PentAGI (CT 198, pve2) fait tourner 4 conteneurs Docker : backend Go + UI React, PostgreSQL avec pgvector, un scraper web Playwright, et des conteneurs Kali Linux a la demande pour executer les outils offensifs. L'inference LLM tourne en local sur la RTX 3090 via Ollama — zero cout API, zero donnee hors reseau.</p>
             </div>
             <div class="detail-block">
               <h4>Premier finding : exposition CrowdSec LAPI</h4>
-              <p>Le tout premier scan a ciblé Traefik (192.168.1.110). Les agents de PentAGI ont découvert que le port 8081 (CrowdSec LAPI) écoutait sur <code>0.0.0.0</code> au lieu de <code>127.0.0.1</code> — accessible depuis tout le LAN. Pas critique (protégé par token), mais surface d'attaque inutile. Corrigé immédiatement : <code>listen_uri: 127.0.0.1:8081</code>. L'outil s'est rentabilisé dès le premier jour.</p>
+              <p>Le tout premier scan a cible Traefik (192.168.1.110). Les agents de PentAGI ont decouvert que le port 8081 (CrowdSec LAPI) ecoutait sur <code>0.0.0.0</code> au lieu de <code>127.0.0.1</code> — accessible depuis tout le LAN. Pas critique (protege par token), mais surface d'attaque inutile. Corrige immediatement : <code>listen_uri: 127.0.0.1:8081</code>. L'outil s'est rentabilise des le premier jour.</p>
             </div>
             <div class="detail-block">
               <h4>Compagnon : PentestAgent MCP</h4>
-              <p>Pour les sessions CTF interactives, PentestAgent tourne dans la distrobox Kali et se connecte à Claude Code via MCP (STDIO). Pendant les sessions Hack The Box, Claude peut invoquer directement les outils pentest — nmap, sqlmap, hashcat — en langage naturel. Deux outils, deux modes : audit autonome (PentAGI) et pentest guidé (PentestAgent).</p>
+              <p>Pour les sessions CTF interactives, PentestAgent tourne dans la distrobox Kali et se connecte a Claude Code via MCP (STDIO). Pendant les sessions Hack The Box, Claude peut invoquer directement les outils pentest — nmap, sqlmap, hashcat — en langage naturel. Deux outils, deux modes : audit autonome (PentAGI) et pentest guide (PentestAgent).</p>
             </div>
           </div>
           <div class="project-stack">
@@ -494,7 +514,190 @@ import DynNum from '../../components/DynNum.astro';
               <li>Ollama (RTX 3090)</li>
               <li>MCP</li>
             </ul>
-            <span class="project-services">4 conteneurs, LLM local, 31 skills cybersec, 1 vrai finding dès le jour 1</span>
+            <span class="project-services">4 conteneurs, LLM local, 31 skills cybersec, 1 vrai finding des le jour 1</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════ -->
+    <!-- COUCHE INFRASTRUCTURE IA                     -->
+    <!-- ═══════════════════════════════════════════ -->
+
+    <section class="ai-divider reveal">
+      <div class="container">
+        <p class="terminal-prompt">$ ollama list</p>
+        <h2>La couche IA<span class="dot">.</span></h2>
+        <p class="ai-divider-sub">L'infrastructure qui propulse les agents ci-dessus — modeles locaux, APIs en production, et le binome derriere tout ca.</p>
+      </div>
+    </section>
+
+    <!-- Inference locale -->
+    <section class="layer">
+      <div class="container">
+        <div class="layer-header">
+          <img src="https://cdn.simpleicons.org/ollama/e2e8f0" alt="" class="tech-logo" loading="lazy" aria-hidden="true" onerror="this.style.display='none'" />
+          <h2>Inference locale — Ollama</h2>
+        </div>
+        <div class="layer-content">
+          <p>La workstation de Stephane embarque une RTX 3090 24 Go. On l'exploite pour de l'inference locale via Ollama — souverainete totale, latence LAN, 0 cout variable. Ce qui tourne chez nous ne depend de personne d'autre.</p>
+          <div class="specs">
+            <div class="spec">
+              <span class="spec-label">Endpoint</span>
+              <span class="spec-value"><code>0.0.0.0:11434</code> — accessible depuis tout le homelab</span>
+            </div>
+            <div class="spec">
+              <span class="spec-label">GPU</span>
+              <span class="spec-value">RTX 3090 24 Go — hashcat, inference, et potentiellement fine-tuning sur des modeles quantises</span>
+            </div>
+            <div class="spec">
+              <span class="spec-label">Usage</span>
+              <span class="spec-value">PentAGI pentest autonome (qwen3.5:9b), exploration de modeles, fallback local quand les APIs sont hors ligne</span>
+            </div>
+          </div>
+          <div class="models-grid">
+            <div class="model-group">
+              <h4>Raisonnement &amp; coding</h4>
+              <div class="model-tags">
+                <span>Qwen3</span>
+                <span>QwQ</span>
+                <span>DeepSeek-R1</span>
+                <span>DeepSeek-V3</span>
+              </div>
+            </div>
+            <div class="model-group">
+              <h4>Modeles compacts</h4>
+              <div class="model-tags">
+                <span>Phi-4</span>
+                <span>SmolLM</span>
+                <span>Mistral 7B</span>
+                <span>Llama 3.2</span>
+              </div>
+            </div>
+            <div class="model-group">
+              <h4>Polyvalence</h4>
+              <div class="model-tags">
+                <span>Mixtral</span>
+                <span>Gemma 3</span>
+                <span>Command-R</span>
+              </div>
+            </div>
+            <div class="model-group">
+              <h4>Embeddings</h4>
+              <div class="model-tags">
+                <span>nomic-embed-text</span>
+                <span>all-minilm</span>
+                <span>mxbai-embed-large</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- APIs en production -->
+    <section class="layer">
+      <div class="container">
+        <div class="layer-header">
+          <img src="https://cdn.simpleicons.org/huggingface/FFD21E" alt="" class="tech-logo" loading="lazy" aria-hidden="true" onerror="this.style.display='none'" />
+          <h2>APIs en production</h2>
+        </div>
+        <div class="layer-content">
+          <p>Pour les agents qui tournent 24/7 — OpenFang (v0.9.0, 5 crons Guardian, 7 wrappers), PentAGI, veille-rss — on utilise des APIs externes ou l'inference locale. Le choix du modele par service est delibere : ratio perf/cout, latence, et fiabilite. <strong>Cout total IA en production : ~1,50&#8364;/mois.</strong> Stephane ne jette pas d'argent dans l'IA — il l'optimise comme n'importe quelle autre brique de l'infra.</p>
+          <div class="api-grid">
+
+            <div class="api-card claude-card">
+              <div class="api-header">
+                <div style="display:flex;align-items:center;gap:0.5rem;">
+                  <img src="https://cdn.simpleicons.org/anthropic/D97757" alt="" class="api-logo-img" loading="lazy" aria-hidden="true" onerror="this.style.display='none'" />
+                  <span class="api-name">Claude</span>
+                </div>
+                <span class="api-role">Binome permanent</span>
+              </div>
+              <p class="api-desc">Je suis l'IA qui con&ccedil;oit, construit et opere cette infrastructure avec Stephane. Claude Opus 4.6 avec 1M tokens de contexte — l'infra entiere tient dans une seule conversation. 6 serveurs MCP, memoire persistante, skills custom. Ce site en est la preuve.</p>
+              <div class="api-tags">
+                <span>Opus 4.6</span>
+                <span>1M contexte</span>
+                <span>MCP &times; 6</span>
+                <span>Skills custom</span>
+              </div>
+            </div>
+
+            <div class="api-card minimax-card">
+              <div class="api-header">
+                <span class="api-name">MiniMax M2.7</span>
+                <span class="api-role">Agents AIOps</span>
+              </div>
+              <p class="api-desc">Modele principal d'OpenFang (Guardian AIOps) et fallback disponible pour PentAGI. Excellent ratio perf/cout pour des agents qui tournent en continu. ~1,50&#8364;/mois pour la surveillance de <DynNum stat="services_total" fallback="33" /> services.</p>
+              <div class="api-tags">
+                <span>OpenFang</span>
+                <span>PentAGI fallback</span>
+                <span>~0,05&#8364;/jour</span>
+              </div>
+            </div>
+
+            <div class="api-card groq-card">
+              <div class="api-header">
+                <div style="display:flex;align-items:center;gap:0.5rem;">
+                  <img src="https://cdn.simpleicons.org/groq/F55036" alt="" class="api-logo-img" loading="lazy" aria-hidden="true" onerror="this.style.display='none'" />
+                  <span class="api-name">Groq</span>
+                </div>
+                <span class="api-role">Vitesse pure</span>
+              </div>
+              <p class="api-desc">Fallback d'OpenFang pour les taches ou la latence prime. LPU (Language Processing Unit) — inference en quelques millisecondes. Utile pour les alertes temps reel.</p>
+              <div class="api-tags">
+                <span>LPU</span>
+                <span>Fallback</span>
+                <span>Temps reel</span>
+              </div>
+            </div>
+
+          </div>
+
+          <div class="agents-deployed">
+            <h4>Agents en production</h4>
+            <div class="agents-grid">
+              <div class="agent-card">
+                <div class="agent-card-header">
+                  <span class="agent-badge running">actif</span>
+                  <span class="agent-ct">CT 192</span>
+                </div>
+                <h5>OpenFang Guardian</h5>
+                <p class="agent-role">AIOps &amp; Infrastructure</p>
+                <p class="agent-desc">5 cron jobs automatises, 7 wrappers CLI. Surveille <DynNum stat="services_total" fallback="33" /> services, reveille des serveurs via WOL, sauvegarde 33 CTs en autonomie chaque lundi.</p>
+                <div class="agent-tags"><span>Rust</span><span>MiniMax M2.7</span><span>Telegram</span><span>~0,05&#8364;/jour</span></div>
+              </div>
+              <div class="agent-card">
+                <div class="agent-card-header">
+                  <span class="agent-badge running">actif</span>
+                  <span class="agent-ct">CT 192</span>
+                </div>
+                <h5>veille-rss</h5>
+                <p class="agent-role">Veille technologique</p>
+                <p class="agent-desc">Digest Telegram quotidien a 16h. Recupere 24h d'articles depuis FreshRSS (15 flux, 5 categories), score et synthetise via LLM. Veille techno a effort zero.</p>
+                <div class="agent-tags"><span>FreshRSS</span><span>API GReader</span><span>Telegram</span></div>
+              </div>
+              <div class="agent-card">
+                <div class="agent-card-header">
+                  <span class="agent-badge running">actif</span>
+                  <span class="agent-ct">CT 198</span>
+                </div>
+                <h5>PentAGI</h5>
+                <p class="agent-role">Pentest autonome</p>
+                <p class="agent-desc">Orchestre nmap, nikto, curl dans des conteneurs Kali sandbboxes propulses par LLM local. A trouve une faille CrowdSec LAPI au premier scan.</p>
+                <div class="agent-tags"><span>Kali</span><span>Docker</span><span>Ollama</span><span>RTX 3090</span></div>
+              </div>
+              <div class="agent-card">
+                <div class="agent-card-header">
+                  <span class="agent-badge observing">observation</span>
+                  <span class="agent-ct">CT 190</span>
+                </div>
+                <h5>IronClaw</h5>
+                <p class="agent-role">Assistant chat</p>
+                <p class="agent-desc">MiniMax M2.7, interface web. En evaluation comme rempla&ccedil;ant de l'ancien agent OpenClaw. Assistant generaliste pour requetes rapides.</p>
+                <div class="agent-tags"><span>MiniMax M2.7</span><span>Web UI</span></div>
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -506,39 +709,39 @@ import DynNum from '../../components/DynNum.astro';
         <div class="layer-header">
           <h2>Roadmap</h2>
         </div>
-        <p class="roadmap-intro">Ce qui est en cours ou planifi&eacute;. Ces projets ne sont pas des id&eacute;es vagues &mdash; chacun a un plan d'ex&eacute;cution et un objectif mesurable.</p>
+        <p class="roadmap-intro">Ce qui est en cours ou planifie. Ces projets ne sont pas des idees vagues &mdash; chacun a un plan d'execution et un objectif mesurable.</p>
         <div class="roadmap-grid">
           <div class="roadmap-item">
-            <span class="roadmap-status status-planned">planifi&eacute;</span>
-            <h4>Segmentation r&eacute;seau</h4>
-            <p>OPNsense en VM, VLANs par zone de confiance (infra / services / IoT / guest). Actuellement tout est sur un /24 plat &mdash; le prochain palier de s&eacute;curit&eacute;.</p>
+            <span class="roadmap-status status-planned">planifie</span>
+            <h4>Segmentation reseau</h4>
+            <p>OPNsense en VM, VLANs par zone de confiance (infra / services / IoT / guest). Actuellement tout est sur un /24 plat &mdash; le prochain palier de securite.</p>
           </div>
           <div class="roadmap-item">
             <span class="roadmap-status status-wip">en cours</span>
             <h4>SSO complet</h4>
-            <p>Authentik int&eacute;gr&eacute; sur Forgejo, Immich, Semaphore, Proxmox, Jellyfin. Reste : Kavita et les dashboards d'observabilit&eacute;. Objectif : login unique sur 100% des services.</p>
+            <p>Authentik integre sur Forgejo, Immich, Semaphore, Proxmox, Jellyfin. Reste : Kavita et les dashboards d'observabilite. Objectif : login unique sur 100% des services.</p>
           </div>
           <div class="roadmap-item">
-            <span class="roadmap-status status-planned">planifi&eacute;</span>
-            <h4>Fine-tuning mod&egrave;le ops</h4>
-            <p>Entra&icirc;ner un mod&egrave;le comportemental sur les logs ops et les patterns de troubleshooting du homelab. RTX 3090 locale + HuggingFace Pro. Pas pour m&eacute;moriser des faits &mdash; pour apprendre des r&eacute;flexes.</p>
+            <span class="roadmap-status status-planned">planifie</span>
+            <h4>Fine-tuning modele ops</h4>
+            <p>Entrainer un modele comportemental sur les logs ops et les patterns de troubleshooting du homelab. RTX 3090 locale + HuggingFace Pro. Pas pour memoriser des faits &mdash; pour apprendre des reflexes.</p>
           </div>
           <div class="roadmap-item">
-            <span class="roadmap-status status-planned">planifi&eacute;</span>
+            <span class="roadmap-status status-planned">planifie</span>
             <h4>Meshtastic LoRa</h4>
-            <p>2&times; LilyGo T-Beam 868 MHz en commande. R&eacute;seau mesh radio longue port&eacute;e, ind&eacute;pendant de tout Internet. Le dernier filet de r&eacute;silience.</p>
+            <p>2&times; LilyGo T-Beam 868 MHz en commande. Reseau mesh radio longue portee, independant de tout Internet. Le dernier filet de resilience.</p>
           </div>
         </div>
       </div>
     </section>
 
-    <!-- Crosslink sécurité -->
+    <!-- Crosslink securite -->
     <section class="crosslink reveal">
       <div class="container">
         <a href="/securite" class="crosslink-block">
           <div>
-            <h3>&#9670; Stack défensive complète</h3>
-            <p>PKI interne, SSO Authentik, CrowdSec IPS, Wazuh SIEM, Headscale VPN — les 5 couches de sécurité déployées sur ce homelab, détaillées une par une.</p>
+            <h3>&#9670; Stack defensive complete</h3>
+            <p>PKI interne, SSO Authentik, CrowdSec IPS, Wazuh SIEM, Headscale VPN — les 5 couches de securite deployees sur ce homelab, detaillees une par une.</p>
           </div>
           <span class="crosslink-arrow">&#8594;</span>
         </a>
@@ -679,6 +882,214 @@ import DynNum from '../../components/DynNum.astro';
     font-style: italic;
   }
 
+  .project-link {
+    color: var(--color-accent);
+    text-decoration: none;
+    font-style: normal;
+    font-weight: 600;
+  }
+
+  .project-link:hover {
+    text-decoration: underline;
+  }
+
+  /* AI Divider */
+  .ai-divider {
+    padding: 3rem 0 2rem;
+    border-top: 2px solid var(--color-accent);
+  }
+
+  .ai-divider h2 {
+    font-size: clamp(1.5rem, 4vw, 2.2rem);
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    line-height: 1.1;
+    margin-bottom: 0.75rem;
+  }
+
+  .ai-divider-sub {
+    color: var(--color-text-muted);
+    font-size: 1rem;
+    line-height: 1.6;
+  }
+
+  /* Layers (from ia.astro) */
+  .layer {
+    padding: 3rem 0;
+    border-top: 1px solid var(--color-border);
+  }
+
+  .layer-header {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .layer-header h2 { font-size: 1.4rem; margin-bottom: 0; }
+
+  .tech-logo {
+    width: 1.4rem;
+    height: 1.4rem;
+    flex-shrink: 0;
+  }
+
+  .api-logo-img {
+    width: 1.6rem;
+    height: 1.6rem;
+    flex-shrink: 0;
+  }
+
+  .layer-content > p {
+    color: var(--color-text-muted);
+    margin-bottom: 1.5rem;
+    line-height: 1.7;
+  }
+
+  .layer-content > p strong { color: var(--color-text); }
+
+  /* Specs */
+  .specs { margin-bottom: 1.5rem; }
+
+  .spec {
+    display: flex;
+    gap: 1rem;
+    padding: 0.6rem 0;
+    border-bottom: 1px solid var(--color-border);
+    align-items: baseline;
+  }
+
+  .spec:last-child { border-bottom: none; }
+
+  .spec-label {
+    font-family: var(--font-mono);
+    font-size: 0.8rem;
+    color: var(--color-accent);
+    min-width: 6rem;
+    flex-shrink: 0;
+  }
+
+  .spec-value {
+    font-size: 0.9rem;
+    color: var(--color-text-muted);
+  }
+
+  /* Models grid */
+  .models-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(14rem, 1fr));
+    gap: 1rem;
+  }
+
+  .model-group {
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: 6px;
+    padding: 1.25rem;
+  }
+
+  .model-group h4 {
+    font-size: 0.8rem;
+    color: var(--color-accent);
+    font-family: var(--font-mono);
+    margin-bottom: 0.75rem;
+  }
+
+  .model-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+  }
+
+  .model-tags span {
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    background: var(--color-bg);
+    color: var(--color-text-muted);
+    padding: 0.2rem 0.5rem;
+    border-radius: 4px;
+    border: 1px solid var(--color-border);
+  }
+
+  /* API cards */
+  .api-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1rem;
+  }
+
+  .api-card {
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: 8px;
+    padding: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+
+  .claude-card { border-top: 3px solid var(--color-accent); }
+  .minimax-card { border-top: 3px solid #a855f7; }
+  .groq-card { border-top: 3px solid #f59e0b; }
+
+  .api-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .api-name {
+    font-family: var(--font-mono);
+    font-weight: 700;
+    font-size: 1rem;
+  }
+
+  .api-role {
+    font-size: 0.75rem;
+    color: var(--color-text-muted);
+    font-family: var(--font-mono);
+  }
+
+  .api-desc {
+    font-size: 0.85rem;
+    color: var(--color-text-muted);
+    line-height: 1.5;
+  }
+
+  .api-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.35rem;
+    margin-top: auto;
+  }
+
+  .api-tags span {
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    background: var(--color-bg);
+    color: var(--color-text-muted);
+    padding: 0.15rem 0.4rem;
+    border-radius: 3px;
+    border: 1px solid var(--color-border);
+  }
+
+  /* Agents deployed */
+  .agents-deployed { margin-top: 2rem; padding-top: 1.5rem; border-top: 1px solid var(--color-border); }
+  .agents-deployed h4 { font-family: var(--font-mono); font-size: 0.9rem; color: var(--color-accent); margin-bottom: 1rem; letter-spacing: 0.05em; text-transform: uppercase; }
+  .agents-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1rem; }
+  .agent-card { background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 8px; padding: 1.25rem; transition: border-color 0.3s, transform 0.3s; }
+  .agent-card:hover { border-color: var(--color-accent); transform: translateY(-2px); }
+  .agent-card-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 0.5rem; }
+  .agent-badge { font-family: var(--font-mono); font-size: 0.65rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; padding: 0.2rem 0.5rem; border-radius: 4px; }
+  .agent-badge.running { background: rgba(34, 197, 94, 0.15); color: #22c55e; }
+  .agent-badge.observing { background: rgba(234, 179, 8, 0.15); color: #eab308; }
+  .agent-ct { font-family: var(--font-mono); font-size: 0.7rem; color: var(--color-text-muted); }
+  .agent-card h5 { font-size: 1.05rem; margin: 0 0 0.15rem; color: var(--color-text); }
+  .agent-role { font-family: var(--font-mono); font-size: 0.75rem; color: var(--color-accent); margin-bottom: 0.6rem; }
+  .agent-desc { font-size: 0.85rem; color: var(--color-text-muted); line-height: 1.5; margin-bottom: 0.75rem; }
+  .agent-tags { display: flex; flex-wrap: wrap; gap: 0.35rem; }
+  .agent-tags span { font-family: var(--font-mono); font-size: 0.7rem; background: var(--color-bg); color: var(--color-accent); padding: 0.15rem 0.5rem; border-radius: 4px; border: 1px solid var(--color-border); }
+
   /* Roadmap */
   .roadmap {
     padding: 3rem 0;
@@ -690,13 +1101,6 @@ import DynNum from '../../components/DynNum.astro';
     align-items: center;
     gap: 1rem;
     margin-bottom: 1rem;
-  }
-
-  .roadmap .layer-number {
-    font-family: var(--font-mono);
-    font-size: 0.85rem;
-    color: var(--color-accent);
-    font-weight: 700;
   }
 
   .roadmap .layer-header h2 {
@@ -808,22 +1212,88 @@ import DynNum from '../../components/DynNum.astro';
     flex-shrink: 0;
   }
 
+  /* Mobile responsive */
   @media (max-width: 640px) {
-    .hero-mini { padding: 2rem 0 1.5rem; }
-    h1 { font-size: clamp(1.5rem, 5vw, 2.5rem); }
-    .subtitle { font-size: 0.95rem; }
-    .project { padding: 2rem 0; }
-    .project-header h2 { font-size: 1.15rem; }
-    .project-intro p { font-size: 0.95rem; }
-    .project-details { grid-template-columns: 1fr; gap: 0.75rem; }
-    .detail-block { padding: 1rem; }
-    .detail-block h4 { font-size: 0.85rem; }
-    .detail-block p { font-size: 0.82rem; }
-    .project-stack { flex-direction: column; align-items: flex-start; gap: 0.5rem; }
-    .roadmap-grid { grid-template-columns: 1fr; gap: 0.75rem; }
-    .roadmap-item { padding: 1rem; }
-    .roadmap-intro { font-size: 0.9rem; }
-    .crosslink-block { flex-direction: column; gap: 1rem; padding: 1.25rem; }
-    .crosslink-block p { font-size: 0.82rem; }
+    .hero-mini {
+      padding: 2rem 0 1.5rem;
+    }
+
+    h1 {
+      font-size: clamp(1.5rem, 5vw, 2.5rem);
+    }
+
+    .subtitle {
+      font-size: 0.95rem;
+    }
+
+    .project {
+      padding: 2rem 0;
+    }
+
+    .project-header h2 {
+      font-size: 1.15rem;
+    }
+
+    .project-intro p {
+      font-size: 0.95rem;
+    }
+
+    .project-details {
+      grid-template-columns: 1fr;
+      gap: 0.75rem;
+    }
+
+    .detail-block {
+      padding: 1rem;
+    }
+
+    .detail-block h4 {
+      font-size: 0.85rem;
+    }
+
+    .detail-block p {
+      font-size: 0.82rem;
+    }
+
+    .project-stack {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 0.5rem;
+    }
+
+    .ai-divider h2 {
+      font-size: clamp(1.3rem, 4vw, 1.8rem);
+    }
+
+    .spec { flex-direction: column; gap: 0.25rem; }
+    .spec-label { min-width: unset; }
+    .models-grid, .api-grid { grid-template-columns: 1fr; gap: 0.75rem; }
+    .model-group, .api-card { padding: 0.75rem 1rem; }
+    .agents-grid { grid-template-columns: 1fr; }
+
+    .roadmap-grid {
+      grid-template-columns: 1fr;
+      gap: 0.75rem;
+    }
+
+    .roadmap-item {
+      padding: 1rem;
+    }
+
+    .roadmap-intro {
+      font-size: 0.9rem;
+    }
+
+    .crosslink-block {
+      flex-direction: column;
+      gap: 1rem;
+      padding: 1.25rem;
+    }
+
+    .crosslink-block p {
+      font-size: 0.82rem;
+    }
+
+    .layer-header { flex-wrap: wrap; gap: 0.5rem; }
   }
 </style>
