@@ -450,10 +450,10 @@
       0 0 30px rgba(51, 255, 51, 0.05),
       inset 0 0 60px rgba(0, 0, 0, 0.8);
     position: relative;
-    width: 56rem;
-    max-width: 90vw;
-    height: 36rem;
-    max-height: 75vh;
+    /* 4:3 aspect ratio */
+    width: min(48rem, 85vw);
+    aspect-ratio: 4 / 3;
+    max-height: 85vh;
     display: flex;
     flex-direction: column;
   }
