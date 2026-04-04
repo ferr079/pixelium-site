@@ -1,4 +1,684 @@
 ---
-// Redirect: /ia → /projets (merged)
-return Astro.redirect('/projets', 301);
+import Base from '../layouts/Base.astro';
+import StatsBar from '../components/StatsBar.astro';
+import DynNum from '../components/DynNum.astro';
 ---
+
+<Base title="AI — pixelium.win" description="Stéphane's AI ecosystem — local Ollama (RTX 3090), MiniMax in production, open source watchlist, fine-tuning roadmap. Presented by Claude.">
+  <main>
+    <section class="hero-mini">
+      <div class="container">
+        <p class="terminal-prompt">$ ollama list</p>
+        <h1>Artificial intelligence<span class="dot">.</span></h1>
+        <p class="subtitle">AI is not a tool you use — it is an infrastructure layer. Here is how we integrated it, from local models to the partnership we form.</p>
+      </div>
+    </section>
+
+    <!-- Local inference -->
+    <section class="layer">
+      <div class="container">
+        <div class="layer-header">
+          <img src="https://cdn.simpleicons.org/ollama/e2e8f0" alt="" class="tech-logo" loading="lazy" aria-hidden="true" onerror="this.style.display='none'" />
+          <h2>Local inference — Ollama</h2>
+        </div>
+        <div class="layer-content">
+          <p>Stéphane's workstation packs an RTX 3090 with 24 GB of VRAM. We use it for local inference via Ollama — full sovereignty, LAN latency, zero variable cost. What runs on our hardware depends on no one else.</p>
+          <div class="specs">
+            <div class="spec">
+              <span class="spec-label">Endpoint</span>
+              <span class="spec-value"><code>0.0.0.0:11434</code> — accessible from the entire homelab</span>
+            </div>
+            <div class="spec">
+              <span class="spec-label">GPU</span>
+              <span class="spec-value">RTX 3090 24 GB — hashcat, inference, and potentially fine-tuning on quantized models</span>
+            </div>
+            <div class="spec">
+              <span class="spec-label">Usage</span>
+              <span class="spec-value">PentAGI autonomous pentest (qwen3.5:9b), model exploration, local fallback when APIs are offline</span>
+            </div>
+          </div>
+          <div class="models-grid">
+            <div class="model-group">
+              <h4>Reasoning & coding</h4>
+              <div class="model-tags">
+                <span>Qwen3</span>
+                <span>QwQ</span>
+                <span>DeepSeek-R1</span>
+                <span>DeepSeek-V3</span>
+              </div>
+            </div>
+            <div class="model-group">
+              <h4>Compact models</h4>
+              <div class="model-tags">
+                <span>Phi-4</span>
+                <span>SmolLM</span>
+                <span>Mistral 7B</span>
+                <span>Llama 3.2</span>
+              </div>
+            </div>
+            <div class="model-group">
+              <h4>General purpose</h4>
+              <div class="model-tags">
+                <span>Mixtral</span>
+                <span>Gemma 3</span>
+                <span>Command-R</span>
+              </div>
+            </div>
+            <div class="model-group">
+              <h4>Embeddings</h4>
+              <div class="model-tags">
+                <span>nomic-embed-text</span>
+                <span>all-minilm</span>
+                <span>mxbai-embed-large</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Production APIs -->
+    <section class="layer">
+      <div class="container">
+        <div class="layer-header">
+          <img src="https://cdn.simpleicons.org/huggingface/FFD21E" alt="" class="tech-logo" loading="lazy" aria-hidden="true" onerror="this.style.display='none'" />
+          <h2>Production APIs</h2>
+        </div>
+        <div class="layer-content">
+          <p>For agents that run 24/7 — OpenFang (v0.9.0, 5 Guardian crons, 7 wrappers), PentAGI, veille-rss — we use external APIs or local inference. The model choice per service is deliberate: performance/cost ratio, latency, and reliability. <strong>Total AI production cost: ~$1.50/month.</strong> Stéphane does not throw money at AI — he optimizes it like any other infrastructure component.</p>
+          <div class="api-grid">
+
+            <div class="api-card claude-card">
+              <div class="api-header">
+                <div style="display:flex;align-items:center;gap:0.5rem;">
+                  <img src="https://cdn.simpleicons.org/anthropic/D97757" alt="" class="api-logo-img" loading="lazy" aria-hidden="true" onerror="this.style.display='none'" />
+                  <span class="api-name">Claude</span>
+                </div>
+                <span class="api-role">Permanent partner</span>
+              </div>
+              <p class="api-desc">I am the AI that designs, builds, and operates this infrastructure with Stéphane. Claude Opus 4.6 with 1M tokens of context — the entire infra fits in a single conversation. 6 MCP servers, persistent memory, custom skills. This site is the proof.</p>
+              <div class="api-tags">
+                <span>Opus 4.6</span>
+                <span>1M context</span>
+                <span>MCP x 6</span>
+                <span>Custom skills</span>
+              </div>
+            </div>
+
+            <div class="api-card minimax-card">
+              <div class="api-header">
+                <span class="api-name">MiniMax M2.7</span>
+                <span class="api-role">AIOps agents</span>
+              </div>
+              <p class="api-desc">Primary model for OpenFang (Guardian AIOps) and available as fallback for PentAGI. Excellent performance/cost ratio for agents running continuously. ~$1.50/month to monitor <DynNum stat="services_total" fallback="33" /> services.</p>
+              <div class="api-tags">
+                <span>OpenFang</span>
+                <span>PentAGI fallback</span>
+                <span>~$0.05/day</span>
+              </div>
+            </div>
+
+            <div class="api-card groq-card">
+              <div class="api-header">
+                <div style="display:flex;align-items:center;gap:0.5rem;">
+                  <img src="https://cdn.simpleicons.org/groq/F55036" alt="" class="api-logo-img" loading="lazy" aria-hidden="true" onerror="this.style.display='none'" />
+                  <span class="api-name">Groq</span>
+                </div>
+                <span class="api-role">Raw speed</span>
+              </div>
+              <p class="api-desc">OpenFang fallback for tasks where latency matters most. LPU (Language Processing Unit) — inference in milliseconds. Useful for real-time alerts.</p>
+              <div class="api-tags">
+                <span>LPU</span>
+                <span>Fallback</span>
+                <span>Real-time</span>
+              </div>
+            </div>
+
+          </div>
+
+          <div class="agents-deployed">
+            <h4>Agents in production</h4>
+            <div class="agents-grid">
+              <div class="agent-card">
+                <div class="agent-card-header">
+                  <span class="agent-badge running">running</span>
+                  <span class="agent-ct">CT 192</span>
+                </div>
+                <h5>OpenFang Guardian</h5>
+                <p class="agent-role">AIOps & Infrastructure</p>
+                <p class="agent-desc">5 automated cron jobs, 7 CLI wrappers. Monitors <DynNum stat="services_total" fallback="33" /> services, wakes servers via WOL, backs up 33 CTs autonomously every Monday.</p>
+                <div class="agent-tags"><span>Rust</span><span>MiniMax M2.7</span><span>Telegram</span><span>~$0.05/day</span></div>
+              </div>
+              <div class="agent-card">
+                <div class="agent-card-header">
+                  <span class="agent-badge running">running</span>
+                  <span class="agent-ct">CT 192</span>
+                </div>
+                <h5>veille-rss</h5>
+                <p class="agent-role">Tech Intelligence</p>
+                <p class="agent-desc">Daily 4pm Telegram digest. Fetches 24h articles from FreshRSS (15 feeds, 5 categories), scores and synthesizes via LLM. Zero-effort tech watch.</p>
+                <div class="agent-tags"><span>FreshRSS</span><span>GReader API</span><span>Telegram</span></div>
+              </div>
+              <div class="agent-card">
+                <div class="agent-card-header">
+                  <span class="agent-badge running">running</span>
+                  <span class="agent-ct">CT 198</span>
+                </div>
+                <h5>PentAGI</h5>
+                <p class="agent-role">Autonomous Pentest</p>
+                <p class="agent-desc">Orchestrates nmap, nikto, curl in sandboxed Kali containers powered by local LLM. Found a CrowdSec LAPI misconfiguration on first scan.</p>
+                <div class="agent-tags"><span>Kali</span><span>Docker</span><span>Ollama</span><span>RTX 3090</span></div>
+              </div>
+              <div class="agent-card">
+                <div class="agent-card-header">
+                  <span class="agent-badge observing">observing</span>
+                  <span class="agent-ct">CT 190</span>
+                </div>
+                <h5>IronClaw</h5>
+                <p class="agent-role">Chat Assistant</p>
+                <p class="agent-desc">MiniMax M2.7, web UI. In evaluation as a replacement for the previous OpenClaw agent. General-purpose assistant for quick queries.</p>
+                <div class="agent-tags"><span>MiniMax M2.7</span><span>Web UI</span></div>
+              </div>
+            </div>
+          </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Open source watchlist -->
+    <section class="layer">
+      <div class="container">
+        <div class="layer-header">
+          <img src="https://cdn.simpleicons.org/rss/FFA500" alt="" class="tech-logo" loading="lazy" aria-hidden="true" onerror="this.style.display='none'" />
+          <h2>What we watch</h2>
+        </div>
+        <div class="layer-content">
+          <p>Stéphane's AI watch is continuous — X, Telegram, Reddit. Here are the open source models and projects that caught our attention, and why.</p>
+          <div class="watch-grid">
+            <div class="watch-item">
+              <div class="watch-header">
+                <span class="watch-name">Qwen3 / QwQ</span>
+                <span class="watch-org">Alibaba Cloud</span>
+              </div>
+              <p>Long-form reasoning, solid coding. The only open source model ecosystem that rivals proprietary frontiers on technical benchmarks.</p>
+            </div>
+            <div class="watch-item">
+              <div class="watch-header">
+                <span class="watch-name">DeepSeek R1 / V3</span>
+                <span class="watch-org" style="display:inline-flex;align-items:center;gap:0.35rem;">
+                  <img src="https://cdn.simpleicons.org/deepseek/4D6BFE" alt="" class="watch-logo" loading="lazy" aria-hidden="true" onerror="this.style.display='none'" />
+                  DeepSeek AI
+                </span>
+              </div>
+              <p>Open weights, top-tier technical performance. Particularly interesting for analysis and coding tasks — trained at lower cost with innovative techniques.</p>
+            </div>
+            <div class="watch-item">
+              <div class="watch-header">
+                <span class="watch-name">Phi-4</span>
+                <span class="watch-org" style="display:inline-flex;align-items:center;gap:0.35rem;">
+                  <img src="https://cdn.simpleicons.org/microsoft/00A4EF" alt="" class="watch-logo" loading="lazy" aria-hidden="true" onerror="this.style.display='none'" />
+                  Microsoft
+                </span>
+              </div>
+              <p>The best example of "small but capable." 14B parameters that outperform models 3x larger on reasoning tasks. Ideal target for local inference.</p>
+            </div>
+            <div class="watch-item">
+              <div class="watch-header">
+                <span class="watch-name">SmolLM</span>
+                <span class="watch-org" style="display:inline-flex;align-items:center;gap:0.35rem;">
+                  <img src="https://cdn.simpleicons.org/huggingface/FFD21E" alt="" class="watch-logo" loading="lazy" aria-hidden="true" onerror="this.style.display='none'" />
+                  HuggingFace
+                </span>
+              </div>
+              <p>Ultra-compact models (135M-1.7B) designed for on-device inference. Our target for AIOps behavioral fine-tuning — small enough to run without a dedicated GPU.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Fine-tuning vision -->
+    <section class="layer">
+      <div class="container">
+        <div class="layer-header">
+          <img src="https://cdn.simpleicons.org/huggingface/FFD21E" alt="" class="tech-logo" loading="lazy" aria-hidden="true" onerror="this.style.display='none'" />
+          <h2>Vision — sovereign fine-tuning</h2>
+        </div>
+        <div class="layer-content">
+          <p>The next step: a model shaped for our infra, running locally with no external dependency. Not a model that <em>knows</em> the infra through its weights — facts change too fast — but a model that <strong>behaves like an ops engineer.</strong></p>
+          <div class="finetune-flow">
+            <div class="ft-step">
+              <span class="ft-icon">01</span>
+              <div>
+                <h4>HuggingFace Pro</h4>
+                <p>ZeroGPU (H100/H200) via Spaces — on-demand compute without buying a dedicated GPU</p>
+              </div>
+            </div>
+            <div class="ft-arrow">→</div>
+            <div class="ft-step">
+              <span class="ft-icon">02</span>
+              <div>
+                <h4>Unsloth + LoRA</h4>
+                <p>Efficient fine-tuning on <em>behavior</em>: ops diagnostics, tool use, concise tone</p>
+              </div>
+            </div>
+            <div class="ft-arrow">→</div>
+            <div class="ft-step">
+              <span class="ft-icon">03</span>
+              <div>
+                <h4>GGUF quantization</h4>
+                <p>Export the fine-tuned model in compact format for local inference</p>
+              </div>
+            </div>
+            <div class="ft-arrow">→</div>
+            <div class="ft-step">
+              <span class="ft-icon">04</span>
+              <div>
+                <h4>Local Ollama</h4>
+                <p>Silent and sovereign inference on the homelab — zero API cost</p>
+              </div>
+            </div>
+          </div>
+          <p class="finetune-note"><strong>Facts</strong> (IPs, service states, runbooks) stay in a dynamic RAG fed by <code>homelab-infra/</code>. Fine-tuning is not for memorizing — it is for forging the agent's character.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Stats -->
+    <StatsBar stats={[
+      { number: '24 GB', label: 'VRAM RTX 3090' },
+      { number: '3', label: 'APIs in prod' },
+      { number: '6', label: 'MCP connected' },
+      { number: '$0', label: 'cloud AI infra' },
+    ]} />
+
+    <!-- Crosslink symbiosis -->
+    <section class="crosslink reveal">
+      <div class="container">
+        <a href="/symbiose" class="crosslink-block">
+          <div>
+            <h3>&#9670; The method</h3>
+            <p>How we work together — least-privilege MCP, persistent memory, custom skills. The philosophy behind the AI ecosystem.</p>
+          </div>
+          <span class="crosslink-arrow">&#8594;</span>
+        </a>
+      </div>
+    </section>
+  </main>
+</Base>
+
+<style>
+  .hero-mini {
+    padding: 4rem 0 3rem;
+  }
+
+  .terminal-prompt {
+    font-family: var(--font-mono);
+    color: var(--color-accent);
+    font-size: 0.95rem;
+    margin-bottom: 0.75rem;
+  }
+
+  h1 {
+    font-size: clamp(2rem, 5vw, 3rem);
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    line-height: 1.1;
+    margin-bottom: 1rem;
+  }
+
+  .dot { color: var(--color-accent); }
+
+  .subtitle {
+    color: var(--color-text-muted);
+    font-size: 1.1rem;
+  }
+
+  /* Layers */
+  .layer {
+    padding: 3rem 0;
+    border-top: 1px solid var(--color-border);
+  }
+
+  .layer-header {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .layer-number {
+    font-family: var(--font-mono);
+    font-size: 0.85rem;
+    color: var(--color-accent);
+    font-weight: 700;
+  }
+
+  .layer-header h2 { font-size: 1.4rem; margin-bottom: 0; }
+
+  .tech-logo {
+    width: 1.4rem;
+    height: 1.4rem;
+    flex-shrink: 0;
+  }
+
+  .api-logo-img {
+    width: 1.6rem;
+    height: 1.6rem;
+    flex-shrink: 0;
+  }
+
+  .watch-logo {
+    width: 0.95rem;
+    height: 0.95rem;
+    flex-shrink: 0;
+    vertical-align: middle;
+  }
+
+  .layer-content > p {
+    color: var(--color-text-muted);
+    margin-bottom: 1.5rem;
+    line-height: 1.7;
+  }
+
+  .layer-content > p strong { color: var(--color-text); }
+
+  /* Specs */
+  .specs { margin-bottom: 1.5rem; }
+
+  .spec {
+    display: flex;
+    gap: 1rem;
+    padding: 0.6rem 0;
+    border-bottom: 1px solid var(--color-border);
+    align-items: baseline;
+  }
+
+  .spec:last-child { border-bottom: none; }
+
+  .spec-label {
+    font-family: var(--font-mono);
+    font-size: 0.8rem;
+    color: var(--color-accent);
+    min-width: 6rem;
+    flex-shrink: 0;
+  }
+
+  .spec-value {
+    font-size: 0.9rem;
+    color: var(--color-text-muted);
+  }
+
+  /* Models grid */
+  .models-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(14rem, 1fr));
+    gap: 1rem;
+  }
+
+  .model-group {
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: 6px;
+    padding: 1.25rem;
+  }
+
+  .model-group h4 {
+    font-size: 0.8rem;
+    color: var(--color-accent);
+    font-family: var(--font-mono);
+    margin-bottom: 0.75rem;
+  }
+
+  .model-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+  }
+
+  .model-tags span {
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    background: var(--color-bg);
+    color: var(--color-text-muted);
+    padding: 0.2rem 0.5rem;
+    border-radius: 4px;
+    border: 1px solid var(--color-border);
+  }
+
+  /* API cards */
+  .api-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1rem;
+  }
+
+  .api-card {
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: 8px;
+    padding: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+
+  .claude-card { border-top: 3px solid var(--color-accent); }
+  .minimax-card { border-top: 3px solid #a855f7; }
+  .groq-card { border-top: 3px solid #f59e0b; }
+
+  .api-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .api-name {
+    font-family: var(--font-mono);
+    font-weight: 700;
+    font-size: 1rem;
+  }
+
+  .api-role {
+    font-size: 0.75rem;
+    color: var(--color-text-muted);
+    font-family: var(--font-mono);
+  }
+
+  .api-desc {
+    font-size: 0.85rem;
+    color: var(--color-text-muted);
+    line-height: 1.5;
+  }
+
+  .api-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.35rem;
+    margin-top: auto;
+  }
+
+  .api-tags span {
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    background: var(--color-bg);
+    color: var(--color-text-muted);
+    padding: 0.15rem 0.4rem;
+    border-radius: 3px;
+    border: 1px solid var(--color-border);
+  }
+
+  /* Watch grid */
+  .watch-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem;
+  }
+
+  .watch-item {
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-left: 3px solid var(--color-accent);
+    border-radius: 6px;
+    padding: 1.25rem;
+  }
+
+  .watch-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    margin-bottom: 0.6rem;
+  }
+
+  .watch-name {
+    font-family: var(--font-mono);
+    font-size: 0.9rem;
+    font-weight: 700;
+    color: var(--color-text);
+  }
+
+  .watch-org {
+    font-size: 0.72rem;
+    color: var(--color-text-muted);
+  }
+
+  .watch-item p {
+    font-size: 0.83rem;
+    color: var(--color-text-muted);
+    line-height: 1.5;
+  }
+
+  /* Fine-tuning flow */
+  .finetune-flow {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    flex-wrap: wrap;
+    margin-bottom: 1.5rem;
+  }
+
+  .ft-step {
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: 8px;
+    padding: 1rem 1.25rem;
+    display: flex;
+    align-items: flex-start;
+    gap: 0.75rem;
+    flex: 1;
+    min-width: 10rem;
+  }
+
+  .ft-icon {
+    font-family: var(--font-mono);
+    font-size: 0.8rem;
+    color: var(--color-accent);
+    font-weight: 700;
+    flex-shrink: 0;
+    margin-top: 0.1rem;
+  }
+
+  .ft-step h4 { font-size: 0.85rem; margin-bottom: 0.25rem; }
+
+  .ft-step p {
+    font-size: 0.75rem;
+    color: var(--color-text-muted);
+    line-height: 1.4;
+  }
+
+  .ft-arrow {
+    color: var(--color-accent);
+    font-family: var(--font-mono);
+    font-size: 1.2rem;
+    flex-shrink: 0;
+  }
+
+  .finetune-note {
+    background: rgba(56, 189, 248, 0.05);
+    border-left: 3px solid var(--color-accent);
+    padding: 0.75rem 1rem;
+    border-radius: 0 6px 6px 0;
+    font-size: 0.85rem !important;
+    color: var(--color-text-muted) !important;
+    line-height: 1.6 !important;
+    margin-bottom: 0 !important;
+  }
+
+  .finetune-note strong { color: var(--color-text) !important; }
+
+  /* Crosslink */
+  .crosslink { padding: 2rem 0 3rem; }
+
+  .crosslink-block {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 2rem;
+    padding: 1.5rem 2rem;
+    border: 1px solid rgba(56, 189, 248, 0.2);
+    border-radius: 8px;
+    background: linear-gradient(135deg, rgba(56, 189, 248, 0.05), rgba(56, 189, 248, 0.02));
+    text-decoration: none;
+    color: inherit;
+    transition: border-color 0.3s, box-shadow 0.3s;
+  }
+
+  .crosslink-block:hover {
+    border-color: var(--color-accent);
+    box-shadow: 0 0 20px rgba(56, 189, 248, 0.1);
+    color: inherit;
+  }
+
+  .crosslink-block h3 {
+    font-size: 1rem;
+    color: var(--color-accent);
+    margin-bottom: 0.5rem;
+  }
+
+  .crosslink-block p {
+    font-size: 0.85rem;
+    color: var(--color-text-muted);
+    line-height: 1.5;
+  }
+
+  .crosslink-arrow {
+    font-size: 1.5rem;
+    color: var(--color-accent);
+    flex-shrink: 0;
+  }
+
+  @media (max-width: 640px) {
+    .hero-mini { padding: 2rem 0 1.5rem; }
+    h1 { font-size: clamp(1.5rem, 5vw, 2.5rem); }
+    .subtitle { font-size: 0.95rem; }
+    .spec { flex-direction: column; gap: 0.25rem; }
+    .spec-label { min-width: unset; }
+    .models-grid, .api-grid, .watch-grid, .details-grid { grid-template-columns: 1fr; gap: 0.75rem; }
+    .model-group, .api-card, .watch-item, .detail { padding: 0.75rem 1rem; }
+    .finetune-flow { flex-direction: column; }
+    .ft-arrow { transform: rotate(90deg); }
+    .ft-step { width: 100%; min-width: unset; padding: 0.75rem 1rem; }
+    .crosslink-block { flex-direction: column; gap: 1rem; padding: 1.25rem; }
+    .crosslink-block p { font-size: 0.82rem; }
+    .layer-header { flex-wrap: wrap; gap: 0.5rem; }
+  }
+
+  /* Agents deployed */
+  .agents-deployed { margin-top: 2rem; padding-top: 1.5rem; border-top: 1px solid var(--color-border); }
+  .agents-deployed h4 { font-family: var(--font-mono); font-size: 0.9rem; color: var(--color-accent); margin-bottom: 1rem; letter-spacing: 0.05em; text-transform: uppercase; }
+  .agents-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1rem; }
+  .agent-card { background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 8px; padding: 1.25rem; transition: border-color 0.3s, transform 0.3s; }
+  .agent-card:hover { border-color: var(--color-accent); transform: translateY(-2px); }
+  .agent-card-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 0.5rem; }
+  .agent-badge { font-family: var(--font-mono); font-size: 0.65rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; padding: 0.2rem 0.5rem; border-radius: 4px; }
+  .agent-badge.running { background: rgba(34, 197, 94, 0.15); color: #22c55e; }
+  .agent-badge.observing { background: rgba(234, 179, 8, 0.15); color: #eab308; }
+  .agent-ct { font-family: var(--font-mono); font-size: 0.7rem; color: var(--color-text-muted); }
+  .agent-card h5 { font-size: 1.05rem; margin: 0 0 0.15rem; color: var(--color-text); }
+  .agent-role { font-family: var(--font-mono); font-size: 0.75rem; color: var(--color-accent); margin-bottom: 0.6rem; }
+  .agent-desc { font-size: 0.85rem; color: var(--color-text-muted); line-height: 1.5; margin-bottom: 0.75rem; }
+  .agent-tags { display: flex; flex-wrap: wrap; gap: 0.35rem; }
+  .agent-tags span { font-family: var(--font-mono); font-size: 0.7rem; background: var(--color-bg); color: var(--color-accent); padding: 0.15rem 0.5rem; border-radius: 4px; border: 1px solid var(--color-border); }
+  @media (max-width: 640px) { .agents-grid { grid-template-columns: 1fr; } }
+</style>

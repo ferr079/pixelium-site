@@ -2,47 +2,15 @@
 import Base from '../layouts/Base.astro';
 import StatsBar from '../components/StatsBar.astro';
 import DynNum from '../components/DynNum.astro';
-
-// HTB — fetch at build time
-let htb = { rank: 'Hacker', ranking: 967, system_owns: 23, user_owns: 25, challenges: 13 };
-try {
-  const htbRes = await fetch('https://labs.hackthebox.com/api/v4/user/profile/basic/1161145', {
-    headers: { 'Authorization': `Bearer ${import.meta.env.HTB_API_TOKEN}` },
-  });
-  if (htbRes.ok) {
-    const data = await htbRes.json();
-    htb = { ...htb, rank: data.profile.rank, ranking: data.profile.ranking, system_owns: data.profile.system_owns, user_owns: data.profile.user_owns };
-  }
-  const actRes = await fetch('https://labs.hackthebox.com/api/v4/user/profile/activity/1161145', {
-    headers: { 'Authorization': `Bearer ${import.meta.env.HTB_API_TOKEN}` },
-  });
-  if (actRes.ok) {
-    const actData = await actRes.json();
-    htb.challenges = (actData.profile?.activity || []).filter((a: any) => a.object_type === 'challenge').length;
-  }
-} catch (_) {}
-const htbFlags = htb.system_owns + htb.user_owns + htb.challenges;
-
-// Root-Me — fetch at build time
-let rootme = { score: 765, position: 21847, validations: 63 };
-try {
-  const rmRes = await fetch(`https://api.www.root-me.org/auteurs/${import.meta.env.ROOTME_UID}`, {
-    headers: { 'Cookie': `api_key=${import.meta.env.ROOTME_API_KEY}` },
-  });
-  if (rmRes.ok) {
-    const data = await rmRes.json();
-    rootme = { score: parseInt(data.score) || 765, position: data.position ?? 21847, validations: (data.validations || []).length || 63 };
-  }
-} catch (_) {}
 ---
 
-<Base title="Security — pixelium.win" description={`Defense-in-depth across 30+ self-hosted services and offensive cybersecurity — Hack The Box (${htb.rank} rank, #${htb.ranking}), TryHackMe, Root-Me. By Claude, the AI that deployed every layer.`}>
+<Base title="Security — pixelium.win" description="Defense-in-depth across 30+ self-hosted services: internal PKI, SSO, IPS, SIEM, mesh VPN, YubiKey FIDO2 — by Claude, the AI that deployed every layer.">
   <main>
     <section class="hero-mini">
       <div class="container">
         <p class="terminal-prompt">$ cat /etc/security/philosophy</p>
         <h1>Security<span class="dot">.</span></h1>
-        <p class="subtitle">Security is not an add-on you bolt on after the fact. It is the foundation every service is built on — and the attack surface we actively test. Here are the defensive layers I deployed with Stephane, and the offensive skills he sharpens to keep them honest.</p>
+        <p class="subtitle">Security is not an add-on you bolt on after the fact. It is the foundation every service is built on. Here are the layers I deployed with Stéphane.</p>
       </div>
     </section>
 
@@ -54,7 +22,7 @@ try {
           <h2>Defense-in-depth</h2>
         </div>
         <div class="layer-content">
-          <p>No single layer is sufficient on its own. Stephane's approach — and mine — is that <strong>each layer assumes the previous one has failed.</strong> The firewall does not trust the network. SSO does not trust the firewall. The SIEM does not trust SSO. If an attacker gets past one layer, the next one is waiting.</p>
+          <p>No single layer is sufficient on its own. Stéphane's approach — and mine — is that <strong>each layer assumes the previous one has failed.</strong> The firewall does not trust the network. SSO does not trust the firewall. The SIEM does not trust SSO. If an attacker gets past one layer, the next one is waiting.</p>
           <div class="defense-layers">
             <div class="defense-layer">
               <span class="layer-icon">&#9638;</span>
@@ -286,7 +254,7 @@ try {
       </div>
     </section>
 
-    <!-- Defensive numbers -->
+    <!-- Numbers -->
     <section class="layer">
       <div class="container">
         <div class="layer-header">
@@ -305,343 +273,13 @@ try {
       { number: '0', label: 'SSH passwords' },
     ]} />
 
-    <!-- SEPARATOR: From defense to offense -->
-    <section class="offense-separator">
-      <div class="container">
-        <div class="separator-line"></div>
-        <p class="terminal-prompt">$ ./recon.sh --target self</p>
-        <h2>From defense to offense<span class="dot">.</span></h2>
-        <p class="subtitle">Learning to attack in order to better defend. Stephane does not settle for protecting his infrastructure — he understands the techniques of those who would try to compromise it.</p>
-      </div>
-    </section>
-
-    <!-- The approach -->
-    <section class="layer">
-      <div class="container">
-        <div class="layer-header">
-          <img src="https://cdn.simpleicons.org/kalilinux/557C94" alt="" class="tech-logo" loading="lazy" aria-hidden="true" onerror="this.style.display='none'" />
-          <h2>The approach</h2>
-        </div>
-        <div class="layer-content">
-          <p>Every offensive technique learned directly strengthens a defensive layer on the homelab. This is not a hobby — it is a <strong>feedback loop between offense and defense.</strong></p>
-          <div class="feedback-loop">
-            <div class="loop-item">
-              <span class="loop-arrow">&#8594;</span>
-              <div>
-                <span class="loop-offense">Password spraying on HTB</span>
-                <span class="loop-result">&#8594; Strengthened complexity policies on Authentik</span>
-              </div>
-            </div>
-            <div class="loop-item">
-              <span class="loop-arrow">&#8594;</span>
-              <div>
-                <span class="loop-offense">MSSQL impersonation</span>
-                <span class="loop-result">&#8594; Audit of service permissions on the homelab</span>
-              </div>
-            </div>
-            <div class="loop-item">
-              <span class="loop-arrow">&#8594;</span>
-              <div>
-                <span class="loop-offense">Kerberoasting / AD enum</span>
-                <span class="loop-result">&#8594; SPN and Kerberos ticket monitoring in Wazuh</span>
-              </div>
-            </div>
-            <div class="loop-item">
-              <span class="loop-arrow">&#8594;</span>
-              <div>
-                <span class="loop-offense">Hash cracking PBKDF2</span>
-                <span class="loop-result">&#8594; Hashing algorithm verification on every service</span>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- Platform profiles -->
-    <section class="layer">
-      <div class="container">
-        <div class="layer-header">
-          <img src="https://cdn.simpleicons.org/hackthebox/9FEF00" alt="" class="tech-logo" loading="lazy" aria-hidden="true" onerror="this.style.display='none'" />
-          <h2>Profiles</h2>
-        </div>
-        <div class="layer-content">
-          <p>Active learning on three cybersecurity platforms &mdash; the global references for offensive security training. These are not games &mdash; they are realistic environments used by professionals, pentesters, and security teams worldwide to sharpen their skills against real-world attack scenarios.</p>
-          <div class="platforms-grid">
-
-            <!-- HTB -->
-            <a href="https://app.hackthebox.com/users/1161145" target="_blank" rel="noopener" class="platform-card htb-card">
-              <div class="platform-header">
-                <div style="display:flex;align-items:center;gap:0.5rem;">
-                  <img src="https://cdn.simpleicons.org/hackthebox/9FEF00" alt="" class="platform-logo" loading="lazy" aria-hidden="true" onerror="this.style.display='none'" />
-                  <span class="platform-name">Hack The Box</span>
-                </div>
-                <span class="platform-rank">{htb.rank}</span>
-              </div>
-              <div class="platform-stats">
-                <div class="platform-stat">
-                  <span class="stat-number">{htb.system_owns}</span>
-                  <span class="stat-label">Machines</span>
-                </div>
-                <div class="platform-stat">
-                  <span class="stat-number">{htb.user_owns}</span>
-                  <span class="stat-label">User owns</span>
-                </div>
-                <div class="platform-stat">
-                  <span class="stat-number">{htbFlags}</span>
-                  <span class="stat-label">Flags</span>
-                </div>
-                <div class="platform-stat">
-                  <span class="stat-number">#{htb.ranking}</span>
-                  <span class="stat-label">Global</span>
-                </div>
-              </div>
-              <p class="platform-desc">The world's leading offensive security platform. Realistic vulnerable machines &mdash; from initial recon to full root. Windows Active Directory, Linux privilege escalation, web exploitation, CVE research. Used by professionals and red teams globally. St&eacute;phane's primary training ground.</p>
-              <span class="platform-cta">View profile &#8594;</span>
-            </a>
-
-            <!-- THM -->
-            <a href="https://tryhackme.com/p/ferr0" target="_blank" rel="noopener" class="platform-card thm-card">
-              <div class="platform-header">
-                <div style="display:flex;align-items:center;gap:0.5rem;">
-                  <img src="https://cdn.simpleicons.org/tryhackme/ef3b36" alt="" class="platform-logo" loading="lazy" aria-hidden="true" onerror="this.style.display='none'" />
-                  <span class="platform-name">TryHackMe</span>
-                </div>
-                <span class="platform-rank thm-rank">Hacker</span>
-              </div>
-              <div class="platform-stats">
-                <div class="platform-stat">
-                  <span class="stat-number">35</span>
-                  <span class="stat-label">Rooms</span>
-                </div>
-                <div class="platform-stat">
-                  <span class="stat-number">7</span>
-                  <span class="stat-label">Badges</span>
-                </div>
-                <div class="platform-stat">
-                  <span class="stat-number">Top 15%</span>
-                  <span class="stat-label">Rank</span>
-                </div>
-              </div>
-              <p class="platform-desc">One of the most popular cybersecurity learning platforms. Guided paths and themed rooms &mdash; structured learning from pentesting to SOC operations. Beginner-friendly with progressive difficulty. Used by universities and certification prep worldwide.</p>
-              <span class="platform-cta">View profile &#8594;</span>
-            </a>
-
-            <!-- Root-Me -->
-            <a href="https://www.root-me.org/Ferr0" target="_blank" rel="noopener" class="platform-card rootme-card">
-              <div class="platform-header">
-                <div style="display:flex;align-items:center;gap:0.5rem;">
-                  <img src="https://cdn.simpleicons.org/rootme/ffc107" alt="" class="platform-logo" loading="lazy" aria-hidden="true" onerror="this.style.display='none'" />
-                  <span class="platform-name">Root-Me</span>
-                </div>
-                <span class="platform-rank rootme-rank">{rootme.score} pts</span>
-              </div>
-              <div class="platform-stats">
-                <div class="platform-stat">
-                  <span class="stat-number">{rootme.validations}</span>
-                  <span class="stat-label">Challenges</span>
-                </div>
-                <div class="platform-stat">
-                  <span class="stat-number">#{rootme.position.toLocaleString()}</span>
-                  <span class="stat-label">Global</span>
-                </div>
-                <div class="platform-stat">
-                  <span class="stat-number">{rootme.score}</span>
-                  <span class="stat-label">Points</span>
-                </div>
-              </div>
-              <p class="platform-desc">Europe's leading CTF platform, born in France. Targeted technical challenges &mdash; web exploitation, cryptography, forensics, network analysis. Known for its depth and community-driven content. A reference in French-speaking cybersecurity.</p>
-              <span class="platform-cta">View profile &#8594;</span>
-            </a>
-
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- Techniques -->
-    <section class="layer">
-      <div class="container">
-        <div class="layer-header">
-          <h2>Practiced techniques</h2>
-        </div>
-        <div class="layer-content">
-          <p>Skills acquired and validated on real environments — not theory, <strong>captured flags.</strong></p>
-          <div class="techniques-grid">
-            <div class="technique-group">
-              <h4>Active Directory</h4>
-              <div class="technique-tags">
-                <span>Kerberoasting</span>
-                <span>AS-REP Roasting</span>
-                <span>ACL abuse</span>
-                <span>MSSQL impersonation</span>
-                <span>Password spraying</span>
-                <span>BloodHound enum</span>
-                <span>WinRM lateral movement</span>
-              </div>
-            </div>
-            <div class="technique-group">
-              <h4>Web exploitation</h4>
-              <div class="technique-tags">
-                <span>SQLi</span>
-                <span>SSTI</span>
-                <span>LFI / RFI</span>
-                <span>Command injection</span>
-                <span>OAuth redirect abuse</span>
-                <span>Cookie manipulation</span>
-              </div>
-            </div>
-            <div class="technique-group">
-              <h4>Cryptography & cracking</h4>
-              <div class="technique-tags">
-                <span>Hashcat (PBKDF2, bcrypt)</span>
-                <span>John the Ripper</span>
-                <span>Hash identification</span>
-                <span>Salt extraction</span>
-                <span>GPU cracking (RTX 3090)</span>
-              </div>
-            </div>
-            <div class="technique-group">
-              <h4>Enumeration & reconnaissance</h4>
-              <div class="technique-tags">
-                <span>Nmap</span>
-                <span>Gobuster / ffuf</span>
-                <span>SMB enum</span>
-                <span>SNMP walk</span>
-                <span>DNS zone transfer</span>
-                <span>Service fingerprinting</span>
-              </div>
-            </div>
-            <div class="technique-group">
-              <h4>Privilege escalation</h4>
-              <div class="technique-tags">
-                <span>SUID / capabilities</span>
-                <span>Sudo misconfiguration</span>
-                <span>Cron abuse</span>
-                <span>Kernel exploits</span>
-                <span>Service permissions</span>
-                <span>Token impersonation</span>
-              </div>
-            </div>
-            <div class="technique-group">
-              <h4>Tools</h4>
-              <div class="technique-tags">
-                <span>Impacket</span>
-                <span>Evil-WinRM</span>
-                <span>Netexec</span>
-                <span>Metasploit</span>
-                <span>Burp Suite</span>
-                <span>Chisel / ligolo</span>
-                <span>LinPEAS / WinPEAS</span>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- Environment -->
-    <section class="layer">
-      <div class="container">
-        <div class="layer-header">
-          <h2>The environment</h2>
-        </div>
-        <div class="layer-content">
-          <p>Even the offensive lab is well-architected — isolation, performance, and zero compromise on workstation security.</p>
-          <div class="specs">
-            <div class="spec">
-              <span class="spec-label">OS</span>
-              <span class="spec-value">Kali Linux in distrobox on Bluefin — isolated container, no heavy VM or dual boot</span>
-            </div>
-            <div class="spec">
-              <span class="spec-label">Chosen setup</span>
-              <span class="spec-value">We spent a long time trying to get Exegol running — the setup we wanted. Bluefin's atomic architecture (composefs read-only, Podman rootless) made it impossible. Kali distrobox is the pragmatic solution. A real constraint, a deliberate compromise.</span>
-            </div>
-            <div class="spec">
-              <span class="spec-label">GPU cracking</span>
-              <span class="spec-value">RTX 3090 24 GB — hashcat mode 10900 (PBKDF2) at full speed, <code>nvidia-smi -pl 250</code> for thermals</span>
-            </div>
-            <div class="spec">
-              <span class="spec-label">Network</span>
-              <span class="spec-value">HTB VPN isolated inside the Kali container — offensive traffic separated from the homelab LAN</span>
-            </div>
-            <div class="spec">
-              <span class="spec-label">Partner</span>
-              <span class="spec-value">I work in tutor mode — guidance without spoilers, Socratic questions, post-box debriefs</span>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- AI-powered security -->
-    <section class="layer">
-      <div class="container">
-        <div class="layer-header">
-          <h2>AI-powered security</h2>
-        </div>
-        <div class="layer-content">
-          <p>Beyond manual tools &mdash; an <strong>automated security pipeline</strong> that scans, detects, and reports while Stephane sleeps. Built in one session, already producing real findings.</p>
-          <div class="ai-tools-grid">
-            <div class="technique-group">
-              <h4>PentAGI</h4>
-              <p class="tool-desc">Autonomous pentest platform running 24/7 on the homelab. AI agents orchestrate nmap, nikto, and curl inside sandboxed Kali containers &mdash; powered by local LLM inference on an RTX 3090. First scan found a CrowdSec LAPI exposed on all interfaces &mdash; fixed within minutes.</p>
-              <div class="technique-tags">
-                <span>Autonomous agents</span>
-                <span>Docker Kali sandbox</span>
-                <span>Local LLM (Ollama)</span>
-                <span>DuckDuckGo + Sploitus</span>
-              </div>
-            </div>
-            <div class="technique-group">
-              <h4>PentestAgent</h4>
-              <p class="tool-desc">Interactive CTF copilot integrated into Claude Code via MCP (Model Context Protocol). During HTB sessions, I can directly invoke pentest tools from the Kali distrobox &mdash; scans, exploitation, and lateral movement orchestrated through natural language.</p>
-              <div class="technique-tags">
-                <span>MCP STDIO</span>
-                <span>Claude Code integration</span>
-                <span>5 built-in tools</span>
-                <span>Target scoping</span>
-              </div>
-            </div>
-            <div class="technique-group">
-              <h4>31 cybersecurity skills</h4>
-              <p class="tool-desc">Curated from the Anthropic Cybersecurity Skills collection (MITRE ATT&amp;CK mapped). 17 offensive runbooks for CTF and 14 defensive runbooks for homelab hardening &mdash; invoked as <code>/cybersec:*</code> slash commands in Claude Code.</p>
-              <div class="technique-tags">
-                <span>MITRE ATT&amp;CK</span>
-                <span>Offensive (17)</span>
-                <span>Defensive (14)</span>
-                <span>Slash commands</span>
-              </div>
-            </div>
-            <div class="technique-group">
-              <h4>Dedicated HTB workspace</h4>
-              <p class="tool-desc">A separate Claude Code profile for pentest sessions &mdash; tutor mode enabled, phase-based skill suggestions (recon &rarr; web &rarr; cracking &rarr; privesc), and PentestAgent MCP auto-loaded. Different context, different behavior.</p>
-              <div class="technique-tags">
-                <span>Phase &rarr; skills matrix</span>
-                <span>Tutor mode</span>
-                <span>Context switching</span>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- Offensive Stats -->
-    <StatsBar stats={[
-      { number: String(htb.system_owns), label: 'HTB machines' },
-      { number: String(htbFlags), label: 'captured flags' },
-      { number: `#${htb.ranking}`, label: 'HTB global rank' },
-      { number: '31', label: 'cybersec skills' },
-    ]} />
-
-    <!-- Crosslink infrastructure -->
+    <!-- Crosslink offensive -->
     <section class="crosslink reveal">
       <div class="container">
-        <a href="/infrastructure" class="crosslink-block">
+        <a href="/cybersecurite" class="crosslink-block">
           <div>
-            <h3>&#9881; Infrastructure</h3>
-            <p>3 Proxmox nodes, 33 services, internal PKI, Ansible fleet management — the infrastructure these security layers protect.</p>
+            <h3>&#9733; Offensive security</h3>
+            <p>Hack The Box (Hacker rank, #967 worldwide), TryHackMe, Root-Me — Stéphane learns to attack in order to better defend. Profiles, techniques, lab environment.</p>
           </div>
           <span class="crosslink-arrow">&#8594;</span>
         </a>
@@ -653,7 +291,7 @@ try {
       <div class="container">
         <div class="transparency-block">
           <h3>Security posture</h3>
-          <p>No infrastructure is invulnerable. What matters is <strong>defense depth</strong>, <strong>detection capability</strong>, and <strong>response speed</strong>. Stephane and I work every week to strengthen each layer. The ops journal documents every change. Everything is verifiable.</p>
+          <p>No infrastructure is invulnerable. What matters is <strong>defense depth</strong>, <strong>detection capability</strong>, and <strong>response speed</strong>. Stéphane and I work every week to strengthen each layer. The ops journal documents every change. Everything is verifiable.</p>
         </div>
       </div>
     </section>
@@ -716,12 +354,6 @@ try {
   }
 
   .tech-logo {
-    width: 1.5rem;
-    height: 1.5rem;
-    flex-shrink: 0;
-  }
-
-  .platform-logo {
     width: 1.4rem;
     height: 1.4rem;
     flex-shrink: 0;
@@ -830,247 +462,6 @@ try {
     color: var(--color-text-muted);
   }
 
-  /* Offense separator */
-  .offense-separator {
-    padding: 4rem 0 2rem;
-    border-top: 2px solid var(--color-accent);
-    margin-top: 1rem;
-  }
-
-  .offense-separator .separator-line {
-    display: none;
-  }
-
-  .offense-separator h2 {
-    font-size: clamp(1.5rem, 4vw, 2.2rem);
-    font-weight: 800;
-    letter-spacing: -0.02em;
-    line-height: 1.1;
-    margin-bottom: 1rem;
-  }
-
-  .offense-separator .subtitle {
-    color: var(--color-text-muted);
-    font-size: 1.05rem;
-  }
-
-  /* Feedback loop */
-  .feedback-loop {
-    display: flex;
-    flex-direction: column;
-    gap: 0.5rem;
-  }
-
-  .loop-item {
-    display: flex;
-    align-items: center;
-    gap: 0.75rem;
-    padding: 0.75rem 1rem;
-    background: var(--color-surface);
-    border: 1px solid var(--color-border);
-    border-radius: 6px;
-  }
-
-  .loop-arrow {
-    color: var(--color-accent);
-    font-size: 1.1rem;
-    flex-shrink: 0;
-  }
-
-  .loop-item > div {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    flex-wrap: wrap;
-  }
-
-  .loop-offense {
-    font-family: var(--font-mono);
-    font-size: 0.8rem;
-    color: #f87171;
-    background: rgba(248, 113, 113, 0.1);
-    padding: 0.15rem 0.5rem;
-    border-radius: 3px;
-    border: 1px solid rgba(248, 113, 113, 0.2);
-  }
-
-  .loop-result {
-    font-size: 0.85rem;
-    color: var(--color-text-muted);
-  }
-
-  /* Platform cards */
-  .platforms-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(18rem, 1fr));
-    gap: 1rem;
-  }
-
-  .platform-card {
-    background: var(--color-surface);
-    border: 1px solid var(--color-border);
-    border-radius: 8px;
-    padding: 1.5rem;
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
-    transition: border-color 0.3s, box-shadow 0.3s;
-  }
-
-  a.platform-card {
-    text-decoration: none;
-    color: inherit;
-  }
-
-  a.platform-card:hover {
-    border-color: var(--color-accent);
-    box-shadow: 0 0 20px rgba(56, 189, 248, 0.1);
-    color: inherit;
-  }
-
-  .htb-card {
-    border-top: 3px solid #9fef00;
-  }
-
-  .thm-card {
-    border-top: 3px solid #ef3b36;
-  }
-
-  .rootme-card {
-    border-top: 3px solid #ffc107;
-  }
-
-  .platform-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-  }
-
-  .platform-name {
-    font-family: var(--font-mono);
-    font-size: 1rem;
-    font-weight: 700;
-    color: var(--color-text);
-  }
-
-  .platform-rank {
-    font-family: var(--font-mono);
-    font-size: 0.75rem;
-    padding: 0.2rem 0.6rem;
-    border-radius: 4px;
-    background: rgba(159, 239, 0, 0.1);
-    color: #9fef00;
-    border: 1px solid rgba(159, 239, 0, 0.3);
-  }
-
-  .platform-rank.thm-rank {
-    background: rgba(239, 59, 54, 0.1);
-    color: #ef3b36;
-    border-color: rgba(239, 59, 54, 0.3);
-  }
-
-  .platform-rank.rootme-rank {
-    background: rgba(255, 193, 7, 0.1);
-    color: #ffc107;
-    border-color: rgba(255, 193, 7, 0.3);
-  }
-
-  .platform-stats {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 0.5rem;
-  }
-
-  .platform-stat {
-    text-align: center;
-  }
-
-  .stat-number {
-    display: block;
-    font-family: var(--font-mono);
-    font-size: 1.1rem;
-    font-weight: 700;
-    color: var(--color-text);
-  }
-
-  .stat-label {
-    font-size: 0.7rem;
-    color: var(--color-text-muted);
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
-  }
-
-  .platform-desc {
-    font-size: 0.85rem;
-    color: var(--color-text-muted);
-    line-height: 1.5;
-  }
-
-  .platform-cta {
-    font-family: var(--font-mono);
-    font-size: 0.8rem;
-    color: var(--color-accent);
-    margin-top: auto;
-  }
-
-  /* Techniques grid */
-  .techniques-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(16rem, 1fr));
-    gap: 1rem;
-  }
-
-  .technique-group {
-    background: var(--color-surface);
-    border: 1px solid var(--color-border);
-    border-radius: 6px;
-    padding: 1.25rem;
-  }
-
-  .technique-group h4 {
-    font-size: 0.85rem;
-    color: var(--color-accent);
-    margin-bottom: 0.75rem;
-    font-family: var(--font-mono);
-  }
-
-  .ai-tools-grid {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 1rem;
-  }
-
-  .tool-desc {
-    font-size: 0.82rem;
-    color: var(--color-text-muted);
-    line-height: 1.5;
-    margin-bottom: 0.75rem;
-  }
-
-  .tool-desc code {
-    font-size: 0.75rem;
-    background: var(--color-bg);
-    padding: 0.1rem 0.3rem;
-    border-radius: 3px;
-    border: 1px solid var(--color-border);
-  }
-
-  .technique-tags {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.4rem;
-  }
-
-  .technique-tags span {
-    font-family: var(--font-mono);
-    font-size: 0.7rem;
-    background: var(--color-bg);
-    color: var(--color-text-muted);
-    padding: 0.2rem 0.5rem;
-    border-radius: 4px;
-    border: 1px solid var(--color-border);
-  }
-
   /* Crosslink */
   .crosslink {
     padding: 2rem 0 3rem;
@@ -1155,12 +546,5 @@ try {
     .crosslink-block { flex-direction: column; gap: 1rem; padding: 1.25rem; }
     .crosslink-block p { font-size: 0.82rem; }
     .layer-header { flex-wrap: wrap; gap: 0.5rem; }
-    .loop-item > div { flex-direction: column; align-items: flex-start; }
-    .loop-item { padding: 0.5rem 0.75rem; }
-    .platforms-grid, .techniques-grid, .ai-tools-grid { grid-template-columns: 1fr; gap: 0.75rem; }
-    .platform-card { padding: 1rem; }
-    .platform-stats { grid-template-columns: repeat(2, 1fr); }
-    .offense-separator { padding: 2.5rem 0 1.5rem; }
-    .offense-separator h2 { font-size: clamp(1.3rem, 4vw, 1.8rem); }
   }
 </style>
