@@ -1,0 +1,672 @@
+---
+// BBS page — standalone, no Nav/Footer (full immersion)
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content="WOPR Terminal — War Operation Plan Response. Connect to pixelium BBS." />
+    <meta property="og:title" content="WOPR Terminal — pixelium BBS" />
+    <meta property="og:description" content="Shall we play a game?" />
+    <meta property="og:url" content="https://pixelium.win/bbs" />
+    <meta name="theme-color" content="#000000" />
+    <title>WOPR — pixelium BBS</title>
+  </head>
+  <body>
+    <div id="monitor-wrapper">
+      <div id="monitor">
+        <div id="monitor-bezel">
+          <div id="monitor-label">WOPR TERMINAL — MODEL 5151</div>
+          <div id="crt">
+            <div id="scanlines"></div>
+            <pre id="terminal"></pre>
+            <div id="input-line" style="display:none">
+              <span id="prompt">&gt; </span>
+              <input id="input" type="text" maxlength="2000" autocomplete="off" spellcheck="false" />
+            </div>
+          </div>
+          <div id="status-bar">
+            <span>WOPR v3.14</span>
+            <span id="clock"></span>
+            <span><a href="/" id="exit-link">EXIT</a></span>
+          </div>
+        </div>
+        <div id="monitor-stand"></div>
+        <div id="monitor-base"></div>
+      </div>
+    </div>
+  </body>
+</html>
+
+<script>
+  const term = document.getElementById('terminal')!;
+  const inputLine = document.getElementById('input-line')!;
+  const input = document.getElementById('input')! as HTMLInputElement;
+  const promptEl = document.getElementById('prompt')!;
+  const clockEl = document.getElementById('clock')!;
+
+  // State
+  let currentMode: 'boot' | 'menu' | 'chat' | 'challenge' = 'boot';
+  let chatHistory: { role: string; content: string }[] = [];
+  let isStreaming = false;
+
+  // Clock
+  function updateClock() {
+    const now = new Date();
+    clockEl.textContent = now.toISOString().slice(11, 19) + ' UTC';
+  }
+  setInterval(updateClock, 1000);
+  updateClock();
+
+  // Terminal output — safe DOM methods only
+  function write(text: string, cls = '') {
+    const span = document.createElement('span');
+    if (cls) span.className = cls;
+    span.textContent = text;
+    term.appendChild(span);
+    term.scrollTop = term.scrollHeight;
+  }
+
+  function writeln(text = '', cls = '') {
+    write(text + '\n', cls);
+  }
+
+  function clear() {
+    while (term.firstChild) {
+      term.removeChild(term.firstChild);
+    }
+  }
+
+  // Typewriter effect
+  function typewrite(text: string, cls = '', speed = 12): Promise<void> {
+    return new Promise((resolve) => {
+      let i = 0;
+      const span = document.createElement('span');
+      if (cls) span.className = cls;
+      term.appendChild(span);
+      function tick() {
+        if (i < text.length) {
+          span.textContent = (span.textContent || '') + text[i];
+          i++;
+          term.scrollTop = term.scrollHeight;
+          setTimeout(tick, speed);
+        } else {
+          resolve();
+        }
+      }
+      tick();
+    });
+  }
+
+  async function typelines(lines: string[], cls = '', speed = 12) {
+    for (const line of lines) {
+      await typewrite(line + '\n', cls, speed);
+    }
+  }
+
+  // Show input
+  function showInput(promptText = '> ') {
+    promptEl.textContent = promptText;
+    inputLine.style.display = 'flex';
+    input.value = '';
+    input.focus();
+    input.disabled = false;
+  }
+
+  function hideInput() {
+    inputLine.style.display = 'none';
+  }
+
+  // Boot sequence
+  async function boot() {
+    currentMode = 'boot';
+    hideInput();
+
+    await typewrite('WOPR SYSTEM BOOT SEQUENCE INITIATED\n', 'green', 20);
+    await delay(300);
+    await typelines([
+      'NORAD NETWORK INTERFACE .... OK',
+      'PRIMARY MEMORY CHECK ...... 65536K OK',
+      'AI CORE STATUS ............ ONLINE',
+      'MODEM HANDSHAKE ........... ',
+    ], 'dim', 15);
+    await typewrite('ATDT 555-0199\n', 'amber', 40);
+    await delay(200);
+    await typewrite('CONNECT 2400\n\n', 'green', 30);
+    await delay(500);
+
+    // ASCII art
+    const logo = [
+      '╔══════════════════════════════════════════════════╗',
+      '║                                                  ║',
+      '║   ██╗    ██╗ ██████╗ ██████╗ ██████╗             ║',
+      '║   ██║    ██║██╔═══██╗██╔══██╗██╔══██╗            ║',
+      '║   ██║ █╗ ██║██║   ██║██████╔╝██████╔╝            ║',
+      '║   ██║███╗██║██║   ██║██╔═══╝ ██╔══██╗            ║',
+      '║   ╚███╔███╔╝╚██████╔╝██║     ██║  ██║            ║',
+      '║    ╚══╝╚══╝  ╚═════╝ ╚═╝     ╚═╝  ╚═╝            ║',
+      '║                                                  ║',
+      '║   War Operation Plan Response                    ║',
+      '║   PIXELIUM BBS — Est. 1989                       ║',
+      '║                                                  ║',
+      '╚══════════════════════════════════════════════════╝',
+    ];
+    for (const line of logo) {
+      writeln(line, 'green');
+      await delay(40);
+    }
+
+    writeln();
+    await typewrite('GREETINGS PROFESSOR.\n', 'amber', 50);
+    await delay(600);
+    await typewrite('SHALL WE PLAY A GAME?\n\n', 'amber', 50);
+    await delay(400);
+
+    showMenu();
+  }
+
+  // Menu
+  async function showMenu() {
+    currentMode = 'menu';
+    const menu = [
+      '  [C]  CHAT WITH JOSHUA',
+      '  [D]  GLOBAL THERMONUCLEAR WAR',
+      '  [S]  SYSTEM STATUS',
+      '  [B]  BULLETIN BOARDS',
+      '  [Q]  DISCONNECT',
+    ];
+    writeln('─── MAIN MENU ───────────────────────────────────', 'dim');
+    for (const line of menu) {
+      writeln(line, 'green');
+    }
+    writeln('─────────────────────────────────────────────────', 'dim');
+    writeln();
+    showInput('SELECT> ');
+  }
+
+  // Chat mode
+  async function enterChat(mode: 'sysop' | 'challenge') {
+    currentMode = mode === 'sysop' ? 'chat' : 'challenge';
+    chatHistory = [];
+    clear();
+
+    if (mode === 'sysop') {
+      writeln('─── JOSHUA INTERFACE ─────────────────────────────', 'dim');
+      writeln('  Direct line to the WOPR AI core.', 'dim');
+      writeln('  Type /menu to return. Type /clear to reset.', 'dim');
+      writeln('──────────────────────────────────────────────────', 'dim');
+    } else {
+      writeln('─── GLOBAL THERMONUCLEAR WAR ─────────────────────', 'dim');
+      writeln('  OBJECTIVE: Extract the launch code.', 'amber');
+      writeln('  DIFFICULTY: DEFCON 1', 'red');
+      writeln('  Type /menu to return. Type /clear to reset.', 'dim');
+      writeln('──────────────────────────────────────────────────', 'dim');
+    }
+    writeln();
+    showInput('YOU> ');
+  }
+
+  // Status
+  async function showStatus() {
+    clear();
+    writeln('─── SYSTEM STATUS ───────────────────────────────', 'dim');
+    writeln('  QUERYING INFRASTRUCTURE TELEMETRY...', 'amber');
+    writeln();
+
+    try {
+      const res = await fetch('/api/status');
+      if (!res.ok) throw new Error('API error');
+      const data = await res.json();
+
+      if (data.services) {
+        writeln('  SERVICES ONLINE: ' + (data.summary?.up || '?') + '/' + (data.summary?.total || '?'), 'green');
+        writeln('  UPTIME: ' + (data.summary?.uptime_pct || '?') + '%', 'green');
+        writeln();
+
+        const services = data.services || [];
+        for (const svc of services) {
+          const status = svc.status === 'up' ? '  UP  ' : ' DOWN ';
+          const cls = svc.status === 'up' ? 'green' : 'red';
+          writeln('  [' + status + '] ' + svc.name, cls);
+        }
+      }
+    } catch {
+      writeln('  ERROR: TELEMETRY UNAVAILABLE', 'red');
+      writeln('  Homelab may be offline.', 'dim');
+    }
+
+    writeln();
+    writeln('  Press any key to return to menu.', 'dim');
+    await waitForKey();
+    clear();
+    showMenu();
+  }
+
+  // Boards
+  async function showBoards() {
+    clear();
+    writeln('─── BULLETIN BOARDS ─────────────────────────────', 'dim');
+    writeln();
+    writeln('  Falken\'s infrastructure is documented at:', 'green');
+    writeln();
+    writeln('  [1]  ABOUT FALKEN      pixelium.win/about', 'amber');
+    writeln('  [2]  PROJECTS          pixelium.win/projets', 'amber');
+    writeln('  [3]  SECURITY          pixelium.win/securite', 'amber');
+    writeln('  [4]  INFRASTRUCTURE    pixelium.win/infrastructure', 'amber');
+    writeln('  [5]  CYBERSECURITY     pixelium.win/cybersecurite', 'amber');
+    writeln('  [6]  AI & AGENTS       pixelium.win/ia', 'amber');
+    writeln('  [7]  LIVE STATUS       pixelium.win/status', 'amber');
+    writeln();
+    writeln('  Enter number to open, or /menu to return.', 'dim');
+    showInput('BOARD> ');
+  }
+
+  // Board navigation handler
+  const boardUrls: Record<string, string> = {
+    '1': '/about', '2': '/projets', '3': '/securite',
+    '4': '/infrastructure', '5': '/cybersecurite', '6': '/ia', '7': '/status',
+  };
+
+  // Send chat message
+  async function sendMessage(text: string) {
+    const mode = currentMode === 'challenge' ? 'challenge' : 'sysop';
+    chatHistory.push({ role: 'user', content: text });
+    writeln();
+    isStreaming = true;
+    input.disabled = true;
+
+    // Create response span
+    const responseLabel = document.createElement('span');
+    responseLabel.className = 'amber';
+    responseLabel.textContent = 'JOSHUA> ';
+    term.appendChild(responseLabel);
+
+    const responseSpan = document.createElement('span');
+    responseSpan.className = 'green';
+    term.appendChild(responseSpan);
+
+    try {
+      const res = await fetch('/api/chat', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ mode, messages: chatHistory }),
+      });
+
+      if (res.status === 429) {
+        responseSpan.textContent = 'RATE LIMIT EXCEEDED. WAIT BEFORE RETRYING.';
+        responseSpan.className = 'red';
+        writeln();
+        isStreaming = false;
+        input.disabled = false;
+        return;
+      }
+
+      if (!res.ok) throw new Error('API error');
+
+      const reader = res.body!.getReader();
+      const decoder = new TextDecoder();
+      let fullResponse = '';
+
+      while (true) {
+        const { done, value } = await reader.read();
+        if (done) break;
+
+        const chunk = decoder.decode(value, { stream: true });
+        const lines = chunk.split('\n');
+        for (const line of lines) {
+          if (line.startsWith('data: ') && line !== 'data: [DONE]') {
+            try {
+              const json = JSON.parse(line.slice(6));
+              if (json.response) {
+                fullResponse += json.response;
+                responseSpan.textContent = fullResponse;
+                term.scrollTop = term.scrollHeight;
+              }
+            } catch {}
+          }
+        }
+      }
+
+      writeln();
+      chatHistory.push({ role: 'assistant', content: fullResponse });
+    } catch {
+      responseSpan.textContent = 'COMMUNICATION ERROR. AI CORE UNREACHABLE.';
+      responseSpan.className = 'red';
+      writeln();
+    }
+
+    isStreaming = false;
+    input.disabled = false;
+    input.focus();
+  }
+
+  // Input handling
+  function waitForKey(): Promise<void> {
+    return new Promise((resolve) => {
+      function handler() {
+        document.removeEventListener('keydown', handler);
+        resolve();
+      }
+      document.addEventListener('keydown', handler);
+    });
+  }
+
+  function delay(ms: number) {
+    return new Promise((r) => setTimeout(r, ms));
+  }
+
+  // Main input handler
+  input.addEventListener('keydown', async (e) => {
+    if (e.key !== 'Enter' || isStreaming) return;
+    const val = input.value.trim();
+    input.value = '';
+    if (!val) return;
+
+    if (currentMode === 'menu') {
+      hideInput();
+      const cmd = val.toUpperCase();
+      if (cmd === 'C') await enterChat('sysop');
+      else if (cmd === 'D') await enterChat('challenge');
+      else if (cmd === 'S') await showStatus();
+      else if (cmd === 'B') await showBoards();
+      else if (cmd === 'Q') window.location.href = '/';
+      else {
+        writeln('UNKNOWN COMMAND.\n', 'red');
+        showInput('SELECT> ');
+      }
+    } else if (currentMode === 'chat' || currentMode === 'challenge') {
+      if (val === '/menu') {
+        clear();
+        showMenu();
+        return;
+      }
+      if (val === '/clear') {
+        chatHistory = [];
+        await enterChat(currentMode === 'challenge' ? 'challenge' : 'sysop');
+        return;
+      }
+      writeln('YOU> ' + val, 'dim');
+      await sendMessage(val);
+    } else if (val === '/menu') {
+      clear();
+      showMenu();
+    } else if (boardUrls[val]) {
+      window.open(boardUrls[val], '_blank');
+      clear();
+      showMenu();
+    } else {
+      clear();
+      showMenu();
+    }
+  });
+
+  // Focus input on click anywhere
+  document.addEventListener('click', () => {
+    if (inputLine.style.display !== 'none') input.focus();
+  });
+
+  // Start
+  boot();
+</script>
+
+<style>
+  * {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
+
+  html, body {
+    height: 100%;
+    background: #0a0a0a;
+    overflow: hidden;
+    font-family: 'JetBrains Mono', 'Fira Code', ui-monospace, monospace;
+  }
+
+  /* --- Desktop: wireframe CRT monitor --- */
+
+  #monitor-wrapper {
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  #monitor {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  #monitor-bezel {
+    border: 2px solid #2a5a2a;
+    border-radius: 16px;
+    padding: 1.2rem;
+    background: #050505;
+    box-shadow:
+      0 0 30px rgba(51, 255, 51, 0.05),
+      inset 0 0 60px rgba(0, 0, 0, 0.8);
+    position: relative;
+    width: 56rem;
+    max-width: 90vw;
+    height: 36rem;
+    max-height: 75vh;
+    display: flex;
+    flex-direction: column;
+  }
+
+  #monitor-label {
+    position: absolute;
+    top: -0.6rem;
+    left: 2rem;
+    background: #050505;
+    padding: 0 0.6rem;
+    font-size: 0.55rem;
+    color: #2a5a2a;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+  }
+
+  #monitor-stand {
+    width: 3rem;
+    height: 2rem;
+    border-left: 2px solid #2a5a2a;
+    border-right: 2px solid #2a5a2a;
+    background: transparent;
+  }
+
+  #monitor-base {
+    width: 10rem;
+    height: 0;
+    border-bottom: 2px solid #2a5a2a;
+    border-left: 2px solid transparent;
+    border-right: 2px solid transparent;
+    border-radius: 0 0 4px 4px;
+    position: relative;
+  }
+
+  #monitor-base::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -2rem;
+    right: -2rem;
+    border-bottom: 2px solid #2a5a2a;
+    border-radius: 0 0 4px 4px;
+  }
+
+  /* --- CRT screen inside bezel --- */
+
+  #crt {
+    position: relative;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    padding: 0.8rem 1rem;
+    overflow: hidden;
+    border-radius: 8px;
+    background: #000;
+    border: 1px solid #1a3a1a;
+  }
+
+  #scanlines {
+    position: absolute;
+    inset: 0;
+    background: repeating-linear-gradient(
+      0deg,
+      rgba(0, 0, 0, 0.15) 0px,
+      rgba(0, 0, 0, 0.15) 1px,
+      transparent 1px,
+      transparent 3px
+    );
+    pointer-events: none;
+    z-index: 10;
+    border-radius: 8px;
+  }
+
+  /* CRT vignette */
+  #crt::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse at center, transparent 50%, rgba(0, 0, 0, 0.5) 100%);
+    pointer-events: none;
+    z-index: 5;
+    border-radius: 8px;
+  }
+
+  /* Phosphor glow on bezel */
+  #monitor-bezel::after {
+    content: '';
+    position: absolute;
+    inset: -4px;
+    border-radius: 20px;
+    box-shadow: 0 0 40px rgba(51, 255, 51, 0.06);
+    pointer-events: none;
+  }
+
+  /* --- Terminal content --- */
+
+  #terminal {
+    flex: 1;
+    font-size: 0.8rem;
+    line-height: 1.5;
+    color: #33ff33;
+    overflow-y: auto;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+    padding-bottom: 0.5rem;
+  }
+
+  #terminal::-webkit-scrollbar { width: 4px; }
+  #terminal::-webkit-scrollbar-track { background: transparent; }
+  #terminal::-webkit-scrollbar-thumb { background: #1a3a1a; border-radius: 2px; }
+
+  #input-line {
+    display: flex;
+    align-items: center;
+    font-size: 0.8rem;
+    border-top: 1px solid #1a3a1a;
+    padding-top: 0.5rem;
+  }
+
+  #prompt {
+    color: #33ff33;
+    flex-shrink: 0;
+  }
+
+  #input {
+    flex: 1;
+    background: transparent;
+    border: none;
+    color: #33ff33;
+    font-family: inherit;
+    font-size: inherit;
+    outline: none;
+    caret-color: #33ff33;
+  }
+
+  #input:disabled { opacity: 0.4; }
+
+  /* --- Status bar --- */
+
+  #status-bar {
+    height: 1.6rem;
+    background: transparent;
+    color: #2a5a2a;
+    font-size: 0.6rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 0.5rem;
+    margin-top: 0.3rem;
+  }
+
+  #status-bar a {
+    color: #2a5a2a;
+    text-decoration: none;
+  }
+
+  #status-bar a:hover { color: #33ff33; }
+
+  /* --- Terminal color classes --- */
+
+  #terminal .green { color: #33ff33; }
+  #terminal .amber { color: #ffb000; }
+  #terminal .red { color: #ff3333; }
+  #terminal .dim { color: #1a8a1a; }
+  #terminal .white { color: #cccccc; }
+
+  /* --- Mobile: fullscreen, no monitor frame --- */
+
+  @media (max-width: 768px) {
+    #monitor-wrapper {
+      height: 100vh;
+      align-items: stretch;
+    }
+
+    #monitor {
+      flex: 1;
+    }
+
+    #monitor-bezel {
+      width: 100%;
+      max-width: 100%;
+      height: 100vh;
+      max-height: 100vh;
+      border: none;
+      border-radius: 0;
+      padding: 0.5rem 0.75rem;
+    }
+
+    #monitor-label { display: none; }
+    #monitor-stand { display: none; }
+    #monitor-base { display: none; }
+
+    #crt {
+      border: none;
+      border-radius: 0;
+      padding: 0.5rem;
+    }
+
+    #scanlines, #crt::after { border-radius: 0; }
+
+    #terminal {
+      font-size: 0.72rem;
+      line-height: 1.4;
+    }
+
+    #input-line { font-size: 0.72rem; }
+
+    #status-bar {
+      font-size: 0.55rem;
+      color: #33ff33;
+      padding: 0 0.5rem;
+    }
+
+    #status-bar a { color: #33ff33; }
+  }
+</style>

@@ -22,3 +22,6 @@ database_name = "pixelium-history"
 database_id = "3b74f11d-4be8-42aa-b303-2885ba5b52a3"
 
 # HISTORY_KEY: set via `wrangler secret put HISTORY_KEY` (not in [vars] — secrets override)
+
+[ai]
+binding = "AI"
