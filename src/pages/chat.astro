@@ -106,16 +106,22 @@ const codeEndpoint = `<span class="c-cmt">// POST /api/chat — unified AI endpo
         </form>
       </div>
 
-      <!-- Right: code/config panel -->
-      <div class="code-panel">
-        <div class="code-header">
-          <button class="code-tab active" data-tab="prompt">system prompt</button>
-          <button class="code-tab" data-tab="config">wrangler.toml</button>
-          <button class="code-tab" data-tab="endpoint">endpoint</button>
+      <!-- Right: code/config panel — collapsed by default -->
+      <div class="code-panel" id="code-panel">
+        <button class="code-toggle" id="code-toggle">
+          <span class="code-toggle-icon" id="code-toggle-icon">&lsaquo;</span>
+          <span class="code-toggle-label">View source</span>
+        </button>
+        <div class="code-inner" id="code-inner" style="display:none">
+          <div class="code-header">
+            <button class="code-tab active" data-tab="prompt">system prompt</button>
+            <button class="code-tab" data-tab="config">wrangler.toml</button>
+            <button class="code-tab" data-tab="endpoint">endpoint</button>
+          </div>
+          <pre id="tab-prompt" class="code-block" set:html={codePrompt} />
+          <pre id="tab-config" class="code-block" style="display:none" set:html={codeConfig} />
+          <pre id="tab-endpoint" class="code-block" style="display:none" set:html={codeEndpoint} />
         </div>
-        <pre id="tab-prompt" class="code-block" set:html={codePrompt} />
-        <pre id="tab-config" class="code-block" style="display:none" set:html={codeConfig} />
-        <pre id="tab-endpoint" class="code-block" style="display:none" set:html={codeEndpoint} />
       </div>
     </div>
 
@@ -133,6 +139,20 @@ const codeEndpoint = `<span class="c-cmt">// POST /api/chat — unified AI endpo
 
   const history: { role: string; content: string }[] = [];
   let isStreaming = false;
+  let codeOpen = false;
+
+  // Code panel toggle
+  const codeToggle = document.getElementById('code-toggle')!;
+  const codeInner = document.getElementById('code-inner')!;
+  const codePanel = document.getElementById('code-panel')!;
+  const codeToggleIcon = document.getElementById('code-toggle-icon')!;
+
+  codeToggle.addEventListener('click', () => {
+    codeOpen = !codeOpen;
+    codeInner.style.display = codeOpen ? 'flex' : 'none';
+    codePanel.classList.toggle('expanded', codeOpen);
+    codeToggleIcon.textContent = codeOpen ? '\u203A' : '\u2039';
+  });
 
   // Tab switching — toggle visibility of pre-rendered blocks
   const tabs = document.querySelectorAll('.code-tab');
@@ -229,8 +249,8 @@ const codeEndpoint = `<span class="c-cmt">// POST /api/chat — unified AI endpo
     margin: 0 auto;
     padding: 0 1.5rem;
     display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 1.5rem;
+    grid-template-columns: 1fr auto;
+    gap: 0;
     height: calc(100vh - 10rem);
     min-height: 30rem;
   }
@@ -342,14 +362,62 @@ const codeEndpoint = `<span class="c-cmt">// POST /api/chat — unified AI endpo
 
   #chat-send:hover { color: var(--color-accent-hover); }
 
-  /* Code panel */
+  /* Code panel — collapsed by default */
   .code-panel {
     display: flex;
+    flex-direction: row;
+    width: 2.5rem;
+    transition: width 0.3s ease;
+    position: relative;
+  }
+
+  .code-panel.expanded {
+    width: 28rem;
+    gap: 0;
+  }
+
+  .code-toggle {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    width: 2.5rem;
+    flex-shrink: 0;
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: 8px 0 0 8px;
+    cursor: pointer;
+    color: var(--color-text-muted);
+    font-family: var(--font-mono);
+    padding: 0;
+    transition: color 0.2s;
+  }
+
+  .code-toggle:hover { color: var(--color-accent); }
+
+  .code-toggle-icon {
+    font-size: 1.2rem;
+    line-height: 1;
+  }
+
+  .code-toggle-label {
+    writing-mode: vertical-rl;
+    text-orientation: mixed;
+    font-size: 0.6rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  .code-inner {
+    flex: 1;
     flex-direction: column;
     background: var(--color-surface);
     border: 1px solid var(--color-border);
-    border-radius: 8px;
+    border-left: none;
+    border-radius: 0 8px 8px 0;
     overflow: hidden;
+    min-width: 0;
   }
 
   .code-header {
@@ -420,7 +488,7 @@ const codeEndpoint = `<span class="c-cmt">// POST /api/chat — unified AI endpo
       height: auto;
     }
 
-    .chat-panel { height: 60vh; min-height: 20rem; }
-    .code-panel { height: 20rem; }
+    .chat-panel { height: 75vh; min-height: 20rem; }
+    .code-panel { display: none; }
   }
 </style>
