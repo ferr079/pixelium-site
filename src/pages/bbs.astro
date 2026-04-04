@@ -734,12 +734,12 @@
 
   html, body {
     height: 100%;
-    background: #0a0a0a;
+    background: #0f172a;
     overflow: hidden;
     font-family: 'JetBrains Mono', 'Fira Code', ui-monospace, monospace;
   }
 
-  /* --- Desktop: wireframe CRT monitor --- */
+  /* --- Desktop: terminal monitor frame — OG palette --- */
 
   #monitor-wrapper {
     height: 100vh;
@@ -755,15 +755,14 @@
   }
 
   #monitor-bezel {
-    border: 2px solid #2a5a2a;
-    border-radius: 16px;
-    padding: 1.2rem;
-    background: #050505;
+    border: 1px solid #334155;
+    border-radius: 12px;
+    padding: 1rem;
+    background: #1e293b;
     box-shadow:
-      0 0 30px rgba(51, 255, 51, 0.05),
-      inset 0 0 60px rgba(0, 0, 0, 0.8);
+      0 0 40px rgba(56, 189, 248, 0.04),
+      inset 0 0 40px rgba(0, 0, 0, 0.4);
     position: relative;
-    /* 4:3 aspect ratio */
     width: min(48rem, 85vw);
     aspect-ratio: 4 / 3;
     max-height: 85vh;
@@ -773,31 +772,28 @@
 
   #monitor-label {
     position: absolute;
-    top: -0.6rem;
+    top: -0.5rem;
     left: 2rem;
-    background: #050505;
+    background: #1e293b;
     padding: 0 0.6rem;
     font-size: 0.55rem;
-    color: #2a5a2a;
+    color: #94a3b8;
     letter-spacing: 0.15em;
     text-transform: uppercase;
   }
 
   #monitor-stand {
     width: 3rem;
-    height: 2rem;
-    border-left: 2px solid #2a5a2a;
-    border-right: 2px solid #2a5a2a;
+    height: 1.5rem;
+    border-left: 1px solid #334155;
+    border-right: 1px solid #334155;
     background: transparent;
   }
 
   #monitor-base {
     width: 10rem;
     height: 0;
-    border-bottom: 2px solid #2a5a2a;
-    border-left: 2px solid transparent;
-    border-right: 2px solid transparent;
-    border-radius: 0 0 4px 4px;
+    border-bottom: 1px solid #334155;
     position: relative;
   }
 
@@ -807,11 +803,11 @@
     top: 0;
     left: -2rem;
     right: -2rem;
-    border-bottom: 2px solid #2a5a2a;
+    border-bottom: 1px solid #334155;
     border-radius: 0 0 4px 4px;
   }
 
-  /* --- CRT screen inside bezel --- */
+  /* --- Screen inside bezel --- */
 
   #crt {
     position: relative;
@@ -820,11 +816,10 @@
     flex-direction: column;
     padding: 1rem 1.2rem;
     overflow: hidden;
-    border-radius: 10px;
-    background: #000800;
-    border: 1px solid #1a3a1a;
-    /* Subtle screen curvature illusion */
-    box-shadow: inset 0 0 80px rgba(0, 0, 0, 0.6);
+    border-radius: 8px;
+    background: #0f172a;
+    border: 1px solid #334155;
+    box-shadow: inset 0 0 60px rgba(0, 0, 0, 0.3);
   }
 
   #scanlines {
@@ -832,91 +827,78 @@
     inset: 0;
     background: repeating-linear-gradient(
       0deg,
-      rgba(0, 0, 0, 0.3) 0px,
-      rgba(0, 0, 0, 0.3) 1px,
+      rgba(0, 0, 0, 0.08) 0px,
+      rgba(0, 0, 0, 0.08) 1px,
       transparent 1px,
-      transparent 2px
+      transparent 3px
     );
     pointer-events: none;
     z-index: 10;
-    border-radius: 10px;
+    border-radius: 8px;
   }
 
-  /* CRT vignette — heavy, like a real tube */
+  /* Subtle vignette */
   #crt::after {
     content: '';
     position: absolute;
     inset: 0;
-    background: radial-gradient(ellipse at center, transparent 40%, rgba(0, 0, 0, 0.7) 100%);
+    background: radial-gradient(ellipse at center, transparent 60%, rgba(0, 0, 0, 0.3) 100%);
     pointer-events: none;
     z-index: 5;
-    border-radius: 10px;
+    border-radius: 8px;
   }
 
-  /* Phosphor glow on bezel — visible ambient light from screen */
+  /* Accent glow on bezel */
   #monitor-bezel::after {
     content: '';
     position: absolute;
-    inset: -6px;
-    border-radius: 22px;
-    box-shadow:
-      0 0 50px rgba(51, 255, 51, 0.08),
-      0 0 120px rgba(51, 255, 51, 0.03);
+    inset: -4px;
+    border-radius: 16px;
+    box-shadow: 0 0 30px rgba(56, 189, 248, 0.04);
     pointer-events: none;
   }
 
-  /* Power LED */
+  /* Power LED — accent blue */
   #monitor-bezel::before {
     content: '';
     position: absolute;
-    bottom: 0.5rem;
+    bottom: 0.4rem;
     right: 1rem;
-    width: 6px;
-    height: 6px;
+    width: 5px;
+    height: 5px;
     border-radius: 50%;
-    background: #33ff33;
-    box-shadow: 0 0 6px rgba(51, 255, 51, 0.8);
+    background: #38bdf8;
+    box-shadow: 0 0 6px rgba(56, 189, 248, 0.6);
   }
 
-  /* --- Terminal content — low-res CRT feel --- */
+  /* --- Terminal content --- */
 
   #terminal {
     flex: 1;
-    font-size: 1.05rem;
+    font-size: 0.9rem;
     line-height: 1.6;
-    color: #33ff33;
+    color: #e2e8f0;
     overflow-y: auto;
     white-space: pre-wrap;
     word-wrap: break-word;
     padding-bottom: 0.5rem;
-    /* Phosphor glow on text */
-    text-shadow:
-      0 0 4px rgba(51, 255, 51, 0.6),
-      0 0 12px rgba(51, 255, 51, 0.2);
-    /* Slightly blur text to fake low resolution */
-    -webkit-font-smoothing: none;
-    -moz-osx-font-smoothing: unset;
-    font-smooth: never;
-    letter-spacing: 0.03em;
+    letter-spacing: 0.02em;
   }
 
   #terminal::-webkit-scrollbar { width: 4px; }
   #terminal::-webkit-scrollbar-track { background: transparent; }
-  #terminal::-webkit-scrollbar-thumb { background: #1a3a1a; border-radius: 2px; }
+  #terminal::-webkit-scrollbar-thumb { background: #334155; border-radius: 2px; }
 
   #input-line {
     display: flex;
     align-items: center;
-    font-size: 1.05rem;
-    border-top: 1px solid #1a3a1a;
+    font-size: 0.9rem;
+    border-top: 1px solid #334155;
     padding-top: 0.5rem;
-    text-shadow:
-      0 0 4px rgba(51, 255, 51, 0.6),
-      0 0 12px rgba(51, 255, 51, 0.2);
   }
 
   #prompt {
-    color: #33ff33;
+    color: #38bdf8;
     flex-shrink: 0;
   }
 
@@ -924,11 +906,11 @@
     flex: 1;
     background: transparent;
     border: none;
-    color: #33ff33;
+    color: #e2e8f0;
     font-family: inherit;
     font-size: inherit;
     outline: none;
-    caret-color: #33ff33;
+    caret-color: #38bdf8;
   }
 
   #input:disabled { opacity: 0.4; }
@@ -938,7 +920,7 @@
   #status-bar {
     height: 1.6rem;
     background: transparent;
-    color: #2a5a2a;
+    color: #94a3b8;
     font-size: 0.6rem;
     display: flex;
     align-items: center;
@@ -948,33 +930,19 @@
   }
 
   #status-bar a {
-    color: #2a5a2a;
+    color: #94a3b8;
     text-decoration: none;
   }
 
-  #status-bar a:hover { color: #33ff33; }
+  #status-bar a:hover { color: #38bdf8; }
 
-  /* --- Terminal color classes — all with phosphor glow --- */
+  /* --- Terminal color classes — OG palette --- */
 
-  #terminal .green { color: #33ff33; text-shadow: 0 0 4px rgba(51, 255, 51, 0.6), 0 0 12px rgba(51, 255, 51, 0.2); }
-  #terminal .amber { color: #ffb000; text-shadow: 0 0 4px rgba(255, 176, 0, 0.6), 0 0 12px rgba(255, 176, 0, 0.2); }
-  #terminal .red { color: #ff3333; text-shadow: 0 0 4px rgba(255, 51, 51, 0.6), 0 0 12px rgba(255, 51, 51, 0.2); }
-  #terminal .dim { color: #1a8a1a; text-shadow: 0 0 2px rgba(26, 138, 26, 0.4); }
-  #terminal .white { color: #cccccc; text-shadow: 0 0 4px rgba(204, 204, 204, 0.4); }
-
-  /* Flicker animation — subtle CRT instability */
-  @keyframes flicker {
-    0%, 100% { opacity: 1; }
-    92% { opacity: 1; }
-    93% { opacity: 0.8; }
-    94% { opacity: 1; }
-    96% { opacity: 0.9; }
-    97% { opacity: 1; }
-  }
-
-  #crt {
-    animation: flicker 8s infinite;
-  }
+  #terminal .green { color: #38bdf8; }
+  #terminal .amber { color: #7dd3fc; }
+  #terminal .red { color: #f87171; }
+  #terminal .dim { color: #94a3b8; }
+  #terminal .white { color: #e2e8f0; }
 
   /* --- Mobile: fullscreen, no monitor frame --- */
 
@@ -984,9 +952,7 @@
       align-items: stretch;
     }
 
-    #monitor {
-      flex: 1;
-    }
+    #monitor { flex: 1; }
 
     #monitor-bezel {
       width: 100%;
@@ -998,9 +964,7 @@
       padding: 0.5rem 0.75rem;
     }
 
-    #monitor-label { display: none; }
-    #monitor-stand { display: none; }
-    #monitor-base { display: none; }
+    #monitor-label, #monitor-stand, #monitor-base { display: none; }
 
     #crt {
       border: none;
@@ -1010,19 +974,12 @@
 
     #scanlines, #crt::after { border-radius: 0; }
 
-    #terminal {
-      font-size: 0.85rem;
-      line-height: 1.4;
-    }
-
-    #input-line { font-size: 0.85rem; }
+    #terminal { font-size: 0.8rem; line-height: 1.4; }
+    #input-line { font-size: 0.8rem; }
 
     #status-bar {
       font-size: 0.55rem;
-      color: #33ff33;
       padding: 0 0.5rem;
     }
-
-    #status-bar a { color: #33ff33; }
   }
 </style>
