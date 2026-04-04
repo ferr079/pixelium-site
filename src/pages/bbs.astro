@@ -481,8 +481,8 @@ import Base from '../layouts/Base.astro';
     writeln('  [2]  PROJECTS          pixelium.win/projets', 'amber');
     writeln('  [3]  SECURITY          pixelium.win/securite', 'amber');
     writeln('  [4]  INFRASTRUCTURE    pixelium.win/infrastructure', 'amber');
-    writeln('  [5]  CYBERSECURITY     pixelium.win/cybersecurite', 'amber');
-    writeln('  [6]  AI & AGENTS       pixelium.win/ia', 'amber');
+    writeln('  [5]  CYBERSECURITY     pixelium.win/securite', 'amber');
+    writeln('  [6]  AI & PROJECTS     pixelium.win/projets', 'amber');
     writeln('  [7]  LIVE STATUS       pixelium.win/status', 'amber');
     writeln();
     writeln('  Enter number to open, or /menu to return.', 'dim');
@@ -492,7 +492,7 @@ import Base from '../layouts/Base.astro';
   // Board navigation handler
   const boardUrls: Record<string, string> = {
     '1': '/about', '2': '/projets', '3': '/securite',
-    '4': '/infrastructure', '5': '/cybersecurite', '6': '/ia', '7': '/status',
+    '4': '/infrastructure', '5': '/securite', '6': '/projets', '7': '/status',
   };
 
   // Send chat message
