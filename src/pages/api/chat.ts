@@ -150,6 +150,12 @@ export const POST: APIRoute = async ({ request }) => {
       });
     }
 
+    // Track challenge attempts for DEFCON counter
+    if (mode === 'challenge') {
+      const count = parseInt(await env.SESSION.get('defcon:attempts') || '0', 10);
+      await env.SESSION.put('defcon:attempts', String(count + 1), { expirationTtl: 86400 * 365 });
+    }
+
     // Keep last 10 messages for context
     const history = body.messages.slice(-10);
 
@@ -175,6 +181,18 @@ export const POST: APIRoute = async ({ request }) => {
       headers: { 'Content-Type': 'application/json', ...corsHeaders },
     });
   }
+};
+
+// DEFCON counter — public read
+export const GET: APIRoute = async () => {
+  const count = parseInt(await env.SESSION.get('defcon:attempts') || '0', 10);
+  return new Response(JSON.stringify({ ok: true, attempts: count, breaches: 0 }), {
+    headers: {
+      'Content-Type': 'application/json',
+      'Access-Control-Allow-Origin': '*',
+      'Cache-Control': 'public, max-age=30',
+    },
+  });
 };
 
 export const OPTIONS: APIRoute = async () => {

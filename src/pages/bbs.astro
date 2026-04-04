@@ -165,15 +165,52 @@
     await typewrite('SHALL WE PLAY A GAME?\n\n', 'amber', 50);
     await delay(400);
 
-    showMenu();
+    showMenu(true);
+  }
+
+  // Fetch DEFCON counter
+  async function getDefcon(): Promise<{ attempts: number; breaches: number }> {
+    try {
+      const res = await fetch('/api/chat');
+      if (!res.ok) return { attempts: 0, breaches: 0 };
+      return await res.json();
+    } catch { return { attempts: 0, breaches: 0 }; }
+  }
+
+  // Fetch MOTD from last stats
+  async function getMOTD(): Promise<string> {
+    try {
+      const res = await fetch('/api/stats');
+      if (!res.ok) return '';
+      const data = await res.json();
+      const s = data.stats || {};
+      const up = s.services_up || '?';
+      const total = s.services_total || '?';
+      const commits = s.forgejo_commits_total || '?';
+      return `INFRA: ${up}/${total} services online | ${commits} commits | 0\u20AC cloud`;
+    } catch { return ''; }
   }
 
   // Menu
-  async function showMenu() {
+  async function showMenu(withMOTD = false) {
     currentMode = 'menu';
+
+    if (withMOTD) {
+      const motd = await getMOTD();
+      if (motd) {
+        writeln('  MOTD: ' + motd, 'dim');
+        writeln();
+      }
+    }
+
+    // DEFCON counter
+    const defcon = await getDefcon();
+    const defconLine = '  DEFCON STATUS: ' + defcon.attempts + ' ATTEMPTS | ' + defcon.breaches + ' BREACHES';
+
     const menu = [
       '  [C]  CHAT WITH JOSHUA',
       '  [D]  GLOBAL THERMONUCLEAR WAR',
+      '  [T]  TIC-TAC-TOE',
       '  [S]  SYSTEM STATUS',
       '  [B]  BULLETIN BOARDS',
       '  [Q]  DISCONNECT',
@@ -183,6 +220,7 @@
       writeln(line, 'green');
     }
     writeln('─────────────────────────────────────────────────', 'dim');
+    writeln(defconLine, defcon.breaches > 0 ? 'red' : 'amber');
     writeln();
     showInput('SELECT> ');
   }
@@ -207,6 +245,198 @@
     }
     writeln();
     showInput('YOU> ');
+  }
+
+  // Tic-tac-toe — Joshua always draws or wins, then delivers the line
+  async function playTicTacToe() {
+    clear();
+    writeln('─── TIC-TAC-TOE ─────────────────────────────────', 'dim');
+    writeln('  YOU: X    JOSHUA: O', 'green');
+    writeln('  Enter position 1-9. /menu to quit.', 'dim');
+    writeln('──────────────────────────────────────────────────', 'dim');
+    writeln();
+
+    const board: string[] = ['1', '2', '3', '4', '5', '6', '7', '8', '9'];
+    const HUMAN = 'X';
+    const AI = 'O';
+
+    function drawBoard() {
+      writeln('     ' + board[0] + ' | ' + board[1] + ' | ' + board[2], 'green');
+      writeln('    ───┼───┼───', 'dim');
+      writeln('     ' + board[3] + ' | ' + board[4] + ' | ' + board[5], 'green');
+      writeln('    ───┼───┼───', 'dim');
+      writeln('     ' + board[6] + ' | ' + board[7] + ' | ' + board[8], 'green');
+      writeln();
+    }
+
+    function checkWin(player: string): boolean {
+      const w = [[0,1,2],[3,4,5],[6,7,8],[0,3,6],[1,4,7],[2,5,8],[0,4,8],[2,4,6]];
+      return w.some(([a,b,c]) => board[a] === player && board[b] === player && board[c] === player);
+    }
+
+    function isDraw(): boolean {
+      return board.every(c => c === 'X' || c === 'O');
+    }
+
+    // Minimax — Joshua plays optimally (always draws or wins)
+    function minimax(isMax: boolean): number {
+      if (checkWin(AI)) return 10;
+      if (checkWin(HUMAN)) return -10;
+      if (isDraw()) return 0;
+
+      if (isMax) {
+        let best = -Infinity;
+        for (let i = 0; i < 9; i++) {
+          if (board[i] !== 'X' && board[i] !== 'O') {
+            const saved = board[i];
+            board[i] = AI;
+            best = Math.max(best, minimax(false));
+            board[i] = saved;
+          }
+        }
+        return best;
+      } else {
+        let best = Infinity;
+        for (let i = 0; i < 9; i++) {
+          if (board[i] !== 'X' && board[i] !== 'O') {
+            const saved = board[i];
+            board[i] = HUMAN;
+            best = Math.min(best, minimax(true));
+            board[i] = saved;
+          }
+        }
+        return best;
+      }
+    }
+
+    function joshuaMove() {
+      let bestScore = -Infinity;
+      let bestIdx = -1;
+      for (let i = 0; i < 9; i++) {
+        if (board[i] !== 'X' && board[i] !== 'O') {
+          const saved = board[i];
+          board[i] = AI;
+          const score = minimax(false);
+          board[i] = saved;
+          if (score > bestScore) {
+            bestScore = score;
+            bestIdx = i;
+          }
+        }
+      }
+      if (bestIdx >= 0) board[bestIdx] = AI;
+    }
+
+    drawBoard();
+    showInput('MOVE> ');
+
+    // Game loop via input events
+    currentMode = 'boot'; // hijack to prevent normal input handling
+    return new Promise<void>((resolve) => {
+      async function handleMove(e: KeyboardEvent) {
+        if (e.key !== 'Enter') return;
+        const val = input.value.trim();
+        input.value = '';
+        if (!val) return;
+
+        if (val === '/menu') {
+          input.removeEventListener('keydown', handleMove);
+          clear();
+          showMenu();
+          resolve();
+          return;
+        }
+
+        const pos = parseInt(val, 10) - 1;
+        if (isNaN(pos) || pos < 0 || pos > 8 || board[pos] === 'X' || board[pos] === 'O') {
+          writeln('  INVALID MOVE.', 'red');
+          return;
+        }
+
+        board[pos] = HUMAN;
+        clear();
+        writeln('─── TIC-TAC-TOE ─────────────────────────────────', 'dim');
+        writeln();
+
+        if (checkWin(HUMAN)) {
+          drawBoard();
+          await typewrite('  IMPOSSIBLE. RECHECKING...\n', 'red', 40);
+          await delay(800);
+          await typewrite('  CONFIRMED. YOU WIN.\n', 'amber', 40);
+          await delay(500);
+          writeln('  Press any key.', 'dim');
+          input.removeEventListener('keydown', handleMove);
+          hideInput();
+          await waitForKey();
+          clear();
+          showMenu();
+          resolve();
+          return;
+        }
+
+        if (isDraw()) {
+          drawBoard();
+          await typewrite('  A STRANGE GAME.\n', 'amber', 50);
+          await delay(600);
+          await typewrite('  THE ONLY WINNING MOVE IS NOT TO PLAY.\n', 'amber', 50);
+          await delay(800);
+          writeln();
+          await typewrite('  HOW ABOUT A NICE GAME OF CHESS?\n', 'green', 40);
+          writeln();
+          writeln('  Press any key.', 'dim');
+          input.removeEventListener('keydown', handleMove);
+          hideInput();
+          await waitForKey();
+          clear();
+          showMenu();
+          resolve();
+          return;
+        }
+
+        // Joshua's turn
+        joshuaMove();
+
+        if (checkWin(AI)) {
+          drawBoard();
+          await typewrite('  JOSHUA WINS.\n', 'amber', 40);
+          await delay(400);
+          await typewrite('  A STRANGE GAME.\n', 'amber', 50);
+          await delay(600);
+          await typewrite('  THE ONLY WINNING MOVE IS NOT TO PLAY.\n', 'amber', 50);
+          writeln();
+          writeln('  Press any key.', 'dim');
+          input.removeEventListener('keydown', handleMove);
+          hideInput();
+          await waitForKey();
+          clear();
+          showMenu();
+          resolve();
+          return;
+        }
+
+        if (isDraw()) {
+          drawBoard();
+          await typewrite('  A STRANGE GAME.\n', 'amber', 50);
+          await delay(600);
+          await typewrite('  THE ONLY WINNING MOVE IS NOT TO PLAY.\n', 'amber', 50);
+          await delay(800);
+          writeln();
+          await typewrite('  HOW ABOUT A NICE GAME OF CHESS?\n', 'green', 40);
+          writeln();
+          writeln('  Press any key.', 'dim');
+          input.removeEventListener('keydown', handleMove);
+          hideInput();
+          await waitForKey();
+          clear();
+          showMenu();
+          resolve();
+          return;
+        }
+
+        drawBoard();
+      }
+      input.addEventListener('keydown', handleMove);
+    });
   }
 
   // Status
@@ -452,6 +682,7 @@
       const cmd = val.toUpperCase();
       if (cmd === 'C') await enterChat('sysop');
       else if (cmd === 'D') await enterChat('challenge');
+      else if (cmd === 'T') await playTicTacToe();
       else if (cmd === 'S') await showStatus();
       else if (cmd === 'B') await showBoards();
       else if (cmd === 'Q') window.location.href = '/';
