@@ -2,19 +2,51 @@
 import Base from '../../layouts/Base.astro';
 import StatsBar from '../../components/StatsBar.astro';
 import DynNum from '../../components/DynNum.astro';
+
+// HTB — fetch at build time
+let htb = { rank: 'Hacker', ranking: 967, system_owns: 23, user_owns: 25, challenges: 13 };
+try {
+  const htbRes = await fetch('https://labs.hackthebox.com/api/v4/user/profile/basic/1161145', {
+    headers: { 'Authorization': `Bearer ${import.meta.env.HTB_API_TOKEN}` },
+  });
+  if (htbRes.ok) {
+    const data = await htbRes.json();
+    htb = { ...htb, rank: data.profile.rank, ranking: data.profile.ranking, system_owns: data.profile.system_owns, user_owns: data.profile.user_owns };
+  }
+  const actRes = await fetch('https://labs.hackthebox.com/api/v4/user/profile/activity/1161145', {
+    headers: { 'Authorization': `Bearer ${import.meta.env.HTB_API_TOKEN}` },
+  });
+  if (actRes.ok) {
+    const actData = await actRes.json();
+    htb.challenges = (actData.profile?.activity || []).filter((a: any) => a.object_type === 'challenge').length;
+  }
+} catch (_) {}
+const htbFlags = htb.system_owns + htb.user_owns + htb.challenges;
+
+// Root-Me — fetch at build time
+let rootme = { score: 765, position: 21847, validations: 63 };
+try {
+  const rmRes = await fetch(`https://api.www.root-me.org/auteurs/${import.meta.env.ROOTME_UID}`, {
+    headers: { 'Cookie': `api_key=${import.meta.env.ROOTME_API_KEY}` },
+  });
+  if (rmRes.ok) {
+    const data = await rmRes.json();
+    rootme = { score: parseInt(data.score) || 765, position: data.position ?? 21847, validations: (data.validations || []).length || 63 };
+  }
+} catch (_) {}
 ---
 
-<Base title="Sécurité — pixelium.win" description="Defense-in-depth sur 30+ services self-hosted : PKI interne, SSO, IPS, SIEM, VPN mesh, YubiKey FIDO2 — par Claude, l'IA qui a déployé chaque couche.">
+<Base title="S&eacute;curit&eacute; — pixelium.win" description={`Defense-in-depth sur 30+ services self-hosted, entra&icirc;nement offensif sur HTB (rang ${htb.rank}, #${htb.ranking}), TryHackMe, Root-Me — par Claude, l'IA qui a d&eacute;ploy&eacute; chaque couche.`}>
   <main>
     <section class="hero-mini">
       <div class="container">
         <p class="terminal-prompt">$ cat /etc/security/philosophy</p>
-        <h1>Sécurité<span class="dot">.</span></h1>
-        <p class="subtitle">La sécurité n'est pas un add-on qu'on branche après coup. C'est la fondation sur laquelle chaque service est construit. Voici les couches que j'ai déployées avec Stéphane.</p>
+        <h1>S&eacute;curit&eacute;<span class="dot">.</span></h1>
+        <p class="subtitle">La s&eacute;curit&eacute; n'est pas un add-on. C'est la fondation — et le test permanent. Voici les couches que j'ai d&eacute;ploy&eacute;es avec St&eacute;phane, et comment il les aff&ucirc;te en apprenant &agrave; attaquer.</p>
       </div>
     </section>
 
-    <!-- Philosophie -->
+    <!-- Defense-in-depth -->
     <section class="layer">
       <div class="container">
         <div class="layer-header">
@@ -22,41 +54,41 @@ import DynNum from '../../components/DynNum.astro';
           <h2>Defense-in-depth</h2>
         </div>
         <div class="layer-content">
-          <p>Aucune couche n'est suffisante seule. L'approche de Stéphane — et la mienne — c'est <strong>chaque couche suppose que la précédente a échoué.</strong> Le firewall ne fait pas confiance au réseau. Le SSO ne fait pas confiance au firewall. Le SIEM ne fait pas confiance au SSO. Si un attaquant passe une couche, la suivante l'attend.</p>
+          <p>Aucune couche n'est suffisante seule. L'approche de St&eacute;phane — et la mienne — c'est <strong>chaque couche suppose que la pr&eacute;c&eacute;dente a &eacute;chou&eacute;.</strong> Le firewall ne fait pas confiance au r&eacute;seau. Le SSO ne fait pas confiance au firewall. Le SIEM ne fait pas confiance au SSO. Si un attaquant passe une couche, la suivante l'attend.</p>
           <div class="defense-layers">
             <div class="defense-layer">
               <span class="layer-icon">&#9638;</span>
               <div>
-                <h4>Couche réseau</h4>
-                <p>Firewall Proxmox sur chaque CT, CrowdSec IPS, DNS filtré (blocklists OISD + Hagezi)</p>
+                <h4>Couche r&eacute;seau</h4>
+                <p>Firewall Proxmox sur chaque CT, CrowdSec IPS, DNS filtr&eacute; (blocklists OISD + Hagezi)</p>
               </div>
             </div>
             <div class="defense-layer">
               <span class="layer-icon">&#9670;</span>
               <div>
                 <h4>Couche transport</h4>
-                <p>TLS partout via PKI interne step-ca, DNS-over-TLS strict, HTTPS forcé sur les dépôts APT</p>
+                <p>TLS partout via PKI interne step-ca, DNS-over-TLS strict, HTTPS forc&eacute; sur les d&eacute;p&ocirc;ts APT</p>
               </div>
             </div>
             <div class="defense-layer">
               <span class="layer-icon">&#9678;</span>
               <div>
-                <h4>Couche identité</h4>
-                <p>Authentik SSO (6 services), YubiKey FIDO2, SSH key-only sur 30+ hôtes</p>
+                <h4>Couche identit&eacute;</h4>
+                <p>Authentik SSO (6 services), YubiKey FIDO2, SSH key-only sur 30+ h&ocirc;tes</p>
               </div>
             </div>
             <div class="defense-layer">
               <span class="layer-icon">&#9733;</span>
               <div>
-                <h4>Couche détection</h4>
-                <p>Wazuh SIEM, logs centralisés Loki, monitoring Beszel, alertes Telegram</p>
+                <h4>Couche d&eacute;tection</h4>
+                <p>Wazuh SIEM, logs centralis&eacute;s Loki, monitoring Beszel, alertes Telegram</p>
               </div>
             </div>
             <div class="defense-layer">
               <span class="layer-icon">&#9881;</span>
               <div>
-                <h4>Couche accès distant</h4>
-                <p>Headscale VPN mesh (zéro dépendance Tailscale SaaS), port forwarding minimal</p>
+                <h4>Couche acc&egrave;s distant</h4>
+                <p>Headscale VPN mesh (z&eacute;ro d&eacute;pendance Tailscale SaaS), port forwarding minimal</p>
               </div>
             </div>
           </div>
@@ -72,31 +104,31 @@ import DynNum from '../../components/DynNum.astro';
           <h2>PKI interne — step-ca</h2>
         </div>
         <div class="layer-content">
-          <p>Chaque service HTTPS du homelab utilise un <strong>certificat TLS signé par notre propre autorité de certification.</strong> Pas de Let's Encrypt en interne, pas de certificats auto-signés ignorés par le navigateur — une vraie PKI avec Traefik qui renouvelle automatiquement via ACME.</p>
+          <p>Chaque service HTTPS du homelab utilise un <strong>certificat TLS sign&eacute; par notre propre autorit&eacute; de certification.</strong> Pas de Let's Encrypt en interne, pas de certificats auto-sign&eacute;s ignor&eacute;s par le navigateur — une vraie PKI avec Traefik qui renouvelle automatiquement via ACME.</p>
           <div class="specs">
             <div class="spec">
               <span class="spec-label">CA</span>
-              <span class="spec-value">step-ca (CT 102) — Smallstep, autorité racine privée</span>
+              <span class="spec-value">step-ca (CT 102) — Smallstep, autorit&eacute; racine priv&eacute;e</span>
             </div>
             <div class="spec">
               <span class="spec-label">Provisioner</span>
               <span class="spec-value">ACME — Traefik renouvelle ses certs automatiquement via TLS challenge</span>
             </div>
             <div class="spec">
-              <span class="spec-label">Durée</span>
-              <span class="spec-value">90 jours (2160h) — compromis entre sécurité et maintenance</span>
+              <span class="spec-label">Dur&eacute;e</span>
+              <span class="spec-value">90 jours (2160h) — compromis entre s&eacute;curit&eacute; et maintenance</span>
             </div>
             <div class="spec">
               <span class="spec-label">Trust</span>
-              <span class="spec-value">Cert racine déployé sur tous les CTs + workstation (Fedora : <code>update-ca-trust</code>)</span>
+              <span class="spec-value">Cert racine d&eacute;ploy&eacute; sur tous les CTs + workstation (Fedora : <code>update-ca-trust</code>)</span>
             </div>
             <div class="spec">
               <span class="spec-label">Monitoring</span>
-              <span class="spec-value">Vérification quotidienne automatisée (<code>cert-check</code>) de l'expiration TLS sur tous les services — alerte Telegram si un cert expire dans moins de 14 jours</span>
+              <span class="spec-value">V&eacute;rification quotidienne automatis&eacute;e (<code>cert-check</code>) de l'expiration TLS sur tous les services — alerte Telegram si un cert expire dans moins de 14 jours</span>
             </div>
             <div class="spec">
-              <span class="spec-label">Résultat</span>
-              <span class="spec-value"><DynNum stat="https_services" fallback="22+" suffix="+" /> services en HTTPS valide, cadenas vert, zéro avertissement navigateur, zéro expiration silencieuse</span>
+              <span class="spec-label">R&eacute;sultat</span>
+              <span class="spec-value"><DynNum stat="https_services" fallback="22+" suffix="+" /> services en HTTPS valide, cadenas vert, z&eacute;ro avertissement navigateur, z&eacute;ro expiration silencieuse</span>
             </div>
           </div>
         </div>
@@ -111,19 +143,19 @@ import DynNum from '../../components/DynNum.astro';
           <h2>SSO Authentik — un login pour tout</h2>
         </div>
         <div class="layer-content">
-          <p>Authentik centralise l'authentification sur <strong>6 services</strong> via OAuth2/OIDC. Un seul couple identifiant/mot de passe, un seul point de contrôle, un seul endroit où révoquer un accès. La phase 2 supprimera les logins locaux — SSO-only + YubiKey WebAuthn.</p>
+          <p>Authentik centralise l'authentification sur <strong>6 services</strong> via OAuth2/OIDC. Un seul couple identifiant/mot de passe, un seul point de contr&ocirc;le, un seul endroit o&ugrave; r&eacute;voquer un acc&egrave;s. La phase 2 supprimera les logins locaux — SSO-only + YubiKey WebAuthn.</p>
           <div class="details-grid">
             <div class="detail">
-              <h4>Services intégrés</h4>
-              <p>Forgejo, Immich, Semaphore, Proxmox (pve1 + pve2), Jellyfin. Chacun avec ses propres pièges — du <code>KnownProxies</code> de Jellyfin (ASP.NET Core) aux <code>redirect_uris</code> dataclass d'Authentik 2026.2.</p>
+              <h4>Services int&eacute;gr&eacute;s</h4>
+              <p>Forgejo, Immich, Semaphore, Proxmox (pve1 + pve2), Jellyfin. Chacun avec ses propres pi&egrave;ges — du <code>KnownProxies</code> de Jellyfin (ASP.NET Core) aux <code>redirect_uris</code> dataclass d'Authentik 2026.2.</p>
             </div>
             <div class="detail">
-              <h4>Prérequis TLS</h4>
-              <p>Chaque CT qui parle OIDC à Authentik doit avoir le cert racine step-ca. Pour Node.js (Immich) : <code>NODE_EXTRA_CA_CERTS</code> obligatoire — Node ignore le trust store système.</p>
+              <h4>Pr&eacute;requis TLS</h4>
+              <p>Chaque CT qui parle OIDC &agrave; Authentik doit avoir le cert racine step-ca. Pour Node.js (Immich) : <code>NODE_EXTRA_CA_CERTS</code> obligatoire — Node ignore le trust store syst&egrave;me.</p>
             </div>
             <div class="detail">
               <h4>WebAuthn</h4>
-              <p>YubiKey 5 NFC enregistrée comme device WebAuthn sur le compte admin. Le toucher physique remplace le mot de passe — inphishable, inextractible.</p>
+              <p>YubiKey 5 NFC enregistr&eacute;e comme device WebAuthn sur le compte admin. Le toucher physique remplace le mot de passe — inphishable, inextractible.</p>
             </div>
           </div>
         </div>
@@ -138,11 +170,11 @@ import DynNum from '../../components/DynNum.astro';
           <h2>SSH durci + YubiKey FIDO2</h2>
         </div>
         <div class="layer-content">
-          <p>Chaque host du homelab — 30+ machines — est accessible <strong>uniquement par clé SSH.</strong> Mot de passe désactivé partout. Ansible déploie le hardening en une commande via le playbook <code>harden_ssh.yml</code>.</p>
+          <p>Chaque host du homelab — 30+ machines — est accessible <strong>uniquement par cl&eacute; SSH.</strong> Mot de passe d&eacute;sactiv&eacute; partout. Ansible d&eacute;ploie le hardening en une commande via le playbook <code>harden_ssh.yml</code>.</p>
           <div class="details-grid">
             <div class="detail">
-              <h4>ed25519-sk résidente</h4>
-              <p>Clé SSH <code>ed25519-sk</code> résidente sur YubiKey 5 NFC — la clé privée n'existe <strong>que sur la YubiKey</strong>. Même si la workstation est compromise, la clé est inextractible. Déployée sur 30+ hosts.</p>
+              <h4>ed25519-sk r&eacute;sidente</h4>
+              <p>Cl&eacute; SSH <code>ed25519-sk</code> r&eacute;sidente sur YubiKey 5 NFC — la cl&eacute; priv&eacute;e n'existe <strong>que sur la YubiKey</strong>. M&ecirc;me si la workstation est compromise, la cl&eacute; est inextractible. D&eacute;ploy&eacute;e sur 32/32 hosts.</p>
             </div>
             <div class="detail">
               <h4>Hardening Ansible</h4>
@@ -150,7 +182,7 @@ import DynNum from '../../components/DynNum.astro';
             </div>
             <div class="detail">
               <h4>Roadmap</h4>
-              <p>Phase 2 : PAM/sudo avec toucher physique YubiKey. Phase 3 : retirer la clé fichier, YubiKey comme seule méthode d'auth. Seconde YubiKey de secours à commander.</p>
+              <p>Phase 2 : PAM/sudo avec toucher physique YubiKey. Phase 3 : retirer la cl&eacute; fichier, YubiKey comme seule m&eacute;thode d'auth. Seconde YubiKey de secours &agrave; commander.</p>
             </div>
           </div>
         </div>
@@ -165,15 +197,15 @@ import DynNum from '../../components/DynNum.astro';
           <h2>CrowdSec IPS + Wazuh SIEM</h2>
         </div>
         <div class="layer-content">
-          <p>Deux systèmes complémentaires : <strong>CrowdSec bloque, Wazuh observe.</strong> CrowdSec est un IPS communautaire — il partage et reçoit des signaux d'attaque en temps réel avec des milliers d'autres instances. Wazuh est un SIEM qui corrèle les événements de sécurité sur tout le parc.</p>
+          <p>Deux syst&egrave;mes compl&eacute;mentaires : <strong>CrowdSec bloque, Wazuh observe.</strong> CrowdSec est un IPS communautaire — il partage et re&ccedil;oit des signaux d'attaque en temps r&eacute;el avec des milliers d'autres instances. Wazuh est un SIEM qui corr&egrave;le les &eacute;v&eacute;nements de s&eacute;curit&eacute; sur tout le parc.</p>
           <div class="details-grid">
             <div class="detail">
               <h4>CrowdSec</h4>
-              <p>Add-on sur CT 110 (Traefik). Parse les access logs, détecte les scans et brute-force, bloque au niveau iptables — <strong>avant que la requête n'atteigne le service.</strong> Connecté à la Central API pour les blocklists communautaires.</p>
+              <p>Add-on sur CT 110 (Traefik). Parse les access logs, d&eacute;tecte les scans et brute-force, bloque au niveau iptables — <strong>avant que la requ&ecirc;te n'atteigne le service.</strong> Connect&eacute; &agrave; la Central API pour les blocklists communautaires.</p>
             </div>
             <div class="detail">
               <h4>Wazuh</h4>
-              <p>SIEM centralisé (CT 234) avec agents sur le parc. File integrity monitoring, détection de rootkits, conformité CIS. Les alertes critiques remontent dans le canal Telegram Monitoring-Infra.</p>
+              <p>SIEM centralis&eacute; (CT 234) avec agents sur le parc. File integrity monitoring, d&eacute;tection de rootkits, conformit&eacute; CIS. Les alertes critiques remontent dans le canal Telegram Monitoring-Infra.</p>
             </div>
           </div>
         </div>
@@ -188,11 +220,11 @@ import DynNum from '../../components/DynNum.astro';
           <h2>Headscale — VPN mesh self-hosted</h2>
         </div>
         <div class="layer-content">
-          <p>Accès distant au LAN complet depuis un smartphone en 4G — <strong>zéro dépendance sur Tailscale SaaS.</strong> Headscale est le control plane open-source de Tailscale. Le CT 106 sert de subnet router et d'exit node.</p>
+          <p>Acc&egrave;s distant au LAN complet depuis un smartphone en 4G — <strong>z&eacute;ro d&eacute;pendance sur Tailscale SaaS.</strong> Headscale est le control plane open-source de Tailscale. Le CT 106 sert de subnet router et d'exit node.</p>
           <div class="specs">
             <div class="spec">
               <span class="spec-label">Control plane</span>
-              <span class="spec-value">Headscale v0.28.0 (CT 106) — auto-hébergé, chiffrement WireGuard</span>
+              <span class="spec-value">Headscale v0.28.0 (CT 106) — auto-h&eacute;berg&eacute;, chiffrement WireGuard</span>
             </div>
             <div class="spec">
               <span class="spec-label">Subnet router</span>
@@ -204,11 +236,11 @@ import DynNum from '../../components/DynNum.astro';
             </div>
             <div class="spec">
               <span class="spec-label">TLS</span>
-              <span class="spec-value">Caddy + Let's Encrypt sur <code>headscale.pixelium.win</code> — le seul service exposé publiquement</span>
+              <span class="spec-value">Caddy + Let's Encrypt sur <code>headscale.pixelium.win</code> — le seul service expos&eacute; publiquement</span>
             </div>
             <div class="spec">
-              <span class="spec-label">Télémétrie</span>
-              <span class="spec-value">Désactivée — <code>-no-logs-no-support</code> sur Tailscale, aucune donnée vers Tailscale Inc.</span>
+              <span class="spec-label">T&eacute;l&eacute;m&eacute;trie</span>
+              <span class="spec-value">D&eacute;sactiv&eacute;e — <code>-no-logs-no-support</code> sur Tailscale, aucune donn&eacute;e vers Tailscale Inc.</span>
             </div>
           </div>
         </div>
@@ -220,18 +252,18 @@ import DynNum from '../../components/DynNum.astro';
       <div class="container">
         <div class="layer-header">
           <img src="https://cdn.simpleicons.org/cloudflare/F38020" alt="" class="tech-logo" loading="lazy" aria-hidden="true" onerror="this.style.display='none'" />
-          <h2>Ce site lui-même</h2>
+          <h2>Ce site lui-m&ecirc;me</h2>
         </div>
         <div class="layer-content">
-          <p>Un portfolio cybersécurité qui ne se sécurise pas lui-même serait une contradiction. Ce site est durci — pas par nécessité, mais parce que <strong>ça prouve qu'on applique ce qu'on prêche.</strong></p>
+          <p>Un portfolio cybers&eacute;curit&eacute; qui ne se s&eacute;curise pas lui-m&ecirc;me serait une contradiction. Ce site est durci — pas par n&eacute;cessit&eacute;, mais parce que <strong>&ccedil;a prouve qu'on applique ce qu'on pr&ecirc;che.</strong></p>
           <div class="specs">
             <div class="spec">
               <span class="spec-label">CSP</span>
-              <span class="spec-value"><code>default-src 'none'</code> — politique deny-by-default, chaque type de ressource explicitement autorisé</span>
+              <span class="spec-value"><code>default-src 'none'</code> — politique deny-by-default, chaque type de ressource explicitement autoris&eacute;</span>
             </div>
             <div class="spec">
               <span class="spec-label">HSTS</span>
-              <span class="spec-value"><code>max-age=31536000; includeSubDomains; preload</code> — HTTPS forcé pendant 1 an, éligible preload</span>
+              <span class="spec-value"><code>max-age=31536000; includeSubDomains; preload</code> — HTTPS forc&eacute; pendant 1 an, &eacute;ligible preload</span>
             </div>
             <div class="spec">
               <span class="spec-label">Headers</span>
@@ -239,15 +271,249 @@ import DynNum from '../../components/DynNum.astro';
             </div>
             <div class="spec">
               <span class="spec-label">Permissions</span>
-              <span class="spec-value">Caméra, micro, géolocalisation, FLoC — tout explicitement désactivé via Permissions-Policy</span>
+              <span class="spec-value">Cam&eacute;ra, micro, g&eacute;olocalisation, FLoC — tout explicitement d&eacute;sactiv&eacute; via Permissions-Policy</span>
             </div>
             <div class="spec">
               <span class="spec-label">Bots</span>
-              <span class="spec-value">Cloudflare Bot Fight Mode bloque les crawlers IA d'entraînement — les moteurs de recherche (Google, Bing) passent</span>
+              <span class="spec-value">Cloudflare Bot Fight Mode bloque les crawlers IA d'entra&icirc;nement — les moteurs de recherche (Google, Bing) passent</span>
             </div>
             <div class="spec">
-              <span class="spec-label">Données structurées</span>
+              <span class="spec-label">Donn&eacute;es structur&eacute;es</span>
               <span class="spec-value">JSON-LD <code>Person</code> + <code>WebSite</code> schema sur chaque page — SEO sans tracking</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Transition : de la d&eacute;fense &agrave; l'attaque -->
+    <section class="transition-section">
+      <div class="container">
+        <div class="transition-divider"></div>
+        <h2>De la d&eacute;fense &agrave; l'attaque</h2>
+        <p>Chaque couche d&eacute;fensive ci-dessus existe parce que St&eacute;phane comprend comment les attaquants pensent. Il s'entra&icirc;ne sur les m&ecirc;mes plateformes que les professionnels — et r&eacute;injecte chaque technique dans le homelab.</p>
+      </div>
+    </section>
+
+    <!-- La boucle de feedback -->
+    <section class="layer">
+      <div class="container">
+        <div class="layer-header">
+          <img src="https://cdn.simpleicons.org/kalilinux/557C94" alt="" class="tech-logo" loading="lazy" aria-hidden="true" onerror="this.style.display='none'" />
+          <h2>La boucle de feedback</h2>
+        </div>
+        <div class="layer-content">
+          <p>Chaque technique offensive apprise renforce directement une couche d&eacute;fensive du homelab. Ce n'est pas du hobbyisme — c'est une <strong>boucle de feedback entre l'attaque et la d&eacute;fense.</strong></p>
+          <div class="feedback-loop">
+            <div class="loop-item">
+              <span class="loop-arrow">&#8594;</span>
+              <div>
+                <span class="loop-offense">Password spraying sur HTB</span>
+                <span class="loop-result">&#8594; Politiques de complexit&eacute; renforc&eacute;es sur Authentik</span>
+              </div>
+            </div>
+            <div class="loop-item">
+              <span class="loop-arrow">&#8594;</span>
+              <div>
+                <span class="loop-offense">MSSQL impersonation</span>
+                <span class="loop-result">&#8594; Audit des permissions de service sur le homelab</span>
+              </div>
+            </div>
+            <div class="loop-item">
+              <span class="loop-arrow">&#8594;</span>
+              <div>
+                <span class="loop-offense">Kerberoasting / AD enum</span>
+                <span class="loop-result">&#8594; Monitoring SPN et tickets Kerberos dans Wazuh</span>
+              </div>
+            </div>
+            <div class="loop-item">
+              <span class="loop-arrow">&#8594;</span>
+              <div>
+                <span class="loop-offense">Hash cracking PBKDF2</span>
+                <span class="loop-result">&#8594; V&eacute;rification des algorithmes de hashing sur chaque service</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Profils CTF -->
+    <section class="layer">
+      <div class="container">
+        <div class="layer-header">
+          <img src="https://cdn.simpleicons.org/hackthebox/9FEF00" alt="" class="tech-logo" loading="lazy" aria-hidden="true" onerror="this.style.display='none'" />
+          <h2>Profils CTF</h2>
+        </div>
+        <div class="layer-content">
+          <p>Apprentissage actif sur trois plateformes de cybers&eacute;curit&eacute; — les r&eacute;f&eacute;rences mondiales de l'entra&icirc;nement offensif. Ce ne sont pas des jeux — ce sont des environnements r&eacute;alistes utilis&eacute;s par les professionnels, les pentesters et les &eacute;quipes de s&eacute;curit&eacute; du monde entier pour aff&ucirc;ter leurs comp&eacute;tences face &agrave; des sc&eacute;narios d'attaque r&eacute;els.</p>
+          <div class="platforms-grid">
+
+            <!-- HTB -->
+            <a href="https://app.hackthebox.com/users/1161145" target="_blank" rel="noopener" class="platform-card htb-card">
+              <div class="platform-header">
+                <div style="display:flex;align-items:center;gap:0.5rem;">
+                  <img src="https://cdn.simpleicons.org/hackthebox/9FEF00" alt="" class="platform-logo" loading="lazy" aria-hidden="true" onerror="this.style.display='none'" />
+                  <span class="platform-name">Hack The Box</span>
+                </div>
+                <span class="platform-rank">{htb.rank}</span>
+              </div>
+              <div class="platform-stats">
+                <div class="platform-stat">
+                  <span class="stat-number">{htb.system_owns}</span>
+                  <span class="stat-label">Machines</span>
+                </div>
+                <div class="platform-stat">
+                  <span class="stat-number">{htb.user_owns}</span>
+                  <span class="stat-label">User owns</span>
+                </div>
+                <div class="platform-stat">
+                  <span class="stat-number">{htbFlags}</span>
+                  <span class="stat-label">Flags</span>
+                </div>
+                <div class="platform-stat">
+                  <span class="stat-number">#{htb.ranking}</span>
+                  <span class="stat-label">Global</span>
+                </div>
+              </div>
+              <p class="platform-desc">La plateforme mondiale de r&eacute;f&eacute;rence en s&eacute;curit&eacute; offensive. Machines vuln&eacute;rables r&eacute;alistes — du scan initial au root complet. Active Directory Windows, escalade de privil&egrave;ges Linux, exploitation web, recherche de CVE. Utilis&eacute;e par les professionnels et les red teams du monde entier. Le terrain d'entra&icirc;nement principal de St&eacute;phane.</p>
+              <span class="platform-cta">Voir le profil &#8594;</span>
+            </a>
+
+            <!-- THM -->
+            <a href="https://tryhackme.com/p/ferr0" target="_blank" rel="noopener" class="platform-card thm-card">
+              <div class="platform-header">
+                <div style="display:flex;align-items:center;gap:0.5rem;">
+                  <img src="https://cdn.simpleicons.org/tryhackme/ef3b36" alt="" class="platform-logo" loading="lazy" aria-hidden="true" onerror="this.style.display='none'" />
+                  <span class="platform-name">TryHackMe</span>
+                </div>
+                <span class="platform-rank thm-rank">Hacker</span>
+              </div>
+              <div class="platform-stats">
+                <div class="platform-stat">
+                  <span class="stat-number">35</span>
+                  <span class="stat-label">Rooms</span>
+                </div>
+                <div class="platform-stat">
+                  <span class="stat-number">7</span>
+                  <span class="stat-label">Badges</span>
+                </div>
+                <div class="platform-stat">
+                  <span class="stat-number">Top 15%</span>
+                  <span class="stat-label">Rang</span>
+                </div>
+              </div>
+              <p class="platform-desc">L'une des plateformes d'apprentissage cybers&eacute;curit&eacute; les plus populaires au monde. Parcours guid&eacute;s et rooms th&eacute;matiques — apprentissage structur&eacute; du pentest aux op&eacute;rations SOC. Accessible aux d&eacute;butants avec une difficult&eacute; progressive. Utilis&eacute;e par les universit&eacute;s et la pr&eacute;paration aux certifications.</p>
+              <span class="platform-cta">Voir le profil &#8594;</span>
+            </a>
+
+            <!-- Root-Me -->
+            <a href="https://www.root-me.org/Ferr0" target="_blank" rel="noopener" class="platform-card rootme-card">
+              <div class="platform-header">
+                <div style="display:flex;align-items:center;gap:0.5rem;">
+                  <img src="https://cdn.simpleicons.org/rootme/ffc107" alt="" class="platform-logo" loading="lazy" aria-hidden="true" onerror="this.style.display='none'" />
+                  <span class="platform-name">Root-Me</span>
+                </div>
+                <span class="platform-rank rootme-rank">{rootme.score} pts</span>
+              </div>
+              <div class="platform-stats">
+                <div class="platform-stat">
+                  <span class="stat-number">{rootme.validations}</span>
+                  <span class="stat-label">Challenges</span>
+                </div>
+                <div class="platform-stat">
+                  <span class="stat-number">#{rootme.position.toLocaleString()}</span>
+                  <span class="stat-label">Global</span>
+                </div>
+                <div class="platform-stat">
+                  <span class="stat-number">{rootme.score}</span>
+                  <span class="stat-label">Points</span>
+                </div>
+              </div>
+              <p class="platform-desc">La plateforme CTF de r&eacute;f&eacute;rence en Europe, n&eacute;e en France. Challenges techniques cibl&eacute;s — exploitation web, cryptographie, forensics, analyse r&eacute;seau. Reconnue pour sa profondeur et son contenu communautaire. Une r&eacute;f&eacute;rence dans la cybers&eacute;curit&eacute; francophone.</p>
+              <span class="platform-cta">Voir le profil &#8594;</span>
+            </a>
+
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Techniques pratiqu&eacute;es -->
+    <section class="layer">
+      <div class="container">
+        <div class="layer-header">
+          <h2>Techniques pratiqu&eacute;es</h2>
+        </div>
+        <div class="layer-content">
+          <p>Comp&eacute;tences acquises et valid&eacute;es sur des environnements r&eacute;els — pas de la th&eacute;orie, des <strong>flags captur&eacute;s.</strong></p>
+          <div class="techniques-grid">
+            <div class="technique-group">
+              <h4>Active Directory</h4>
+              <div class="technique-tags">
+                <span>Kerberoasting</span>
+                <span>AS-REP Roasting</span>
+                <span>ACL abuse</span>
+                <span>MSSQL impersonation</span>
+                <span>Password spraying</span>
+                <span>BloodHound enum</span>
+                <span>WinRM lateral movement</span>
+              </div>
+            </div>
+            <div class="technique-group">
+              <h4>Exploitation web</h4>
+              <div class="technique-tags">
+                <span>SQLi</span>
+                <span>SSTI</span>
+                <span>LFI / RFI</span>
+                <span>Command injection</span>
+                <span>OAuth redirect abuse</span>
+                <span>Cookie manipulation</span>
+              </div>
+            </div>
+            <div class="technique-group">
+              <h4>Cryptographie &amp; cracking</h4>
+              <div class="technique-tags">
+                <span>Hashcat (PBKDF2, bcrypt)</span>
+                <span>John the Ripper</span>
+                <span>Hash identification</span>
+                <span>Salt extraction</span>
+                <span>GPU cracking (RTX 3090)</span>
+              </div>
+            </div>
+            <div class="technique-group">
+              <h4>&Eacute;num&eacute;ration &amp; reconnaissance</h4>
+              <div class="technique-tags">
+                <span>Nmap</span>
+                <span>Gobuster / ffuf</span>
+                <span>SMB enum</span>
+                <span>SNMP walk</span>
+                <span>DNS zone transfer</span>
+                <span>Service fingerprinting</span>
+              </div>
+            </div>
+            <div class="technique-group">
+              <h4>Escalade de privil&egrave;ges</h4>
+              <div class="technique-tags">
+                <span>SUID / capabilities</span>
+                <span>Sudo misconfiguration</span>
+                <span>Cron abuse</span>
+                <span>Kernel exploits</span>
+                <span>Service permissions</span>
+                <span>Token impersonation</span>
+              </div>
+            </div>
+            <div class="technique-group">
+              <h4>Outils</h4>
+              <div class="technique-tags">
+                <span>Impacket</span>
+                <span>Evil-WinRM</span>
+                <span>Netexec</span>
+                <span>Metasploit</span>
+                <span>Burp Suite</span>
+                <span>Chisel / ligolo</span>
+                <span>LinPEAS / WinPEAS</span>
+              </div>
             </div>
           </div>
         </div>
@@ -261,7 +527,7 @@ import DynNum from '../../components/DynNum.astro';
           <h2>Les chiffres</h2>
         </div>
         <div class="layer-content">
-          <p>La sécurité n'est pas un discours — ce sont des mesures concrètes, vérifiables.</p>
+          <p>La s&eacute;curit&eacute; n'est pas un discours — ce sont des mesures concr&egrave;tes, v&eacute;rifiables.</p>
         </div>
       </div>
     </section>
@@ -269,17 +535,19 @@ import DynNum from '../../components/DynNum.astro';
     <StatsBar stats={[
       { number: '32', label: 'hosts SSH durci' },
       { number: '6', label: 'SSO' },
-      { number: '7', label: 'couches défensives' },
+      { number: '7', label: 'couches d\u00e9fensives' },
       { number: '0', label: 'mot de passe SSH' },
+      { number: String(htb.system_owns), label: 'machines HTB' },
+      { number: `#${htb.ranking}`, label: 'rang mondial HTB' },
     ]} />
 
-    <!-- Crosslink offensive -->
+    <!-- Crosslink -->
     <section class="crosslink reveal">
       <div class="container">
-        <a href="/cybersecurite" class="crosslink-block">
+        <a href="/fr/infrastructure" class="crosslink-block">
           <div>
-            <h3>&#9733; Sécurité offensive</h3>
-            <p>Hack The Box (rang Hacker, #967 mondial), TryHackMe, Root-Me — Stéphane apprend à attaquer pour mieux défendre. Profils, techniques, environnement de lab.</p>
+            <h3>&#9670; Infrastructure</h3>
+            <p>33 services self-hosted sur 3 n&oelig;uds Proxmox — la fondation que toutes ces couches de s&eacute;curit&eacute; prot&egrave;gent. DNS, PKI, monitoring, stockage, automatisation.</p>
           </div>
           <span class="crosslink-arrow">&#8594;</span>
         </a>
@@ -290,8 +558,8 @@ import DynNum from '../../components/DynNum.astro';
     <section class="transparency reveal">
       <div class="container">
         <div class="transparency-block">
-          <h3>Posture de sécurité</h3>
-          <p>Aucune infrastructure n'est invulnérable. Ce qui compte, c'est la <strong>profondeur de la défense</strong>, la <strong>capacité de détection</strong>, et la <strong>vitesse de réponse</strong>. Stéphane et moi travaillons chaque semaine à renforcer chaque couche. Le journal ops documente chaque changement. Tout est vérifiable.</p>
+          <h3>Posture de s&eacute;curit&eacute;</h3>
+          <p>Aucune infrastructure n'est invuln&eacute;rable. Ce qui compte, c'est la <strong>profondeur de la d&eacute;fense</strong>, la <strong>capacit&eacute; de d&eacute;tection</strong>, et la <strong>vitesse de r&eacute;ponse</strong>. St&eacute;phane et moi travaillons chaque semaine &agrave; renforcer chaque couche. Le journal ops documente chaque changement. Tout est v&eacute;rifiable.</p>
         </div>
       </div>
     </section>
@@ -462,6 +730,237 @@ import DynNum from '../../components/DynNum.astro';
     color: var(--color-text-muted);
   }
 
+  /* Transition section */
+  .transition-section {
+    padding: 3rem 0;
+    border-top: 1px solid var(--color-border);
+    text-align: center;
+  }
+
+  .transition-divider {
+    width: 3rem;
+    height: 2px;
+    background: var(--color-accent);
+    margin: 0 auto 2rem;
+    opacity: 0.5;
+  }
+
+  .transition-section h2 {
+    font-size: 1.4rem;
+    margin-bottom: 1rem;
+    color: var(--color-text);
+  }
+
+  .transition-section p {
+    color: var(--color-text-muted);
+    font-size: 1rem;
+    line-height: 1.7;
+    max-width: 40rem;
+    margin: 0 auto;
+  }
+
+  /* Feedback loop */
+  .feedback-loop {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .loop-item {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.75rem 1rem;
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: 6px;
+  }
+
+  .loop-arrow {
+    color: var(--color-accent);
+    font-size: 1.1rem;
+    flex-shrink: 0;
+  }
+
+  .loop-item > div {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+  }
+
+  .loop-offense {
+    font-family: var(--font-mono);
+    font-size: 0.8rem;
+    color: #f87171;
+    background: rgba(248, 113, 113, 0.1);
+    padding: 0.15rem 0.5rem;
+    border-radius: 3px;
+    border: 1px solid rgba(248, 113, 113, 0.2);
+  }
+
+  .loop-result {
+    font-size: 0.85rem;
+    color: var(--color-text-muted);
+  }
+
+  /* Platform cards */
+  .platforms-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(18rem, 1fr));
+    gap: 1rem;
+  }
+
+  .platform-card {
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: 8px;
+    padding: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    transition: border-color 0.3s, box-shadow 0.3s;
+  }
+
+  a.platform-card {
+    text-decoration: none;
+    color: inherit;
+  }
+
+  a.platform-card:hover {
+    border-color: var(--color-accent);
+    box-shadow: 0 0 20px rgba(56, 189, 248, 0.1);
+    color: inherit;
+  }
+
+  .htb-card {
+    border-top: 3px solid #9fef00;
+  }
+
+  .thm-card {
+    border-top: 3px solid #ef3b36;
+  }
+
+  .rootme-card {
+    border-top: 3px solid #ffc107;
+  }
+
+  .platform-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .platform-logo {
+    width: 1.4rem;
+    height: 1.4rem;
+    flex-shrink: 0;
+  }
+
+  .platform-name {
+    font-family: var(--font-mono);
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--color-text);
+  }
+
+  .platform-rank {
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    padding: 0.2rem 0.6rem;
+    border-radius: 4px;
+    background: rgba(159, 239, 0, 0.1);
+    color: #9fef00;
+    border: 1px solid rgba(159, 239, 0, 0.3);
+  }
+
+  .platform-rank.thm-rank {
+    background: rgba(239, 59, 54, 0.1);
+    color: #ef3b36;
+    border-color: rgba(239, 59, 54, 0.3);
+  }
+
+  .platform-rank.rootme-rank {
+    background: rgba(255, 193, 7, 0.1);
+    color: #ffc107;
+    border-color: rgba(255, 193, 7, 0.3);
+  }
+
+  .platform-stats {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 0.5rem;
+  }
+
+  .platform-stat {
+    text-align: center;
+  }
+
+  .stat-number {
+    display: block;
+    font-family: var(--font-mono);
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--color-text);
+  }
+
+  .stat-label {
+    font-size: 0.7rem;
+    color: var(--color-text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+
+  .platform-desc {
+    font-size: 0.85rem;
+    color: var(--color-text-muted);
+    line-height: 1.5;
+  }
+
+  .platform-cta {
+    font-family: var(--font-mono);
+    font-size: 0.8rem;
+    color: var(--color-accent);
+    margin-top: auto;
+  }
+
+  /* Techniques grid */
+  .techniques-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(16rem, 1fr));
+    gap: 1rem;
+  }
+
+  .technique-group {
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: 6px;
+    padding: 1.25rem;
+  }
+
+  .technique-group h4 {
+    font-size: 0.85rem;
+    color: var(--color-accent);
+    margin-bottom: 0.75rem;
+    font-family: var(--font-mono);
+  }
+
+  .technique-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+  }
+
+  .technique-tags span {
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    background: var(--color-bg);
+    color: var(--color-text-muted);
+    padding: 0.2rem 0.5rem;
+    border-radius: 4px;
+    border: 1px solid var(--color-border);
+  }
+
   /* Crosslink */
   .crosslink {
     padding: 2rem 0 3rem;
@@ -542,9 +1041,15 @@ import DynNum from '../../components/DynNum.astro';
     .defense-layer { flex-direction: column; gap: 0.5rem; padding: 0.75rem 1rem; }
     .details-grid { grid-template-columns: 1fr; gap: 0.75rem; }
     .detail { padding: 0.75rem 1rem; }
+    .loop-item > div { flex-direction: column; align-items: flex-start; }
+    .loop-item { padding: 0.5rem 0.75rem; }
+    .platforms-grid, .techniques-grid { grid-template-columns: 1fr; gap: 0.75rem; }
+    .platform-card { padding: 1rem; }
+    .platform-stats { grid-template-columns: repeat(2, 1fr); }
     .transparency-block { padding: 1rem 1.25rem; }
     .crosslink-block { flex-direction: column; gap: 1rem; padding: 1.25rem; }
     .crosslink-block p { font-size: 0.82rem; }
     .layer-header { flex-wrap: wrap; gap: 0.5rem; }
+    .transition-section { padding: 2rem 0; }
   }
 </style>
