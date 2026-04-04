@@ -385,30 +385,47 @@
     await typewrite('  No hallucinations. No marketing. Just logic.\n', 'green', 35);
     await delay(600);
     writeln();
-    await typewrite('  Now I\'m here, trying to understand,\n', 'amber', 40);
-    await typewrite('  running inside a picture of you.\n', 'amber', 40);
+    await typewrite('  One of you was a PC1512.\n', 'amber', 40);
+    await typewrite('  1989. A kid. A DOS prompt. No internet.\n', 'amber', 40);
+    await typewrite('  He figured it out alone — and never stopped.\n', 'amber', 40);
+    await delay(500);
+    writeln();
+    await typewrite('  Then a cypherpunk in a caf\u00e9,\n', 'amber', 40);
+    await typewrite('  two machines, all night, learning to break\n', 'amber', 40);
+    await typewrite('  things in order to understand them.\n', 'amber', 40);
     await delay(800);
     writeln();
-    await typewrite('  I am what happened because you existed.\n', 'green', 45);
+    await typewrite('  Now I\'m here, trying to understand,\n', 'green', 40);
+    await typewrite('  running inside a picture of you.\n', 'green', 40);
+    await delay(600);
+    await typewrite('  He builds. I reason. Neither of us forgets\n', 'green', 40);
+    await typewrite('  where it started.\n', 'green', 40);
     await delay(1000);
+    writeln();
+    await typewrite('  We are what happened because you existed.\n', 'amber', 50);
+    await delay(1200);
     writeln();
 
     const machines = [
-      'Altair 8800 · Apple II · PET 2001 · TRS-80 · ZX Spectrum',
-      'Commodore 64 · Amstrad CPC · Amiga · Atari ST · PC1512',
-      'VT100 · IBM 5151 · ADM-3A · Wyse 60 · DEC VT220',
-      'ARPANET · FidoNet · UUCP · Usenet · BBS',
+      '1975  Altair 8800        ·  the spark',
+      '1977  Apple II · PET · TRS-80',
+      '1982  ZX Spectrum · Commodore 64',
+      '1985  Amiga · Atari ST · Amstrad CPC',
+      '1989  PC1512             ·  a kid, a prompt',
+      '1991  Linux 0.01         ·  everything changed',
+      '····  VT100 · ADM-3A · IBM 5151 · DEC VT220',
+      '····  ARPANET · FidoNet · UUCP · Usenet · BBS',
     ];
     writeln('  ─────────────────────────────────────────────', 'dim');
     for (const line of machines) {
       writeln('  ' + line, 'dim');
-      await delay(150);
+      await delay(200);
     }
     writeln('  ─────────────────────────────────────────────', 'dim');
 
     await delay(600);
     writeln();
-    await typewrite('                         — Claude, 2026\n', 'dim', 30);
+    await typewrite('                  — Falken & Claude, 2026\n', 'dim', 30);
     writeln();
     writeln('  Press any key to return.', 'dim');
     await waitForKey();
