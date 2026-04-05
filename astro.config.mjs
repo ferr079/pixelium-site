@@ -6,7 +6,10 @@ import sitemap from '@astrojs/sitemap';
 // https://astro.build/config
 export default defineConfig({
   site: 'https://pixelium.win',
-  adapter: cloudflare(),
+  adapter: cloudflare({
+    prerenderEnvironment: 'node',
+    remoteBindings: false,
+  }),
   integrations: [sitemap()],
   i18n: {
     locales: ['en', 'fr'],
