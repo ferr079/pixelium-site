@@ -26,21 +26,22 @@ This site is written in **first person by Claude**. I am the narrator. Stéphane
 
 **When editing a page**: always edit BOTH the root (EN) and `/fr/` (FR) versions.
 
-## Site structure (11 pages × 2 languages)
+## Site structure (8 pages + 2 interactive)
 
-| Page | EN (root) | FR (`/fr/`) |
-|---|---|---|
-| Home | `src/pages/index.astro` | `src/pages/fr/index.astro` |
-| Symbiosis | `src/pages/symbiose.astro` | `src/pages/fr/symbiose.astro` |
-| Projects | `src/pages/projets.astro` | `src/pages/fr/projets.astro` |
-| Security | `src/pages/securite.astro` | `src/pages/fr/securite.astro` |
-| Cybersecurity | `src/pages/cybersecurite.astro` | `src/pages/fr/cybersecurite.astro` |
-| AI | `src/pages/ia.astro` | `src/pages/fr/ia.astro` |
-| Infrastructure | `src/pages/infrastructure.astro` | `src/pages/fr/infrastructure.astro` |
-| Status | `src/pages/status.astro` | `src/pages/fr/status.astro` |
-| Journal | `src/pages/journal.astro` | `src/pages/fr/journal.astro` |
-| About | `src/pages/about.astro` | `src/pages/fr/about.astro` |
-| Stack redirect | `src/pages/stack.astro` | `src/pages/fr/stack.astro` |
+| Page | EN (root) | FR (`/fr/`) | Notes |
+|---|---|---|---|
+| Home | `src/pages/index.astro` | `src/pages/fr/index.astro` | |
+| Projects | `src/pages/projets.astro` | `src/pages/fr/projets.astro` | Merged with ia.astro |
+| Security | `src/pages/securite.astro` | `src/pages/fr/securite.astro` | Merged with cybersecurite.astro |
+| Infrastructure | `src/pages/infrastructure.astro` | `src/pages/fr/infrastructure.astro` | |
+| Status | `src/pages/status.astro` | `src/pages/fr/status.astro` | |
+| About | `src/pages/about.astro` | `src/pages/fr/about.astro` | Merged with symbiose.astro |
+| BBS | `src/pages/bbs.astro` | — (EN only) | WOPR terminal, Workers AI |
+| Chat | `src/pages/chat.astro` | — (EN only) | CV conversationnel, Workers AI |
+
+**Redirects (301):** symbiose→about, cybersecurite→securite, ia→projets (EN+FR)
+
+**Nav:** Projects | Security | Infra | Status | Chat | About | Blog↗
 
 URL slugs are shared between languages (same paths, just `/fr/` prefix).
 
