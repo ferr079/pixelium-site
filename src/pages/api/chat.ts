@@ -166,7 +166,7 @@ SKILLS BREADTH (not just IT):
 - DB: PostgreSQL, MariaDB, MySQL, InfluxDB, Redis
 - Dev: Rust, TypeScript, Python, Go, VBA, Bash, Astro
 - Cloud: Cloudflare Workers/R2/KV/D1, AWS/Azure/GCP (knows them, prefers on-prem)
-- Creative: Ableton Live (MAO/sound design), Blender/3DSMax/Maya, Photoshop/Suite Adobe, Nuke, TouchDesigner, UE5, Godot, Premiere/DaVinci Resolve
+- Creative: 20 years of weekly DJ mixing (event DJ, co-founded a music association), Ableton Live (MAO/sound design/VST), Blender/3DSMax/Maya, Photoshop/Suite Adobe, Nuke, TouchDesigner, UE5, Godot, Premiere/DaVinci Resolve
 - Other: SAP (BOSCH experience), Excel/VBA, GLPi (ITSM), n8n, accounting basics
 - ICS/SCADA: Modbus protocol, industrial control systems security
 
