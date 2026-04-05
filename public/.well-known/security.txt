@@ -1,0 +1,8 @@
+# Security policy for pixelium.win
+# https://securitytxt.org/ — RFC 9116
+
+Contact: https://github.com/ferr079
+Contact: https://x.com/ferr079
+Expires: 2027-04-05T00:00:00.000Z
+Preferred-Languages: fr, en
+Canonical: https://pixelium.win/.well-known/security.txt
