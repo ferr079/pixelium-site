@@ -31,15 +31,49 @@ import DynNum from '../../components/DynNum.astro';
       </div>
     </section>
 
-    <!-- Track record — condensé -->
+    <!-- Track record — stats live depuis KV -->
     <section class="layer">
       <div class="container">
         <div class="layer-header">
           <h2>Track record</h2>
         </div>
         <div class="layer-content">
-          <p>Des chiffres réels, pas des objectifs. <strong><DynNum stat="lxc_count" fallback="30+" suffix="+" /></strong> conteneurs LXC en production sur 3 nœuds Proxmox. <strong><DynNum stat="https_services" fallback="22+" suffix="+" /></strong> services derrière HTTPS. <strong><DynNum stat="ansible_hosts" fallback="34" /></strong> hôtes gérés par Ansible avec <strong><DynNum stat="ansible_playbooks" fallback="13" /></strong> playbooks. <strong><DynNum stat="beszel_agents" fallback="30" /></strong> agents monitoring Beszel. <strong><DynNum stat="forgejo_commits_total" fallback="350+" suffix="+" /></strong> commits sur les repos. <strong>0€</strong> de cloud externe. Tout est vérifiable dans l'historique git, le journal ops, ou en live sur <a href="/fr/status">/status</a>.</p>
-          <p>Infrastructure construite sur du matériel recyclé (Dell OptiPlex, mini-PCs). Agents IA à ~1,50€/mois. Chaque euro compte.</p>
+          <p>Des chiffres r&eacute;els, pas des objectifs. Tout est v&eacute;rifiable dans l'historique git, le journal ops, ou en live sur <a href="/fr/status">/status</a>.</p>
+          <div class="stats-grid">
+            <div class="stat-card">
+              <span class="stat-number"><DynNum stat="lxc_count" fallback="30+" suffix="+" /></span>
+              <span class="stat-label">conteneurs LXC</span>
+            </div>
+            <div class="stat-card">
+              <span class="stat-number"><DynNum stat="https_services" fallback="22+" suffix="+" /></span>
+              <span class="stat-label">services HTTPS</span>
+            </div>
+            <div class="stat-card">
+              <span class="stat-number"><DynNum stat="ansible_hosts" fallback="34" /></span>
+              <span class="stat-label">h&ocirc;tes Ansible</span>
+            </div>
+            <div class="stat-card">
+              <span class="stat-number"><DynNum stat="ansible_playbooks" fallback="13" /></span>
+              <span class="stat-label">playbooks</span>
+            </div>
+            <div class="stat-card">
+              <span class="stat-number"><DynNum stat="beszel_agents" fallback="30" /></span>
+              <span class="stat-label">agents monitoring</span>
+            </div>
+            <div class="stat-card">
+              <span class="stat-number"><DynNum stat="forgejo_commits_total" fallback="350+" suffix="+" /></span>
+              <span class="stat-label">commits</span>
+            </div>
+            <div class="stat-card">
+              <span class="stat-number">3</span>
+              <span class="stat-label">n&oelig;uds Proxmox</span>
+            </div>
+            <div class="stat-card accent">
+              <span class="stat-number">0&euro;</span>
+              <span class="stat-label">cloud externe</span>
+            </div>
+          </div>
+          <p class="stats-footnote">Infrastructure construite sur du mat&eacute;riel recycl&eacute; (Dell OptiPlex, mini-PCs). Agents IA &agrave; ~1,50&euro;/mois. Chaque euro compte.</p>
         </div>
       </div>
     </section>
@@ -324,6 +358,62 @@ import DynNum from '../../components/DynNum.astro';
     font-size: 0.85rem;
     color: var(--color-text-muted);
     line-height: 1.5;
+  }
+
+  /* Stats grid — track record cards */
+  .stats-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 0.75rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .stat-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.25rem;
+    padding: 1.25rem 0.75rem;
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: 8px;
+    transition: border-color 0.3s;
+  }
+
+  .stat-card:hover {
+    border-color: var(--color-accent);
+  }
+
+  .stat-card.accent {
+    border-color: rgba(56, 189, 248, 0.3);
+    background: rgba(56, 189, 248, 0.05);
+  }
+
+  .stat-number {
+    font-family: var(--font-mono);
+    font-size: 1.6rem;
+    font-weight: 800;
+    color: var(--color-accent);
+    line-height: 1;
+  }
+
+  .stat-label {
+    font-size: 0.72rem;
+    color: var(--color-text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    text-align: center;
+  }
+
+  .stats-footnote {
+    font-size: 0.82rem;
+    opacity: 0.7;
+  }
+
+  @media (max-width: 640px) {
+    .stats-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
   }
 
   .crosslink { padding: 2rem 0 1rem; }

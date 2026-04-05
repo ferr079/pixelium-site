@@ -31,15 +31,49 @@ import DynNum from '../components/DynNum.astro';
       </div>
     </section>
 
-    <!-- Track record — condensed prose, not 8 cards -->
+    <!-- Track record — live stats from KV -->
     <section class="layer">
       <div class="container">
         <div class="layer-header">
           <h2>Track record</h2>
         </div>
         <div class="layer-content">
-          <p>Real numbers, not goals. <strong><DynNum stat="lxc_count" fallback="30+" suffix="+" /></strong> LXC containers in production across 3 Proxmox nodes. <strong><DynNum stat="https_services" fallback="22+" suffix="+" /></strong> services behind HTTPS. <strong><DynNum stat="ansible_hosts" fallback="34" /></strong> hosts managed by Ansible with <strong><DynNum stat="ansible_playbooks" fallback="13" /></strong> playbooks. <strong><DynNum stat="beszel_agents" fallback="30" /></strong> Beszel monitoring agents. <strong><DynNum stat="forgejo_commits_total" fallback="350+" suffix="+" /></strong> commits across repos. <strong>0&euro;</strong> external cloud. Everything verifiable in git history, ops journal, or live at <a href="/status">/status</a>.</p>
-          <p>Infrastructure built on recycled hardware (Dell OptiPlex, mini-PCs). AI agents running at ~$1.50/month. Every euro counts.</p>
+          <p>Real numbers, not goals. Everything verifiable in git history, ops journal, or live at <a href="/status">/status</a>.</p>
+          <div class="stats-grid">
+            <div class="stat-card">
+              <span class="stat-number"><DynNum stat="lxc_count" fallback="30+" suffix="+" /></span>
+              <span class="stat-label">LXC containers</span>
+            </div>
+            <div class="stat-card">
+              <span class="stat-number"><DynNum stat="https_services" fallback="22+" suffix="+" /></span>
+              <span class="stat-label">HTTPS services</span>
+            </div>
+            <div class="stat-card">
+              <span class="stat-number"><DynNum stat="ansible_hosts" fallback="34" /></span>
+              <span class="stat-label">Ansible hosts</span>
+            </div>
+            <div class="stat-card">
+              <span class="stat-number"><DynNum stat="ansible_playbooks" fallback="13" /></span>
+              <span class="stat-label">playbooks</span>
+            </div>
+            <div class="stat-card">
+              <span class="stat-number"><DynNum stat="beszel_agents" fallback="30" /></span>
+              <span class="stat-label">monitoring agents</span>
+            </div>
+            <div class="stat-card">
+              <span class="stat-number"><DynNum stat="forgejo_commits_total" fallback="350+" suffix="+" /></span>
+              <span class="stat-label">commits</span>
+            </div>
+            <div class="stat-card">
+              <span class="stat-number">3</span>
+              <span class="stat-label">Proxmox nodes</span>
+            </div>
+            <div class="stat-card accent">
+              <span class="stat-number">0&euro;</span>
+              <span class="stat-label">external cloud</span>
+            </div>
+          </div>
+          <p class="stats-footnote">Infrastructure built on recycled hardware (Dell OptiPlex, mini-PCs). AI agents running at ~$1.50/month. Every euro counts.</p>
         </div>
       </div>
     </section>
@@ -334,6 +368,62 @@ import DynNum from '../components/DynNum.astro';
     font-size: 0.85rem;
     color: var(--color-text-muted);
     line-height: 1.5;
+  }
+
+  /* Stats grid — track record cards */
+  .stats-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 0.75rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .stat-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.25rem;
+    padding: 1.25rem 0.75rem;
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: 8px;
+    transition: border-color 0.3s;
+  }
+
+  .stat-card:hover {
+    border-color: var(--color-accent);
+  }
+
+  .stat-card.accent {
+    border-color: rgba(56, 189, 248, 0.3);
+    background: rgba(56, 189, 248, 0.05);
+  }
+
+  .stat-number {
+    font-family: var(--font-mono);
+    font-size: 1.6rem;
+    font-weight: 800;
+    color: var(--color-accent);
+    line-height: 1;
+  }
+
+  .stat-label {
+    font-size: 0.72rem;
+    color: var(--color-text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    text-align: center;
+  }
+
+  .stats-footnote {
+    font-size: 0.82rem;
+    opacity: 0.7;
+  }
+
+  @media (max-width: 640px) {
+    .stats-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
   }
 
   /* Crosslinks — duo layout */
