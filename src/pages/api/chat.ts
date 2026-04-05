@@ -5,7 +5,7 @@ import { env } from 'cloudflare:workers';
 
 // --- Rate limiting ---
 
-const RATE_LIMIT = { perMinute: 10, perHour: 50 };
+const RATE_LIMIT = { perMinute: 4, perHour: 30 };
 
 async function checkRateLimit(ip: string): Promise<{ allowed: boolean; retryAfter?: number }> {
   const now = Date.now();
