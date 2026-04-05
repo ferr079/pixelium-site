@@ -27,3 +27,13 @@ jobs:
         env:
           CLOUDFLARE_API_KEY: ${{ secrets.CLOUDFLARE_API_KEY }}
           CLOUDFLARE_EMAIL: ${{ secrets.CLOUDFLARE_EMAIL }}
+
+      - name: Notify Telegram on failure
+        if: failure()
+        env:
+          COMMIT_MSG: ${{ github.event.head_commit.message }}
+        run: |
+          curl -s -X POST "https://api.telegram.org/bot${{ secrets.TELEGRAM_BOT_TOKEN }}/sendMessage" \
+            -d chat_id="${{ secrets.TELEGRAM_CHAT_ID }}" \
+            -d parse_mode=Markdown \
+            -d text="⚠️ *Deploy pixelium.win FAILED*%0A%0ACommit: \`${GITHUB_SHA::7}\`%0AMessage: ${COMMIT_MSG}%0A[Voir le run](https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }})"
