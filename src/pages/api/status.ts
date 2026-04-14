@@ -23,6 +23,17 @@ export const GET: APIRoute = async () => {
       });
     }
 
+    // Staleness detection: if data is older than 2 hours, homelab is likely unreachable
+    const STALE_THRESHOLD_MS = 2 * 60 * 60 * 1000;
+    if (data && typeof data === 'object') {
+      const updatedAt = (data as any).updated_at;
+      if (updatedAt) {
+        const age = Date.now() - new Date(updatedAt).getTime();
+        (data as any).homelab_status = age > STALE_THRESHOLD_MS ? 'unreachable' : 'online';
+        (data as any).data_age_minutes = Math.round(age / 60000);
+      }
+    }
+
     return new Response(JSON.stringify(data), {
       status: 200,
       headers: {
