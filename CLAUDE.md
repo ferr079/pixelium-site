@@ -106,7 +106,7 @@ git push origin main && git -c http.sslVerify=false push forgejo main
 
 | Platform | Username | Current stats |
 |---|---|---|
-| Hack The Box | Ferr079 | Hacker rank, #972, 23 machines, 62 flags |
+| Hack The Box | Ferr079 | Hacker rank, #986, 24 machines, 95 flags |
 | TryHackMe | ferr0 | Top 15%, 35 rooms, 7 badges |
 | Root-Me | Ferr0 | 765 pts, 63 challenges |
 | GitHub | ferr079 | github.com/ferr079 |

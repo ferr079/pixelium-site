@@ -4,7 +4,7 @@ import StatsBar from '../../components/StatsBar.astro';
 import DynNum from '../../components/DynNum.astro';
 
 // HTB — fetch at build time
-let htb = { rank: 'Hacker', ranking: 972, system_owns: 23, user_owns: 26, challenges: 13 };
+let htb = { rank: 'Hacker', ranking: 972, system_owns: 24, user_owns: 26, flags: 95 };
 try {
   const htbRes = await fetch('https://labs.hackthebox.com/api/v4/user/profile/basic/1161145', {
     headers: { 'Authorization': `Bearer ${import.meta.env.HTB_API_TOKEN}` },
@@ -18,10 +18,10 @@ try {
   });
   if (actRes.ok) {
     const actData = await actRes.json();
-    htb.challenges = (actData.profile?.activity || []).filter((a: any) => a.object_type === 'challenge').length;
+    htb.flags = (actData.profile?.activity || []).length;
   }
 } catch (_) {}
-const htbFlags = htb.system_owns + htb.user_owns + htb.challenges;
+const htbFlags = htb.flags;
 
 // Root-Me — fetch at build time
 let rootme = { score: 765, position: 21847, validations: 63 };
