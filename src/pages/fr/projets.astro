@@ -520,6 +520,45 @@ import DynNum from '../../components/DynNum.astro';
       </div>
     </section>
 
+    <!-- Projet : IoT & Domotique -->
+    <section class="project" id="iot">
+      <div class="container">
+        <div class="project-header">
+          <span class="project-tag">IoT</span>
+          <h2>LoRa + MQTT + Home Assistant — Le monde physique rejoint le homelab</h2>
+        </div>
+        <div class="project-body">
+          <div class="project-intro">
+            <p>Deux noeuds Meshtastic T-Beam LoRa, un broker Mosquitto MQTT, et Home Assistant. La premiere couche physique du homelab &mdash; un reseau mesh radio independant de toute infrastructure Internet.</p>
+          </div>
+          <div class="project-details">
+            <div class="detail-block">
+              <h4>Architecture</h4>
+              <p>Le T-Beam 2242 (CLIENT) envoie des paquets LoRa a 868 MHz au T-Beam 8181 (ROUTER_CLIENT), qui les transmet a Mosquitto (CT 142) via MQTT en WiFi. Home Assistant (VM 140, HAOS) s'abonne et traite la telemetrie. Premier test : RSSI &minus;55 dBm, SNR 12.5 dB &mdash; signal excellent en interieur. Canal chiffre AES-256, cle privee.</p>
+            </div>
+            <div class="detail-block">
+              <h4>La chaine de debug</h4>
+              <p>Mosquitto 2.x ecoute sur localhost par defaut &mdash; il a fallu binder <code>0.0.0.0:1883</code>. L'ownership de <code>/etc/mosquitto/passwd</code> etait root au lieu de mosquitto &mdash; crash exit 13, silencieux. HAOS derriere Traefik renvoie HTTP 400 tant que <code>trusted_proxies</code> n'est pas configure. Et HAOS casse tous les patterns du homelab : pas de SSH, pas d'Ansible, pas de systemd &mdash; c'est son propre ecosysteme.</p>
+            </div>
+            <div class="detail-block">
+              <h4>Pourquoi le LoRa</h4>
+              <p>Le WiFi tombe quand le routeur redemarre. La 4G depend d'un operateur. Le LoRa a 868 MHz fonctionne avec zero infrastructure &mdash; deux noeuds et de la physique. Portee : kilometres en exterieur, batiments en interieur. La couche de communication de dernier recours si tout le reste tombe.</p>
+            </div>
+          </div>
+          <div class="project-stack">
+            <ul class="tags">
+              <li>Meshtastic</li>
+              <li>LoRa 868 MHz</li>
+              <li>MQTT</li>
+              <li>Home Assistant</li>
+              <li>T-Beam</li>
+            </ul>
+            <span class="project-services">2 noeuds LoRa, broker MQTT (CT 142), HAOS (VM 140) &mdash; zero dependance Internet</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
     <!-- ═══════════════════════════════════════════ -->
     <!-- COUCHE INFRASTRUCTURE IA                     -->
     <!-- ═══════════════════════════════════════════ -->
@@ -548,11 +587,11 @@ import DynNum from '../../components/DynNum.astro';
             </div>
             <div class="spec">
               <span class="spec-label">GPU</span>
-              <span class="spec-value">RTX 3090 24 Go — hashcat, inference, et potentiellement fine-tuning sur des modeles quantises</span>
+              <span class="spec-value">RTX 3090 24 Go — inference LLM, Immich ML (CLIP + OCR via Podman CUDA), hashcat</span>
             </div>
             <div class="spec">
               <span class="spec-label">Usage</span>
-              <span class="spec-value">PentAGI pentest autonome (qwen3.5:9b), exploration de modeles, fallback local quand les APIs sont hors ligne</span>
+              <span class="spec-value">PentAGI pentest autonome, Immich recherche CLIP multilingue (XLM-Roberta ViT-H-14) + OCR, exploration de modeles</span>
             </div>
           </div>
           <div class="models-grid">
@@ -727,9 +766,9 @@ import DynNum from '../../components/DynNum.astro';
             <p>Entrainer un modele comportemental sur les logs ops et les patterns de troubleshooting du homelab. RTX 3090 locale + HuggingFace Pro. Pas pour memoriser des faits &mdash; pour apprendre des reflexes.</p>
           </div>
           <div class="roadmap-item">
-            <span class="roadmap-status status-planned">planifie</span>
-            <h4>Meshtastic LoRa</h4>
-            <p>2&times; LilyGo T-Beam 868 MHz en commande. Reseau mesh radio longue portee, independant de tout Internet. Le dernier filet de resilience.</p>
+            <span class="roadmap-status status-wip">en cours</span>
+            <h4>Immich ML GPU</h4>
+            <p>Serveur ML distant sur RTX 3090 (Podman CUDA) pour la recherche intelligente Immich. Modele CLIP multilingue (XLM-Roberta ViT-H-14) + OCR sur 10k images. Deploye &mdash; optimisation du modele et de la qualite de recherche en cours.</p>
           </div>
         </div>
       </div>
