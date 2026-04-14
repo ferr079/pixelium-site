@@ -186,7 +186,7 @@ import DynNum from '../components/DynNum.astro';
         </div>
         <div class="project-body">
           <div class="project-intro">
-            <p>Native Proxmox firewall with DROP default, CrowdSec IPS with 46 scenarios and community blocklists, hardened SSH on 30+ hosts, YubiKey FIDO2, HTTPS-secured APT repos.</p>
+            <p>Native Proxmox firewall with DROP default, CrowdSec IPS with 57 scenarios and community blocklists, hardened SSH on 30+ hosts, YubiKey FIDO2, HTTPS-secured APT repos.</p>
           </div>
           <div class="project-details">
             <div class="detail-block">
@@ -195,7 +195,7 @@ import DynNum from '../components/DynNum.astro';
             </div>
             <div class="detail-block">
               <h4>CrowdSec — community-driven IPS</h4>
-              <p>Installed as an add-on on CT 110 (Traefik). LAPI on port 8081 (not 8080 — conflicts with Traefik dashboard). 46 scenarios: CVE, SQLi, XSS, brute-force, path traversal. Active iptables bouncer — blocks before Traefik even sees the request. Central API connected for community blocklists.</p>
+              <p>Installed as an add-on on CT 110 (Traefik). LAPI on port 8081 (not 8080 — conflicts with Traefik dashboard). 57 scenarios: CVE, SQLi, XSS, brute-force, path traversal. Active iptables bouncer — blocks before Traefik even sees the request. Central API connected for community blocklists.</p>
             </div>
             <div class="detail-block">
               <h4>YubiKey + HTTPS APT</h4>
@@ -210,7 +210,7 @@ import DynNum from '../components/DynNum.astro';
               <li>Ansible</li>
               <li>Wazuh</li>
             </ul>
-            <span class="project-services">3 nodes FW, 46 IPS scenarios, 30 hardened SSH hosts</span>
+            <span class="project-services">3 nodes FW, 57 IPS scenarios, 30 hardened SSH hosts</span>
           </div>
         </div>
       </div>
@@ -304,7 +304,7 @@ import DynNum from '../components/DynNum.astro';
         </div>
         <div class="project-body">
           <div class="project-intro">
-            <p>A fully autonomous backup pipeline: the OpenFang agent wakes a sleeping server, backs up 33 containers, prunes old snapshots, and shuts it down. No human intervention. Every Monday at 00:08.</p>
+            <p>A fully autonomous backup pipeline: the OpenFang agent wakes a sleeping server, backs up 36 containers, prunes old snapshots, and shuts it down. No human intervention. Every Monday at 00:08.</p>
           </div>
           <div class="project-details">
             <div class="detail-block">
@@ -313,7 +313,7 @@ import DynNum from '../components/DynNum.astro';
             </div>
             <div class="detail-block">
               <h4>Live test results</h4>
-              <p>First real test: pve1 (10 CTs, 29 GB) backed up in 4 minutes, pve2 (23 CTs, 173 GB) in 13 minutes. Full cycle including prune, GC, and shutdown: <strong>14 minutes</strong>. PBS deduplication compressed 202 GB of live data into 100 GB on disk. Retention: 5 weekly snapshots on a 1 TB drive — 15% utilization.</p>
+              <p>First real test: pve1 (11 CTs, 29 GB) backed up in 4 minutes, pve2 (24 CTs, 173 GB) in 13 minutes. Full cycle including prune, GC, and shutdown: <strong>14 minutes</strong>. PBS deduplication compressed 202 GB of live data into 100 GB on disk. Retention: 5 weekly snapshots on a 1 TB drive — 15% utilization.</p>
             </div>
             <div class="detail-block">
               <h4>Why pve3 sleeps</h4>
@@ -329,7 +329,7 @@ import DynNum from '../components/DynNum.astro';
               <li>zstd</li>
               <li>Proxmox API</li>
             </ul>
-            <span class="project-services">33 CTs, 14 min cycle, keep-weekly=5, 100 GB deduplicated, zero human intervention</span>
+            <span class="project-services">36 CTs, 14 min cycle, keep-weekly=5, 100 GB deduplicated, zero human intervention</span>
           </div>
         </div>
       </div>
@@ -407,7 +407,7 @@ import DynNum from '../components/DynNum.astro';
               <li>Pure CSS</li>
               <li>Dual-remote</li>
             </ul>
-            <span class="project-services">11 pages (EN+FR), 9 components, 0 dependencies, &lt;5s build</span>
+            <span class="project-services">20 pages (EN+FR), 14 components, 0 dependencies, &lt;5s build</span>
           </div>
         </div>
       </div>
@@ -703,7 +703,7 @@ import DynNum from '../components/DynNum.astro';
                 </div>
                 <h5>OpenFang Guardian</h5>
                 <p class="agent-role">AIOps &amp; Infrastructure</p>
-                <p class="agent-desc">5 automated cron jobs, 7 CLI wrappers. Monitors <DynNum stat="services_total" fallback="33" /> services, wakes servers via WOL, backs up 33 CTs autonomously every Monday.</p>
+                <p class="agent-desc">5 automated cron jobs, 7 CLI wrappers. Monitors <DynNum stat="services_total" fallback="33" /> services, wakes servers via WOL, backs up 36 CTs autonomously every Monday.</p>
                 <div class="agent-tags"><span>Rust</span><span>MiniMax M2.7</span><span>Telegram</span><span>~$0.05/day</span></div>
               </div>
               <div class="agent-card">

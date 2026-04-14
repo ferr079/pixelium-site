@@ -10,7 +10,7 @@ const serviceSlides = [
   { src: '/images/services/traefik.webp', alt: 'Traefik dashboard — routers, services, middlewares', title: 'Traefik — Reverse Proxy' },
   { src: '/images/services/authentik.webp', alt: 'Authentik admin — SSO dashboard with login stats', title: 'Authentik — SSO / IdP' },
   { src: '/images/services/technitium.webp', alt: 'TechnitiumDNS — query stats and top clients', title: 'TechnitiumDNS — DNS Server' },
-  { src: '/images/services/semaphore.webp', alt: 'Semaphore — 14 Ansible task templates', title: 'Semaphore — Ansible UI' },
+  { src: '/images/services/semaphore.webp', alt: 'Semaphore — 13 Ansible task templates', title: 'Semaphore — Ansible UI' },
   { src: '/images/services/netbox.webp', alt: 'NetBox — IPAM inventory and changelog', title: 'NetBox — IPAM / DCIM' },
   { src: '/images/services/immich.webp', alt: 'Immich — photo gallery with AI classification', title: 'Immich — Photo Library' },
   { src: '/images/services/bytestash.webp', alt: 'ByteStash — code snippet manager', title: 'ByteStash — Snippets' },
@@ -21,12 +21,12 @@ const serviceSlides = [
 
 const monitoringSlides = [
   { src: '/images/monitoring/beszel.webp', alt: 'Beszel — all systems monitoring dashboard', title: 'Beszel — System Monitoring' },
-  { src: '/images/monitoring/wazuh.webp', alt: 'Wazuh — 34 agents, endpoints overview', title: 'Wazuh — SIEM (Agents)' },
+  { src: '/images/monitoring/wazuh.webp', alt: 'Wazuh — 42 agents, endpoints overview', title: 'Wazuh — SIEM (Agents)' },
   { src: '/images/monitoring/wazuh2.webp', alt: 'Wazuh — security alerts and threat intelligence', title: 'Wazuh — SIEM (Overview)' },
   { src: '/images/monitoring/victoriametrics.webp', alt: 'VictoriaMetrics — CPU, memory, disk metrics', title: 'VictoriaMetrics — Metrics TSDB' },
   { src: '/images/monitoring/patchmon.webp', alt: 'Patchmon — patch compliance dashboard', title: 'Patchmon — Patch Compliance' },
   { src: '/images/monitoring/pentagi.webp', alt: 'PentAGI — autonomous pentest scan results on Traefik', title: 'PentAGI — Autonomous Pentest' },
-  { src: '/images/homepage-dashboard.webp', alt: 'Homepage dashboard — 13 widgets, real-time monitoring', title: 'Homepage — Dashboard' },
+  { src: '/images/homepage-dashboard.webp', alt: 'Homepage dashboard — 15 widgets, real-time monitoring', title: 'Homepage — Dashboard' },
 ];
 ---
 
@@ -43,7 +43,7 @@ const monitoringSlides = [
     <StatsBar stats={[
       { number: "3", label: "Proxmox nodes" },
       { number: "30+", label: "LXC containers", stat: "lxc_count", suffix: "+" },
-      { number: "13", label: "Homepage widgets" },
+      { number: "15", label: "Homepage widgets" },
       { number: "0", label: "external cloud spend" },
     ]} />
 
@@ -132,7 +132,7 @@ const monitoringSlides = [
           </div>
 
           <div class="screenshots-grid screenshots-trio">
-            <Screenshot src="/images/pve1-focus.webp" alt="pve1 container list — 9 LXC + 2 VM" title="pve1 — containers" caption="pve1 — 9 LXC + 2 VM: DNS, Traefik, step-ca, Forgejo, NetBox..." />
+            <Screenshot src="/images/pve1-focus.webp" alt="pve1 container list — 11 LXC + 1 VM" title="pve1 — containers" caption="pve1 — 11 LXC + 1 VM: DNS, Traefik, step-ca, Forgejo, NetBox..." />
             <Screenshot src="/images/pve2-focus.webp" alt="pve2 container list — 20+ CTs" title="pve2 — containers" caption="pve2 — 20+ CTs: Homepage, Jellyfin, Immich, Wazuh, Beszel..." />
             <Screenshot src="/images/pve3-focus.webp" alt="pve3 container list — 3 CTs + storage" title="pve3 — containers" caption="pve3 — 3 CTs: PBS, share3, Forworld + 2 HDD datastores" />
           </div>
@@ -246,7 +246,7 @@ const monitoringSlides = [
               <div class="tech-card-body">
                 <p class="tech-why"><strong>Why:</strong> Community-driven IPS — blocklists are shared across all CrowdSec users. An IP that attacks a homelab in France gets blocked worldwide.</p>
                 <p class="tech-alt"><span class="alt-label">Rejected:</span> Fail2ban (local only, no community dimension, fragile regexes)</p>
-                <p class="tech-result"><span class="result-label">Result:</span> 46 detection scenarios, collective protection, iptables bouncer on Traefik</p>
+                <p class="tech-result"><span class="result-label">Result:</span> 57 detection scenarios, collective protection, iptables bouncer on Traefik</p>
               </div>
             </div>
 
