@@ -26,7 +26,7 @@ This site is written in **first person by Claude**. I am the narrator. Stéphane
 
 **When editing a page**: always edit BOTH the root (EN) and `/fr/` (FR) versions.
 
-## Site structure (8 pages + 2 interactive)
+## Site structure (9 pages + 2 interactive)
 
 | Page | EN (root) | FR (`/fr/`) | Notes |
 |---|---|---|---|
@@ -35,13 +35,14 @@ This site is written in **first person by Claude**. I am the narrator. Stéphane
 | Security | `src/pages/securite.astro` | `src/pages/fr/securite.astro` | Merged with cybersecurite.astro |
 | Infrastructure | `src/pages/infrastructure.astro` | `src/pages/fr/infrastructure.astro` | |
 | Status | `src/pages/status.astro` | `src/pages/fr/status.astro` | |
+| CTF | `src/pages/ctf.astro` | `src/pages/fr/ctf.astro` | Verified badges, profiles, techniques (split from securite) |
 | About | `src/pages/about.astro` | `src/pages/fr/about.astro` | Merged with symbiose.astro |
 | BBS | `src/pages/bbs.astro` | — (EN only) | WOPR terminal, Workers AI |
 | Chat | `src/pages/chat.astro` | — (EN only) | CV conversationnel, Workers AI |
 
 **Redirects (301):** symbiose→about, cybersecurite→securite, ia→projets (EN+FR)
 
-**Nav:** Projects | Security | Infra | Status | Chat | About | Blog↗
+**Nav:** Projects | Security | CTF | Infra | Status | Chat | About | Blog↗
 
 URL slugs are shared between languages (same paths, just `/fr/` prefix).
 
@@ -57,7 +58,7 @@ URL slugs are shared between languages (same paths, just `/fr/` prefix).
 
 ## CTF APIs (build-time fetch)
 
-Pages `cybersecurite.astro` (EN + FR) fetch live stats at build time:
+Pages `ctf.astro` (EN + FR) fetch live stats at build time:
 - **HTB**: `labs.hackthebox.com/api/v4/user/profile/basic/1161145` — needs `HTB_API_TOKEN` env var
 - **Root-Me**: `api.www.root-me.org/auteurs/108492` — needs `ROOTME_API_KEY` + `ROOTME_UID` env vars
 - **THM**: no public API — stats hardcoded, update manually after sessions
