@@ -1,43 +1,56 @@
-# Astro Starter Kit: Minimal
+# pixelium.win
 
-```sh
-npm create astro@latest -- --template minimal
-```
+Bilingual portfolio (EN/FR) built with Astro and deployed on Cloudflare Workers.
+Live dashboard monitoring 36 self-hosted services across a 3-node Proxmox homelab.
 
-> 🧑‍🚀 **Seasoned astronaut?** Delete this file. Have fun!
+**[pixelium.win](https://pixelium.win)** | **[blog.pixelium.win](https://blog.pixelium.win)**
 
-## 🚀 Project Structure
+## Stack
 
-Inside of your Astro project, you'll see the following folders and files:
+| Layer | Technology |
+|---|---|
+| Framework | Astro 6 (SSG hybrid mode) |
+| Hosting | Cloudflare Workers (free tier) |
+| CDN | Cloudflare R2 (`assets.pixelium.win`) |
+| Database | Cloudflare D1 (uptime history 30 days) |
+| Key-Value | Cloudflare KV (3 namespaces: sessions, status, stats) |
+| AI | Workers AI (Llama 3.1 8B) — conversational CV + BBS terminal |
+| CSS | Pure CSS, zero frameworks, zero Tailwind |
+| JS | < 50 lines vanilla (IntersectionObserver + carousel) |
+| CI/CD | GitHub Actions → `wrangler deploy` (~35s) |
 
-```text
-/
-├── public/
-├── src/
-│   └── pages/
-│       └── index.astro
-└── package.json
-```
+## Pages
 
-Astro looks for `.astro` or `.md` files in the `src/pages/` directory. Each page is exposed as a route based on its file name.
+| Page | Description |
+|---|---|
+| Home | Terminal hero, 9 stack cards, live stats from KV |
+| Projects | 13 projects ranked by impact |
+| Security | 7 defensive layers, CTF profiles (HTB/THM/Root-Me) |
+| Infrastructure | 3 Proxmox nodes, service carousels, architecture diagrams |
+| Status | 33+ services live UP/DOWN, 30-day uptime timeline (D1) |
+| About | Origin story, 8 animated dynamic stats |
+| BBS | WOPR terminal (WarGames), Joshua AI persona, tic-tac-toe minimax |
+| Chat | Conversational CV, streaming SSE, rate-limited |
 
-There's nothing special about `src/components/`, but that's where we like to put any Astro/React/Vue/Svelte/Preact components.
+All pages available in English (root) and French (`/fr/`).
 
-Any static assets, like images, can be placed in the `public/` directory.
+## Live APIs
 
-## 🧞 Commands
+| Endpoint | Source | Description |
+|---|---|---|
+| `/api/status` | KV | Services UP/DOWN + PVE node metrics |
+| `/api/stats` | KV | 14 portfolio metrics (commits, CTF flags, uptime) |
+| `/api/chat` | Workers AI | Streaming SSE, 3 conversation modes |
+| `/api/history` | D1 | 30-day uptime aggregation |
 
-All commands are run from the root of the project, from a terminal:
+## Security
 
-| Command                   | Action                                           |
-| :------------------------ | :----------------------------------------------- |
-| `npm install`             | Installs dependencies                            |
-| `npm run dev`             | Starts local dev server at `localhost:4321`      |
-| `npm run build`           | Build your production site to `./dist/`          |
-| `npm run preview`         | Preview your build locally, before deploying     |
-| `npm run astro ...`       | Run CLI commands like `astro add`, `astro check` |
-| `npm run astro -- --help` | Get help using the Astro CLI                     |
+- Strict CSP, HSTS 1 year + preload, X-Frame DENY
+- DNSSEC (ECDSAP256SHA256)
+- AI crawlers blocked (GPTBot, ClaudeBot, Gemini)
+- Rate limiting: 4/min + 30/h per IP on chat
+- Lighthouse 98/100
 
-## 👀 Want to learn more?
+## License
 
-Feel free to check [our documentation](https://docs.astro.build) or jump into our [Discord server](https://astro.build/chat).
+MIT
