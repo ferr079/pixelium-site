@@ -356,23 +356,23 @@ try {
                   <img src="https://cdn.simpleicons.org/hackthebox/9FEF00" alt="" class="platform-logo" loading="lazy" aria-hidden="true" onerror="this.style.display='none'" />
                   <span class="platform-name">Hack The Box</span>
                 </div>
-                <span class="platform-rank">{htb.rank}</span>
+                <span class="platform-rank" data-htb="rank">{htb.rank}</span>
               </div>
               <div class="platform-stats">
                 <div class="platform-stat">
-                  <span class="stat-number">{htb.system_owns}</span>
+                  <span class="stat-number" data-htb="system_owns">{htb.system_owns}</span>
                   <span class="stat-label">Machines</span>
                 </div>
                 <div class="platform-stat">
-                  <span class="stat-number">{htb.user_owns}</span>
+                  <span class="stat-number" data-htb="user_owns">{htb.user_owns}</span>
                   <span class="stat-label">User owns</span>
                 </div>
                 <div class="platform-stat">
-                  <span class="stat-number">{htbFlags}</span>
+                  <span class="stat-number" data-htb="flags">{htbFlags}</span>
                   <span class="stat-label">Flags</span>
                 </div>
                 <div class="platform-stat">
-                  <span class="stat-number">#{htb.ranking}</span>
+                  <span class="stat-number" data-htb="ranking">#{htb.ranking}</span>
                   <span class="stat-label">Global</span>
                 </div>
               </div>
@@ -537,8 +537,8 @@ try {
       { number: '6', label: 'SSO services' },
       { number: '7', label: 'defensive layers' },
       { number: '0', label: 'SSH passwords' },
-      { number: String(htb.system_owns), label: 'HTB machines' },
-      { number: `#${htb.ranking}`, label: 'HTB global rank' },
+      { number: String(htb.system_owns), label: 'HTB machines', stat: 'htb_system_owns' },
+      { number: `#${htb.ranking}`, label: 'HTB global rank', stat: 'htb_ranking', suffix: '' },
     ]} />
 
     <!-- Crosslink -->
@@ -565,6 +565,36 @@ try {
     </section>
   </main>
 </Base>
+
+<script>
+  (async function liveHTB() {
+    try {
+      const res = await fetch('/api/stats');
+      if (!res.ok) return;
+      const { stats } = await res.json();
+      if (!stats) return;
+      const map: Record<string, string> = {
+        rank: stats.htb_rank,
+        system_owns: String(stats.htb_system_owns),
+        user_owns: String(stats.htb_user_owns),
+        flags: String(stats.htb_flags),
+        ranking: `#${stats.htb_ranking}`,
+      };
+      document.querySelectorAll('[data-htb]').forEach(el => {
+        const key = (el as HTMLElement).dataset.htb!;
+        if (map[key]) el.textContent = map[key];
+      });
+      document.querySelectorAll('[data-stat^="htb_"]').forEach(el => {
+        const key = (el as HTMLElement).dataset.stat!;
+        const val = stats[key];
+        if (val == null) return;
+        const suffix = (el as HTMLElement).dataset.statSuffix || '';
+        (el as HTMLElement).dataset.target = key === 'htb_ranking' ? `#${val}` : `${val}${suffix}`;
+        el.textContent = key === 'htb_ranking' ? `#${val}` : `${val}${suffix}`;
+      });
+    } catch (_) {}
+  })();
+</script>
 
 <style>
   /* Hero mini */
