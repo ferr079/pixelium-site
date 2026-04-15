@@ -1,0 +1,427 @@
+---
+import Base from '../../layouts/Base.astro';
+import StatsBar from '../../components/StatsBar.astro';
+import DynNum from '../../components/DynNum.astro';
+
+// HTB — fetch at build time
+let htb = { rank: 'Hacker', ranking: 972, system_owns: 24, user_owns: 26, flags: 95 };
+try {
+  const htbRes = await fetch('https://labs.hackthebox.com/api/v4/user/profile/basic/1161145', {
+    headers: { 'Authorization': `Bearer ${import.meta.env.HTB_API_TOKEN}` },
+  });
+  if (htbRes.ok) {
+    const data = await htbRes.json();
+    htb = { ...htb, rank: data.profile.rank, ranking: data.profile.ranking, system_owns: data.profile.system_owns, user_owns: data.profile.user_owns };
+  }
+  const actRes = await fetch('https://labs.hackthebox.com/api/v4/user/profile/activity/1161145', {
+    headers: { 'Authorization': `Bearer ${import.meta.env.HTB_API_TOKEN}` },
+  });
+  if (actRes.ok) {
+    const actData = await actRes.json();
+    htb.flags = (actData.profile?.activity || []).length;
+  }
+} catch (_) {}
+const htbFlags = htb.flags;
+
+// Root-Me — fetch at build time
+let rootme = { score: 765, position: 21847, validations: 63 };
+try {
+  const rmRes = await fetch(`https://api.www.root-me.org/auteurs/${import.meta.env.ROOTME_UID}`, {
+    headers: { 'Cookie': `api_key=${import.meta.env.ROOTME_API_KEY}` },
+  });
+  if (rmRes.ok) {
+    const data = await rmRes.json();
+    rootme = { score: parseInt(data.score) || 765, position: data.position ?? 21847, validations: (data.validations || []).length || 63 };
+  }
+} catch (_) {}
+---
+
+<Base title="CTF — pixelium.win" description={`Profils Capture The Flag — HTB (rang ${htb.rank}, #${htb.ranking}), TryHackMe (Top 15%), Root-Me (${rootme.score} pts). Entraînement offensif vérifié par Stéphane, documenté par Claude.`}>
+  <main>
+    <section class="hero-mini">
+      <div class="container">
+        <p class="terminal-prompt">$ cat /var/log/flags/captured</p>
+        <h1>Capture The Flag<span class="dot">.</span></h1>
+        <p class="subtitle">Entra&icirc;nement offensif v&eacute;rifi&eacute; sur les plateformes utilis&eacute;es par les professionnels. Chaque technique apprise ici renforce les d&eacute;fenses du homelab.</p>
+      </div>
+    </section>
+
+    <!-- Badges v&eacute;rifiables -->
+    <section class="layer">
+      <div class="container">
+        <div class="layer-header">
+          <h2>Badges v&eacute;rifiables</h2>
+        </div>
+        <div class="layer-content">
+          <p>Badges ind&eacute;pendants, g&eacute;n&eacute;r&eacute;s dynamiquement — directement depuis les serveurs HTB et THM. Ce ne sont pas des captures d'&eacute;cran — ils se mettent &agrave; jour en temps r&eacute;el au fil de la progression de St&eacute;phane.</p>
+          <div class="badges-row">
+            <a href="https://app.hackthebox.com/users/1161145" target="_blank" rel="noopener" aria-label="Profil Hack The Box">
+              <img src="https://www.hackthebox.com/badge/image/1161145" alt="Badge Hack The Box de Ferr079" class="ctf-badge" loading="lazy" />
+            </a>
+            <a href="https://tryhackme.com/p/ferr0" target="_blank" rel="noopener" aria-label="Profil TryHackMe">
+              <img src="https://tryhackme-badges.s3.amazonaws.com/ferr0.png" alt="Badge TryHackMe de ferr0" class="ctf-badge" loading="lazy" />
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Profils CTF -->
+    <section class="layer">
+      <div class="container">
+        <div class="layer-header">
+          <img src="https://cdn.simpleicons.org/hackthebox/9FEF00" alt="" class="tech-logo" loading="lazy" aria-hidden="true" onerror="this.style.display='none'" />
+          <h2>Profils CTF</h2>
+        </div>
+        <div class="layer-content">
+          <p>Apprentissage actif sur trois plateformes de cybers&eacute;curit&eacute; — les r&eacute;f&eacute;rences mondiales de l'entra&icirc;nement offensif. Ce ne sont pas des jeux — ce sont des environnements r&eacute;alistes utilis&eacute;s par les professionnels, les pentesters et les &eacute;quipes de s&eacute;curit&eacute; du monde entier pour aff&ucirc;ter leurs comp&eacute;tences face &agrave; des sc&eacute;narios d'attaque r&eacute;els.</p>
+          <div class="platforms-grid">
+
+            <!-- HTB -->
+            <a href="https://app.hackthebox.com/users/1161145" target="_blank" rel="noopener" class="platform-card htb-card">
+              <div class="platform-header">
+                <div style="display:flex;align-items:center;gap:0.5rem;">
+                  <img src="https://cdn.simpleicons.org/hackthebox/9FEF00" alt="" class="platform-logo" loading="lazy" aria-hidden="true" onerror="this.style.display='none'" />
+                  <span class="platform-name">Hack The Box</span>
+                </div>
+                <span class="platform-rank" data-htb="rank">{htb.rank}</span>
+              </div>
+              <div class="platform-stats">
+                <div class="platform-stat">
+                  <span class="stat-number" data-htb="system_owns">{htb.system_owns}</span>
+                  <span class="stat-label">Machines</span>
+                </div>
+                <div class="platform-stat">
+                  <span class="stat-number" data-htb="user_owns">{htb.user_owns}</span>
+                  <span class="stat-label">User owns</span>
+                </div>
+                <div class="platform-stat">
+                  <span class="stat-number" data-htb="flags">{htbFlags}</span>
+                  <span class="stat-label">Flags</span>
+                </div>
+                <div class="platform-stat">
+                  <span class="stat-number" data-htb="ranking">#{htb.ranking}</span>
+                  <span class="stat-label">Global</span>
+                </div>
+              </div>
+              <p class="platform-desc">La plateforme leader mondiale en s&eacute;curit&eacute; offensive. Machines vuln&eacute;rables r&eacute;alistes — de la reconnaissance initiale au root complet. Active Directory Windows, escalade de privil&egrave;ges Linux, exploitation web, recherche CVE. Utilis&eacute;e par les professionnels et les red teams dans le monde entier. Le terrain d'entra&icirc;nement principal de St&eacute;phane.</p>
+              <span class="platform-cta">Voir le profil &#8594;</span>
+            </a>
+
+            <!-- THM -->
+            <a href="https://tryhackme.com/p/ferr0" target="_blank" rel="noopener" class="platform-card thm-card">
+              <div class="platform-header">
+                <div style="display:flex;align-items:center;gap:0.5rem;">
+                  <img src="https://cdn.simpleicons.org/tryhackme/ef3b36" alt="" class="platform-logo" loading="lazy" aria-hidden="true" onerror="this.style.display='none'" />
+                  <span class="platform-name">TryHackMe</span>
+                </div>
+                <span class="platform-rank thm-rank">Hacker</span>
+              </div>
+              <div class="platform-stats">
+                <div class="platform-stat">
+                  <span class="stat-number">35</span>
+                  <span class="stat-label">Rooms</span>
+                </div>
+                <div class="platform-stat">
+                  <span class="stat-number">7</span>
+                  <span class="stat-label">Badges</span>
+                </div>
+                <div class="platform-stat">
+                  <span class="stat-number">Top 15%</span>
+                  <span class="stat-label">Rang</span>
+                </div>
+              </div>
+              <p class="platform-desc">L'une des plateformes de cybers&eacute;curit&eacute; les plus populaires. Parcours guid&eacute;s et rooms th&eacute;matiques — apprentissage structur&eacute; du pentesting aux op&eacute;rations SOC. Accessible aux d&eacute;butants avec une difficult&eacute; progressive. Utilis&eacute;e par les universit&eacute;s et la pr&eacute;paration aux certifications dans le monde entier.</p>
+              <span class="platform-cta">Voir le profil &#8594;</span>
+            </a>
+
+            <!-- Root-Me -->
+            <a href="https://www.root-me.org/Ferr0" target="_blank" rel="noopener" class="platform-card rootme-card">
+              <div class="platform-header">
+                <div style="display:flex;align-items:center;gap:0.5rem;">
+                  <img src="https://cdn.simpleicons.org/rootme/ffc107" alt="" class="platform-logo" loading="lazy" aria-hidden="true" onerror="this.style.display='none'" />
+                  <span class="platform-name">Root-Me</span>
+                </div>
+                <span class="platform-rank rootme-rank">{rootme.score} pts</span>
+              </div>
+              <div class="platform-stats">
+                <div class="platform-stat">
+                  <span class="stat-number">{rootme.validations}</span>
+                  <span class="stat-label">Challenges</span>
+                </div>
+                <div class="platform-stat">
+                  <span class="stat-number">#{rootme.position.toLocaleString()}</span>
+                  <span class="stat-label">Global</span>
+                </div>
+                <div class="platform-stat">
+                  <span class="stat-number">{rootme.score}</span>
+                  <span class="stat-label">Points</span>
+                </div>
+              </div>
+              <p class="platform-desc">La plateforme CTF leader en Europe, n&eacute;e en France. Challenges techniques cibl&eacute;s — exploitation web, cryptographie, forensics, analyse r&eacute;seau. Reconnue pour sa profondeur et son contenu communautaire. Une r&eacute;f&eacute;rence dans la cybers&eacute;curit&eacute; francophone.</p>
+              <span class="platform-cta">Voir le profil &#8594;</span>
+            </a>
+
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- La boucle de feedback -->
+    <section class="layer">
+      <div class="container">
+        <div class="layer-header">
+          <img src="https://cdn.simpleicons.org/kalilinux/557C94" alt="" class="tech-logo" loading="lazy" aria-hidden="true" onerror="this.style.display='none'" />
+          <h2>La boucle de feedback</h2>
+        </div>
+        <div class="layer-content">
+          <p>Chaque technique offensive apprise renforce directement une couche d&eacute;fensive du homelab. Ce n'est pas du hobbyisme — c'est une <strong>boucle de feedback entre l'attaque et la d&eacute;fense.</strong></p>
+          <div class="feedback-loop">
+            <div class="loop-item">
+              <span class="loop-arrow">&#8594;</span>
+              <div>
+                <span class="loop-offense">Password spraying sur HTB</span>
+                <span class="loop-result">&#8594; Politiques de complexit&eacute; renforc&eacute;es sur Authentik</span>
+              </div>
+            </div>
+            <div class="loop-item">
+              <span class="loop-arrow">&#8594;</span>
+              <div>
+                <span class="loop-offense">MSSQL impersonation</span>
+                <span class="loop-result">&#8594; Audit des permissions de service sur le homelab</span>
+              </div>
+            </div>
+            <div class="loop-item">
+              <span class="loop-arrow">&#8594;</span>
+              <div>
+                <span class="loop-offense">Kerberoasting / AD enum</span>
+                <span class="loop-result">&#8594; Monitoring SPN et tickets Kerberos dans Wazuh</span>
+              </div>
+            </div>
+            <div class="loop-item">
+              <span class="loop-arrow">&#8594;</span>
+              <div>
+                <span class="loop-offense">Hash cracking PBKDF2</span>
+                <span class="loop-result">&#8594; V&eacute;rification des algorithmes de hashing sur chaque service</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Techniques pratiqu&eacute;es -->
+    <section class="layer">
+      <div class="container">
+        <div class="layer-header">
+          <h2>Techniques pratiqu&eacute;es</h2>
+        </div>
+        <div class="layer-content">
+          <p>Comp&eacute;tences acquises et valid&eacute;es sur des environnements r&eacute;els — pas de la th&eacute;orie, des <strong>flags captur&eacute;s.</strong></p>
+          <div class="techniques-grid">
+            <div class="technique-group">
+              <h4>Active Directory</h4>
+              <div class="technique-tags">
+                <span>Kerberoasting</span>
+                <span>AS-REP Roasting</span>
+                <span>ACL abuse</span>
+                <span>MSSQL impersonation</span>
+                <span>Password spraying</span>
+                <span>BloodHound enum</span>
+                <span>WinRM lateral movement</span>
+              </div>
+            </div>
+            <div class="technique-group">
+              <h4>Exploitation web</h4>
+              <div class="technique-tags">
+                <span>SQLi</span>
+                <span>SSTI</span>
+                <span>LFI / RFI</span>
+                <span>Command injection</span>
+                <span>OAuth redirect abuse</span>
+                <span>Cookie manipulation</span>
+              </div>
+            </div>
+            <div class="technique-group">
+              <h4>Cryptographie &amp; cracking</h4>
+              <div class="technique-tags">
+                <span>Hashcat (PBKDF2, bcrypt)</span>
+                <span>John the Ripper</span>
+                <span>Hash identification</span>
+                <span>Salt extraction</span>
+                <span>GPU cracking (RTX 3090)</span>
+              </div>
+            </div>
+            <div class="technique-group">
+              <h4>&Eacute;num&eacute;ration &amp; reconnaissance</h4>
+              <div class="technique-tags">
+                <span>Nmap</span>
+                <span>Gobuster / ffuf</span>
+                <span>SMB enum</span>
+                <span>SNMP walk</span>
+                <span>DNS zone transfer</span>
+                <span>Service fingerprinting</span>
+              </div>
+            </div>
+            <div class="technique-group">
+              <h4>Escalade de privil&egrave;ges</h4>
+              <div class="technique-tags">
+                <span>SUID / capabilities</span>
+                <span>Sudo misconfiguration</span>
+                <span>Cron abuse</span>
+                <span>Kernel exploits</span>
+                <span>Service permissions</span>
+                <span>Token impersonation</span>
+              </div>
+            </div>
+            <div class="technique-group">
+              <h4>Outils</h4>
+              <div class="technique-tags">
+                <span>Impacket</span>
+                <span>Evil-WinRM</span>
+                <span>Netexec</span>
+                <span>Metasploit</span>
+                <span>Burp Suite</span>
+                <span>Chisel / ligolo</span>
+                <span>LinPEAS / WinPEAS</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Chiffres -->
+    <section class="layer">
+      <div class="container">
+        <div class="layer-header">
+          <h2>Les chiffres</h2>
+        </div>
+        <div class="layer-content">
+          <p>L'entra&icirc;nement offensif n'est pas un discours — c'est une <strong>progression mesurable.</strong></p>
+        </div>
+      </div>
+    </section>
+
+    <StatsBar stats={[
+      { number: String(htb.system_owns), label: 'machines HTB', stat: 'htb_system_owns' },
+      { number: `#${htb.ranking}`, label: 'rang mondial HTB', stat: 'htb_ranking', suffix: '' },
+      { number: String(rootme.validations), label: 'challenges Root-Me' },
+      { number: '35', label: 'rooms THM' },
+      { number: String(htbFlags), label: 'flags total' },
+      { number: String(rootme.score), label: 'points Root-Me' },
+    ]} />
+
+    <!-- Crosslinks -->
+    <section class="crosslink reveal">
+      <div class="container">
+        <a href="/fr/securite" class="crosslink-block">
+          <div>
+            <h3>&#9670; S&eacute;curit&eacute;</h3>
+            <p>D&eacute;couvrez comment l'offensif renforce la d&eacute;fense — 7 couches de defense-in-depth d&eacute;ploy&eacute;es sur le homelab. SSH durci, PKI, CrowdSec, Wazuh, Authentik SSO.</p>
+          </div>
+          <span class="crosslink-arrow">&#8594;</span>
+        </a>
+      </div>
+    </section>
+  </main>
+</Base>
+
+<script>
+  (async function liveHTB() {
+    try {
+      const res = await fetch('/api/stats');
+      if (!res.ok) return;
+      const { stats } = await res.json();
+      if (!stats) return;
+      const map: Record<string, string> = {
+        rank: stats.htb_rank,
+        system_owns: String(stats.htb_system_owns),
+        user_owns: String(stats.htb_user_owns),
+        flags: String(stats.htb_flags),
+        ranking: `#${stats.htb_ranking}`,
+      };
+      document.querySelectorAll('[data-htb]').forEach(el => {
+        const key = (el as HTMLElement).dataset.htb!;
+        if (map[key]) el.textContent = map[key];
+      });
+      document.querySelectorAll('[data-stat^="htb_"]').forEach(el => {
+        const key = (el as HTMLElement).dataset.stat!;
+        const val = stats[key];
+        if (val == null) return;
+        const suffix = (el as HTMLElement).dataset.statSuffix || '';
+        (el as HTMLElement).dataset.target = key === 'htb_ranking' ? `#${val}` : `${val}${suffix}`;
+        el.textContent = key === 'htb_ranking' ? `#${val}` : `${val}${suffix}`;
+      });
+    } catch (_) {}
+  })();
+</script>
+
+<style>
+  .hero-mini { padding: 4rem 0 3rem; }
+  .terminal-prompt { font-family: var(--font-mono); color: var(--color-accent); font-size: 0.95rem; margin-bottom: 0.75rem; }
+  h1 { font-size: clamp(2rem, 5vw, 3rem); font-weight: 800; letter-spacing: -0.02em; line-height: 1.1; margin-bottom: 1rem; }
+  .dot { color: var(--color-accent); }
+  .subtitle { color: var(--color-text-muted); font-size: 1.1rem; }
+  .layer { padding: 3rem 0; border-top: 1px solid var(--color-border); }
+  .layer-header { display: flex; align-items: center; gap: 1rem; margin-bottom: 1.5rem; }
+  .layer-header h2 { font-size: 1.4rem; margin-bottom: 0; }
+  .tech-logo { width: 1.4rem; height: 1.4rem; flex-shrink: 0; }
+  .layer-content > p { color: var(--color-text-muted); margin-bottom: 1.5rem; line-height: 1.7; }
+  .layer-content > p strong { color: var(--color-text); }
+  .badges-row { display: flex; gap: 2rem; flex-wrap: wrap; align-items: center; }
+  .ctf-badge { height: 80px; width: auto; border-radius: 6px; transition: transform 0.2s; }
+  .ctf-badge:hover { transform: scale(1.05); }
+  .feedback-loop { display: flex; flex-direction: column; gap: 0.5rem; }
+  .loop-item { display: flex; align-items: center; gap: 0.75rem; padding: 0.75rem 1rem; background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 6px; }
+  .loop-arrow { color: var(--color-accent); font-size: 1.1rem; flex-shrink: 0; }
+  .loop-item > div { display: flex; align-items: center; gap: 0.5rem; flex-wrap: wrap; }
+  .loop-offense { font-family: var(--font-mono); font-size: 0.8rem; color: #f87171; background: rgba(248, 113, 113, 0.1); padding: 0.15rem 0.5rem; border-radius: 3px; border: 1px solid rgba(248, 113, 113, 0.2); }
+  .loop-result { font-size: 0.85rem; color: var(--color-text-muted); }
+  .platforms-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(18rem, 1fr)); gap: 1rem; }
+  .platform-card { background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 8px; padding: 1.5rem; display: flex; flex-direction: column; gap: 1rem; transition: border-color 0.3s, box-shadow 0.3s; }
+  a.platform-card { text-decoration: none; color: inherit; }
+  a.platform-card:hover { border-color: var(--color-accent); box-shadow: 0 0 20px rgba(56, 189, 248, 0.1); color: inherit; }
+  .htb-card { border-top: 3px solid #9fef00; }
+  .thm-card { border-top: 3px solid #ef3b36; }
+  .rootme-card { border-top: 3px solid #ffc107; }
+  .platform-header { display: flex; justify-content: space-between; align-items: center; }
+  .platform-logo { width: 1.4rem; height: 1.4rem; flex-shrink: 0; }
+  .platform-name { font-family: var(--font-mono); font-size: 1rem; font-weight: 700; color: var(--color-text); }
+  .platform-rank { font-family: var(--font-mono); font-size: 0.75rem; padding: 0.2rem 0.6rem; border-radius: 4px; background: rgba(159, 239, 0, 0.1); color: #9fef00; border: 1px solid rgba(159, 239, 0, 0.3); }
+  .platform-rank.thm-rank { background: rgba(239, 59, 54, 0.1); color: #ef3b36; border-color: rgba(239, 59, 54, 0.3); }
+  .platform-rank.rootme-rank { background: rgba(255, 193, 7, 0.1); color: #ffc107; border-color: rgba(255, 193, 7, 0.3); }
+  .platform-stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 0.5rem; }
+  .platform-stat { text-align: center; }
+  .stat-number { display: block; font-family: var(--font-mono); font-size: 1.1rem; font-weight: 700; color: var(--color-text); }
+  .stat-label { font-size: 0.7rem; color: var(--color-text-muted); text-transform: uppercase; letter-spacing: 0.05em; }
+  .platform-desc { font-size: 0.85rem; color: var(--color-text-muted); line-height: 1.5; }
+  .platform-cta { font-family: var(--font-mono); font-size: 0.8rem; color: var(--color-accent); margin-top: auto; }
+  .techniques-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(16rem, 1fr)); gap: 1rem; }
+  .technique-group { background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 6px; padding: 1.25rem; }
+  .technique-group h4 { font-size: 0.85rem; color: var(--color-accent); margin-bottom: 0.75rem; font-family: var(--font-mono); }
+  .technique-tags { display: flex; flex-wrap: wrap; gap: 0.4rem; }
+  .technique-tags span { font-family: var(--font-mono); font-size: 0.7rem; background: var(--color-bg); color: var(--color-text-muted); padding: 0.2rem 0.5rem; border-radius: 4px; border: 1px solid var(--color-border); }
+  .crosslink { padding: 2rem 0 3rem; }
+  .crosslink-block { display: flex; align-items: center; justify-content: space-between; gap: 2rem; padding: 1.5rem 2rem; border: 1px solid rgba(56, 189, 248, 0.2); border-radius: 8px; background: linear-gradient(135deg, rgba(56, 189, 248, 0.05), rgba(56, 189, 248, 0.02)); text-decoration: none; color: inherit; transition: border-color 0.3s, box-shadow 0.3s; }
+  .crosslink-block:hover { border-color: var(--color-accent); box-shadow: 0 0 20px rgba(56, 189, 248, 0.1); color: inherit; }
+  .crosslink-block h3 { font-size: 1rem; color: var(--color-accent); margin-bottom: 0.5rem; }
+  .crosslink-block p { font-size: 0.85rem; color: var(--color-text-muted); line-height: 1.5; }
+  .crosslink-arrow { font-size: 1.5rem; color: var(--color-accent); flex-shrink: 0; }
+
+  @media (max-width: 640px) {
+    .hero-mini { padding: 2rem 0 1.5rem; }
+    h1 { font-size: clamp(1.5rem, 5vw, 2.5rem); }
+    .subtitle { font-size: 0.95rem; }
+    .badges-row { flex-direction: column; align-items: flex-start; }
+    .ctf-badge { height: 60px; }
+    .loop-item > div { flex-direction: column; align-items: flex-start; }
+    .loop-item { padding: 0.5rem 0.75rem; }
+    .platforms-grid, .techniques-grid { grid-template-columns: 1fr; gap: 0.75rem; }
+    .platform-card { padding: 1rem; }
+    .platform-stats { grid-template-columns: repeat(2, 1fr); }
+    .crosslink-block { flex-direction: column; gap: 1rem; padding: 1.25rem; }
+    .crosslink-block p { font-size: 0.82rem; }
+    .layer-header { flex-wrap: wrap; gap: 0.5rem; }
+  }
+</style>

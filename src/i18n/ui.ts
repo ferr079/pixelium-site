@@ -10,6 +10,7 @@ export const ui = {
     // Nav
     'nav.projets': 'Projets',
     'nav.securite': 'Sécurité',
+    'nav.ctf': 'CTF',
     'nav.infra': 'Infra',
     'nav.status': 'Statut',
     'nav.about': 'À propos',
@@ -21,6 +22,7 @@ export const ui = {
     // Nav
     'nav.projets': 'Projects',
     'nav.securite': 'Security',
+    'nav.ctf': 'CTF',
     'nav.infra': 'Infra',
     'nav.status': 'Status',
     'nav.about': 'About',
