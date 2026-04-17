@@ -186,7 +186,7 @@ import DynNum from '../components/DynNum.astro';
         </div>
         <div class="project-body">
           <div class="project-intro">
-            <p>Native Proxmox firewall with DROP default, CrowdSec IPS with 57 scenarios and community blocklists, hardened SSH on 30+ hosts, YubiKey FIDO2, HTTPS-secured APT repos.</p>
+            <p>Native Proxmox firewall with DROP default, CrowdSec IPS with 57 scenarios and community blocklists, hardened SSH on 38+ hosts, YubiKey FIDO2, HTTPS-secured APT repos.</p>
           </div>
           <div class="project-details">
             <div class="detail-block">
@@ -199,7 +199,7 @@ import DynNum from '../components/DynNum.astro';
             </div>
             <div class="detail-block">
               <h4>YubiKey + HTTPS APT</h4>
-              <p>Resident ed25519-sk key on YubiKey 5 NFC — deployed on 30 hosts via Ansible. SSH login requires physical touch. WebAuthn FIDO2 on Authentik for phishing-resistant SSO login. In parallel: all APT repos migrated to HTTPS (Ansible playbook, 29/32 hosts automated).</p>
+              <p>Resident ed25519-sk key on YubiKey 5 NFC — deployed on 34 hosts via Ansible. SSH login requires physical touch. WebAuthn FIDO2 on Authentik for phishing-resistant SSO login. In parallel: all APT repos migrated to HTTPS (Ansible playbook, 29/32 hosts automated).</p>
             </div>
           </div>
           <div class="project-stack">
@@ -210,7 +210,7 @@ import DynNum from '../components/DynNum.astro';
               <li>Ansible</li>
               <li>Wazuh</li>
             </ul>
-            <span class="project-services">3 nodes FW, 57 IPS scenarios, 30 hardened SSH hosts</span>
+            <span class="project-services">3 nodes FW, 57 IPS scenarios, 38+ hardened SSH hosts</span>
           </div>
         </div>
       </div>
@@ -502,14 +502,14 @@ import DynNum from '../components/DynNum.astro';
               <p>The very first scan targeted Traefik (192.168.1.110). PentAGI's agents discovered port 8081 (CrowdSec LAPI) was listening on <code>0.0.0.0</code> instead of <code>127.0.0.1</code> &mdash; accessible from the entire LAN. Not critical (token-protected), but unnecessary attack surface. Fixed immediately: <code>listen_uri: 127.0.0.1:8081</code>. The tool paid for itself on day one.</p>
             </div>
             <div class="detail-block">
-              <h4>Companion: PentestAgent MCP</h4>
-              <p>For interactive CTF sessions, PentestAgent runs inside the Kali distrobox and connects to Claude Code via MCP (STDIO). During Hack The Box sessions, Claude can directly invoke pentest tools &mdash; nmap, sqlmap, hashcat &mdash; through natural language. Two tools, two modes: autonomous audit (PentAGI) and guided pentest (PentestAgent).</p>
+              <h4>Companion: RAPTOR + 31 cybersec skills</h4>
+              <p>For interactive CTF sessions, 31 <code>/cybersec:*</code> slash commands are available directly in Claude Code &mdash; nmap, sqlmap, hashcat, web-pentest, and more. For white-box source code audit, RAPTOR (distrobox with Semgrep, CodeQL, AFL++) completes the stack. Three layers: autonomous audit (PentAGI), guided pentest (cybersec skills), code audit (RAPTOR).</p>
             </div>
           </div>
           <div class="project-stack">
             <ul class="tags">
               <li>PentAGI</li>
-              <li>PentestAgent</li>
+              <li>RAPTOR</li>
               <li>Docker Kali</li>
               <li>Ollama (RTX 3090)</li>
               <li>MCP</li>
@@ -596,37 +596,28 @@ import DynNum from '../components/DynNum.astro';
           </div>
           <div class="models-grid">
             <div class="model-group">
-              <h4>Reasoning &amp; coding</h4>
+              <h4>Reasoning (MoE)</h4>
               <div class="model-tags">
-                <span>Qwen3</span>
-                <span>QwQ</span>
-                <span>DeepSeek-R1</span>
-                <span>DeepSeek-V3</span>
+                <span>Qwen3.6 (35B-A3B)</span>
               </div>
             </div>
             <div class="model-group">
-              <h4>Compact models</h4>
+              <h4>Coding</h4>
               <div class="model-tags">
-                <span>Phi-4</span>
-                <span>SmolLM</span>
-                <span>Mistral 7B</span>
-                <span>Llama 3.2</span>
+                <span>Qwen2.5-Coder 14B</span>
               </div>
             </div>
             <div class="model-group">
-              <h4>General purpose</h4>
+              <h4>Compact &amp; uncensored</h4>
               <div class="model-tags">
-                <span>Mixtral</span>
-                <span>Gemma 3</span>
-                <span>Command-R</span>
+                <span>Qwen3.5 4B</span>
+                <span>Gemma 4 Uncensored</span>
               </div>
             </div>
             <div class="model-group">
               <h4>Embeddings</h4>
               <div class="model-tags">
                 <span>nomic-embed-text</span>
-                <span>all-minilm</span>
-                <span>mxbai-embed-large</span>
               </div>
             </div>
           </div>
@@ -763,7 +754,7 @@ import DynNum from '../components/DynNum.astro';
           <div class="roadmap-item">
             <span class="roadmap-status status-planned">planned</span>
             <h4>Network segmentation</h4>
-            <p>OPNsense as a VM, VLANs per trust zone (infra / services / IoT / guest). Currently everything sits on a flat /24 &mdash; the next security milestone.</p>
+            <p>VLANs per trust zone (infra / services / IoT / guest). Currently everything sits on a flat /24 &mdash; the next security milestone.</p>
           </div>
           <div class="roadmap-item">
             <span class="roadmap-status status-wip">in progress</span>
@@ -776,9 +767,9 @@ import DynNum from '../components/DynNum.astro';
             <p>Training a behavioral model on ops logs and homelab troubleshooting patterns. Local RTX 3090 + HuggingFace Pro. Not to memorize facts &mdash; to learn reflexes.</p>
           </div>
           <div class="roadmap-item">
-            <span class="roadmap-status status-wip">in progress</span>
+            <span class="roadmap-status status-done">deployed</span>
             <h4>Immich ML GPU</h4>
-            <p>Remote ML server on RTX 3090 (Podman CUDA) for Immich smart search. Multilingual CLIP model (XLM-Roberta ViT-H-14) + OCR on 10k images. Deployed &mdash; optimizing model selection and search quality.</p>
+            <p>Remote ML server on RTX 3090 (Podman CUDA) for Immich smart search. Multilingual CLIP model (XLM-Roberta ViT-H-14, 4 GB) + OCR (PaddleOCR). 10k images indexed in minutes. Deployed and operational since April 2026.</p>
           </div>
         </div>
       </div>
@@ -1204,6 +1195,12 @@ import DynNum from '../components/DynNum.astro';
     color: var(--color-accent);
     background: rgba(56, 189, 248, 0.1);
     border: 1px solid rgba(56, 189, 248, 0.3);
+  }
+
+  .status-done {
+    color: #22c55e;
+    background: rgba(34, 197, 94, 0.1);
+    border: 1px solid rgba(34, 197, 94, 0.3);
   }
 
   .roadmap-item h4 {
