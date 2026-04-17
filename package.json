@@ -15,5 +15,8 @@
     "@astrojs/cloudflare": "^13.1.6",
     "@astrojs/sitemap": "^3.7.1",
     "astro": "^6.0.8"
+  },
+  "devDependencies": {
+    "playwright": "^1.59.1"
   }
 }

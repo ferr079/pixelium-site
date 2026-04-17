@@ -19,7 +19,7 @@ const cards = [
   {
     icon: '&#9633;',
     title: 'Virtualisation',
-    description: 'Stéphane fait tourner 3 nœuds Proxmox hétérogènes — du Celeron N5105 basse conso au Ryzen 7840HS. J\'ai accès aux trois via MCP. 30+ conteneurs LXC, chacun avec son rôle précis.',
+    description: 'Stéphane fait tourner 3 nœuds Proxmox hétérogènes — du Celeron N5105 basse conso au Ryzen 7840HS. J\'ai accès aux trois via MCP. 38 conteneurs LXC + 1 VM, chacun avec son rôle précis.',
     tags: ['Proxmox VE', 'LXC', 'PBS'],
   },
   {
@@ -31,7 +31,7 @@ const cards = [
   {
     icon: '&#9670;',
     title: 'Sécurité',
-    description: 'PKI interne, SSH durci sur 30+ hôtes, Wazuh SIEM, CrowdSec IPS avec blocklists communautaires, SSO Authentik sur 6 services, VPN mesh Headscale. Chaque couche est défensive — la sécurité n\'est pas un add-on, c\'est la fondation.',
+    description: 'PKI interne, SSH durci sur 38+ hôtes, Wazuh SIEM, CrowdSec IPS avec blocklists communautaires, SSO Authentik sur 6 services, VPN mesh Headscale. Chaque couche est défensive — la sécurité n\'est pas un add-on, c\'est la fondation.',
     tags: ['Wazuh', 'CrowdSec IPS', 'Authentik SSO', 'Headscale', 'Vaultwarden'],
   },
   {
@@ -61,7 +61,7 @@ const cards = [
   {
     icon: '&#8962;',
     title: 'Résilience offline',
-    description: 'Bug-out bag numérique : une forge Git miroir de 129 repos (upstream + backups privés) et un réseau mesh LoRa 868 MHz. L\'objectif : pouvoir reconstruire toute l\'infra avec un sac à dos et du courant.',
+    description: 'Bug-out bag numérique : une forge Git miroir de 133 repos (upstream + backups privés) et un réseau mesh LoRa 868 MHz. L\'objectif : pouvoir reconstruire toute l\'infra avec un sac à dos et du courant.',
     tags: ['Forworld', 'Meshtastic', 'LoRa 868MHz'],
   },
   {
@@ -73,7 +73,7 @@ const cards = [
 ];
 ---
 
-<Base title="pixelium.win — Portfolio DevSecOps Homelab" description="Infrastructure de production self-hosted : 30+ services sur Proxmox, automatisation Ansible, agents IA, sécurité en profondeur. Conçu par Stéphane Ferreira, raconté par Claude.">
+<Base title="pixelium.win — Portfolio DevSecOps Homelab" description="Infrastructure de production self-hosted : 37+ services sur Proxmox, automatisation Ansible, agents IA, sécurité en profondeur. Conçu par Stéphane Ferreira, raconté par Claude.">
   <main>
     <!-- Hero -->
     <section class="hero">
@@ -107,7 +107,7 @@ const cards = [
     <!-- Stats -->
     <StatsBar stats={[
       { number: '3', label: 'nœuds Proxmox' },
-      { number: '30+', label: 'conteneurs LXC', stat: 'lxc_count', suffix: '+' },
+      { number: '38+', label: 'conteneurs LXC', stat: 'lxc_count', suffix: '+' },
       { number: '20+', label: 'services HTTPS', stat: 'https_services', suffix: '+' },
       { number: '0€', label: 'cloud externe' },
     ]} />

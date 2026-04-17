@@ -4,7 +4,7 @@ import StatsBar from '../../components/StatsBar.astro';
 import DynNum from '../../components/DynNum.astro';
 ---
 
-<Base title="S&eacute;curit&eacute; — pixelium.win" description="Defense-in-depth sur 30+ services self-hosted — SSH durci, PKI, CrowdSec, Wazuh, Authentik SSO. Par Claude, l'IA qui a d&eacute;ploy&eacute; chaque couche.">
+<Base title="S&eacute;curit&eacute; — pixelium.win" description="Defense-in-depth sur 37+ services self-hosted — SSH durci sur 38+ h&ocirc;tes, PKI, CrowdSec, Wazuh, Authentik SSO. Par Claude, l'IA qui a d&eacute;ploy&eacute; chaque couche.">
   <main>
     <section class="hero-mini">
       <div class="container">
@@ -42,7 +42,7 @@ import DynNum from '../../components/DynNum.astro';
               <span class="layer-icon">&#9678;</span>
               <div>
                 <h4>Couche identit&eacute;</h4>
-                <p>Authentik SSO (6 services), YubiKey FIDO2, SSH key-only sur 30+ h&ocirc;tes</p>
+                <p>Authentik SSO (6 services), YubiKey FIDO2, SSH key-only sur 38+ h&ocirc;tes</p>
               </div>
             </div>
             <div class="defense-layer">
@@ -96,7 +96,7 @@ import DynNum from '../../components/DynNum.astro';
             </div>
             <div class="spec">
               <span class="spec-label">R&eacute;sultat</span>
-              <span class="spec-value"><DynNum stat="https_services" fallback="22+" suffix="+" /> services en HTTPS valide, cadenas vert, z&eacute;ro avertissement navigateur, z&eacute;ro expiration silencieuse</span>
+              <span class="spec-value"><DynNum stat="https_services" fallback="26+" suffix="+" /> services en HTTPS valide, cadenas vert, z&eacute;ro avertissement navigateur, z&eacute;ro expiration silencieuse</span>
             </div>
           </div>
         </div>
@@ -138,7 +138,7 @@ import DynNum from '../../components/DynNum.astro';
           <h2>SSH durci + YubiKey FIDO2</h2>
         </div>
         <div class="layer-content">
-          <p>Chaque host du homelab — 30+ machines — est accessible <strong>uniquement par cl&eacute; SSH.</strong> Mot de passe d&eacute;sactiv&eacute; partout. Ansible d&eacute;ploie le hardening en une commande via le playbook <code>harden_ssh.yml</code>.</p>
+          <p>Chaque host du homelab — 38+ machines — est accessible <strong>uniquement par cl&eacute; SSH.</strong> Mot de passe d&eacute;sactiv&eacute; partout. Ansible d&eacute;ploie le hardening en une commande via le playbook <code>harden_ssh.yml</code>.</p>
           <div class="details-grid">
             <div class="detail">
               <h4>ed25519-sk r&eacute;sidente</h4>
@@ -292,7 +292,7 @@ import DynNum from '../../components/DynNum.astro';
         <a href="/fr/infrastructure" class="crosslink-block">
           <div>
             <h3>&#9670; Infrastructure</h3>
-            <p>36 services self-hosted sur 3 n&oelig;uds Proxmox — la fondation que toutes ces couches de s&eacute;curit&eacute; prot&egrave;gent. DNS, PKI, monitoring, stockage, automatisation.</p>
+            <p>37+ services self-hosted sur 3 n&oelig;uds Proxmox — la fondation que toutes ces couches de s&eacute;curit&eacute; prot&egrave;gent. DNS, PKI, monitoring, stockage, automatisation.</p>
           </div>
           <span class="crosslink-arrow">&#8594;</span>
         </a>

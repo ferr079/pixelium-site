@@ -10,7 +10,7 @@ const serviceSlides = [
   { src: '/images/services/traefik.webp', alt: 'Traefik dashboard — routers, services, middlewares', title: 'Traefik — Reverse Proxy' },
   { src: '/images/services/authentik.webp', alt: 'Authentik admin — SSO dashboard with login stats', title: 'Authentik — SSO / IdP' },
   { src: '/images/services/technitium.webp', alt: 'TechnitiumDNS — query stats and top clients', title: 'TechnitiumDNS — DNS Server' },
-  { src: '/images/services/semaphore.webp', alt: 'Semaphore — 13 Ansible task templates', title: 'Semaphore — Ansible UI' },
+  { src: '/images/services/semaphore.webp', alt: 'Semaphore — 14 Ansible task templates', title: 'Semaphore — Ansible UI' },
   { src: '/images/services/netbox.webp', alt: 'NetBox — IPAM inventory and changelog', title: 'NetBox — IPAM / DCIM' },
   { src: '/images/services/immich.webp', alt: 'Immich — photo gallery with AI classification', title: 'Immich — Photo Library' },
   { src: '/images/services/bytestash.webp', alt: 'ByteStash — code snippet manager', title: 'ByteStash — Snippets' },
@@ -30,7 +30,7 @@ const monitoringSlides = [
 ];
 ---
 
-<Base title="Infrastructure — pixelium.win" description="30+ LXC containers on 3 Proxmox nodes, fully self-hosted — DNS, TLS, monitoring, SIEM, AI agents. Complete homelab architecture.">
+<Base title="Infrastructure — pixelium.win" description="38 LXC containers + 1 VM on 3 Proxmox nodes, fully self-hosted — DNS, TLS, monitoring, SIEM, AI agents. Complete homelab architecture.">
   <main>
     <section class="hero-mini">
       <div class="container">
@@ -132,7 +132,7 @@ const monitoringSlides = [
           </div>
 
           <div class="screenshots-grid screenshots-trio">
-            <Screenshot src="/images/pve1-focus.webp" alt="pve1 container list — 11 LXC + 1 VM" title="pve1 — containers" caption="pve1 — 11 LXC + 1 VM: DNS, Traefik, step-ca, Forgejo, NetBox..." />
+            <Screenshot src="/images/pve1-focus.webp" alt="pve1 container list — 12 LXC" title="pve1 — containers" caption="pve1 — 12 LXC: DNS, Traefik, step-ca, Forgejo, NetBox..." />
             <Screenshot src="/images/pve2-focus.webp" alt="pve2 container list — 20+ CTs" title="pve2 — containers" caption="pve2 — 20+ CTs: Homepage, Jellyfin, Immich, Wazuh, Beszel..." />
             <Screenshot src="/images/pve3-focus.webp" alt="pve3 container list — 3 CTs + storage" title="pve3 — containers" caption="pve3 — 3 CTs: PBS, share3, Forworld + 2 HDD datastores" />
           </div>
@@ -174,7 +174,7 @@ const monitoringSlides = [
               <div class="tech-card-body">
                 <p class="tech-why"><strong>Why:</strong> Dynamic YAML config hot-reloaded — I add an HTTPS service by dropping a file in <code>conf.d/</code>, no restart needed. Native ACME with step-ca.</p>
                 <p class="tech-alt"><span class="alt-label">Rejected:</span> Nginx Proxy Manager (UI-only, not IaC), Caddy (fewer reverse proxy integrations)</p>
-                <p class="tech-result"><span class="result-label">Result:</span> <DynNum stat="https_services" fallback="22+" suffix="+" /> HTTPS services, auto-renewed certificates, zero manual intervention</p>
+                <p class="tech-result"><span class="result-label">Result:</span> <DynNum stat="https_services" fallback="26+" suffix="+" /> HTTPS services, auto-renewed certificates, zero manual intervention</p>
               </div>
             </div>
 
@@ -222,7 +222,7 @@ const monitoringSlides = [
               <div class="tech-card-body">
                 <p class="tech-why"><strong>Why:</strong> Agentless — SSH is enough, no daemon to install on 30+ CTs. Idempotent — I rerun a playbook without risk. Semaphore adds a web UI for one-click launches.</p>
                 <p class="tech-alt"><span class="alt-label">Rejected:</span> Puppet/Chef (agents on every host), Terraform (provisioning, not config management)</p>
-                <p class="tech-result"><span class="result-label">Result:</span> <DynNum stat="ansible_playbooks" fallback="13" /> operational playbooks, Wazuh/Beszel agent deployment in 1 command</p>
+                <p class="tech-result"><span class="result-label">Result:</span> <DynNum stat="ansible_playbooks" fallback="14" /> operational playbooks, Wazuh/Beszel agent deployment in 1 command</p>
               </div>
             </div>
 

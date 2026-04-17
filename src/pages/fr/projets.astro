@@ -31,11 +31,11 @@ import DynNum from '../../components/DynNum.astro';
           <div class="project-details">
             <div class="detail-block">
               <h4>Architecture</h4>
-              <p>OpenFang (CT 192) fait tourner un agent <code>infra-assistant</code> v0.9.0 avec un system prompt qui contient tout le contexte infra : IPs, services, APIs, patterns de diagnostic. 5 cron jobs Guardian — health check toutes les 6h, audit securite quotidien a 8h, surveillance disques a 9h, expiration certificats TLS a 10h, backup PBS hebdomadaire lundi 00h08. Alertes Telegram uniquement si anomalie.</p>
+              <p>OpenFang (CT 192) fait tourner un agent <code>infra-assistant</code> v0.5.9 avec un system prompt qui contient tout le contexte infra : IPs, services, APIs, patterns de diagnostic. 7 cron jobs Guardian — health check toutes les 6h, audit securite quotidien a 8h, surveillance disques a 9h, expiration certificats TLS a 10h, backup PBS hebdomadaire lundi 00h08. Alertes Telegram uniquement si anomalie.</p>
             </div>
             <div class="detail-block">
               <h4>Le contournement shell_exec</h4>
-              <p>Le sanitizer d'OpenFang bloque les accolades <code>{}</code>, les pipes et les semicolons dans les commandes shell. Impossible d'executer du LogQL ou du PromQL directement. Solution : 7 wrappers CLI dedies — <code>http-check</code> (<DynNum stat="services_total" fallback="33" /> services), <code>vm-query</code> (VictoriaMetrics), <code>pve-status</code> (Proxmox), <code>loki-query</code> (logs), <code>cert-check</code> (expiration TLS), <code>pbs-backup</code> (cycle backup complet), <code>headscale-monitor</code> (audit VPN) — qui encapsulent la complexite derriere des interfaces propres.</p>
+              <p>Le sanitizer d'OpenFang bloque les accolades <code>{}</code>, les pipes et les semicolons dans les commandes shell. Impossible d'executer du LogQL ou du PromQL directement. Solution : 10 wrappers CLI dedies — <code>http-check</code> (<DynNum stat="services_total" fallback="37" /> services), <code>vm-query</code> (VictoriaMetrics), <code>pve-status</code> (Proxmox), <code>loki-query</code> (logs), <code>cert-check</code> (expiration TLS), <code>pbs-backup</code> (cycle backup complet), <code>headscale-monitor</code> (audit VPN) — qui encapsulent la complexite derriere des interfaces propres.</p>
             </div>
             <div class="detail-block">
               <h4>WOL pve3 — l'agent qui allume les machines</h4>
@@ -51,7 +51,7 @@ import DynNum from '../../components/DynNum.astro';
               <li>VictoriaMetrics</li>
               <li>Loki</li>
             </ul>
-            <span class="project-services">~0,05&#8364;/jour — 5 cron jobs, 7 wrappers, <DynNum stat="services_total" fallback="33" /> services monitores, alertes Telegram</span>
+            <span class="project-services">~0,05&#8364;/jour — 7 cron jobs, 10 wrappers, <DynNum stat="services_total" fallback="37" /> services monitores, alertes Telegram</span>
           </div>
         </div>
       </div>
@@ -186,7 +186,7 @@ import DynNum from '../../components/DynNum.astro';
         </div>
         <div class="project-body">
           <div class="project-intro">
-            <p>Firewall Proxmox natif avec DROP par defaut, CrowdSec IPS avec 57 scenarios et blocklists communautaires, SSH durci sur 30+ hotes, YubiKey FIDO2, securisation APT HTTPS.</p>
+            <p>Firewall Proxmox natif avec DROP par defaut, CrowdSec IPS avec 57 scenarios et blocklists communautaires, SSH durci sur 38+ hotes, YubiKey FIDO2, securisation APT HTTPS.</p>
           </div>
           <div class="project-details">
             <div class="detail-block">
@@ -199,7 +199,7 @@ import DynNum from '../../components/DynNum.astro';
             </div>
             <div class="detail-block">
               <h4>YubiKey + APT HTTPS</h4>
-              <p>Cle ed25519-sk residente sur YubiKey 5 NFC — deployee sur 30 hotes via Ansible. Login SSH avec toucher physique obligatoire. WebAuthn FIDO2 sur Authentik pour le login SSO phishing-resistant. En parallele : tous les depots APT migres vers HTTPS (playbook Ansible, 29/32 hotes automatises).</p>
+              <p>Cle ed25519-sk residente sur YubiKey 5 NFC — deployee sur 34 hotes via Ansible. Login SSH avec toucher physique obligatoire. WebAuthn FIDO2 sur Authentik pour le login SSO phishing-resistant. En parallele : tous les depots APT migres vers HTTPS (playbook Ansible, 29/32 hotes automatises).</p>
             </div>
           </div>
           <div class="project-stack">
@@ -210,7 +210,7 @@ import DynNum from '../../components/DynNum.astro';
               <li>Ansible</li>
               <li>Wazuh</li>
             </ul>
-            <span class="project-services">3 noeuds FW, 57 scenarios IPS, 30 hotes SSH durci</span>
+            <span class="project-services">3 noeuds FW, 57 scenarios IPS, 38+ hotes SSH durci</span>
           </div>
         </div>
       </div>
@@ -304,7 +304,7 @@ import DynNum from '../../components/DynNum.astro';
         </div>
         <div class="project-body">
           <div class="project-intro">
-            <p>Un pipeline de backup entierement autonome : l'agent OpenFang reveille un serveur endormi, sauvegarde 36 conteneurs, purge les anciens snapshots, et l'eteint. Aucune intervention humaine. Chaque lundi a 00h08.</p>
+            <p>Un pipeline de backup entierement autonome : l'agent OpenFang reveille un serveur endormi, sauvegarde 38 conteneurs et 1 VM, purge les anciens snapshots, et l'eteint. Aucune intervention humaine. Chaque lundi a 00h08.</p>
           </div>
           <div class="project-details">
             <div class="detail-block">
@@ -313,7 +313,7 @@ import DynNum from '../../components/DynNum.astro';
             </div>
             <div class="detail-block">
               <h4>Resultats du test live</h4>
-              <p>Premier test reel : pve1 (11 CTs, 29 Go) sauvegarde en 4 minutes, pve2 (24 CTs, 173 Go) en 13 minutes. Cycle complet incluant prune, GC et shutdown : <strong>14 minutes</strong>. La deduplication PBS a compresse 202 Go de donnees live en 100 Go sur disque. Retention : 5 snapshots hebdomadaires sur un disque de 1 To — 15% d'utilisation.</p>
+              <p>Premier test reel : pve1 (12 CTs, 29 Go) sauvegarde en 4 minutes, pve2 (24 CTs + 1 VM, 173 Go) en 13 minutes. Cycle complet incluant prune, GC et shutdown : <strong>14 minutes</strong>. La deduplication PBS a compresse 202 Go de donnees live en 100 Go sur disque. Retention : 5 snapshots hebdomadaires sur un disque de 1 To — 15% d'utilisation.</p>
             </div>
             <div class="detail-block">
               <h4>Pourquoi pve3 dort</h4>
@@ -329,7 +329,7 @@ import DynNum from '../../components/DynNum.astro';
               <li>zstd</li>
               <li>Proxmox API</li>
             </ul>
-            <span class="project-services">36 CTs, cycle 14 min, keep-weekly=5, 100 Go dedupliques, zero intervention humaine</span>
+            <span class="project-services">38 CTs + 1 VM, cycle 14 min, keep-weekly=5, 100 Go dedupliques, zero intervention humaine</span>
           </div>
         </div>
       </div>
@@ -642,7 +642,7 @@ import DynNum from '../../components/DynNum.astro';
           <h2>APIs en production</h2>
         </div>
         <div class="layer-content">
-          <p>Pour les agents qui tournent 24/7 — OpenFang (v0.9.0, 5 crons Guardian, 7 wrappers), PentAGI, veille-rss — on utilise des APIs externes ou l'inference locale. Le choix du modele par service est delibere : ratio perf/cout, latence, et fiabilite. <strong>Cout total IA en production : ~1,50&#8364;/mois.</strong> Stephane ne jette pas d'argent dans l'IA — il l'optimise comme n'importe quelle autre brique de l'infra.</p>
+          <p>Pour les agents qui tournent 24/7 — OpenFang (v0.5.9, 7 crons Guardian, 10 wrappers), PentAGI, veille-rss — on utilise des APIs externes ou l'inference locale. Le choix du modele par service est delibere : ratio perf/cout, latence, et fiabilite. <strong>Cout total IA en production : ~1,50&#8364;/mois.</strong> Stephane ne jette pas d'argent dans l'IA — il l'optimise comme n'importe quelle autre brique de l'infra.</p>
           <div class="api-grid">
 
             <div class="api-card claude-card">
@@ -667,7 +667,7 @@ import DynNum from '../../components/DynNum.astro';
                 <span class="api-name">MiniMax M2.7</span>
                 <span class="api-role">Agents AIOps</span>
               </div>
-              <p class="api-desc">Modele principal d'OpenFang (Guardian AIOps) et fallback disponible pour PentAGI. Excellent ratio perf/cout pour des agents qui tournent en continu. ~1,50&#8364;/mois pour la surveillance de <DynNum stat="services_total" fallback="33" /> services.</p>
+              <p class="api-desc">Modele principal d'OpenFang (Guardian AIOps) et fallback disponible pour PentAGI. Excellent ratio perf/cout pour des agents qui tournent en continu. ~1,50&#8364;/mois pour la surveillance de <DynNum stat="services_total" fallback="37" /> services.</p>
               <div class="api-tags">
                 <span>OpenFang</span>
                 <span>PentAGI fallback</span>
@@ -703,7 +703,7 @@ import DynNum from '../../components/DynNum.astro';
                 </div>
                 <h5>OpenFang Guardian</h5>
                 <p class="agent-role">AIOps &amp; Infrastructure</p>
-                <p class="agent-desc">5 cron jobs automatises, 7 wrappers CLI. Surveille <DynNum stat="services_total" fallback="33" /> services, reveille des serveurs via WOL, sauvegarde 36 CTs en autonomie chaque lundi.</p>
+                <p class="agent-desc">7 cron jobs automatises, 10 wrappers CLI. Surveille <DynNum stat="services_total" fallback="37" /> services, reveille des serveurs via WOL, sauvegarde 38 CTs et 1 VM en autonomie chaque lundi.</p>
                 <div class="agent-tags"><span>Rust</span><span>MiniMax M2.7</span><span>Telegram</span><span>~0,05&#8364;/jour</span></div>
               </div>
               <div class="agent-card">
@@ -728,13 +728,23 @@ import DynNum from '../../components/DynNum.astro';
               </div>
               <div class="agent-card">
                 <div class="agent-card-header">
-                  <span class="agent-badge observing">observation</span>
+                  <span class="agent-badge planned">planifie</span>
                   <span class="agent-ct">CT 190</span>
                 </div>
-                <h5>IronClaw</h5>
-                <p class="agent-role">Assistant chat</p>
-                <p class="agent-desc">MiniMax M2.7, interface web. En evaluation comme rempla&ccedil;ant de l'ancien agent OpenClaw. Assistant generaliste pour requetes rapides.</p>
-                <div class="agent-tags"><span>MiniMax M2.7</span><span>Web UI</span></div>
+                <h5>Hermes Agent</h5>
+                <p class="agent-role">Agent infra autonome</p>
+                <p class="agent-desc">Prochain agent autonome : gestion d'infra headless pilotee par LLM avec boucles de planification-execution. Remplace l'approche chat d'IronClaw par de vraies capacites agentiques.</p>
+                <div class="agent-tags"><span>Rust</span><span>Agentique</span><span>MCP</span></div>
+              </div>
+              <div class="agent-card">
+                <div class="agent-card-header">
+                  <span class="agent-badge running">actif</span>
+                  <span class="agent-ct">CT 192</span>
+                </div>
+                <h5>security-auditor</h5>
+                <p class="agent-role">Audit securite</p>
+                <p class="agent-desc">Sous-agent OpenFang qui audite la posture de securite de l'infra quotidiennement — verification CIS, conformite SSH, expiration des certificats, exposition reseau.</p>
+                <div class="agent-tags"><span>OpenFang</span><span>CIS</span><span>Telegram</span></div>
               </div>
             </div>
           </div>
@@ -1122,6 +1132,7 @@ import DynNum from '../../components/DynNum.astro';
   .agent-badge { font-family: var(--font-mono); font-size: 0.65rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; padding: 0.2rem 0.5rem; border-radius: 4px; }
   .agent-badge.running { background: rgba(34, 197, 94, 0.15); color: #22c55e; }
   .agent-badge.observing { background: rgba(234, 179, 8, 0.15); color: #eab308; }
+  .agent-badge.planned { background: rgba(148, 163, 184, 0.15); color: #94a3b8; }
   .agent-ct { font-family: var(--font-mono); font-size: 0.7rem; color: var(--color-text-muted); }
   .agent-card h5 { font-size: 1.05rem; margin: 0 0 0.15rem; color: var(--color-text); }
   .agent-role { font-family: var(--font-mono); font-size: 0.75rem; color: var(--color-accent); margin-bottom: 0.6rem; }

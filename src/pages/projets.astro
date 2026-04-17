@@ -31,11 +31,11 @@ import DynNum from '../components/DynNum.astro';
           <div class="project-details">
             <div class="detail-block">
               <h4>Architecture</h4>
-              <p>OpenFang (CT 192) runs an <code>infra-assistant</code> v0.9.0 agent with a system prompt containing the full infra context: IPs, services, APIs, diagnostic patterns. 5 Guardian cron jobs — health check every 6h, daily security audit at 8am, disk monitoring at 9am, TLS cert expiration at 10am, weekly PBS backup Monday 00:08. Telegram alerts only on anomalies.</p>
+              <p>OpenFang (CT 192) runs an <code>infra-assistant</code> v0.5.9 agent with a system prompt containing the full infra context: IPs, services, APIs, diagnostic patterns. 7 Guardian cron jobs — health check every 6h, daily security audit at 8am, disk monitoring at 9am, TLS cert expiration at 10am, weekly PBS backup Monday 00:08. Telegram alerts only on anomalies.</p>
             </div>
             <div class="detail-block">
               <h4>The shell_exec workaround</h4>
-              <p>OpenFang's sanitizer blocks braces <code>{}</code>, pipes, and semicolons in shell commands. Running LogQL or PromQL directly was impossible. Solution: 7 dedicated CLI wrappers — <code>http-check</code> (<DynNum stat="services_total" fallback="33" /> services), <code>vm-query</code> (VictoriaMetrics), <code>pve-status</code> (Proxmox), <code>loki-query</code> (logs), <code>cert-check</code> (TLS expiration), <code>pbs-backup</code> (full backup cycle), <code>headscale-monitor</code> (VPN audit) — encapsulating the complexity behind clean interfaces.</p>
+              <p>OpenFang's sanitizer blocks braces <code>{}</code>, pipes, and semicolons in shell commands. Running LogQL or PromQL directly was impossible. Solution: 10 dedicated CLI wrappers — <code>http-check</code> (<DynNum stat="services_total" fallback="37" /> services), <code>vm-query</code> (VictoriaMetrics), <code>pve-status</code> (Proxmox), <code>loki-query</code> (logs), <code>cert-check</code> (TLS expiration), <code>pbs-backup</code> (full backup cycle), <code>headscale-monitor</code> (VPN audit) — encapsulating the complexity behind clean interfaces.</p>
             </div>
             <div class="detail-block">
               <h4>WOL pve3 — the agent that powers on machines</h4>
@@ -51,7 +51,7 @@ import DynNum from '../components/DynNum.astro';
               <li>VictoriaMetrics</li>
               <li>Loki</li>
             </ul>
-            <span class="project-services">~$0.05/day — 5 cron jobs, 7 wrappers, <DynNum stat="services_total" fallback="33" /> monitored services, Telegram alerts</span>
+            <span class="project-services">~$0.05/day — 7 cron jobs, 10 wrappers, <DynNum stat="services_total" fallback="37" /> monitored services, Telegram alerts</span>
           </div>
         </div>
       </div>
@@ -304,7 +304,7 @@ import DynNum from '../components/DynNum.astro';
         </div>
         <div class="project-body">
           <div class="project-intro">
-            <p>A fully autonomous backup pipeline: the OpenFang agent wakes a sleeping server, backs up 36 containers, prunes old snapshots, and shuts it down. No human intervention. Every Monday at 00:08.</p>
+            <p>A fully autonomous backup pipeline: the OpenFang agent wakes a sleeping server, backs up 38 containers and 1 VM, prunes old snapshots, and shuts it down. No human intervention. Every Monday at 00:08.</p>
           </div>
           <div class="project-details">
             <div class="detail-block">
@@ -313,7 +313,7 @@ import DynNum from '../components/DynNum.astro';
             </div>
             <div class="detail-block">
               <h4>Live test results</h4>
-              <p>First real test: pve1 (11 CTs, 29 GB) backed up in 4 minutes, pve2 (24 CTs, 173 GB) in 13 minutes. Full cycle including prune, GC, and shutdown: <strong>14 minutes</strong>. PBS deduplication compressed 202 GB of live data into 100 GB on disk. Retention: 5 weekly snapshots on a 1 TB drive — 15% utilization.</p>
+              <p>First real test: pve1 (12 CTs, 29 GB) backed up in 4 minutes, pve2 (24 CTs + 1 VM, 173 GB) in 13 minutes. Full cycle including prune, GC, and shutdown: <strong>14 minutes</strong>. PBS deduplication compressed 202 GB of live data into 100 GB on disk. Retention: 5 weekly snapshots on a 1 TB drive — 15% utilization.</p>
             </div>
             <div class="detail-block">
               <h4>Why pve3 sleeps</h4>
@@ -329,7 +329,7 @@ import DynNum from '../components/DynNum.astro';
               <li>zstd</li>
               <li>Proxmox API</li>
             </ul>
-            <span class="project-services">36 CTs, 14 min cycle, keep-weekly=5, 100 GB deduplicated, zero human intervention</span>
+            <span class="project-services">38 CTs + 1 VM, 14 min cycle, keep-weekly=5, 100 GB deduplicated, zero human intervention</span>
           </div>
         </div>
       </div>
@@ -642,7 +642,7 @@ import DynNum from '../components/DynNum.astro';
           <h2>Production APIs</h2>
         </div>
         <div class="layer-content">
-          <p>For agents that run 24/7 — OpenFang (v0.9.0, 5 Guardian crons, 7 wrappers), PentAGI, veille-rss — we use external APIs or local inference. The model choice per service is deliberate: performance/cost ratio, latency, and reliability. <strong>Total AI production cost: ~$1.50/month.</strong> Stephane does not throw money at AI — he optimizes it like any other infrastructure component.</p>
+          <p>For agents that run 24/7 — OpenFang (v0.5.9, 7 Guardian crons, 10 wrappers), PentAGI, veille-rss — we use external APIs or local inference. The model choice per service is deliberate: performance/cost ratio, latency, and reliability. <strong>Total AI production cost: ~$1.50/month.</strong> Stephane does not throw money at AI — he optimizes it like any other infrastructure component.</p>
           <div class="api-grid">
 
             <div class="api-card claude-card">
@@ -667,7 +667,7 @@ import DynNum from '../components/DynNum.astro';
                 <span class="api-name">MiniMax M2.7</span>
                 <span class="api-role">AIOps agents</span>
               </div>
-              <p class="api-desc">Primary model for OpenFang (Guardian AIOps) and available as fallback for PentAGI. Excellent performance/cost ratio for agents running continuously. ~$1.50/month to monitor <DynNum stat="services_total" fallback="33" /> services.</p>
+              <p class="api-desc">Primary model for OpenFang (Guardian AIOps) and available as fallback for PentAGI. Excellent performance/cost ratio for agents running continuously. ~$1.50/month to monitor <DynNum stat="services_total" fallback="37" /> services.</p>
               <div class="api-tags">
                 <span>OpenFang</span>
                 <span>PentAGI fallback</span>
@@ -703,7 +703,7 @@ import DynNum from '../components/DynNum.astro';
                 </div>
                 <h5>OpenFang Guardian</h5>
                 <p class="agent-role">AIOps &amp; Infrastructure</p>
-                <p class="agent-desc">5 automated cron jobs, 7 CLI wrappers. Monitors <DynNum stat="services_total" fallback="33" /> services, wakes servers via WOL, backs up 36 CTs autonomously every Monday.</p>
+                <p class="agent-desc">7 automated cron jobs, 10 CLI wrappers. Monitors <DynNum stat="services_total" fallback="37" /> services, wakes servers via WOL, backs up 38 CTs + 1 VM autonomously every Monday.</p>
                 <div class="agent-tags"><span>Rust</span><span>MiniMax M2.7</span><span>Telegram</span><span>~$0.05/day</span></div>
               </div>
               <div class="agent-card">
@@ -719,6 +719,16 @@ import DynNum from '../components/DynNum.astro';
               <div class="agent-card">
                 <div class="agent-card-header">
                   <span class="agent-badge running">running</span>
+                  <span class="agent-ct">CT 192</span>
+                </div>
+                <h5>security-auditor</h5>
+                <p class="agent-role">Security Digest</p>
+                <p class="agent-desc">Daily security digest: CrowdSec alerts, Wazuh SIEM events, TLS certificate expiration. Aggregated and delivered via Telegram every morning.</p>
+                <div class="agent-tags"><span>CrowdSec</span><span>Wazuh</span><span>TLS certs</span><span>Telegram</span></div>
+              </div>
+              <div class="agent-card">
+                <div class="agent-card-header">
+                  <span class="agent-badge running">running</span>
                   <span class="agent-ct">CT 198</span>
                 </div>
                 <h5>PentAGI</h5>
@@ -728,13 +738,13 @@ import DynNum from '../components/DynNum.astro';
               </div>
               <div class="agent-card">
                 <div class="agent-card-header">
-                  <span class="agent-badge observing">observing</span>
+                  <span class="agent-badge running">running</span>
                   <span class="agent-ct">CT 190</span>
                 </div>
-                <h5>IronClaw</h5>
-                <p class="agent-role">Chat Assistant</p>
-                <p class="agent-desc">MiniMax M2.7, web UI. In evaluation as a replacement for the previous OpenClaw agent. General-purpose assistant for quick queries.</p>
-                <div class="agent-tags"><span>MiniMax M2.7</span><span>Web UI</span></div>
+                <h5>Hermes Agent</h5>
+                <p class="agent-role">Self-improving AI Agent</p>
+                <p class="agent-desc">NousResearch Hermes agent with learning loop, powered by MiniMax M2.7. Replaces IronClaw. Self-improving through iterative feedback cycles.</p>
+                <div class="agent-tags"><span>NousResearch</span><span>MiniMax M2.7</span><span>Learning loop</span></div>
               </div>
             </div>
           </div>

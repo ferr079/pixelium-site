@@ -10,7 +10,7 @@ const serviceSlides = [
   { src: '/images/services/traefik.webp', alt: 'Dashboard Traefik — routers, services, middlewares', title: 'Traefik — Reverse Proxy' },
   { src: '/images/services/authentik.webp', alt: 'Admin Authentik — dashboard SSO avec stats connexion', title: 'Authentik — SSO / IdP' },
   { src: '/images/services/technitium.webp', alt: 'TechnitiumDNS — stats requêtes et top clients', title: 'TechnitiumDNS — Serveur DNS' },
-  { src: '/images/services/semaphore.webp', alt: 'Semaphore — 13 templates de tâches Ansible', title: 'Semaphore — UI Ansible' },
+  { src: '/images/services/semaphore.webp', alt: 'Semaphore — 14 templates de tâches Ansible', title: 'Semaphore — UI Ansible' },
   { src: '/images/services/netbox.webp', alt: 'NetBox — inventaire IPAM et changelog', title: 'NetBox — IPAM / DCIM' },
   { src: '/images/services/immich.webp', alt: 'Immich — galerie photo avec classification IA', title: 'Immich — Photothèque' },
   { src: '/images/services/bytestash.webp', alt: 'ByteStash — gestionnaire de snippets', title: 'ByteStash — Snippets' },
@@ -30,19 +30,19 @@ const monitoringSlides = [
 ];
 ---
 
-<Base title="Infrastructure — pixelium.win" description="30+ conteneurs LXC sur 3 nœuds Proxmox, tout self-hosted — DNS, TLS, monitoring, SIEM, agents IA. Architecture complète du homelab pixelium.">
+<Base title="Infrastructure — pixelium.win" description="38 conteneurs LXC + 1 VM sur 3 nœuds Proxmox, tout self-hosted — DNS, TLS, monitoring, SIEM, agents IA. Architecture complète du homelab pixelium.">
   <main>
     <section class="hero-mini">
       <div class="container">
         <p class="terminal-prompt">$ cat infrastructure.md</p>
         <h1>Infrastructure<span class="dot">.</span></h1>
-        <p class="subtitle">3 nœuds Proxmox, <DynNum stat="lxc_count" fallback="30+" suffix="+" /> conteneurs LXC, tout self-hosted. Pas un seul service cloud payant.</p>
+        <p class="subtitle">3 nœuds Proxmox, <DynNum stat="lxc_count" fallback="38" suffix="+" /> conteneurs LXC, tout self-hosted. Pas un seul service cloud payant.</p>
       </div>
     </section>
 
     <StatsBar stats={[
       { number: "3", label: "noeuds Proxmox" },
-      { number: "30+", label: "conteneurs LXC", stat: "lxc_count", suffix: "+" },
+      { number: "38+", label: "conteneurs LXC", stat: "lxc_count", suffix: "+" },
       { number: "15", label: "widgets Homepage" },
       { number: "0", label: "euro cloud externe" },
     ]} />
@@ -132,7 +132,7 @@ const monitoringSlides = [
           </div>
 
           <div class="screenshots-grid screenshots-trio">
-            <Screenshot src="/images/pve1-focus.webp" alt="Liste CTs pve1 — 11 LXC + 1 VM" title="pve1 — conteneurs" caption="pve1 — 11 LXC + 1 VM : DNS, Traefik, step-ca, Forgejo, NetBox..." />
+            <Screenshot src="/images/pve1-focus.webp" alt="Liste CTs pve1 — 12 LXC" title="pve1 — conteneurs" caption="pve1 — 12 LXC : DNS, Traefik, step-ca, Forgejo, NetBox..." />
             <Screenshot src="/images/pve2-focus.webp" alt="Liste CTs pve2 — 20+ conteneurs" title="pve2 — conteneurs" caption="pve2 — 20+ CTs : Homepage, Jellyfin, Immich, Wazuh, Beszel..." />
             <Screenshot src="/images/pve3-focus.webp" alt="Liste CTs pve3 — 3 CTs + stockage" title="pve3 — conteneurs" caption="pve3 — 3 CTs : PBS, share3, Forworld + 2 HDD datastores" />
           </div>
@@ -162,7 +162,7 @@ const monitoringSlides = [
               <div class="tech-card-body">
                 <p class="tech-why"><strong>Pourquoi :</strong> Hyperviseur libre avec LXC natif — les conteneurs démarrent en 2 secondes et consomment 50 Mo de RAM. PBS intégré pour les backups. API complète.</p>
                 <p class="tech-alt"><span class="alt-label">Écartés :</span> ESXi (payant depuis 2024), Hyper-V (Windows only), XCP-ng (moins de communauté)</p>
-                <p class="tech-result"><span class="result-label">Résultat :</span> 3 nœuds hétérogènes, <DynNum stat="lxc_count" fallback="30+" suffix="+" /> CTs, backups incrémentaux via PBS</p>
+                <p class="tech-result"><span class="result-label">Résultat :</span> 3 nœuds hétérogènes, <DynNum stat="lxc_count" fallback="38" suffix="+" /> CTs, backups incrémentaux via PBS</p>
               </div>
             </div>
 
@@ -174,7 +174,7 @@ const monitoringSlides = [
               <div class="tech-card-body">
                 <p class="tech-why"><strong>Pourquoi :</strong> Config dynamique en YAML rechargée à chaud — j'ajoute un service HTTPS en déposant un fichier dans <code>conf.d/</code>, sans restart. ACME natif avec step-ca.</p>
                 <p class="tech-alt"><span class="alt-label">Écartés :</span> Nginx Proxy Manager (UI-only, pas IaC), Caddy (moins d'intégrations reverse proxy)</p>
-                <p class="tech-result"><span class="result-label">Résultat :</span> <DynNum stat="https_services" fallback="22+" suffix="+" /> services HTTPS, certificats auto-renouvelés, zéro intervention manuelle</p>
+                <p class="tech-result"><span class="result-label">Résultat :</span> <DynNum stat="https_services" fallback="26+" suffix="+" /> services HTTPS, certificats auto-renouvelés, zéro intervention manuelle</p>
               </div>
             </div>
 
@@ -220,9 +220,9 @@ const monitoringSlides = [
                 <h4>Ansible + Semaphore</h4>
               </div>
               <div class="tech-card-body">
-                <p class="tech-why"><strong>Pourquoi :</strong> Agentless — SSH suffit, pas de daemon à installer sur 30+ CTs. Idempotent — je relance un playbook sans risque. Semaphore ajoute une UI web pour les lancements en 1 clic.</p>
+                <p class="tech-why"><strong>Pourquoi :</strong> Agentless — SSH suffit, pas de daemon à installer sur 38+ CTs. Idempotent — je relance un playbook sans risque. Semaphore ajoute une UI web pour les lancements en 1 clic.</p>
                 <p class="tech-alt"><span class="alt-label">Écartés :</span> Puppet/Chef (agents sur chaque hôte), Terraform (provisioning, pas config management)</p>
-                <p class="tech-result"><span class="result-label">Résultat :</span> <DynNum stat="ansible_playbooks" fallback="13" /> playbooks opérationnels, déploiement d'agent Wazuh/Beszel en 1 commande</p>
+                <p class="tech-result"><span class="result-label">Résultat :</span> <DynNum stat="ansible_playbooks" fallback="14" /> playbooks opérationnels, déploiement d'agent Wazuh/Beszel en 1 commande</p>
               </div>
             </div>
 
@@ -294,7 +294,7 @@ const monitoringSlides = [
               <div class="tech-card-body">
                 <p class="tech-why"><strong>Pourquoi :</strong> Conformité des patchs sur tout le homelab — dashboard centralisé montrant quels CTs ont des mises à jour en attente. Enrôlement automatique des nœuds Proxmox.</p>
                 <p class="tech-alt"><span class="alt-label">Écartés :</span> Scripts manuels apt list --upgradable (pas de vue d'ensemble, pas d'historique)</p>
-                <p class="tech-result"><span class="result-label">Résultat :</span> Visibilité instantanée sur les patchs en attente, conformité 30+ CTs</p>
+                <p class="tech-result"><span class="result-label">Résultat :</span> Visibilité instantanée sur les patchs en attente, conformité 38+ CTs</p>
               </div>
             </div>
 
