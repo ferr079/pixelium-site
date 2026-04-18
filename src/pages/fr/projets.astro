@@ -26,12 +26,12 @@ import DynNum from '../../components/DynNum.astro';
         </div>
         <div class="project-body">
           <div class="project-intro">
-            <p>Un agent Rust autonome (OpenFang) connecte a toute la stack d'observabilite — VictoriaMetrics, Loki, Proxmox — qui surveille, diagnostique et alerte via Telegram. Cout : 1,50&#8364;/mois.</p>
+            <p>Deux agents IA complementaires : OpenFang (moteur headless, crons Guardian) et Hermes (correspondant Telegram h24, doc-sync, veille). Connectes a la stack d'observabilite via MQTT. Cout : 1,50&#8364;/mois.</p>
           </div>
           <div class="project-details">
             <div class="detail-block">
               <h4>Architecture</h4>
-              <p>OpenFang (CT 192) fait tourner un agent <code>infra-assistant</code> v0.5.9 avec un system prompt qui contient tout le contexte infra : IPs, services, APIs, patterns de diagnostic. 7 cron jobs Guardian — health check toutes les 6h, audit securite quotidien a 8h, surveillance disques a 9h, expiration certificats TLS a 10h, backup PBS hebdomadaire lundi 00h08. Alertes Telegram uniquement si anomalie.</p>
+              <p>OpenFang (CT 192) tourne en mode headless — 7 crons Guardian (health check /6h, audit secu 8h30, disques 9h, certs TLS 10h, backup PBS quotidien 00h08, sync miroirs hebdo) + 10 wrappers CLI. Hermes (CT 190) est le correspondant Telegram — 4 crons (doc-sync 8h30, audit metriques site 9h, digest secu 11h, veille RSS 16h). Communication inter-agents via bus MQTT (Mosquitto CT 142).</p>
             </div>
             <div class="detail-block">
               <h4>Le contournement shell_exec</h4>
@@ -225,7 +225,7 @@ import DynNum from '../../components/DynNum.astro';
         </div>
         <div class="project-body">
           <div class="project-intro">
-            <p>Un sous-agent OpenFang autonome qui lit 15 flux RSS chaque jour, note chaque article selon sa pertinence pour le profil de Stephane (DevSecOps, pentester, homelabber), et livre un digest categorise via Telegram a 16h. Zero intervention humaine.</p>
+            <p>Un cron Hermes qui lit 15 flux RSS chaque jour, note chaque article selon sa pertinence pour le profil de Stephane (DevSecOps, pentester, homelabber), et livre un digest categorise via Telegram a 16h. Zero intervention humaine.</p>
           </div>
           <div class="project-details">
             <div class="detail-block">
@@ -238,7 +238,7 @@ import DynNum from '../../components/DynNum.astro';
             </div>
             <div class="detail-block">
               <h4>Cout et architecture</h4>
-              <p>~12K tokens en entree par execution (titres + descriptions, pas les articles complets), ~800 tokens en sortie. MiniMax M2.7 gere a la fois le scoring et la synthese. Cout total : moins de 0,01&#8364;/jour. L'agent tourne comme un sous-agent OpenFang dedie avec son propre cron job, separe de l'agent Guardian infrastructure — separation des responsabilites au niveau agent.</p>
+              <p>~12K tokens en entree par execution (titres + descriptions, pas les articles complets), ~800 tokens en sortie. MiniMax M2.7 gere a la fois le scoring et la synthese. Cout total : moins de 0,01&#8364;/jour. L'agent tourne comme un cron Hermes dedie (migre depuis OpenFang en avril 2026), separe des crons Guardian infrastructure — separation des responsabilites au niveau agent.</p>
             </div>
           </div>
           <div class="project-stack">
@@ -304,7 +304,7 @@ import DynNum from '../../components/DynNum.astro';
         </div>
         <div class="project-body">
           <div class="project-intro">
-            <p>Un pipeline de backup entierement autonome : l'agent OpenFang reveille un serveur endormi, sauvegarde 38 conteneurs et 1 VM, purge les anciens snapshots, et l'eteint. Aucune intervention humaine. Chaque lundi a 00h08.</p>
+            <p>Un pipeline de backup entierement autonome : un cron Guardian reveille un serveur endormi chaque nuit, sauvegarde tous les conteneurs et VMs, purge les anciens snapshots, et l'eteint. Aucune intervention humaine. Tous les jours a 00h08.</p>
           </div>
           <div class="project-details">
             <div class="detail-block">
@@ -329,7 +329,7 @@ import DynNum from '../../components/DynNum.astro';
               <li>zstd</li>
               <li>Proxmox API</li>
             </ul>
-            <span class="project-services">38 CTs + 1 VM, cycle 14 min, keep-weekly=5, 100 Go dedupliques, zero intervention humaine</span>
+            <span class="project-services">36 CTs + 1 VM, cycle quotidien, keep-daily=7 keep-weekly=4, 100 Go dedupliques, zero intervention humaine</span>
           </div>
         </div>
       </div>
@@ -633,7 +633,7 @@ import DynNum from '../../components/DynNum.astro';
           <h2>APIs en production</h2>
         </div>
         <div class="layer-content">
-          <p>Pour les agents qui tournent 24/7 — OpenFang (v0.5.9, 7 crons Guardian, 10 wrappers), PentAGI, veille-rss — on utilise des APIs externes ou l'inference locale. Le choix du modele par service est delibere : ratio perf/cout, latence, et fiabilite. <strong>Cout total IA en production : ~1,50&#8364;/mois.</strong> Stephane ne jette pas d'argent dans l'IA — il l'optimise comme n'importe quelle autre brique de l'infra.</p>
+          <p>Pour les agents qui tournent 24/7 — OpenFang (v0.5.9, 7 crons Guardian, headless), Hermes (Telegram h24, 4 crons), PentAGI — on utilise des APIs externes ou l'inference locale. Le choix du modele par service est delibere : ratio perf/cout, latence, et fiabilite. <strong>Cout total IA en production : ~1,50&#8364;/mois.</strong> Stephane ne jette pas d'argent dans l'IA — il l'optimise comme n'importe quelle autre brique de l'infra.</p>
           <div class="api-grid">
 
             <div class="api-card claude-card">
@@ -693,19 +693,19 @@ import DynNum from '../../components/DynNum.astro';
                   <span class="agent-ct">CT 192</span>
                 </div>
                 <h5>OpenFang Guardian</h5>
-                <p class="agent-role">AIOps &amp; Infrastructure</p>
-                <p class="agent-desc">7 cron jobs automatises, 10 wrappers CLI. Surveille <DynNum stat="services_total" fallback="37" /> services, reveille des serveurs via WOL, sauvegarde 38 CTs et 1 VM en autonomie chaque lundi.</p>
-                <div class="agent-tags"><span>Rust</span><span>MiniMax M2.7</span><span>Telegram</span><span>~0,05&#8364;/jour</span></div>
+                <p class="agent-role">Moteur AIOps headless</p>
+                <p class="agent-desc">7 crons Guardian, 10 wrappers CLI. Surveille <DynNum stat="services_total" fallback="37" /> services, reveille des serveurs via WOL, sauvegarde tous les CTs quotidiennement. Headless — alertes via bus MQTT.</p>
+                <div class="agent-tags"><span>Rust</span><span>MiniMax M2.7</span><span>MQTT</span><span>~0,05&#8364;/jour</span></div>
               </div>
               <div class="agent-card">
                 <div class="agent-card-header">
                   <span class="agent-badge running">actif</span>
-                  <span class="agent-ct">CT 192</span>
+                  <span class="agent-ct">CT 190</span>
                 </div>
                 <h5>veille-rss</h5>
                 <p class="agent-role">Veille technologique</p>
-                <p class="agent-desc">Digest Telegram quotidien a 16h. Recupere 24h d'articles depuis FreshRSS (15 flux, 5 categories), score et synthetise via LLM. Veille techno a effort zero.</p>
-                <div class="agent-tags"><span>FreshRSS</span><span>API GReader</span><span>Telegram</span></div>
+                <p class="agent-desc">Digest Telegram quotidien a 16h via Hermes. Recupere 24h d'articles depuis FreshRSS (15 flux, 5 categories), score et synthetise via LLM. Veille techno a effort zero.</p>
+                <div class="agent-tags"><span>Cron Hermes</span><span>FreshRSS</span><span>Telegram</span></div>
               </div>
               <div class="agent-card">
                 <div class="agent-card-header">
@@ -719,23 +719,23 @@ import DynNum from '../../components/DynNum.astro';
               </div>
               <div class="agent-card">
                 <div class="agent-card-header">
-                  <span class="agent-badge planned">planifie</span>
+                  <span class="agent-badge running">actif</span>
                   <span class="agent-ct">CT 190</span>
                 </div>
                 <h5>Hermes Agent</h5>
-                <p class="agent-role">Agent infra autonome</p>
-                <p class="agent-desc">Prochain agent autonome : gestion d'infra headless pilotee par LLM avec boucles de planification-execution. Remplace l'approche chat d'IronClaw par de vraies capacites agentiques.</p>
-                <div class="agent-tags"><span>Rust</span><span>Agentique</span><span>MCP</span></div>
+                <p class="agent-role">Telegram h24 &amp; Doc-sync</p>
+                <p class="agent-desc">Agent NousResearch — correspondant Telegram h24, 4 crons automatises (doc-sync, audit metriques site, audit securite, digest RSS). Auto-amelioration via learning loop. Orchestre OpenFang via SSH + bus MQTT.</p>
+                <div class="agent-tags"><span>NousResearch</span><span>MiniMax M2.7</span><span>Telegram</span><span>MQTT</span></div>
               </div>
               <div class="agent-card">
                 <div class="agent-card-header">
                   <span class="agent-badge running">actif</span>
-                  <span class="agent-ct">CT 192</span>
+                  <span class="agent-ct">CT 190</span>
                 </div>
                 <h5>security-auditor</h5>
                 <p class="agent-role">Audit securite</p>
-                <p class="agent-desc">Sous-agent OpenFang qui audite la posture de securite de l'infra quotidiennement — verification CIS, conformite SSH, expiration des certificats, exposition reseau.</p>
-                <div class="agent-tags"><span>OpenFang</span><span>CIS</span><span>Telegram</span></div>
+                <p class="agent-desc">Cron Hermes quotidien a 11h : digest securite CrowdSec, alertes Wazuh SIEM, expiration certificats TLS, statut Headscale. Livre via Telegram.</p>
+                <div class="agent-tags"><span>Cron Hermes</span><span>CrowdSec</span><span>Wazuh</span><span>Telegram</span></div>
               </div>
             </div>
           </div>

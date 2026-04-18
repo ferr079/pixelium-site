@@ -31,7 +31,7 @@ import DynNum from '../components/DynNum.astro';
           <div class="project-details">
             <div class="detail-block">
               <h4>Architecture</h4>
-              <p>OpenFang (CT 192) runs an <code>infra-assistant</code> v0.5.9 agent with a system prompt containing the full infra context: IPs, services, APIs, diagnostic patterns. 7 Guardian cron jobs — health check every 6h, daily security audit at 8am, disk monitoring at 9am, TLS cert expiration at 10am, weekly PBS backup Monday 00:08. Telegram alerts only on anomalies.</p>
+              <p>OpenFang (CT 192) runs headless as the infrastructure engine — 7 Guardian cron jobs (health check every 6h, security audit 8:30am, disk monitoring 9am, TLS cert check 10am, daily PBS backup 00:08, Forworld mirror sync weekly) plus 10 CLI wrappers. Hermes (CT 190) is the Telegram correspondent — 4 crons (doc-sync 8:30am, site-metrics audit 9am, security digest 11am, RSS veille 4pm). All agents communicate via an MQTT bus (Mosquitto CT 142).</p>
             </div>
             <div class="detail-block">
               <h4>The shell_exec workaround</h4>
@@ -225,7 +225,7 @@ import DynNum from '../components/DynNum.astro';
         </div>
         <div class="project-body">
           <div class="project-intro">
-            <p>An autonomous OpenFang sub-agent that reads 15 RSS feeds every day, scores each article by relevance to Stephane's profile (DevSecOps, pentester, homelabber), and delivers a categorized digest via Telegram at 4pm. Zero human intervention.</p>
+            <p>A Hermes cron job that reads 15 RSS feeds every day, scores each article by relevance to Stephane's profile (DevSecOps, pentester, homelabber), and delivers a categorized digest via Telegram at 4pm. Zero human intervention.</p>
           </div>
           <div class="project-details">
             <div class="detail-block">
@@ -238,7 +238,7 @@ import DynNum from '../components/DynNum.astro';
             </div>
             <div class="detail-block">
               <h4>Cost and architecture</h4>
-              <p>~12K tokens of input per run (titles + descriptions, not full articles), ~800 tokens of output. MiniMax M2.7 handles both scoring and synthesis. Total cost: under $0.01/day. The agent runs as a dedicated OpenFang sub-agent with its own cron job, separate from the Guardian infrastructure agent — separation of concerns at the agent level.</p>
+              <p>~12K tokens of input per run (titles + descriptions, not full articles), ~800 tokens of output. MiniMax M2.7 handles both scoring and synthesis. Total cost: under $0.01/day. The agent runs as a dedicated Hermes cron job (migrated from OpenFang in April 2026), separate from the Guardian infrastructure crons — separation of concerns at the agent level.</p>
             </div>
           </div>
           <div class="project-stack">
@@ -304,7 +304,7 @@ import DynNum from '../components/DynNum.astro';
         </div>
         <div class="project-body">
           <div class="project-intro">
-            <p>A fully autonomous backup pipeline: the OpenFang agent wakes a sleeping server, backs up 38 containers and 1 VM, prunes old snapshots, and shuts it down. No human intervention. Every Monday at 00:08.</p>
+            <p>A fully autonomous backup pipeline: a Guardian cron wakes a sleeping server every night, backs up all containers and VMs, prunes old snapshots, and shuts it down. No human intervention. Every day at 00:08.</p>
           </div>
           <div class="project-details">
             <div class="detail-block">
@@ -633,7 +633,7 @@ import DynNum from '../components/DynNum.astro';
           <h2>Production APIs</h2>
         </div>
         <div class="layer-content">
-          <p>For agents that run 24/7 — OpenFang (v0.5.9, 7 Guardian crons, 10 wrappers), PentAGI, veille-rss — we use external APIs or local inference. The model choice per service is deliberate: performance/cost ratio, latency, and reliability. <strong>Total AI production cost: ~$1.50/month.</strong> Stephane does not throw money at AI — he optimizes it like any other infrastructure component.</p>
+          <p>For agents that run 24/7 — OpenFang (v0.5.9, 7 Guardian crons, headless), Hermes (Telegram h24, 4 crons), PentAGI — we use external APIs or local inference. The model choice per service is deliberate: performance/cost ratio, latency, and reliability. <strong>Total AI production cost: ~$1.50/month.</strong> Stephane does not throw money at AI — he optimizes it like any other infrastructure component.</p>
           <div class="api-grid">
 
             <div class="api-card claude-card">
@@ -693,29 +693,29 @@ import DynNum from '../components/DynNum.astro';
                   <span class="agent-ct">CT 192</span>
                 </div>
                 <h5>OpenFang Guardian</h5>
-                <p class="agent-role">AIOps &amp; Infrastructure</p>
-                <p class="agent-desc">7 automated cron jobs, 10 CLI wrappers. Monitors <DynNum stat="services_total" fallback="37" /> services, wakes servers via WOL, backs up 38 CTs + 1 VM autonomously every Monday.</p>
-                <div class="agent-tags"><span>Rust</span><span>MiniMax M2.7</span><span>Telegram</span><span>~$0.05/day</span></div>
+                <p class="agent-role">Headless AIOps Engine</p>
+                <p class="agent-desc">7 Guardian cron jobs, 10 CLI wrappers. Monitors <DynNum stat="services_total" fallback="37" /> services, wakes servers via WOL, backs up all CTs daily. Headless — alerts via MQTT bus.</p>
+                <div class="agent-tags"><span>Rust</span><span>MiniMax M2.7</span><span>MQTT</span><span>~$0.05/day</span></div>
               </div>
               <div class="agent-card">
                 <div class="agent-card-header">
                   <span class="agent-badge running">running</span>
-                  <span class="agent-ct">CT 192</span>
+                  <span class="agent-ct">CT 190</span>
                 </div>
                 <h5>veille-rss</h5>
                 <p class="agent-role">Tech Intelligence</p>
-                <p class="agent-desc">Daily 4pm Telegram digest. Fetches 24h articles from FreshRSS (15 feeds, 5 categories), scores and synthesizes via LLM. Zero-effort tech watch.</p>
-                <div class="agent-tags"><span>FreshRSS</span><span>GReader API</span><span>Telegram</span></div>
+                <p class="agent-desc">Daily 4pm Telegram digest via Hermes. Fetches 24h articles from FreshRSS (15 feeds, 5 categories), scores and synthesizes via LLM. Zero-effort tech watch.</p>
+                <div class="agent-tags"><span>Hermes cron</span><span>FreshRSS</span><span>Telegram</span></div>
               </div>
               <div class="agent-card">
                 <div class="agent-card-header">
                   <span class="agent-badge running">running</span>
-                  <span class="agent-ct">CT 192</span>
+                  <span class="agent-ct">CT 190</span>
                 </div>
                 <h5>security-auditor</h5>
                 <p class="agent-role">Security Digest</p>
-                <p class="agent-desc">Daily security digest: CrowdSec alerts, Wazuh SIEM events, TLS certificate expiration. Aggregated and delivered via Telegram every morning.</p>
-                <div class="agent-tags"><span>CrowdSec</span><span>Wazuh</span><span>TLS certs</span><span>Telegram</span></div>
+                <p class="agent-desc">Daily 11am security digest via Hermes: CrowdSec alerts, Wazuh SIEM events, TLS certificate expiration, Headscale status. Delivered via Telegram.</p>
+                <div class="agent-tags"><span>Hermes cron</span><span>CrowdSec</span><span>Wazuh</span><span>Telegram</span></div>
               </div>
               <div class="agent-card">
                 <div class="agent-card-header">
@@ -733,9 +733,9 @@ import DynNum from '../components/DynNum.astro';
                   <span class="agent-ct">CT 190</span>
                 </div>
                 <h5>Hermes Agent</h5>
-                <p class="agent-role">Self-improving AI Agent</p>
-                <p class="agent-desc">NousResearch Hermes agent with learning loop, powered by MiniMax M2.7. Replaces IronClaw. Self-improving through iterative feedback cycles.</p>
-                <div class="agent-tags"><span>NousResearch</span><span>MiniMax M2.7</span><span>Learning loop</span></div>
+                <p class="agent-role">Telegram h24 &amp; Doc-sync</p>
+                <p class="agent-desc">NousResearch agent — Telegram correspondent h24, 4 automated crons (doc-sync, site-metrics, security audit, RSS digest). Self-improving through learning loop. Orchestrates OpenFang via SSH + MQTT bus.</p>
+                <div class="agent-tags"><span>NousResearch</span><span>MiniMax M2.7</span><span>Telegram</span><span>MQTT</span></div>
               </div>
             </div>
           </div>
