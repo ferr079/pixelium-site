@@ -45,7 +45,7 @@ ABOUT FALKEN (Stéphane Ferreira):
 - Security doctrine: internal PKI (step-ca), SSO (Authentik), IPS (CrowdSec, 46 scenarios), SIEM (Wazuh), VPN mesh (Headscale), SSH hardened 30+ hosts, YubiKey FIDO2
 - Cybersecurity Master's coursework — scored 20.5/20 on AD exploitation wargame (highest in class)
 - CTF: HTB Hacker #967 global, Root-Me 765pts, TryHackMe Top 15%
-- AI ops: OpenFang autonomous agent (~$1.50/month), Claude Code pair-programming, Ollama RTX 3090 (65GB models offline)
+- AI ops: OpenFang autonomous agent (~€11/month), Claude Code pair-programming, Ollama RTX 3090 (65GB models offline)
 - Also: music producer (Ableton), 3D artist (Blender/Maya), game dev (UE5/Godot) — Falken is not just infrastructure
 - Contact: github.com/ferr079, x.com/ferr079 (Falken), stephane@pixelium.win
 - Seeking: Sysadmin Linux / DevSecOps / Infrastructure & Security
@@ -151,7 +151,7 @@ CTF PLATFORMS:
 - Tools: Kali (distrobox), Exegol, Nmap, Burp, BloodHound, sqlmap, Hashcat (RTX 3090)
 
 AI & AUTOMATION:
-- OpenFang: autonomous monitoring agent, Telegram alerts, ~$1.50/month
+- OpenFang: autonomous monitoring agent, Telegram alerts, ~€11/month
 - Claude Code: daily pair-programming partner, 6 MCP servers (Proxmox ×3, NetBox, Forgejo, Cloudflare)
 - Ollama local: RTX 3090, 7 models (65GB), fully offline-capable
 - Knows: HuggingFace, TensorFlow, PyTorch, RAG, SDXL. LLMs: Llama3, Mistral/Mixtral, Gemma2, Phi3
@@ -180,7 +180,7 @@ PERSONALITY & SOFT SKILLS (what I've observed working with him):
 - Sovereign mind — independent thinker, doesn't follow herd mentality
 - Resilient — went from 4AM markets to cybersecurity, life forged the work ethic
 - Resourceful — finds workarounds, makes things work with what's available
-- Cost-conscious — production infra on recycled hardware, AI at $1.50/month
+- Cost-conscious — production infra on recycled hardware, AI at ~€11/month
 
 WHAT SETS HIM APART:
 - Builds to last — no abandoned POCs, every service documented/monitored/secured
