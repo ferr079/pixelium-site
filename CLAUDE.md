@@ -98,7 +98,7 @@ npm run build
 git commit -m "..."   # global config already set: stephane@pixelium.win / Stephane
 
 # 3. Push — CI/CD deploys automatically via GitHub Action (~35s)
-git push origin main && git -c http.sslVerify=false push forgejo main
+git push origin main && git push forgejo main   # remote SSH (forgejo-ssh), plus besoin de sslVerify=false
 ```
 
 **CI/CD is active.** `git push origin main` triggers automatic deploy. No manual `wrangler deploy` needed. Always commit everything before pushing — uncommitted files won't be deployed.
