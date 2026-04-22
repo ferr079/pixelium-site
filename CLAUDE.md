@@ -95,7 +95,7 @@ Access KV: `import { env } from 'cloudflare:workers'` → `env.STATUS_KV.get('ke
 npm run build
 
 # 2. Commit ALL files (critical — CI/CD builds from git HEAD)
-git -c user.email=terre2@pixelium.internal -c user.name=terre2 commit -m "..."
+git commit -m "..."   # global config already set: stephane@pixelium.win / Stephane
 
 # 3. Push — CI/CD deploys automatically via GitHub Action (~35s)
 git push origin main && git -c http.sslVerify=false push forgejo main
