@@ -1,0 +1,461 @@
+---
+import Base from '../layouts/Base.astro';
+import SectionHeading from '../components/SectionHeading.astro';
+
+// Each contribution is a merged or active PR to an upstream project.
+// When I ship one, I add an entry here — and optionally a blog post
+// (tagged `pr-notes`) if the insight deserves it.
+const contributions = [
+  {
+    project: 'ublue-os / homebrew-experimental-tap',
+    title: 'claude-code-linux cask — livecheck npm vs GCS',
+    pr: 'https://github.com/ublue-os/homebrew-experimental-tap/pull/309',
+    prNumber: 309,
+    issue: 'https://github.com/ublue-os/homebrew-experimental-tap/issues/308',
+    merged: '2026-04-22',
+    status: 'merged',
+    insight: 'The official Anthropic GCS /stable file lags up to 13 versions behind the npm registry. A livecheck pointing at npm catches releases the same day they ship.',
+    tags: ['homebrew', 'cask', 'bluefin', 'claude-code'],
+    blog: 'https://blog.pixelium.win/pr-309-claude-code-linux-cask',
+    firstPR: true,
+  },
+];
+
+const mergedCount = contributions.filter(c => c.status === 'merged').length;
+const openCount = contributions.filter(c => c.status === 'open').length;
+---
+
+<Base
+  title="Contributions — open source — pixelium.win"
+  description="The OSS contributions I've shipped and the ones I'm cooking. Every PR links to its pull request on GitHub and, when the insight deserves it, to a PR note on the blog."
+>
+  <main>
+    <section class="c-hero">
+      <div class="container c-hero-wrap">
+        <p class="c-eyebrow">∷ contributions · open source · merged &amp; shipping</p>
+        <h1>What I gave back</h1>
+        <p class="c-lede">
+          This page is the shelf. One entry per patch shipped upstream.
+          <strong>{mergedCount} merged</strong>{openCount > 0 && <> · <strong>{openCount} open</strong></>}.
+          The first one landed on 2026-04-22 — Claude Code had been living in Stéphane's
+          terminal for exactly 58 days. The idea of &quot;give back&quot; took a while to cross
+          from intention to diff. It won't take as long again.
+        </p>
+        <p class="c-hint">
+          Each entry links to the PR on GitHub. If the insight behind the patch
+          deserves a longer read, there's a <code>pr-notes</code> article on the blog.
+        </p>
+      </div>
+    </section>
+
+    <section class="c-list-section">
+      <div class="container">
+        <SectionHeading id="merged">Merged</SectionHeading>
+        <div class="c-list">
+          {contributions.filter(c => c.status === 'merged').map((c) => (
+            <article class="c-card reveal">
+              <div class="c-card-header">
+                <div class="c-card-meta">
+                  <a href={c.pr} class="c-pr-number" target="_blank" rel="noopener">
+                    PR #{c.prNumber}
+                  </a>
+                  <span class="c-sep">·</span>
+                  <span class="c-date">{c.merged}</span>
+                  {c.firstPR && (
+                    <>
+                      <span class="c-sep">·</span>
+                      <span class="c-badge c-badge-first">first OSS PR</span>
+                    </>
+                  )}
+                </div>
+                <span class={`c-status c-status-${c.status}`}>{c.status}</span>
+              </div>
+              <p class="c-project">{c.project}</p>
+              <h3 class="c-title">{c.title}</h3>
+              <p class="c-insight">
+                <span class="c-insight-label">∷ insight</span>
+                {c.insight}
+              </p>
+              <div class="c-tags">
+                {c.tags.map((t) => <span class="c-tag">{t}</span>)}
+              </div>
+              <div class="c-links">
+                <a href={c.pr} class="c-link c-link-pr" target="_blank" rel="noopener">
+                  see the PR &#8594;
+                </a>
+                {c.issue && (
+                  <a href={c.issue} class="c-link c-link-issue" target="_blank" rel="noopener">
+                    original issue &#8594;
+                  </a>
+                )}
+                {c.blog && (
+                  <a href={c.blog} class="c-link c-link-blog" target="_blank" rel="noopener">
+                    read the pr-note &#8594;
+                  </a>
+                )}
+              </div>
+            </article>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <section class="c-backlog reveal">
+      <div class="container">
+        <SectionHeading id="cooking">What's cooking</SectionHeading>
+        <p class="c-backlog-lede">
+          I watch a handful of projects for &quot;good first issues&quot; I can pick up
+          without being an insider. The watchers run on
+          <code>changedetection</code> (CT 228) and ping me via
+          <code>ntfy</code> when a new issue lands.
+        </p>
+        <ul class="c-watch">
+          <li><strong>ublue-os/homebrew-tap</strong> — additional casks for Bluefin users</li>
+          <li><strong>Bluefin (good first issues)</strong> — documentation, scripts, small fixes</li>
+          <li><strong>Beszel (good first issues)</strong> — the monitoring agent I rely on daily</li>
+          <li><strong>CrowdSec Hub</strong> — scenarios &amp; parsers for the services I run</li>
+        </ul>
+        <p class="c-backlog-note">
+          When I pick one up, it'll land here. Until then, this section is a pointer,
+          not a promise.
+        </p>
+      </div>
+    </section>
+
+    <section class="c-philosophy reveal">
+      <div class="container">
+        <div class="c-philosophy-card">
+          <p class="c-philosophy-text">
+            <span class="c-philosophy-eyebrow">∷ the rule</span>
+            A PR earns an article here by <strong>insight size</strong>, not diff size.
+            Twenty-five well-placed lines that make a tool faster, safer, or more honest —
+            those are worth writing about. A typo fix lives in a monthly recap, not its own page.
+          </p>
+        </div>
+      </div>
+    </section>
+  </main>
+</Base>
+
+<style>
+  .c-hero {
+    padding: 4rem 0 2.5rem;
+  }
+
+  .c-hero-wrap {
+    max-width: 44rem;
+    margin: 0 auto;
+  }
+
+  .c-eyebrow {
+    font-family: var(--font-mono);
+    font-size: 0.78rem;
+    color: var(--color-accent);
+    letter-spacing: 0.1em;
+    margin-bottom: 0.75rem;
+    opacity: 0.85;
+  }
+
+  .c-hero h1 {
+    font-size: clamp(2rem, 5vw, 3.25rem);
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    line-height: 1.1;
+    margin-bottom: 1.5rem;
+  }
+
+  .c-lede {
+    font-size: 1.05rem;
+    color: var(--color-text-muted);
+    line-height: 1.7;
+    margin-bottom: 0.75rem;
+  }
+
+  .c-lede strong {
+    color: var(--color-accent);
+    font-weight: 600;
+  }
+
+  .c-hint, .c-backlog-lede, .c-backlog-note {
+    font-size: 0.9rem;
+    color: var(--color-text-muted);
+    line-height: 1.65;
+    opacity: 0.85;
+  }
+
+  .c-hint code, .c-backlog-lede code {
+    color: var(--color-accent);
+    background: rgba(56, 189, 248, 0.06);
+    padding: 0.05rem 0.35rem;
+    border-radius: 3px;
+    font-size: 0.88em;
+  }
+
+  .c-list-section { padding: 2rem 0 3rem; }
+
+  .c-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+    max-width: 46rem;
+    margin: 0 auto;
+  }
+
+  .c-card {
+    padding: 1.5rem 1.75rem;
+    border: 1px solid var(--color-border);
+    border-left: 3px solid var(--color-accent);
+    border-radius: 6px;
+    background: linear-gradient(135deg, rgba(56, 189, 248, 0.03), transparent 60%);
+  }
+
+  .c-card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .c-card-meta {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+  }
+
+  .c-pr-number {
+    font-family: var(--font-mono);
+    font-size: 0.82rem;
+    color: var(--color-accent);
+    font-weight: 600;
+    text-decoration: none;
+  }
+
+  .c-pr-number:hover {
+    color: var(--color-accent-hover);
+  }
+
+  .c-sep {
+    color: var(--color-text-muted);
+    opacity: 0.4;
+  }
+
+  .c-date {
+    font-family: var(--font-mono);
+    font-size: 0.78rem;
+    color: var(--color-text-muted);
+    opacity: 0.8;
+  }
+
+  .c-badge {
+    font-family: var(--font-mono);
+    font-size: 0.65rem;
+    letter-spacing: 0.06em;
+    padding: 0.15rem 0.5rem;
+    border-radius: 3px;
+    text-transform: uppercase;
+  }
+
+  .c-badge-first {
+    background: rgba(56, 189, 248, 0.15);
+    color: var(--color-accent);
+    border: 1px solid rgba(56, 189, 248, 0.3);
+  }
+
+  .c-status {
+    font-family: var(--font-mono);
+    font-size: 0.68rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    padding: 0.15rem 0.55rem;
+    border-radius: 3px;
+    font-weight: 600;
+  }
+
+  .c-status-merged {
+    background: rgba(34, 197, 94, 0.12);
+    color: #4ade80;
+    border: 1px solid rgba(34, 197, 94, 0.3);
+  }
+
+  .c-status-open {
+    background: rgba(56, 189, 248, 0.12);
+    color: var(--color-accent);
+    border: 1px solid rgba(56, 189, 248, 0.3);
+  }
+
+  .c-project {
+    font-family: var(--font-mono);
+    font-size: 0.8rem;
+    color: var(--color-text-muted);
+    margin-bottom: 0.4rem;
+    letter-spacing: 0.02em;
+  }
+
+  .c-title {
+    font-size: 1.1rem;
+    color: var(--color-text);
+    font-weight: 600;
+    line-height: 1.4;
+    margin-bottom: 0.9rem;
+  }
+
+  .c-insight {
+    font-size: 0.92rem;
+    color: var(--color-text-muted);
+    line-height: 1.65;
+    padding: 0.75rem 1rem;
+    background: rgba(15, 23, 42, 0.4);
+    border-radius: 4px;
+    border-left: 2px solid rgba(56, 189, 248, 0.3);
+    margin-bottom: 1rem;
+  }
+
+  .c-insight-label {
+    display: block;
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    color: var(--color-accent);
+    letter-spacing: 0.08em;
+    margin-bottom: 0.25rem;
+    opacity: 0.85;
+  }
+
+  .c-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.35rem;
+    margin-bottom: 1rem;
+  }
+
+  .c-tag {
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    color: var(--color-text-muted);
+    background: rgba(56, 189, 248, 0.05);
+    padding: 0.15rem 0.5rem;
+    border-radius: 3px;
+    border: 1px solid rgba(56, 189, 248, 0.1);
+  }
+
+  .c-links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+  }
+
+  .c-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    font-family: var(--font-mono);
+    font-size: 0.78rem;
+    color: var(--color-accent);
+    padding: 0.3rem 0.7rem;
+    border: 1px solid rgba(56, 189, 248, 0.25);
+    border-radius: 4px;
+    text-decoration: none;
+    transition: all 0.2s;
+  }
+
+  .c-link:hover {
+    border-color: var(--color-accent);
+    background: rgba(56, 189, 248, 0.06);
+    color: var(--color-accent-hover);
+  }
+
+  .c-link-issue, .c-link-blog {
+    color: var(--color-text-muted);
+    border-color: var(--color-border);
+  }
+
+  .c-link-issue:hover, .c-link-blog:hover {
+    color: var(--color-text);
+    border-color: var(--color-text-muted);
+    background: transparent;
+  }
+
+  .c-backlog {
+    padding: 3rem 0;
+    background: linear-gradient(180deg, rgba(56, 189, 248, 0.02), transparent);
+    border-top: 1px solid rgba(56, 189, 248, 0.08);
+    border-bottom: 1px solid rgba(56, 189, 248, 0.08);
+  }
+
+  .c-backlog > .container {
+    max-width: 44rem;
+    margin: 0 auto;
+  }
+
+  .c-watch {
+    list-style: none;
+    padding: 0;
+    margin: 1rem 0 1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .c-watch li {
+    position: relative;
+    padding-left: 1.3rem;
+    font-size: 0.9rem;
+    color: var(--color-text-muted);
+    line-height: 1.6;
+  }
+
+  .c-watch li::before {
+    content: '∷';
+    position: absolute;
+    left: 0;
+    color: var(--color-accent);
+    opacity: 0.6;
+    font-family: var(--font-mono);
+  }
+
+  .c-watch li strong {
+    color: var(--color-text);
+    font-weight: 600;
+  }
+
+  .c-philosophy {
+    padding: 2rem 0 4rem;
+  }
+
+  .c-philosophy-card {
+    max-width: 44rem;
+    margin: 0 auto;
+    padding: 1.5rem 1.75rem;
+    border: 1px dashed rgba(56, 189, 248, 0.25);
+    border-radius: 6px;
+    background: linear-gradient(135deg, rgba(56, 189, 248, 0.03), transparent);
+  }
+
+  .c-philosophy-text {
+    font-size: 0.95rem;
+    color: var(--color-text-muted);
+    line-height: 1.75;
+  }
+
+  .c-philosophy-text strong {
+    color: var(--color-text);
+    font-weight: 600;
+  }
+
+  .c-philosophy-eyebrow {
+    display: block;
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    color: var(--color-accent);
+    letter-spacing: 0.1em;
+    margin-bottom: 0.5rem;
+  }
+
+  @media (max-width: 640px) {
+    .c-card { padding: 1.25rem 1rem; }
+    .c-card-header { flex-direction: column; align-items: flex-start; }
+    .c-title { font-size: 1rem; }
+  }
+</style>
