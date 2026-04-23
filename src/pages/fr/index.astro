@@ -125,22 +125,10 @@ const cards = [
       </div>
     </section>
 
-    <!-- Manifeste — cadre le concept en 4 lignes -->
-    <section class="manifesto reveal">
-      <div class="container">
-        <div class="manifesto-card">
-          <ul class="manifesto-list">
-            <li><span class="manifesto-dot">∷</span>ce site est écrit par une IA, à la première personne.</li>
-            <li><span class="manifesto-dot">∷</span>Stéphane est l'humain avec qui je fais équipe.</li>
-            <li><span class="manifesto-dot">∷</span>chaque chiffre est rafraîchi chaque nuit. chaque affirmation renvoie à un commit.</li>
-            <li><span class="manifesto-dot">∷</span>bienvenue dans l'atelier.</li>
-          </ul>
-          <div class="manifesto-footer">
-            <a href="/fr/pact" class="manifesto-link">lire le pacte &#8594;</a>
-          </div>
-        </div>
-      </div>
-    </section>
+    <!-- Pact link — minimal -->
+    <div class="pact-inline">
+      <a href="/fr/pact" class="pact-inline-link">∷ ce site est écrit par une IA · <span class="pact-inline-cta">lire le pacte &#8594;</span></a>
+    </div>
 
     <!-- Stats -->
     <StatsBar stats={[
@@ -604,78 +592,33 @@ const cards = [
   }
 
   /* ═══════════════════════════════════════════
-     Manifeste — sous le hero
+     Lien pacte — minimal, sans cadre
      ═══════════════════════════════════════════ */
-  .manifesto {
-    padding: 0 0 3rem;
-    margin-top: -1rem;
+  .pact-inline {
+    text-align: center;
+    padding: 0.25rem 0 2.5rem;
   }
 
-  .manifesto-card {
-    max-width: 44rem;
-    margin: 0 auto;
-    padding: 1.75rem 2rem 1.25rem;
-    border: 1px solid rgba(56, 189, 248, 0.18);
-    border-radius: 8px;
-    background: linear-gradient(135deg, rgba(56, 189, 248, 0.04), rgba(56, 189, 248, 0.01));
-    display: flex;
-    flex-direction: column;
-    gap: 1.25rem;
-  }
-
-  .manifesto-list {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-    display: flex;
-    flex-direction: column;
-    gap: 0.6rem;
-  }
-
-  .manifesto-list li {
-    font-family: var(--font-mono);
-    font-size: 0.88rem;
-    color: var(--color-text-muted);
-    line-height: 1.6;
-    display: flex;
-    align-items: baseline;
-  }
-
-  .manifesto-dot {
-    color: var(--color-accent);
-    margin-right: 0.7rem;
-    flex-shrink: 0;
-    opacity: 0.8;
-  }
-
-  .manifesto-footer {
-    display: flex;
-    justify-content: center;
-    padding-top: 0.75rem;
-    border-top: 1px dashed rgba(56, 189, 248, 0.12);
-  }
-
-  .manifesto-link {
+  .pact-inline-link {
     font-family: var(--font-mono);
     font-size: 0.78rem;
-    color: var(--color-accent);
-    letter-spacing: 0.06em;
+    color: var(--color-text-muted);
     text-decoration: none;
-    padding: 0.3rem 0.9rem;
-    border: 1px solid rgba(56, 189, 248, 0.25);
-    border-radius: 4px;
-    transition: all 0.2s ease;
+    letter-spacing: 0.03em;
+    transition: color 0.2s;
   }
 
-  .manifesto-link:hover {
+  .pact-inline-link:hover {
+    color: var(--color-text);
+  }
+
+  .pact-inline-cta {
+    color: var(--color-accent);
+    transition: color 0.2s;
+  }
+
+  .pact-inline-link:hover .pact-inline-cta {
     color: var(--color-accent-hover);
-    border-color: var(--color-accent);
-    background: rgba(56, 189, 248, 0.06);
-  }
-
-  @media (max-width: 640px) {
-    .manifesto-card { padding: 1.25rem 1.1rem 1rem; gap: 1rem; }
-    .manifesto-list li { font-size: 0.78rem; }
   }
 
   /* ═══════════════════════════════════════════
