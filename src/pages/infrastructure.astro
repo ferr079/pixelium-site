@@ -21,12 +21,11 @@ const serviceSlides = [
   { src: '/images/services/forgejo.webp', alt: 'Forgejo — self-hosted Git forge, 6 repos', title: 'Forgejo — Git Forge' },
   { src: '/images/services/freshrss.webp', alt: 'FreshRSS — RSS aggregator, 15 tech feeds', title: 'FreshRSS — RSS' },
   { src: '/images/services/kavita.webp', alt: 'Kavita — manga, comics and ebook reader', title: 'Kavita — Reader' },
-  { src: '/images/services/vaultwarden.webp', alt: 'Vaultwarden — password vault', title: 'Vaultwarden — Passwords' },
   { src: '/images/services/wikijs.webp', alt: 'Wiki.js — infrastructure documentation wiki', title: 'Wiki.js — Documentation' },
   { src: '/images/services/homeassistant.webp', alt: 'Home Assistant — home automation dashboard', title: 'Home Assistant — IoT' },
   { src: '/images/services/loki.webp', alt: 'Loki — centralized log aggregation', title: 'Loki — Logs' },
-  { src: '/images/services/hermes.webp', alt: 'Hermes Agent — Telegram h24, 4 crons, learning loop', title: 'Hermes — AI Agent' },
-  { src: '/images/services/openfang.webp', alt: 'OpenFang — headless AIOps engine, Guardian crons', title: 'OpenFang — AIOps' },
+  { src: '/images/services/hermes.webp', alt: 'Hermes Agent — Telegram h24, 3 crons, learning loop', title: 'Hermes — AI Agent' },
+  { src: '/images/services/openfang.webp', alt: 'OpenFang — headless AIOps engine, 8 Guardian crons', title: 'OpenFang — AIOps' },
 ];
 
 const monitoringSlides = [
@@ -73,7 +72,7 @@ const monitoringSlides = [
           <h2>Overview</h2>
         </div>
         <div class="layer-content">
-          <p>The infrastructure runs on 3 heterogeneous Proxmox VE nodes — each with a specific role. I helped Stéphane distribute services by criticality: network infra on the most stable node, application services on the most powerful, backup on an on-demand node to save energy.</p>
+          <p>The infrastructure runs on 4 heterogeneous Proxmox VE nodes — each with a specific role. I helped Stéphane distribute services by criticality: network infra on the most stable node (pve1), application services and AI agents on the most powerful (pve2), monitoring + ops on a dedicated node (pve4), and backup on an on-demand node (pve3) to save energy.</p>
 
           <div class="nodes-grid">
             <div class="node-card">
@@ -180,7 +179,7 @@ const monitoringSlides = [
               <div class="tech-card-body">
                 <p class="tech-why"><strong>Why:</strong> Open source hypervisor with native LXC — containers start in 2 seconds and consume 50 MB of RAM. Integrated PBS for backups. Full API.</p>
                 <p class="tech-alt"><span class="alt-label">Rejected:</span> ESXi (paid since 2024), Hyper-V (Windows only), XCP-ng (smaller community)</p>
-                <p class="tech-result"><span class="result-label">Result:</span> 3 heterogeneous nodes, <DynNum stat="lxc_count" fallback="30+" suffix="+" /> CTs, incremental backups via PBS</p>
+                <p class="tech-result"><span class="result-label">Result:</span> 4 heterogeneous nodes, <DynNum stat="lxc_count" fallback="55" suffix="+" /> CTs, incremental backups via PBS</p>
               </div>
             </div>
 
@@ -274,9 +273,9 @@ const monitoringSlides = [
                 <h4>AI Agents</h4>
               </div>
               <div class="tech-card-body">
-                <p class="tech-why"><strong>Why:</strong> AI is not a gadget — it is an operational partner. OpenFang (headless AIOps engine, 7 Guardian crons), Hermes (Telegram h24, 4 crons: doc-sync, site-metrics, security audit, RSS digest), PentAGI (autonomous pentest), RAPTOR (source code audit). MiniMax M2.7 for agents, RTX 3090 for local inference. All agents communicate via MQTT bus.</p>
+                <p class="tech-why"><strong>Why:</strong> AI is not a gadget — it is an operational partner. The <strong>AIops v2 trio</strong>: OpenFang (headless sentinel, 8 Guardian crons) → MQTT → Hermes (Telegram triage h24, 3 night crons) → SSH spawn Claude CT 196 (ephemeral remediation). Plus PentAGI (autonomous pentest, pve3 on-demand) and RAPTOR (source code audit, distrobox). MiniMax M2.7 via LiteLLM (4-provider failback), RTX 3090 for local inference. All agents communicate via MQTT bus.</p>
                 <p class="tech-alt"><span class="alt-label">Stack:</span> OpenFang (Rust), Hermes (Python), PentAGI (Docker/Kali), RAPTOR (distrobox Semgrep/CodeQL/AFL++), MQTT (Mosquitto), 31 cybersec skills</p>
-                <p class="tech-result"><span class="result-label">Result:</span> 11 automated crons (7 Guardian + 4 Hermes), daily backups, autonomous monitoring + security digest + doc reconciliation — ~&euro;11/month total</p>
+                <p class="tech-result"><span class="result-label">Result:</span> 11 automated crons (8 Guardian + 3 Hermes), daily backups, autonomous monitoring + security digest + doc reconciliation, Claude CT 196 spawnable for critical remediation — ~&euro;11/month total (LiteLLM routed)</p>
               </div>
             </div>
 

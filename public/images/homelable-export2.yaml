@@ -1,0 +1,370 @@
+- nodeType: isp
+  label: Freebox Delta
+  links:
+    - label: pve1
+      linkType: ethernet
+      linkLabel: 1G
+    - label: pve2
+      linkType: ethernet
+      linkLabel: 1G
+    - label: pve3
+      linkType: ethernet
+      linkLabel: 1G (switch)
+    - label: pve4
+      linkType: ethernet
+      linkLabel: 1G (switch)
+    - label: terre2
+      linkType: ethernet
+      linkLabel: 1G
+    - label: OMV
+      linkType: ethernet
+      linkLabel: 1G
+    - label: Philips Hue Bridge
+      linkType: ethernet
+      linkLabel: ''
+- nodeType: proxmox
+  label: pve1
+  links:
+    - label: pve2
+      linkType: ethernet
+      linkLabel: 2.5G direct
+- nodeType: proxmox
+  label: pve2
+- nodeType: proxmox
+  label: pve3
+- nodeType: proxmox
+  label: pve4
+- nodeType: computer
+  label: terre2
+- nodeType: nas
+  label: OMV
+- nodeType: iot
+  label: Philips Hue Bridge
+- nodeType: vm
+  label: draw.io
+  hostname: drawio.pixelium.internal
+  ipAddress: 192.168.1.166
+  parent:
+    label: pve3
+    linkType: virtual
+    linkLabel: ''
+- nodeType: vm
+  label: Loki
+  hostname: loki.pixelium.internal
+  ipAddress: 192.168.1.240
+  parent:
+    label: pve4
+    linkType: virtual
+    linkLabel: ''
+- nodeType: lxc
+  label: TechnitiumDNS
+  parent:
+    label: pve1
+    linkType: virtual
+    linkLabel: ''
+- nodeType: lxc
+  label: step-ca
+  parent:
+    label: pve1
+    linkType: virtual
+    linkLabel: ''
+- nodeType: lxc
+  label: Headscale
+  parent:
+    label: pve1
+    linkType: virtual
+    linkLabel: ''
+- nodeType: lxc
+  label: Traefik + CrowdSec
+  parent:
+    label: pve1
+    linkType: virtual
+    linkLabel: ''
+- nodeType: lxc
+  label: Authentik
+  parent:
+    label: pve1
+    linkType: virtual
+    linkLabel: ''
+- nodeType: lxc
+  label: n8n
+  parent:
+    label: pve1
+    linkType: virtual
+    linkLabel: ''
+- nodeType: lxc
+  label: Mosquitto MQTT
+  parent:
+    label: pve1
+    linkType: virtual
+    linkLabel: ''
+- nodeType: lxc
+  label: Node-RED
+  parent:
+    label: pve1
+    linkType: virtual
+    linkLabel: ''
+- nodeType: lxc
+  label: Zigbee2MQTT
+  parent:
+    label: pve1
+    linkType: virtual
+    linkLabel: ''
+- nodeType: lxc
+  label: Forgejo Runner
+  parent:
+    label: pve1
+    linkType: virtual
+    linkLabel: ''
+- nodeType: lxc
+  label: Forgejo
+  parent:
+    label: pve1
+    linkType: virtual
+    linkLabel: ''
+- nodeType: lxc
+  label: NetBox
+  parent:
+    label: pve1
+    linkType: virtual
+    linkLabel: ''
+- nodeType: vm
+  label: Home Assistant
+  parent:
+    label: pve1
+    linkType: virtual
+    linkLabel: ''
+- nodeType: lxc
+  label: TechnitiumDNS 2
+  parent:
+    label: pve2
+    linkType: virtual
+    linkLabel: ''
+- nodeType: lxc
+  label: share2 (Samba)
+  parent:
+    label: pve2
+    linkType: virtual
+    linkLabel: ''
+- nodeType: lxc
+  label: Wiki.js
+  parent:
+    label: pve2
+    linkType: virtual
+    linkLabel: ''
+- nodeType: lxc
+  label: Open WebUI
+  parent:
+    label: pve2
+    linkType: virtual
+    linkLabel: ''
+- nodeType: lxc
+  label: LiteLLM
+  parent:
+    label: pve2
+    linkType: virtual
+    linkLabel: ''
+- nodeType: lxc
+  label: FreshRSS
+  parent:
+    label: pve2
+    linkType: virtual
+    linkLabel: ''
+- nodeType: lxc
+  label: The Lounge
+  parent:
+    label: pve2
+    linkType: virtual
+    linkLabel: ''
+- nodeType: lxc
+  label: Joplin Server
+  parent:
+    label: pve2
+    linkType: virtual
+    linkLabel: ''
+- nodeType: lxc
+  label: ByteStash
+  parent:
+    label: pve2
+    linkType: virtual
+    linkLabel: ''
+- nodeType: lxc
+  label: Hermes Agent
+  parent:
+    label: pve2
+    linkType: virtual
+    linkLabel: ''
+- nodeType: lxc
+  label: OpenFang
+  parent:
+    label: pve2
+    linkType: virtual
+    linkLabel: ''
+- nodeType: lxc
+  label: Claude Code
+  parent:
+    label: pve2
+    linkType: virtual
+    linkLabel: ''
+- nodeType: lxc
+  label: PentAGI
+  parent:
+    label: pve2
+    linkType: virtual
+    linkLabel: ''
+- nodeType: lxc
+  label: APT Cache
+  parent:
+    label: pve2
+    linkType: virtual
+    linkLabel: ''
+- nodeType: lxc
+  label: Kavita
+  parent:
+    label: pve2
+    linkType: virtual
+    linkLabel: ''
+- nodeType: lxc
+  label: Immich
+  parent:
+    label: pve2
+    linkType: virtual
+    linkLabel: ''
+- nodeType: lxc
+  label: Jellyfin
+  parent:
+    label: pve2
+    linkType: virtual
+    linkLabel: ''
+- nodeType: lxc
+  label: Jellystat
+  parent:
+    label: pve2
+    linkType: virtual
+    linkLabel: ''
+- nodeType: lxc
+  label: Wazuh
+  parent:
+    label: pve2
+    linkType: virtual
+    linkLabel: ''
+- nodeType: lxc
+  label: PBS
+  parent:
+    label: pve3
+    linkType: virtual
+    linkLabel: ''
+- nodeType: lxc
+  label: share3 (Samba)
+  parent:
+    label: pve3
+    linkType: virtual
+    linkLabel: ''
+- nodeType: lxc
+  label: Stirling-PDF
+  parent:
+    label: pve3
+    linkType: virtual
+    linkLabel: ''
+- nodeType: lxc
+  label: Excalidraw
+  parent:
+    label: pve3
+    linkType: virtual
+    linkLabel: ''
+- nodeType: lxc
+  label: Forworld
+  parent:
+    label: pve3
+    linkType: virtual
+    linkLabel: ''
+- nodeType: lxc
+  label: netboot.xyz
+  parent:
+    label: pve3
+    linkType: virtual
+    linkLabel: ''
+- nodeType: lxc
+  label: Termix
+  parent:
+    label: pve4
+    linkType: virtual
+    linkLabel: ''
+- nodeType: lxc
+  label: Homepage
+  parent:
+    label: pve4
+    linkType: virtual
+    linkLabel: ''
+- nodeType: lxc
+  label: Glance
+  parent:
+    label: pve4
+    linkType: virtual
+    linkLabel: ''
+- nodeType: lxc
+  label: Semaphore
+  parent:
+    label: pve4
+    linkType: virtual
+    linkLabel: ''
+- nodeType: lxc
+  label: SearXNG
+  parent:
+    label: pve4
+    linkType: virtual
+    linkLabel: ''
+- nodeType: lxc
+  label: changedetection
+  parent:
+    label: pve4
+    linkType: virtual
+    linkLabel: ''
+- nodeType: lxc
+  label: Beszel
+  parent:
+    label: pve4
+    linkType: virtual
+    linkLabel: ''
+- nodeType: lxc
+  label: Grafana
+  parent:
+    label: pve4
+    linkType: virtual
+    linkLabel: ''
+- nodeType: lxc
+  label: Patchmon
+  parent:
+    label: pve4
+    linkType: virtual
+    linkLabel: ''
+- nodeType: lxc
+  label: VictoriaMetrics
+  parent:
+    label: pve4
+    linkType: virtual
+    linkLabel: ''
+- nodeType: lxc
+  label: Healthchecks
+  parent:
+    label: pve4
+    linkType: virtual
+    linkLabel: ''
+- nodeType: lxc
+  label: ntfy
+  parent:
+    label: pve4
+    linkType: virtual
+    linkLabel: ''
+- nodeType: lxc
+  label: Dagu
+  parent:
+    label: pve4
+    linkType: virtual
+    linkLabel: ''
+- nodeType: lxc
+  label: Homelable
+  parent:
+    label: pve4
+    linkType: virtual
+    linkLabel: ''
