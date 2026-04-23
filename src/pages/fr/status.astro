@@ -98,7 +98,10 @@ import Base from '../../layouts/Base.astro';
     <!-- Note de bas de page -->
     <section class="status-footer reveal">
       <div class="container">
-        <p class="status-note">Données poussées depuis le homelab par <strong>OpenFang</strong> (agent IA, CT 192) via l'API Cloudflare KV. Zéro port exposé — push HTTPS sortant uniquement.</p>
+        <p class="status-note">
+          Données poussées depuis le homelab par <strong>OpenFang</strong> (agent IA, CT 192) via l'API Cloudflare KV.<br/>
+          Zéro port exposé — push HTTPS sortant uniquement.
+        </p>
       </div>
     </section>
   </main>
@@ -209,11 +212,12 @@ import Base from '../../layouts/Base.astro';
 
         for (const node of data.nodes) {
           const card = el('div', 'node-card');
+          const nodeState = (node.state || node.status || (node.cpu != null ? 'up' : 'offline')) as string;
+          card.classList.add('node-' + nodeState);
+
           card.appendChild(el('h4', 'node-name', node.name));
 
-          if (node.status === 'offline') {
-            card.appendChild(el('span', 'node-offline', 'offline'));
-          } else {
+          if (nodeState === 'up' && node.cpu != null) {
             for (const [metric, value] of [['CPU', node.cpu], ['RAM', node.ram]] as [string, number][]) {
               const row = el('div', 'node-metric');
               row.appendChild(el('span', 'metric-label', metric));
@@ -226,7 +230,12 @@ import Base from '../../layouts/Base.astro';
               row.appendChild(el('span', 'metric-value', value + '%'));
               card.appendChild(row);
             }
-            card.appendChild(el('div', 'node-uptime', node.uptime_days + 'd uptime'));
+            card.appendChild(el('div', 'node-uptime', node.uptime_days + 'j d\'uptime'));
+          } else if (nodeState === 'on-demand') {
+            card.appendChild(el('span', 'node-ondemand', 'on-demand · WOL'));
+            card.appendChild(el('div', 'node-sub', 'allumé à la demande'));
+          } else {
+            card.appendChild(el('span', 'node-offline', 'hors ligne'));
           }
 
           nodesContainer.appendChild(card);
@@ -340,12 +349,12 @@ import Base from '../../layouts/Base.astro';
 
   .skeleton-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 0.75rem; }
   .skeleton-card { height: 2.5rem; background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 6px; animation: skeleton-pulse 1.5s ease-in-out infinite; }
-  .skeleton-nodes { grid-template-columns: repeat(3, 1fr); }
+  .skeleton-nodes { grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); }
   .skeleton-node { height: 8rem; }
   .status-waiting { text-align: center; color: var(--color-text-muted); font-family: var(--font-mono); font-size: 0.85rem; margin-top: 1.5rem; }
   .status-loading { padding: 1rem 0; }
   .status-footer { padding: 2rem 0; }
-  .status-note { font-size: 0.8rem; color: var(--color-text-muted); text-align: center; font-family: var(--font-mono); }
+  .status-note { font-size: 0.8rem; color: var(--color-text-muted); text-align: center; font-family: var(--font-mono); line-height: 1.8; }
 
   @media (max-width: 640px) {
     .summary-grid { gap: 1.5rem; }
@@ -381,19 +390,38 @@ import Base from '../../layouts/Base.astro';
   .svc-name { font-family: var(--font-mono); font-size: 0.85rem; color: var(--color-text); flex: 1; }
   .svc-latency { font-family: var(--font-mono); font-size: 0.75rem; color: var(--color-text-muted); }
 
-  .nodes-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; }
-  .node-card { background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 8px; padding: 1.25rem; transition: border-color 0.2s; }
+  .nodes-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 0.75rem; }
+  .node-card { background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 6px; padding: 1rem 1.1rem; transition: border-color 0.2s; display: flex; flex-direction: column; min-height: 7.5rem; }
   .node-card:hover { border-color: var(--color-accent); }
-  .node-name { font-family: var(--font-mono); font-size: 1rem; font-weight: 700; color: var(--color-text); margin: 0 0 1rem; }
-  .node-metric { display: flex; align-items: center; gap: 0.6rem; margin-bottom: 0.5rem; }
-  .metric-label { font-family: var(--font-mono); font-size: 0.75rem; color: var(--color-text-muted); width: 2.5rem; }
+  .node-name { font-family: var(--font-mono); font-size: 0.95rem; font-weight: 700; color: var(--color-text); margin: 0 0 0.85rem; }
+  .node-metric { display: flex; align-items: center; gap: 0.55rem; margin-bottom: 0.45rem; }
+  .metric-label { font-family: var(--font-mono); font-size: 0.72rem; color: var(--color-text-muted); width: 2.3rem; }
   .bar { flex: 1; height: 6px; background: var(--color-border); border-radius: 3px; overflow: hidden; }
   .bar-fill { height: 100%; border-radius: 3px; transition: width 0.8s ease-out; }
-  .metric-value { font-family: var(--font-mono); font-size: 0.8rem; color: var(--color-text); width: 3rem; text-align: right; }
-  .node-uptime { font-family: var(--font-mono); font-size: 0.75rem; color: var(--color-text-muted); margin-top: 0.5rem; }
-  .node-offline { font-family: var(--font-mono); font-size: 0.85rem; color: var(--color-text-muted); font-style: italic; }
+  .metric-value { font-family: var(--font-mono); font-size: 0.75rem; color: var(--color-text); width: 2.75rem; text-align: right; }
+  .node-uptime { font-family: var(--font-mono); font-size: 0.72rem; color: var(--color-text-muted); margin-top: auto; padding-top: 0.5rem; }
+  .node-offline { font-family: var(--font-mono); font-size: 0.82rem; color: var(--color-text-muted); font-style: italic; }
 
-  @media (max-width: 640px) {
+  /* on-demand nodes (pve3 WOL) — sky accent, pas rouge */
+  .node-ondemand {
+    display: inline-block;
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    color: var(--color-accent);
+    background: rgba(56, 189, 248, 0.08);
+    border: 1px solid rgba(56, 189, 248, 0.25);
+    padding: 0.15rem 0.5rem;
+    border-radius: 3px;
+    letter-spacing: 0.04em;
+    width: fit-content;
+  }
+  .node-card.node-on-demand { border-style: dashed; border-color: rgba(56, 189, 248, 0.25); }
+  .node-sub { font-family: var(--font-mono); font-size: 0.7rem; color: var(--color-text-muted); margin-top: 0.5rem; opacity: 0.75; }
+
+  @media (max-width: 700px) {
+    .nodes-grid { grid-template-columns: repeat(2, 1fr); }
+  }
+  @media (max-width: 480px) {
     .nodes-grid { grid-template-columns: 1fr; }
     .service-grid { grid-template-columns: 1fr; }
   }
