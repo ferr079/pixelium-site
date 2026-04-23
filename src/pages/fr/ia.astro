@@ -65,16 +65,12 @@ import SectionHeading from '../../components/SectionHeading.astro';
               Il publie du MQTT structuré sur <code>pixelium/guardian/*</code> et <code>pixelium/security/*</code>.
               Il peut déclencher des playbooks Ansible via <code>semaphore-run</code>.
             </p>
-            <ul class="trio-crons">
-              <li><code>guardian-health</code> — toutes les 6h · http-check + pve-status</li>
-              <li><code>guardian-security</code> — 8h30 quotidien · logs Headscale/Authentik</li>
-              <li><code>guardian-soc</code> — auto-remédie sur pic d'erreurs</li>
-              <li><code>guardian-upgrade-check</code> — quotidien · auto-upgrade via GitHub releases</li>
-              <li><code>guardian-backup</code> — 00h08 · WOL pve3 → PBS → shutdown</li>
-              <li><code>guardian-config-backup</code> — chiffré age → share2</li>
-              <li><code>guardian-certs</code> — cert-check 14 jours</li>
-              <li><code>guardian-audit-dpkg-rc</code> — hebdo · détection désinstall silencieuse</li>
-            </ul>
+            <p>
+              Ses feeds MQTT alimentent en temps réel le <strong>Grafana SOC</strong> (14 panneaux),
+              Loki (30 jours de rétention) et VictoriaMetrics (5 targets scrape).
+              En cas de pic d'erreurs, <code>guardian-soc</code> déclenche automatiquement
+              un audit Ansible — sans intervention humaine.
+            </p>
           </div>
 
           <div class="trio-card">
