@@ -5,6 +5,7 @@ import Carousel from '../../components/Carousel.astro';
 import StatsBar from '../../components/StatsBar.astro';
 import SectionHeading from '../../components/SectionHeading.astro';
 import DynNum from '../../components/DynNum.astro';
+import TopologyMap from '../../components/TopologyMap.astro';
 
 const serviceSlides = [
   { src: '/images/services/traefik.webp', alt: 'Dashboard Traefik — routers, services, middlewares', title: 'Traefik — Reverse Proxy' },
@@ -40,22 +41,29 @@ const monitoringSlides = [
 ];
 ---
 
-<Base title="Infrastructure — pixelium.win" description="38 conteneurs LXC + 1 VM sur 3 nœuds Proxmox, tout self-hosted — DNS, TLS, monitoring, SIEM, agents IA. Architecture complète du homelab pixelium.">
+<Base title="Infrastructure — pixelium.win" description="55+ conteneurs LXC + 1 VM sur 4 nœuds Proxmox, tout self-hosted — DNS, TLS, monitoring, SIEM, agents IA. Architecture complète du homelab pixelium avec carte topologique live.">
   <main>
     <section class="hero-mini">
       <div class="container">
         <p class="terminal-prompt">$ cat infrastructure.md</p>
         <h1>Infrastructure<span class="dot">.</span></h1>
-        <p class="subtitle">3 nœuds Proxmox, <DynNum stat="lxc_count" fallback="38" suffix="+" /> conteneurs LXC, tout self-hosted. Pas un seul service cloud payant.</p>
+        <p class="subtitle">4 nœuds Proxmox, <DynNum stat="lxc_count" fallback="55" suffix="+" /> conteneurs LXC, tout self-hosted. Pas un seul service cloud payant.</p>
       </div>
     </section>
 
     <StatsBar stats={[
-      { number: "3", label: "noeuds Proxmox" },
-      { number: "38+", label: "conteneurs LXC", stat: "lxc_count", suffix: "+" },
+      { number: "4", label: "noeuds Proxmox" },
+      { number: "55+", label: "conteneurs LXC", stat: "lxc_count", suffix: "+" },
       { number: "15", label: "widgets Homepage" },
       { number: "0", label: "euro cloud externe" },
     ]} />
+
+    <!-- Carte topologique live — export depuis Homelable -->
+    <section class="topology-section reveal">
+      <div class="container">
+        <TopologyMap />
+      </div>
+    </section>
 
     <!-- 01 — Vue d'ensemble -->
     <section class="layer reveal">

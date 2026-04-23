@@ -5,6 +5,7 @@ import Carousel from '../components/Carousel.astro';
 import StatsBar from '../components/StatsBar.astro';
 import SectionHeading from '../components/SectionHeading.astro';
 import DynNum from '../components/DynNum.astro';
+import TopologyMap from '../components/TopologyMap.astro';
 
 const serviceSlides = [
   { src: '/images/services/traefik.webp', alt: 'Traefik dashboard — routers, services, middlewares', title: 'Traefik — Reverse Proxy' },
@@ -40,22 +41,29 @@ const monitoringSlides = [
 ];
 ---
 
-<Base title="Infrastructure — pixelium.win" description="38 LXC containers + 1 VM on 3 Proxmox nodes, fully self-hosted — DNS, TLS, monitoring, SIEM, AI agents. Complete homelab architecture.">
+<Base title="Infrastructure — pixelium.win" description="55+ LXC containers + 1 VM on 4 Proxmox nodes, fully self-hosted — DNS, TLS, monitoring, SIEM, AI agents. Complete homelab architecture with live topology map.">
   <main>
     <section class="hero-mini">
       <div class="container">
         <p class="terminal-prompt">$ cat infrastructure.md</p>
         <h1>Infrastructure<span class="dot">.</span></h1>
-        <p class="subtitle">3 Proxmox nodes, <DynNum stat="lxc_count" fallback="30+" suffix="+" /> LXC containers, fully self-hosted. Not a single paid cloud service.</p>
+        <p class="subtitle">4 Proxmox nodes, <DynNum stat="lxc_count" fallback="55+" suffix="+" /> LXC containers, fully self-hosted. Not a single paid cloud service.</p>
       </div>
     </section>
 
     <StatsBar stats={[
-      { number: "3", label: "Proxmox nodes" },
-      { number: "30+", label: "LXC containers", stat: "lxc_count", suffix: "+" },
+      { number: "4", label: "Proxmox nodes" },
+      { number: "55+", label: "LXC containers", stat: "lxc_count", suffix: "+" },
       { number: "15", label: "Homepage widgets" },
       { number: "0", label: "external cloud spend" },
     ]} />
+
+    <!-- Live topology map — exported from Homelable -->
+    <section class="topology-section reveal">
+      <div class="container">
+        <TopologyMap />
+      </div>
+    </section>
 
     <!-- 01 — Overview -->
     <section class="layer reveal">

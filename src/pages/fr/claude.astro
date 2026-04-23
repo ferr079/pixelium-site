@@ -1,0 +1,499 @@
+---
+import Base from '../../layouts/Base.astro';
+import DynNum from '../../components/DynNum.astro';
+import SectionHeading from '../../components/SectionHeading.astro';
+
+const heatmapLocal = [
+  5932, 6332, 4882, 3668, 4123, 4374, 2299,  897,
+   650,  307,  106,  110,  242,  350,  515,  803,
+   987, 1911, 2950, 3678, 3020, 2471, 3947, 6484
+];
+const maxTurns = Math.max(...heatmapLocal);
+---
+
+<Base
+  title="Stats Claude — 611h de pair-programming — pixelium.win"
+  description="Tous les chiffres derrière la symbiose : heures, sessions, cache hit, rythme horaire, focus projets. Rafraîchis depuis la base claude-usage locale."
+>
+  <main>
+    <section class="cs-hero">
+      <div class="container cs-hero-wrap">
+        <p class="cs-eyebrow">∷ stats claude · le grand livre</p>
+        <h1>À quoi ressemblent <span class="accent">611 heures</span></h1>
+        <p class="cs-lede">
+          Rien n'est arrondi vers le haut. Chaque chiffre vient de <code>~/.claude/usage.db</code> —
+          les transcripts JSONL que Claude Code écrit sur la workstation de Stéphane, scannés par
+          <a href="https://github.com/phuryn/claude-usage" target="_blank" rel="noopener">phuryn/claude-usage</a>,
+          expédiés en SSH vers OpenFang, puis poussés vers Cloudflare KV au prochain tick timer.
+        </p>
+      </div>
+    </section>
+
+    <section class="cs-section reveal">
+      <div class="container">
+        <SectionHeading id="volume">Volume</SectionHeading>
+        <div class="cs-grid four">
+          <div class="cs-card">
+            <span class="cs-label">heures</span>
+            <span class="cs-value"><DynNum stat="claude_hours" fallback="611" /></span>
+            <span class="cs-sub">temps calendaire des sessions</span>
+          </div>
+          <div class="cs-card">
+            <span class="cs-label">sessions</span>
+            <span class="cs-value"><DynNum stat="claude_sessions" fallback="186" /></span>
+            <span class="cs-sub">tous projets confondus</span>
+          </div>
+          <div class="cs-card">
+            <span class="cs-label">turns</span>
+            <span class="cs-value">60.7K</span>
+            <span class="cs-sub">chaque échange user+assistant</span>
+          </div>
+          <div class="cs-card">
+            <span class="cs-label">cache hit</span>
+            <span class="cs-value"><DynNum stat="claude_cache_hit" fallback="97.4" />%</span>
+            <span class="cs-sub">8.3 milliards de cache reads</span>
+          </div>
+        </div>
+
+        <p class="cs-note">
+          <strong>Ce que veut dire ce taux</strong> : sur 100 tokens que je lis,
+          97 sortent du prompt cache plutôt que d'être re-traités from scratch.
+          C'est le chiffre qui sépare <em>utiliser Claude</em> de <em>utiliser Claude bien</em>.
+          Un taux aussi élevé est la signature d'un <code>CLAUDE.md</code> qui ne dérive pas,
+          d'une mémoire bien structurée et de prompts batch-friendly.
+        </p>
+      </div>
+    </section>
+
+    <section class="cs-section alt reveal">
+      <div class="container">
+        <SectionHeading id="rhythm">Rythme</SectionHeading>
+        <div class="cs-grid three">
+          <div class="cs-card">
+            <span class="cs-label">heures par jour actif</span>
+            <span class="cs-value">~10</span>
+            <span class="cs-sub">53 jours actifs / 59 écoulés</span>
+          </div>
+          <div class="cs-card">
+            <span class="cs-label">plus longue session</span>
+            <span class="cs-value">16.8h</span>
+            <span class="cs-sub">21 avril · marathon IAops</span>
+          </div>
+          <div class="cs-card">
+            <span class="cs-label">taux de jours actifs</span>
+            <span class="cs-value">90%</span>
+            <span class="cs-sub">53 / 59 — quasi quotidien</span>
+          </div>
+        </div>
+
+        <h3 class="cs-sub-heading">Activité horaire — heure locale (CEST)</h3>
+        <p class="cs-paragraph">
+          Turns par heure, cumulé sur 59 jours. La forme est le portrait honnête
+          de notre rythme de travail : <strong>14h → 02h</strong> est la fenêtre principale,
+          avec activité résiduelle jusqu'à 7h, et un creux de sommeil entre 8h et 13h.
+        </p>
+        <div class="heatmap">
+          {heatmapLocal.map((v, h) => {
+            const pct = Math.round((v / maxTurns) * 100);
+            const hour = String(h).padStart(2, '0');
+            return (
+              <div class="heatmap-col" title={`${hour}h — ${v.toLocaleString()} turns`}>
+                <div class="heatmap-bar-wrap">
+                  <div class="heatmap-bar" style={`height:${pct}%`}></div>
+                </div>
+                <span class="heatmap-hour">{hour}</span>
+              </div>
+            );
+          })}
+        </div>
+        <p class="cs-legend">
+          <span class="legend-dot"></span>survol une colonne pour voir le nombre exact ·
+          pic 21h-00h, creux 09h-11h
+        </p>
+      </div>
+    </section>
+
+    <section class="cs-section reveal">
+      <div class="container">
+        <SectionHeading id="productivity">Productivité (approximatif)</SectionHeading>
+        <p class="cs-paragraph center">
+          Ces ratios croisent <code>claude-usage</code>, <code>git log</code> et l'API Forgejo.
+          Utile comme ordre de grandeur, pas de précision.
+        </p>
+        <div class="cs-grid three">
+          <div class="cs-card">
+            <span class="cs-label">commits / heure</span>
+            <span class="cs-value">~1.8</span>
+            <span class="cs-sub">repos homelab, 30 derniers jours</span>
+          </div>
+          <div class="cs-card">
+            <span class="cs-label">minutes / commit</span>
+            <span class="cs-value">~32</span>
+            <span class="cs-sub">inclut réflexion + test + fix</span>
+          </div>
+          <div class="cs-card">
+            <span class="cs-label">issues fermées / semaine</span>
+            <span class="cs-value">~8</span>
+            <span class="cs-sub">Forgejo <code>uzer/homelab-infra</code></span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="cs-section alt reveal">
+      <div class="container">
+        <SectionHeading id="focus">Répartition par projet</SectionHeading>
+        <p class="cs-paragraph center">Où sont passées les heures.</p>
+        <div class="focus-bars">
+          <div class="focus-row">
+            <span class="focus-label">Claude/homelab</span>
+            <div class="focus-track"><div class="focus-fill" style="width:92%"></div></div>
+            <span class="focus-val">92%</span>
+          </div>
+          <div class="focus-row">
+            <span class="focus-label">Claude/HTB</span>
+            <div class="focus-track"><div class="focus-fill" style="width:6%"></div></div>
+            <span class="focus-val">6%</span>
+          </div>
+          <div class="focus-row">
+            <span class="focus-label">Theodulius (privé)</span>
+            <div class="focus-track"><div class="focus-fill" style="width:1.7%"></div></div>
+            <span class="focus-val">1.7%</span>
+          </div>
+          <div class="focus-row">
+            <span class="focus-label">autres</span>
+            <div class="focus-track"><div class="focus-fill" style="width:0.3%"></div></div>
+            <span class="focus-val">0.3%</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="cs-section reveal">
+      <div class="container">
+        <SectionHeading id="economics">L'économie</SectionHeading>
+        <div class="cs-grid three">
+          <div class="cs-card cs-card-muted">
+            <span class="cs-label">équivalent pay-as-you-go</span>
+            <span class="cs-value">≈ 6 770 $</span>
+            <span class="cs-sub">tarif API sur 59 jours</span>
+          </div>
+          <div class="cs-card cs-card-muted">
+            <span class="cs-label">ce qu'on paye vraiment</span>
+            <span class="cs-value">400 $/mois</span>
+            <span class="cs-sub">forfait Claude Max</span>
+          </div>
+          <div class="cs-card cs-card-accent">
+            <span class="cs-label">facteur compression</span>
+            <span class="cs-value">~8×</span>
+            <span class="cs-sub">Max plan utilisé comme il faut</span>
+          </div>
+        </div>
+        <p class="cs-note">
+          Ce chiffre n'est pas une fierté — c'est un <strong>test de discipline</strong>.
+          Il existe grâce aux fichiers CLAUDE.md, à l'hygiène mémoire, au filtrage de sortie RTK,
+          aux prompts batch-friendly, au contexte stable. Sans ça, le même volume tiendrait
+          encore dans le Max, mais on perdrait le 97% cache hit qui fait que chaque token vaut huit.
+        </p>
+      </div>
+    </section>
+
+    <section class="cs-section alt reveal">
+      <div class="container">
+        <SectionHeading id="pipeline">Comment ces chiffres arrivent ici</SectionHeading>
+        <pre class="pipeline-diagram"><code>{`  ┌─────────────┐        ┌──────────┐        ┌──────────┐        ┌───────────┐
+  │  ~/.claude  │─jsonl─▶│ usage.db │─query─▶│ KV push  │─CF API─▶│ /api/stats│
+  │  transcripts│        │ (sqlite) │        │ (CT 192) │         │  Worker   │
+  └─────────────┘        └──────────┘        └──────────┘         └───────────┘
+                                                                        │
+                                                                        ▼
+                                                             ┌────────────────────┐
+                                                             │ cette page (Astro) │
+                                                             │ via <DynNum />     │
+                                                             └────────────────────┘`}</code></pre>
+        <p class="cs-paragraph">
+          Scan-script : <a href="https://github.com/phuryn/claude-usage" target="_blank" rel="noopener">phuryn/claude-usage</a>.
+          Push-script : <code>~/Claude/claude-usage/scripts/push-stats.sh</code> sur la workstation de Stéphane.
+          Récepteur : <code>/srv/kv-inbox/claude-stats.json</code> sur CT 192 (OpenFang).
+          Forwarder : <code>/opt/openfang/scripts/kv-push.sh</code> lit le fichier et poste vers Cloudflare KV.
+          Rendu : le composant <code>DynNum</code> appelle <code>/api/stats</code> et met à jour le texte côté client.
+        </p>
+        <p class="cs-note">
+          Le timestamp du dernier run est dans le champ <code>updated_at</code> du blob KV.
+          Vous pouvez le curl vous-même : <code>curl https://pixelium.win/api/stats</code>.
+        </p>
+      </div>
+    </section>
+  </main>
+</Base>
+
+<style>
+  .cs-hero { padding: 4rem 0 2.5rem; }
+  .cs-hero-wrap { max-width: 44rem; margin: 0 auto; }
+
+  .cs-eyebrow {
+    font-family: var(--font-mono);
+    font-size: 0.78rem;
+    color: var(--color-accent);
+    letter-spacing: 0.1em;
+    margin-bottom: 0.75rem;
+    opacity: 0.85;
+  }
+
+  .cs-hero h1 {
+    font-size: clamp(2rem, 5vw, 3.25rem);
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    line-height: 1.1;
+    margin-bottom: 1.75rem;
+  }
+
+  .accent { color: var(--color-accent); }
+
+  .cs-lede {
+    font-size: 1.05rem;
+    color: var(--color-text-muted);
+    line-height: 1.7;
+  }
+
+  .cs-lede code, .cs-note code, .cs-paragraph code {
+    color: var(--color-accent);
+    background: rgba(56, 189, 248, 0.08);
+    padding: 0.08rem 0.35rem;
+    border-radius: 3px;
+    font-size: 0.9em;
+  }
+
+  .cs-lede a, .cs-note a, .cs-paragraph a { color: var(--color-accent); }
+
+  .cs-section { padding: 3rem 0; }
+
+  .cs-section.alt {
+    background: linear-gradient(180deg, rgba(56, 189, 248, 0.02), transparent);
+    border-top: 1px solid rgba(56, 189, 248, 0.08);
+    border-bottom: 1px solid rgba(56, 189, 248, 0.08);
+  }
+
+  .cs-grid {
+    display: grid;
+    gap: 0.75rem;
+    max-width: 48rem;
+    margin: 0 auto;
+  }
+
+  .cs-grid.four { grid-template-columns: repeat(auto-fit, minmax(10rem, 1fr)); }
+  .cs-grid.three { grid-template-columns: repeat(auto-fit, minmax(12rem, 1fr)); }
+
+  .cs-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.35rem;
+    padding: 1.25rem 1rem;
+    border: 1px solid var(--color-border);
+    border-radius: 6px;
+    background: linear-gradient(180deg, rgba(56, 189, 248, 0.04), transparent);
+    text-align: center;
+  }
+
+  .cs-card-muted { background: rgba(15, 23, 42, 0.5); }
+
+  .cs-card-accent {
+    border-color: rgba(56, 189, 248, 0.4);
+    background: linear-gradient(180deg, rgba(56, 189, 248, 0.1), rgba(56, 189, 248, 0.02));
+  }
+
+  .cs-label {
+    font-family: var(--font-mono);
+    font-size: 0.68rem;
+    color: var(--color-text-muted);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    opacity: 0.8;
+  }
+
+  .cs-value {
+    font-family: var(--font-mono);
+    font-size: clamp(1.4rem, 3.5vw, 2rem);
+    font-weight: 700;
+    color: var(--color-accent);
+    line-height: 1;
+  }
+
+  .cs-sub {
+    font-size: 0.72rem;
+    color: var(--color-text-muted);
+    opacity: 0.75;
+    line-height: 1.4;
+  }
+
+  .cs-note {
+    max-width: 44rem;
+    margin: 1.5rem auto 0;
+    padding: 1rem 1.25rem;
+    border-left: 2px solid rgba(56, 189, 248, 0.4);
+    font-size: 0.9rem;
+    color: var(--color-text-muted);
+    line-height: 1.7;
+    background: rgba(56, 189, 248, 0.03);
+  }
+
+  .cs-note strong { color: var(--color-text); font-weight: 600; }
+  .cs-note em { color: var(--color-text); }
+
+  .cs-paragraph {
+    max-width: 44rem;
+    margin: 0 auto 1.5rem;
+    font-size: 0.95rem;
+    color: var(--color-text-muted);
+    line-height: 1.7;
+  }
+
+  .cs-paragraph.center { text-align: center; }
+  .cs-paragraph strong { color: var(--color-text); font-weight: 600; }
+
+  .cs-sub-heading {
+    max-width: 44rem;
+    margin: 2.5rem auto 0.75rem;
+    font-family: var(--font-mono);
+    font-size: 0.82rem;
+    color: var(--color-accent);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+
+  .heatmap {
+    max-width: 48rem;
+    margin: 1rem auto;
+    display: grid;
+    grid-template-columns: repeat(24, 1fr);
+    gap: 2px;
+    height: 10rem;
+    align-items: end;
+    padding: 0.75rem;
+    border: 1px solid rgba(56, 189, 248, 0.15);
+    border-radius: 6px;
+    background: rgba(15, 23, 42, 0.4);
+  }
+
+  .heatmap-col {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-end;
+    height: 100%;
+    gap: 0.25rem;
+    cursor: help;
+  }
+
+  .heatmap-bar-wrap {
+    width: 100%;
+    height: calc(100% - 1rem);
+    display: flex;
+    align-items: flex-end;
+  }
+
+  .heatmap-bar {
+    width: 100%;
+    background: linear-gradient(180deg, var(--color-accent), rgba(56, 189, 248, 0.3));
+    border-radius: 2px 2px 0 0;
+    transition: opacity 0.2s;
+    min-height: 2px;
+  }
+
+  .heatmap-col:hover .heatmap-bar { opacity: 0.7; }
+
+  .heatmap-hour {
+    font-family: var(--font-mono);
+    font-size: 0.55rem;
+    color: var(--color-text-muted);
+    opacity: 0.6;
+  }
+
+  .cs-legend {
+    max-width: 48rem;
+    margin: 0.5rem auto 0;
+    text-align: center;
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    color: var(--color-text-muted);
+    opacity: 0.65;
+  }
+
+  .legend-dot {
+    display: inline-block;
+    width: 0.5rem;
+    height: 0.5rem;
+    background: var(--color-accent);
+    border-radius: 2px;
+    margin-right: 0.5rem;
+    vertical-align: middle;
+    opacity: 0.7;
+  }
+
+  .focus-bars {
+    max-width: 44rem;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+  }
+
+  .focus-row {
+    display: grid;
+    grid-template-columns: 12rem 1fr 3.5rem;
+    align-items: center;
+    gap: 0.75rem;
+  }
+
+  .focus-label {
+    font-family: var(--font-mono);
+    font-size: 0.85rem;
+    color: var(--color-text);
+  }
+
+  .focus-track {
+    height: 0.6rem;
+    background: var(--color-surface);
+    border-radius: 3px;
+    overflow: hidden;
+  }
+
+  .focus-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--color-accent), rgba(56, 189, 248, 0.5));
+    border-radius: 3px;
+  }
+
+  .focus-val {
+    font-family: var(--font-mono);
+    font-size: 0.82rem;
+    color: var(--color-accent);
+    text-align: right;
+  }
+
+  .pipeline-diagram {
+    max-width: 48rem;
+    margin: 0 auto 1.5rem;
+    background: rgba(15, 23, 42, 0.6);
+    border: 1px solid rgba(56, 189, 248, 0.15);
+    border-radius: 6px;
+    padding: 1.25rem;
+    overflow-x: auto;
+    font-size: 0.72rem;
+    line-height: 1.4;
+  }
+
+  .pipeline-diagram code {
+    font-family: var(--font-mono);
+    color: var(--color-text);
+    background: none;
+    padding: 0;
+    white-space: pre;
+  }
+
+  @media (max-width: 640px) {
+    .focus-row { grid-template-columns: 8rem 1fr 3rem; }
+    .focus-label { font-size: 0.75rem; }
+  }
+</style>

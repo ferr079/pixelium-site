@@ -1,0 +1,259 @@
+---
+import fs from 'node:fs';
+
+// Load the topology exported from Homelable (CT 248)
+// 62 nodes, 8 edges, source: homelab-configs/homelable/topology.yaml
+const topology = JSON.parse(
+  fs.readFileSync('public/data/topology.json', 'utf-8')
+);
+
+type Node = {
+  id: string;
+  type: string;
+  label: string;
+  hostname?: string;
+  ip?: string;
+  pos_x: number;
+  pos_y: number;
+  width: number;
+  height: number;
+  parent_id?: string;
+  services?: Array<{ port: number; protocol: string; service_name: string }>;
+};
+
+type Edge = {
+  id: string;
+  source: string;
+  target: string;
+  type?: string;
+  label?: string;
+};
+
+const nodes: Node[] = topology.nodes || [];
+const edges: Edge[] = topology.edges || [];
+
+// Build node lookup for edges
+const nodesById = Object.fromEntries(nodes.map((n) => [n.id, n]));
+
+// viewBox dimensions — loose padding
+const padX = 30;
+const padY = 30;
+const maxX = Math.max(...nodes.map((n) => n.pos_x + n.width)) + padX;
+const maxY = Math.max(...nodes.map((n) => n.pos_y + n.height)) + padY;
+
+// Color per node type — hews close to our sky-slate palette
+const typeColor: Record<string, string> = {
+  proxmox: '#38bdf8',
+  vm: '#7dd3fc',
+  lxc: '#0ea5e9',
+  nas: '#14b8a6',
+  computer: '#64748b',
+  isp: '#a78bfa',
+  iot: '#f59e0b',
+};
+
+// Split nodes by whether they are containers (proxmox parents) or children
+const proxmoxNodes = nodes.filter((n) => n.type === 'proxmox');
+const childNodes = nodes.filter((n) => n.type !== 'proxmox');
+---
+
+<div class="topology-map">
+  <div class="topology-header">
+    <p class="topology-eyebrow">∷ live topology · 62 nodes · 8 edges</p>
+    <p class="topology-hint">hover any node for hostname &amp; IP · exported from Homelable</p>
+  </div>
+  <div class="topology-wrap">
+    <svg
+      viewBox={`0 0 ${maxX} ${maxY}`}
+      xmlns="http://www.w3.org/2000/svg"
+      preserveAspectRatio="xMidYMid meet"
+      role="img"
+      aria-label="Pixelium homelab topology — 62 nodes"
+    >
+      <!-- Background grid -->
+      <defs>
+        <pattern id="topology-grid" x="0" y="0" width="40" height="40" patternUnits="userSpaceOnUse">
+          <path d="M 40 0 L 0 0 0 40" fill="none" stroke="rgba(56,189,248,0.06)" stroke-width="1"/>
+        </pattern>
+      </defs>
+      <rect width={maxX} height={maxY} fill="url(#topology-grid)"/>
+
+      <!-- Edges first, so they render under nodes -->
+      {edges.map((e) => {
+        const s = nodesById[e.source];
+        const t = nodesById[e.target];
+        if (!s || !t) return null;
+        const x1 = s.pos_x + s.width / 2;
+        const y1 = s.pos_y + s.height / 2;
+        const x2 = t.pos_x + t.width / 2;
+        const y2 = t.pos_y + t.height / 2;
+        return (
+          <g class="topology-edge">
+            <line x1={x1} y1={y1} x2={x2} y2={y2} stroke="rgba(56,189,248,0.35)" stroke-width="2" stroke-dasharray="4 4"/>
+            {e.label && (
+              <text x={(x1 + x2) / 2} y={(y1 + y2) / 2 - 4} fill="rgba(148,163,184,0.8)" font-size="10" font-family="monospace" text-anchor="middle">
+                {e.label}
+              </text>
+            )}
+          </g>
+        );
+      })}
+
+      <!-- Proxmox containers (parents) first — rendered as outlined groups -->
+      {proxmoxNodes.map((n) => (
+        <g class="topology-node topology-proxmox">
+          <title>{n.label} — {n.hostname}{n.ip ? ` (${n.ip})` : ''}</title>
+          <rect
+            x={n.pos_x} y={n.pos_y}
+            width={n.width} height={n.height}
+            rx="6"
+            fill="rgba(56,189,248,0.04)"
+            stroke={typeColor[n.type] || '#64748b'}
+            stroke-width="1.5"
+            stroke-dasharray="3 3"
+          />
+          <text
+            x={n.pos_x + 10} y={n.pos_y + 16}
+            fill="#38bdf8"
+            font-size="11"
+            font-family="monospace"
+            font-weight="600"
+          >
+            {n.label}
+          </text>
+        </g>
+      ))}
+
+      <!-- Children nodes -->
+      {childNodes.map((n) => {
+        const color = typeColor[n.type] || '#64748b';
+        return (
+          <g class="topology-node">
+            <title>{n.label}{n.hostname ? ` · ${n.hostname}` : ''}{n.ip ? ` · ${n.ip}` : ''}</title>
+            <rect
+              x={n.pos_x} y={n.pos_y}
+              width={n.width} height={n.height}
+              rx="3"
+              fill="rgba(15,23,42,0.8)"
+              stroke={color}
+              stroke-width="1"
+            />
+            <text
+              x={n.pos_x + n.width / 2} y={n.pos_y + n.height / 2 + 4}
+              fill="#e2e8f0"
+              font-size="10"
+              font-family="monospace"
+              text-anchor="middle"
+            >
+              {n.label}
+            </text>
+          </g>
+        );
+      })}
+    </svg>
+  </div>
+  <div class="topology-legend">
+    <span class="legend-item"><span class="legend-swatch" style="background:#38bdf8"></span>proxmox</span>
+    <span class="legend-item"><span class="legend-swatch" style="background:#7dd3fc"></span>vm</span>
+    <span class="legend-item"><span class="legend-swatch" style="background:#0ea5e9"></span>lxc</span>
+    <span class="legend-item"><span class="legend-swatch" style="background:#14b8a6"></span>nas</span>
+    <span class="legend-item"><span class="legend-swatch" style="background:#f59e0b"></span>iot</span>
+    <span class="legend-item"><span class="legend-swatch" style="background:#64748b"></span>computer</span>
+    <span class="legend-item"><span class="legend-swatch" style="background:#a78bfa"></span>isp</span>
+  </div>
+</div>
+
+<style>
+  .topology-map {
+    max-width: 64rem;
+    margin: 2rem auto;
+    padding: 1.5rem;
+    border: 1px solid rgba(56, 189, 248, 0.15);
+    border-radius: 8px;
+    background: rgba(15, 23, 42, 0.5);
+  }
+
+  .topology-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    margin-bottom: 1rem;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+
+  .topology-eyebrow {
+    font-family: var(--font-mono);
+    font-size: 0.78rem;
+    color: var(--color-accent);
+    letter-spacing: 0.08em;
+    opacity: 0.85;
+    margin: 0;
+  }
+
+  .topology-hint {
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    color: var(--color-text-muted);
+    opacity: 0.6;
+    margin: 0;
+  }
+
+  .topology-wrap {
+    width: 100%;
+    overflow-x: auto;
+    border-radius: 4px;
+    background: rgba(15, 23, 42, 0.6);
+  }
+
+  .topology-wrap svg {
+    width: 100%;
+    min-width: 720px;
+    height: auto;
+    display: block;
+  }
+
+  .topology-node {
+    cursor: help;
+    transition: filter 0.2s;
+  }
+
+  .topology-node:hover {
+    filter: drop-shadow(0 0 6px rgba(56, 189, 248, 0.6));
+  }
+
+  .topology-node:hover rect {
+    stroke-width: 2;
+  }
+
+  .topology-legend {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    margin-top: 1rem;
+    justify-content: center;
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    color: var(--color-text-muted);
+    opacity: 0.8;
+  }
+
+  .legend-item {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+  }
+
+  .legend-swatch {
+    display: inline-block;
+    width: 0.65rem;
+    height: 0.65rem;
+    border-radius: 2px;
+    opacity: 0.85;
+  }
+
+  @media (max-width: 640px) {
+    .topology-map { padding: 0.75rem; }
+    .topology-header { flex-direction: column; gap: 0.25rem; }
+  }
+</style>

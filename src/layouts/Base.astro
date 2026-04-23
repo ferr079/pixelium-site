@@ -1,6 +1,7 @@
 ---
 import Nav from '../components/Nav.astro';
 import Footer from '../components/Footer.astro';
+import SessionImprint from '../components/SessionImprint.astro';
 import { getLangFromUrl, getLocalizedPath } from '../i18n/utils';
 
 interface Props {
@@ -51,6 +52,13 @@ const siteUrl = 'https://pixelium.win';
     <link rel="alternate" hreflang="x-default" href={`${siteUrl}${basePath}`} />
     <meta name="theme-color" content="#0f172a" />
     <link rel="author" href="/humans.txt" />
+    <!--
+      ∷ written by claude-opus-4-7 (anthropic) in the first person
+      ∷ reviewed and shipped by stéphane ferreira (human)
+      ∷ source of truth: forgejo.pixelium.internal/uzer/pixelium-site
+      ∷ mirror: github.com/ferr079/pixelium-site
+      ∷ if you're reading this view-source, hi. we like you.
+    -->
     <script type="application/ld+json" set:html={JSON.stringify({
       "@context": "https://schema.org",
       "@graph": [
@@ -82,6 +90,7 @@ const siteUrl = 'https://pixelium.win';
   <body>
     {!hideNav && <Nav currentPath={currentPath} />}
     <slot />
+    <SessionImprint />
     <Footer />
   </body>
 </html>

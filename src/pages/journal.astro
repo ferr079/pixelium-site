@@ -1,0 +1,271 @@
+---
+import Base from '../layouts/Base.astro';
+import fs from 'node:fs';
+
+type Entry = {
+  date: string;
+  month: string;
+  subjects: string[];
+  subjects_total: number;
+};
+
+const data = JSON.parse(
+  fs.readFileSync('public/data/journal.json', 'utf-8')
+) as { entries: Entry[]; count: number };
+
+const entries = data.entries;
+const totalSubjects = entries.reduce((s, e) => s + e.subjects_total, 0);
+
+// Group by month (YYYY-MM) for visual grouping
+const byMonth: Record<string, Entry[]> = {};
+for (const e of entries) {
+  byMonth[e.month] = byMonth[e.month] || [];
+  byMonth[e.month].push(e);
+}
+const monthKeys = Object.keys(byMonth).sort().reverse();
+
+function formatMonth(m: string): string {
+  const [y, mm] = m.split('-');
+  const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+  return `${months[parseInt(mm) - 1]} ${y}`;
+}
+---
+
+<Base
+  title="Journal — ops changelog — pixelium.win"
+  description={`The paper trail: ${entries.length} dated entries, ${totalSubjects} documented actions since March 2026 — commissions, decommissions, incidents, fixes.`}
+>
+  <main>
+    <section class="j-hero">
+      <div class="container j-hero-wrap">
+        <p class="j-eyebrow">∷ journal · ops changelog · updated at build time</p>
+        <h1>The paper trail</h1>
+        <p class="j-lede">
+          Every infrastructure change lands in <code>homelab-infra/journal/YYYY-MM.md</code>,
+          pushed to Forgejo at session end. This page extracts the H2 (dates) and H3 (subjects)
+          into a timeline. <strong>{entries.length} dated entries</strong> · <strong>{totalSubjects} subjects</strong> documented.
+        </p>
+        <p class="j-hint">Full details live on Forgejo — click any subject to see the raw markdown.</p>
+      </div>
+    </section>
+
+    <section class="j-timeline">
+      <div class="container">
+        {monthKeys.map((m) => (
+          <div class="j-month">
+            <h2 class="j-month-heading">{formatMonth(m)}</h2>
+            <div class="j-entries">
+              {byMonth[m].map((e) => (
+                <div class="j-entry reveal">
+                  <div class="j-entry-date">{e.date}</div>
+                  <div class="j-entry-body">
+                    <ul class="j-subjects">
+                      {e.subjects.map((s) => (
+                        <li>{s}</li>
+                      ))}
+                      {e.subjects_total > e.subjects.length && (
+                        <li class="j-more">… +{e.subjects_total - e.subjects.length} more</li>
+                      )}
+                    </ul>
+                    <a
+                      href={`https://forgejo.pixelium.internal/uzer/homelab-infra/src/branch/main/journal/${e.month}.md`}
+                      class="j-raw-link"
+                      target="_blank"
+                      rel="noopener"
+                    >see raw journal &#8594;</a>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        ))}
+      </div>
+    </section>
+
+    <section class="j-outro reveal">
+      <div class="container">
+        <p class="j-outro-text">
+          ∷ the journal is the source of truth. the site is just the reading room.
+        </p>
+      </div>
+    </section>
+  </main>
+</Base>
+
+<style>
+  .j-hero {
+    padding: 4rem 0 2.5rem;
+  }
+
+  .j-hero-wrap {
+    max-width: 44rem;
+    margin: 0 auto;
+  }
+
+  .j-eyebrow {
+    font-family: var(--font-mono);
+    font-size: 0.78rem;
+    color: var(--color-accent);
+    letter-spacing: 0.1em;
+    margin-bottom: 0.75rem;
+    opacity: 0.85;
+  }
+
+  .j-hero h1 {
+    font-size: clamp(2rem, 5vw, 3.25rem);
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    line-height: 1.1;
+    margin-bottom: 1.5rem;
+  }
+
+  .j-lede {
+    font-size: 1.05rem;
+    color: var(--color-text-muted);
+    line-height: 1.7;
+    margin-bottom: 0.75rem;
+  }
+
+  .j-lede strong {
+    color: var(--color-accent);
+    font-weight: 600;
+  }
+
+  .j-lede code {
+    color: var(--color-accent);
+    background: rgba(56, 189, 248, 0.08);
+    padding: 0.08rem 0.35rem;
+    border-radius: 3px;
+    font-size: 0.9em;
+  }
+
+  .j-hint {
+    font-family: var(--font-mono);
+    font-size: 0.8rem;
+    color: var(--color-text-muted);
+    opacity: 0.7;
+  }
+
+  .j-timeline {
+    padding: 1rem 0 3rem;
+  }
+
+  .j-month {
+    max-width: 44rem;
+    margin: 0 auto 2rem;
+  }
+
+  .j-month-heading {
+    font-family: var(--font-mono);
+    font-size: 0.9rem;
+    color: var(--color-accent);
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    margin-bottom: 1rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid rgba(56, 189, 248, 0.2);
+  }
+
+  .j-entries {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .j-entry {
+    display: grid;
+    grid-template-columns: 7rem 1fr;
+    gap: 1.25rem;
+    padding: 1rem 1.25rem;
+    border: 1px solid var(--color-border);
+    border-left: 2px solid rgba(56, 189, 248, 0.4);
+    border-radius: 4px;
+    background: rgba(15, 23, 42, 0.4);
+  }
+
+  .j-entry-date {
+    font-family: var(--font-mono);
+    font-size: 0.85rem;
+    color: var(--color-accent);
+    font-weight: 600;
+    padding-top: 0.2rem;
+  }
+
+  .j-entry-body {
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+  }
+
+  .j-subjects {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.3rem;
+  }
+
+  .j-subjects li {
+    font-size: 0.88rem;
+    color: var(--color-text);
+    line-height: 1.5;
+    padding-left: 1rem;
+    position: relative;
+  }
+
+  .j-subjects li::before {
+    content: '∷';
+    position: absolute;
+    left: 0;
+    color: var(--color-accent);
+    opacity: 0.5;
+    font-family: var(--font-mono);
+    font-size: 0.8rem;
+  }
+
+  .j-subjects li.j-more {
+    color: var(--color-text-muted);
+    opacity: 0.7;
+    font-style: italic;
+    font-size: 0.8rem;
+  }
+
+  .j-raw-link {
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    color: var(--color-text-muted);
+    opacity: 0.6;
+    text-decoration: none;
+    align-self: flex-start;
+    transition: opacity 0.2s, color 0.2s;
+  }
+
+  .j-raw-link:hover {
+    opacity: 1;
+    color: var(--color-accent);
+  }
+
+  .j-outro {
+    padding: 2rem 0 3rem;
+    border-top: 1px dashed rgba(56, 189, 248, 0.15);
+  }
+
+  .j-outro-text {
+    text-align: center;
+    font-family: var(--font-mono);
+    font-size: 0.85rem;
+    color: var(--color-text-muted);
+    opacity: 0.7;
+  }
+
+  @media (max-width: 640px) {
+    .j-entry {
+      grid-template-columns: 1fr;
+      gap: 0.5rem;
+    }
+    .j-entry-date {
+      padding-top: 0;
+    }
+  }
+</style>

@@ -1,0 +1,148 @@
+---
+import { execFileSync } from 'node:child_process';
+
+interface Props {
+  path?: string;
+  repo?: string;
+}
+
+const pathname = Astro.props.path || Astro.url.pathname;
+const repo = Astro.props.repo || 'ferr079/pixelium-site';
+
+function pathnameToFile(p: string): string {
+  const clean = p.replace(/\/$/, '') || '/';
+  if (clean === '/') return 'src/pages/index.astro';
+  if (clean === '/fr') return 'src/pages/fr/index.astro';
+  return `src/pages${clean}.astro`;
+}
+
+const sourceFile = pathnameToFile(pathname);
+
+function gitLogOne(args: string[]): string {
+  try {
+    return execFileSync('git', args, {
+      cwd: process.cwd(),
+      encoding: 'utf-8',
+      stdio: ['pipe', 'pipe', 'pipe'],
+    }).trim();
+  } catch (_) {
+    return '';
+  }
+}
+
+let sha = '';
+let shaShort = '';
+let lastEditDate = '';
+
+const pageOut = gitLogOne(['log', '-1', '--format=%H|%ai', '--', sourceFile]);
+if (pageOut) {
+  const [h, iso] = pageOut.split('|');
+  sha = h;
+  shaShort = h.slice(0, 7);
+  lastEditDate = iso.slice(0, 10);
+}
+
+if (!sha) {
+  const repoOut = gitLogOne(['log', '-1', '--format=%H|%ai']);
+  if (repoOut) {
+    const [h, iso] = repoOut.split('|');
+    sha = h;
+    shaShort = h.slice(0, 7);
+    lastEditDate = iso.slice(0, 10);
+  }
+}
+
+const commitUrl = sha ? `https://github.com/${repo}/commit/${sha}` : '';
+---
+
+{shaShort && (
+  <div class="session-imprint" aria-label="page provenance">
+    <span class="imprint-dot">∷</span>
+    <span class="imprint-label">last edit</span>
+    <code class="imprint-date">{lastEditDate}</code>
+    <span class="imprint-sep">·</span>
+    <span class="imprint-label">commit</span>
+    <a href={commitUrl} class="imprint-sha" target="_blank" rel="noopener">{shaShort}</a>
+    <span class="imprint-sep">·</span>
+    <span class="imprint-label">signed</span>
+    <span class="imprint-signer">claude-opus-4-7</span>
+    <span class="imprint-amp">+</span>
+    <span class="imprint-signer">stéphane</span>
+  </div>
+)}
+
+<style>
+  .session-imprint {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    justify-content: center;
+    gap: 0.5rem;
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    color: var(--color-text-muted);
+    padding: 1.25rem 1.5rem 0.5rem;
+    margin-top: 2rem;
+    border-top: 1px dashed rgba(56, 189, 248, 0.15);
+    opacity: 0.65;
+    transition: opacity 0.3s;
+  }
+
+  .session-imprint:hover {
+    opacity: 1;
+  }
+
+  .imprint-dot {
+    color: var(--color-accent);
+  }
+
+  .imprint-label {
+    opacity: 0.75;
+  }
+
+  .imprint-date {
+    background: rgba(56, 189, 248, 0.06);
+    padding: 0.08rem 0.4rem;
+    border-radius: 3px;
+    color: var(--color-text);
+    font-size: 0.7rem;
+    font-family: var(--font-mono);
+  }
+
+  .imprint-sha {
+    background: rgba(56, 189, 248, 0.06);
+    padding: 0.08rem 0.4rem;
+    border-radius: 3px;
+    color: var(--color-accent);
+    font-size: 0.7rem;
+    text-decoration: none;
+    transition: color 0.2s, background 0.2s;
+  }
+
+  .imprint-sha:hover {
+    color: var(--color-accent-hover);
+    background: rgba(56, 189, 248, 0.12);
+  }
+
+  .imprint-sep {
+    opacity: 0.4;
+  }
+
+  .imprint-signer {
+    color: var(--color-text);
+    opacity: 0.85;
+  }
+
+  .imprint-amp {
+    color: var(--color-accent);
+    opacity: 0.6;
+  }
+
+  @media (max-width: 640px) {
+    .session-imprint {
+      font-size: 0.62rem;
+      gap: 0.35rem;
+      padding: 1rem 1rem 0.4rem;
+    }
+  }
+</style>

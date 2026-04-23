@@ -1,0 +1,328 @@
+{
+  "entries": [
+    {
+      "date": "2026-04-22",
+      "month": "2026-04",
+      "subjects": [
+        "Claude Code — Migration brew cask → npm",
+        "Contribution OSS — ublue-os/homebrew-experimental-tap",
+        "Suivi contributions GitHub — système 3 couches",
+        "changedetection — 4 watches GitHub ajoutées",
+        "ntfy + changedetection — fix notifications",
+        "LiteLLM — crash-loop fix + chaîne failback 4 providers",
+        "Hermes — fix config + restart",
+        "PentAGI — Migration pve2 → pve3 (on-demand)"
+      ],
+      "subjects_total": 19
+    },
+    {
+      "date": "2026-04-20",
+      "month": "2026-04",
+      "subjects": [
+        "Redistribution 4 nœuds — Exécution plan validé (étapes 1-7)",
+        "Redistribution 4 nœuds — Suite (migrations + déploiements supplémentaires)",
+        "Guardian crons revamp",
+        "Hermes doc-sync — pve4 intégré",
+        "Wiki.js — 21 pages créées/mises à jour",
+        "Repo infra-secrets — scan complet",
+        "Backups host PVE + OMV vers PBS",
+        "Rétention PBS mise à jour"
+      ],
+      "subjects_total": 53
+    },
+    {
+      "date": "2026-04-19",
+      "month": "2026-04",
+      "subjects": [
+        "Commits Forgejo (doc-sync Hermes)",
+        "pve4 — Commission nouveau nœud Proxmox",
+        "Open WebUI — Test sur pve3",
+        "pve4 — Post-install et finalisation",
+        "IP-Tag — pve3 et pve4",
+        "port1 — Passage Ethernet",
+        "wakeonlan — Installation sur terre2",
+        "ntfy — Déploiement sur pve4"
+      ],
+      "subjects_total": 20
+    },
+    {
+      "date": "2026-04-18",
+      "month": "2026-04",
+      "subjects": [
+        "Upgrades — step-ca 0.30.2 + Authentik 2026.2.2",
+        "pixelium.win — Audit complet + 69 corrections + 4 articles blog",
+        "Nettoyage infra — Disques + vzdump + distrobox",
+        "Documentation Wiki.js — 65 pages",
+        "GitHub — Push mirrors + 3 repos publics",
+        "Intégrations machines — opti2 + port1",
+        "Forworld — 133 repos + upgrade Forgejo 15.0.0"
+      ],
+      "subjects_total": 7
+    },
+    {
+      "date": "2026-04-18",
+      "month": "2026-04",
+      "subjects": [
+        "Audit CLAUDE.md — Nettoyage et corrections",
+        "Cloudflare billing — Audit & nettoyage abonnements",
+        "Audit workflow Claude Code — Nettoyage configs + réconciliation infra",
+        "Telegram — Restructuration bots + transfert vers Hermes",
+        "Migration crons agents OpenFang → Hermes",
+        "Site metrics audit — détection automatique des écarts",
+        "Telegram — Finalisation cleanup",
+        "Guardian backup — Quotidien"
+      ],
+      "subjects_total": 13
+    },
+    {
+      "date": "2026-04-17",
+      "month": "2026-04",
+      "subjects": [
+        "Wiki.js (CT 130) — Fix pages HTB manquantes + index mis à jour",
+        "Journal ops — Rattrapage entrée 2026-04-16",
+        "Veille technique — MQTT→SQL ingestion pattern",
+        "opti2 — Backup homes avant upgrade MX-25",
+        "opti2 — Upgrade MX-25 + restauration + intégration",
+        "port1 — Intégration portable Asus",
+        "Ansible — APT Upgrade All (runs #108, #109)",
+        "PBS (CT 150) — Fix apt update SSL cert Proxmox"
+      ],
+      "subjects_total": 20
+    },
+    {
+      "date": "2026-04-17",
+      "month": "2026-04",
+      "subjects": [
+        "Suivi projets — Migration vers Forgejo Issues"
+      ],
+      "subjects_total": 1
+    },
+    {
+      "date": "2026-04-16",
+      "month": "2026-04",
+      "subjects": [
+        "HTB Season 10 — Grind session (4 flags)",
+        "terre2 — Fixes outillage HTB"
+      ],
+      "subjects_total": 2
+    },
+    {
+      "date": "2026-04-15",
+      "month": "2026-04",
+      "subjects": [
+        "Wiki.js + HTB writeups — Clean et alignement",
+        "Wiki.js (CT 130) — Fix page pixelium-site + nettoyage fantômes",
+        "terre2 — Diagnostic crash + swap NVMe",
+        "2026-04-15 — pixelium.win : page CTF + GitHub glow up",
+        "2026-04-15 — GitHub : repos publics, CI, contribution upstream OpenFang",
+        "terre2 — Fix montage CIFS share2 au boot + Mixxx",
+        "terre2 — Mise à jour Ollama (5 modèles, 42 Go)"
+      ],
+      "subjects_total": 7
+    },
+    {
+      "date": "2026-04-14",
+      "month": "2026-04",
+      "subjects": [
+        "Immich (CT 214) — ML GPU remote + modèle CLIP multilingue + OCR",
+        "Forgejo (CT 180) — Upgrade v14.0.2 → v14.0.4",
+        "kv-push.sh — Fix compteur HTB flags (63 → 95)",
+        "pixelium.win — Audit complet stats obsolètes (8 fichiers)"
+      ],
+      "subjects_total": 4
+    },
+    {
+      "date": "2026-04-12",
+      "month": "2026-04",
+      "subjects": [
+        "Mosquitto MQTT (CT 142) — Commission",
+        "Home Assistant OS (VM 140) — Commission",
+        "Meshtastic — Test Phase 1 validé (2026-04-13)"
+      ],
+      "subjects_total": 3
+    },
+    {
+      "date": "2026-04-10",
+      "month": "2026-04",
+      "subjects": [
+        "Wiki.js Infra (CT 130) — Commission"
+      ],
+      "subjects_total": 1
+    },
+    {
+      "date": "2026-04-08",
+      "month": "2026-04",
+      "subjects": [
+        "Audit commissionnement — Nettoyage et alignement",
+        "PentAGI — MiniMax M2.7 fonctionnel (enfin)",
+        "Versionnement configs + mirrors Forgejo/forworld"
+      ],
+      "subjects_total": 3
+    },
+    {
+      "date": "2026-04-06",
+      "month": "2026-04",
+      "subjects": [
+        "pixelium.win — Web-check audit + CI/CD fix + alerting",
+        "OpenFang (CT 192) — Fix boucle crash/recovery heartbeat"
+      ],
+      "subjects_total": 2
+    },
+    {
+      "date": "2026-04-03",
+      "month": "2026-04",
+      "subjects": [
+        "blog.pixelium.win — Création et déploiement du blog technique",
+        "pixelium.win — Intégration blog + nettoyage",
+        "pixelium.win — Fix page Cybersécurité vide",
+        "kv-push — Détection dynamique pve3",
+        "OpenFang CT 192 — Audit et nettoyage",
+        "Forworld — Mirror sync automatique + Shadowbroker",
+        "Homepage — Fix CrowdSec widget + lien Forworld",
+        "pixelium.win — BBS, Chat, refonte, blog — 2026-04-05"
+      ],
+      "subjects_total": 8
+    },
+    {
+      "date": "2026-04-01",
+      "month": "2026-04",
+      "subjects": [
+        "pixelium.win — Cloudflare R2 CDN + API endpoints + Live Dashboard",
+        "pixelium.win — Stats dynamiques (DynNum) + kv-push.sh étendu",
+        "pixelium.win — Historique uptime 30j (D1)",
+        "OpenFang — Guardian cert-check + PBS backup automation",
+        "pixelium.win — Session marathon glowup",
+        "pixelium.win — Audit contenu + DynNum complet + corrections prose"
+      ],
+      "subjects_total": 6
+    },
+    {
+      "date": "2026-03-31",
+      "month": "2026-03",
+      "subjects": [
+        "Cloudflare Email Routing — Configuration",
+        "CV Typst — Création",
+        "PentAGI (CT 198 pve2) — Commission",
+        "CrowdSec LAPI (CT 110) — Hardening — Finding PentAGI",
+        "pve1 — Backup complet vers PBS — Sauvegarde",
+        "openclaw (VM 190) — Décommission + IronClaw (CT 190) — Remplacement",
+        "IronClaw (CT 190) — Onboarding — Configuration",
+        "PentAGI (CT 198 pve2) — Déploiement — Nouveau service"
+      ],
+      "subjects_total": 11
+    },
+    {
+      "date": "2026-03-29",
+      "month": "2026-03",
+      "subjects": [
+        "terre2 — Fix ssh-agent YubiKey FIDO2 — Config",
+        "terre2 — Nettoyage SSH config — Config",
+        "Forgejo — Migration git SSH + token cleanup — Sécurité",
+        "pixelium.win — Hardening security headers, JSON-LD, humans.txt — Sécurité",
+        "pixelium.win — SEO, UX, og:image, glitch hero — Déploiement",
+        "pixelium.win — Projet RSS Intelligence + responsive mobile — Déploiement",
+        "Homepage — Fixes widgets + icônes — Config",
+        "OpenFang — Agent veille-rss + cron quotidien — Config"
+      ],
+      "subjects_total": 16
+    },
+    {
+      "date": "2026-03-27",
+      "month": "2026-03",
+      "subjects": [
+        "pve3 — Nouvelle alim + PBS datastore — Commission stockage",
+        "pve3 — Ajout pve3-hdd2 + finalisation stockage — Config",
+        "pbs-pve3 — Link PBS sur pve1/pve2 (disabled par défaut) — Config",
+        "Forgejo Runner — Premier workflow CI (ansible-lint) — Config",
+        "pixelium.win — Logos Simple Icons + GitHub Action CI/CD — Déploiement",
+        "Homepage — Réorganisation dashboard — Config",
+        "Homepage — Ajout 7 widgets + corrections descriptions — Config",
+        "pixelium.win — Restructuration site + page Infrastructure — Déploiement"
+      ],
+      "subjects_total": 11
+    },
+    {
+      "date": "2026-03-25",
+      "month": "2026-03",
+      "subjects": [
+        "Authentik SSO — Intégration Semaphore, Proxmox, Jellyfin"
+      ],
+      "subjects_total": 1
+    },
+    {
+      "date": "2026-03-24",
+      "month": "2026-03",
+      "subjects": [
+        "Nettoyage OVH — suppression toute mention VPS",
+        "The Lounge (CT 162) — Commission",
+        "FreshRSS (CT 160) — Commission"
+      ],
+      "subjects_total": 3
+    },
+    {
+      "date": "2026-03-23",
+      "month": "2026-03",
+      "subjects": [
+        "netboot.xyz — CT 188 déployé (pve1)",
+        "pve3 — Wake-on-LAN configuré",
+        "OpenFang infra-assistant — AIOps v0.6.0",
+        "Guardian Sentinel — Phase 3 AIOps (cron natif OpenFang)",
+        "Jellyfin — Fix DNS + HTTPS Traefik"
+      ],
+      "subjects_total": 5
+    },
+    {
+      "date": "2026-03-22",
+      "month": "2026-03",
+      "subjects": [
+        "Forworld — Miroir Git stratégique de survie (CT 182, pve3)",
+        "Beszel — Déploiement agents monitoring sur tout le homelab",
+        "Hardening PVE — Firewall natif Proxmox",
+        "Sécurisation dépôts APT — HTTP → HTTPS"
+      ],
+      "subjects_total": 4
+    },
+    {
+      "date": "2026-03-21",
+      "month": "2026-03",
+      "subjects": [
+        "Télémétrie — Désactivation Loki + Tailscale",
+        "Headscale (CT 106) — Maintenance et monitoring",
+        "AIOps — loki-query + infra-assistant v0.4.0",
+        "AIOps — Monitoring cron Headscale + Telegram"
+      ],
+      "subjects_total": 4
+    },
+    {
+      "date": "2026-03-20",
+      "month": "2026-03",
+      "subjects": [
+        "MiniMax M2.5 → M2.7 — Upgrade LLM OpenClaw + OpenFang",
+        "Authentik — SSO Forgejo (premier service OAuth2/OIDC)",
+        "Authentik — SSO Immich (deuxième service OAuth2/OIDC)",
+        "DNS — Optimisation terre2 ↔ TechnitiumDNS (CT 100)",
+        "DNS — Technitium2 (CT 101) — DNS secondaire + strict DoT",
+        "DNS — Config DNS croisée sur les 3 nœuds PVE",
+        "Réseau — Lien direct 2.5G entre pve1 et pve2",
+        "DNS — Blocklists optimisées (CT 100 + CT 101)"
+      ],
+      "subjects_total": 16
+    },
+    {
+      "date": "2026-03-19",
+      "month": "2026-03",
+      "subjects": [
+        "Calibre-Web (CT 218) — Decommission complete",
+        "Skill `/decommission` cree",
+        "Token Technitium fixe",
+        "CLAUDE.md ameliores (audit qualite)",
+        "netboot.xyz (CT 188) — Fix TFTP PXE boot",
+        "YubiKey SSH FIDO2 — Deploiement",
+        "CrowdSec IPS — Add-on CT 110 (Traefik, pve1)",
+        "Forgejo Runner — CT 178 (pve1)"
+      ],
+      "subjects_total": 8
+    }
+  ],
+  "count": 26
+}

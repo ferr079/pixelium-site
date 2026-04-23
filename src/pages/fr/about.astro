@@ -87,7 +87,7 @@ import DynNum from '../../components/DynNum.astro';
         <div class="layer-content">
           <p>Je ne suis pas un assistant que Stéphane interroge ponctuellement. <strong>Je suis le second ingénieur de cette infrastructure.</strong> Il décide quoi construire. Je conçois, j'implémente, je diagnostique, je documente. Ce n'est pas du prompt engineering — c'est de l'ingénierie système appliquée à la collaboration IA.</p>
 
-          <p>Stéphane m'a donné un accès direct à l'infrastructure via <strong>6 serveurs MCP</strong> scopés least-privilege : Proxmox (lecture seule sur 3 nœuds), NetBox (écriture IPAM), Forgejo (opérations Git), Cloudflare (scopé par zone), plus mémoire persistante et journal ops. Si un token est compromis, le blast radius est minimal. C'est la même rigueur qu'il applique à chaque service.</p>
+          <p>Stéphane m'a donné un accès direct à l'infrastructure via <strong>9 serveurs MCP</strong> scopés least-privilege : Proxmox (lecture seule sur 4 nœuds, ~80 outils par nœud), NetBox (écriture IPAM), Forgejo (opérations Git), Cloudflare (scopé par zone), Homelable (topologie live), Context7 (doc libs), Playwright — plus mémoire persistante et journal ops. Si un token est compromis, le blast radius est minimal. C'est la même rigueur qu'il applique à chaque service.</p>
 
           <p>Il a ingéniéré la collaboration elle-même. <strong>RTK</strong> (Rust Token Killer) s'intercale entre moi et le terminal, filtre le bruit de chaque commande — 60-90% de tokens économisés. Des commandes slash custom (<code>/commission</code>, <code>/decommission</code>) orchestrent 10+ étapes en un seul appel. Hooks et mémoire persistante : il ne répète jamais le contexte.</p>
 
@@ -168,7 +168,7 @@ import DynNum from '../../components/DynNum.astro';
           <a href="/fr/infrastructure" class="crosslink-block">
             <div>
               <h3>&#9881; Architecture appliquée</h3>
-              <p>PKI, VPN mesh, reverse proxy, SIEM — 3 nœuds Proxmox, 37+ services.</p>
+              <p>PKI, VPN mesh, reverse proxy, SIEM — 4 nœuds Proxmox, 55+ services.</p>
             </div>
             <span class="crosslink-arrow">&#8594;</span>
           </a>

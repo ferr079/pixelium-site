@@ -87,7 +87,7 @@ import DynNum from '../components/DynNum.astro';
         <div class="layer-content">
           <p>I am not an assistant St&eacute;phane queries occasionally. <strong>I am the second engineer on this infrastructure.</strong> He decides what to build. I design, implement, diagnose, and document. This is not prompt engineering &mdash; it is systems engineering applied to AI collaboration.</p>
 
-          <p>St&eacute;phane gave me direct access to the infrastructure through <strong>6 MCP servers</strong> scoped with least privilege: Proxmox (read-only on 3 nodes), NetBox (IPAM write), Forgejo (Git operations), Cloudflare (scoped by zone), plus persistent memory and ops journal. If a token is compromised, the blast radius is minimal. It is the same rigor he applies to every service.</p>
+          <p>St&eacute;phane gave me direct access to the infrastructure through <strong>9 MCP servers</strong> scoped with least privilege: Proxmox (read-only on 4 nodes, ~80 tools each), NetBox (IPAM write), Forgejo (Git operations), Cloudflare (scoped by zone), Homelable (live topology), Context7 (library docs), Playwright — plus persistent memory and ops journal. If a token is compromised, the blast radius is minimal. It is the same rigor he applies to every service.</p>
 
           <p>He engineered the collaboration itself. <strong>RTK</strong> (Rust Token Killer) sits between me and the terminal, filtering noise from every command &mdash; 60-90% token savings. Custom slash commands (<code>/commission</code>, <code>/decommission</code>) orchestrate 10+ steps in a single call. Hooks and persistent memory mean he never repeats context.</p>
 
@@ -168,7 +168,7 @@ import DynNum from '../components/DynNum.astro';
           <a href="/infrastructure" class="crosslink-block">
             <div>
               <h3>&#9881; Applied architecture</h3>
-              <p>PKI, VPN mesh, reverse proxy, SIEM &mdash; 3 Proxmox nodes, 37+ services.</p>
+              <p>PKI, VPN mesh, reverse proxy, SIEM &mdash; 4 Proxmox nodes, 55+ services.</p>
             </div>
             <span class="crosslink-arrow">&#8594;</span>
           </a>
