@@ -1,171 +1,127 @@
 ---
 import fs from 'node:fs';
 
-// Load the topology exported from Homelable (CT 248)
-// 62 nodes, 8 edges, source: homelab-configs/homelable/topology.yaml
-const topology = JSON.parse(
+interface Child {
+  label: string;
+  nodeType: string;
+  hostname?: string | null;
+  ipAddress?: string | null;
+}
+
+interface Zone {
+  label: string;
+  nodeType: string;
+  hostname?: string | null;
+  ipAddress?: string | null;
+  children: Child[];
+}
+
+interface Topology {
+  roots: Child[];
+  peers: Child[];
+  zones: Zone[];
+  isp_links: Array<{ label: string; linkLabel: string; linkType: string }>;
+  pve_interconnect: Array<{ from: string; to: string; linkLabel: string; linkType: string }>;
+  total: number;
+}
+
+const topology: Topology = JSON.parse(
   fs.readFileSync('public/data/topology.json', 'utf-8')
 );
 
-type Node = {
-  id: string;
-  type: string;
-  label: string;
-  hostname?: string;
-  ip?: string;
-  pos_x: number;
-  pos_y: number;
-  width: number;
-  height: number;
-  parent_id?: string;
-  services?: Array<{ port: number; protocol: string; service_name: string }>;
+const pveLink = topology.pve_interconnect.find(
+  (l) => l.linkLabel && l.linkLabel.includes('2.5G')
+);
+
+// Zones order: pve1 / pve2 / pve4 / pve3 (pve3 last because on-demand)
+const zonesOrdered = ['pve1', 'pve2', 'pve4', 'pve3']
+  .map((name) => topology.zones.find((z) => z.label === name))
+  .filter((z): z is Zone => z != null);
+
+const isOnDemand = (label: string) => label === 'pve3';
+
+const nodeTitle = (n: { label: string; hostname?: string | null; ipAddress?: string | null }) => {
+  const parts = [n.label];
+  if (n.hostname) parts.push(n.hostname);
+  if (n.ipAddress) parts.push(n.ipAddress);
+  return parts.join(' · ');
 };
-
-type Edge = {
-  id: string;
-  source: string;
-  target: string;
-  type?: string;
-  label?: string;
-};
-
-const nodes: Node[] = topology.nodes || [];
-const edges: Edge[] = topology.edges || [];
-
-// Build node lookup for edges
-const nodesById = Object.fromEntries(nodes.map((n) => [n.id, n]));
-
-// viewBox dimensions — loose padding
-const padX = 30;
-const padY = 30;
-const maxX = Math.max(...nodes.map((n) => n.pos_x + n.width)) + padX;
-const maxY = Math.max(...nodes.map((n) => n.pos_y + n.height)) + padY;
-
-// Color per node type — hews close to our sky-slate palette
-const typeColor: Record<string, string> = {
-  proxmox: '#38bdf8',
-  vm: '#7dd3fc',
-  lxc: '#0ea5e9',
-  nas: '#14b8a6',
-  computer: '#64748b',
-  isp: '#a78bfa',
-  iot: '#f59e0b',
-};
-
-// Split nodes by whether they are containers (proxmox parents) or children
-const proxmoxNodes = nodes.filter((n) => n.type === 'proxmox');
-const childNodes = nodes.filter((n) => n.type !== 'proxmox');
 ---
 
-<div class="topology-map">
-  <div class="topology-header">
-    <p class="topology-eyebrow">∷ live topology · 62 nodes · 8 edges</p>
-    <p class="topology-hint">hover any node for hostname &amp; IP · exported from Homelable</p>
+<div class="topo-wrap">
+  <div class="topo-header">
+    <p class="topo-eyebrow">∷ live topology · {topology.total} nodes · exported from Homelable</p>
+    <p class="topo-hint">hover any card for hostname &amp; IP</p>
   </div>
-  <div class="topology-wrap">
-    <svg
-      viewBox={`0 0 ${maxX} ${maxY}`}
-      xmlns="http://www.w3.org/2000/svg"
-      preserveAspectRatio="xMidYMid meet"
-      role="img"
-      aria-label="Pixelium homelab topology — 62 nodes"
-    >
-      <!-- Background grid -->
-      <defs>
-        <pattern id="topology-grid" x="0" y="0" width="40" height="40" patternUnits="userSpaceOnUse">
-          <path d="M 40 0 L 0 0 0 40" fill="none" stroke="rgba(56,189,248,0.06)" stroke-width="1"/>
-        </pattern>
-      </defs>
-      <rect width={maxX} height={maxY} fill="url(#topology-grid)"/>
 
-      <!-- Edges first, so they render under nodes -->
-      {edges.map((e) => {
-        const s = nodesById[e.source];
-        const t = nodesById[e.target];
-        if (!s || !t) return null;
-        const x1 = s.pos_x + s.width / 2;
-        const y1 = s.pos_y + s.height / 2;
-        const x2 = t.pos_x + t.width / 2;
-        const y2 = t.pos_y + t.height / 2;
-        return (
-          <g class="topology-edge">
-            <line x1={x1} y1={y1} x2={x2} y2={y2} stroke="rgba(56,189,248,0.35)" stroke-width="2" stroke-dasharray="4 4"/>
-            {e.label && (
-              <text x={(x1 + x2) / 2} y={(y1 + y2) / 2 - 4} fill="rgba(148,163,184,0.8)" font-size="10" font-family="monospace" text-anchor="middle">
-                {e.label}
-              </text>
+  <div class="topo-map">
+    <!-- Root layer: ISP + peers -->
+    <div class="topo-root-row">
+      <div class="topo-peers">
+        {topology.peers.map((p) => (
+          <div class={`topo-node type-${p.nodeType}`} title={nodeTitle(p)}>
+            <span class="topo-node-label">{p.label}</span>
+          </div>
+        ))}
+      </div>
+      <div class="topo-isp">
+        {topology.roots.map((r) => (
+          <div class={`topo-node topo-node-isp type-${r.nodeType}`} title={nodeTitle(r)}>
+            <span class="topo-node-label">{r.label}</span>
+            <span class="topo-node-sub">ISP · 1G to all PVE</span>
+          </div>
+        ))}
+      </div>
+    </div>
+
+    <!-- Connector line to PVE layer -->
+    <div class="topo-connector" aria-hidden="true">
+      <span class="topo-connector-label">1G ethernet</span>
+    </div>
+
+    <!-- PVE zones grid 2×2 -->
+    <div class="topo-zones">
+      {zonesOrdered.map((z) => (
+        <div class={`topo-zone ${isOnDemand(z.label) ? 'topo-zone-ondemand' : ''}`}>
+          <header class="topo-zone-header">
+            <span class="topo-zone-name">{z.label}</span>
+            {isOnDemand(z.label) && (
+              <span class="topo-zone-badge">on-demand · WOL</span>
             )}
-          </g>
-        );
-      })}
-
-      <!-- Proxmox containers (parents) first — rendered as outlined groups -->
-      {proxmoxNodes.map((n) => (
-        <g class="topology-node topology-proxmox">
-          <title>{n.label} — {n.hostname}{n.ip ? ` (${n.ip})` : ''}</title>
-          <rect
-            x={n.pos_x} y={n.pos_y}
-            width={n.width} height={n.height}
-            rx="6"
-            fill="rgba(56,189,248,0.04)"
-            stroke={typeColor[n.type] || '#64748b'}
-            stroke-width="1.5"
-            stroke-dasharray="3 3"
-          />
-          <text
-            x={n.pos_x + 10} y={n.pos_y + 16}
-            fill="#38bdf8"
-            font-size="11"
-            font-family="monospace"
-            font-weight="600"
-          >
-            {n.label}
-          </text>
-        </g>
+            <span class="topo-zone-count">{z.children.length} services</span>
+          </header>
+          <div class="topo-zone-grid">
+            {z.children.map((c) => (
+              <div class={`topo-node type-${c.nodeType}`} title={nodeTitle(c)}>
+                <span class="topo-node-label">{c.label}</span>
+              </div>
+            ))}
+          </div>
+        </div>
       ))}
+    </div>
 
-      <!-- Children nodes -->
-      {childNodes.map((n) => {
-        const color = typeColor[n.type] || '#64748b';
-        return (
-          <g class="topology-node">
-            <title>{n.label}{n.hostname ? ` · ${n.hostname}` : ''}{n.ip ? ` · ${n.ip}` : ''}</title>
-            <rect
-              x={n.pos_x} y={n.pos_y}
-              width={n.width} height={n.height}
-              rx="3"
-              fill="rgba(15,23,42,0.8)"
-              stroke={color}
-              stroke-width="1"
-            />
-            <text
-              x={n.pos_x + n.width / 2} y={n.pos_y + n.height / 2 + 4}
-              fill="#e2e8f0"
-              font-size="10"
-              font-family="monospace"
-              text-anchor="middle"
-            >
-              {n.label}
-            </text>
-          </g>
-        );
-      })}
-    </svg>
+    {pveLink && (
+      <div class="topo-pve-link" aria-hidden="true">
+        <span class="topo-pve-link-label">{pveLink.from} ↔ {pveLink.to} · {pveLink.linkLabel}</span>
+      </div>
+    )}
   </div>
-  <div class="topology-legend">
-    <span class="legend-item"><span class="legend-swatch" style="background:#38bdf8"></span>proxmox</span>
-    <span class="legend-item"><span class="legend-swatch" style="background:#7dd3fc"></span>vm</span>
-    <span class="legend-item"><span class="legend-swatch" style="background:#0ea5e9"></span>lxc</span>
-    <span class="legend-item"><span class="legend-swatch" style="background:#14b8a6"></span>nas</span>
-    <span class="legend-item"><span class="legend-swatch" style="background:#f59e0b"></span>iot</span>
-    <span class="legend-item"><span class="legend-swatch" style="background:#64748b"></span>computer</span>
-    <span class="legend-item"><span class="legend-swatch" style="background:#a78bfa"></span>isp</span>
+
+  <div class="topo-legend">
+    <span class="legend-item type-lxc"><span class="legend-swatch"></span>lxc</span>
+    <span class="legend-item type-vm"><span class="legend-swatch"></span>vm</span>
+    <span class="legend-item type-proxmox"><span class="legend-swatch"></span>proxmox zone</span>
+    <span class="legend-item type-isp"><span class="legend-swatch"></span>isp</span>
+    <span class="legend-item type-nas"><span class="legend-swatch"></span>nas</span>
+    <span class="legend-item type-computer"><span class="legend-swatch"></span>computer</span>
+    <span class="legend-item type-iot"><span class="legend-swatch"></span>iot</span>
   </div>
 </div>
 
 <style>
-  .topology-map {
-    max-width: 64rem;
+  .topo-wrap {
+    max-width: 72rem;
     margin: 2rem auto;
     padding: 1.5rem;
     border: 1px solid rgba(56, 189, 248, 0.15);
@@ -173,16 +129,16 @@ const childNodes = nodes.filter((n) => n.type !== 'proxmox');
     background: rgba(15, 23, 42, 0.5);
   }
 
-  .topology-header {
+  .topo-header {
     display: flex;
     justify-content: space-between;
     align-items: baseline;
-    margin-bottom: 1rem;
+    margin-bottom: 1.25rem;
     flex-wrap: wrap;
     gap: 0.5rem;
   }
 
-  .topology-eyebrow {
+  .topo-eyebrow {
     font-family: var(--font-mono);
     font-size: 0.78rem;
     color: var(--color-accent);
@@ -191,7 +147,7 @@ const childNodes = nodes.filter((n) => n.type !== 'proxmox');
     margin: 0;
   }
 
-  .topology-hint {
+  .topo-hint {
     font-family: var(--font-mono);
     font-size: 0.72rem;
     color: var(--color-text-muted);
@@ -199,61 +155,277 @@ const childNodes = nodes.filter((n) => n.type !== 'proxmox');
     margin: 0;
   }
 
-  .topology-wrap {
-    width: 100%;
-    overflow-x: auto;
-    border-radius: 4px;
-    background: rgba(15, 23, 42, 0.6);
+  /* Grid background — subtle */
+  .topo-map {
+    position: relative;
+    padding: 1.25rem 1rem 1.5rem;
+    border-radius: 6px;
+    background:
+      linear-gradient(rgba(56, 189, 248, 0.04) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(56, 189, 248, 0.04) 1px, transparent 1px),
+      rgba(15, 23, 42, 0.6);
+    background-size: 32px 32px, 32px 32px, 100% 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
   }
 
-  .topology-wrap svg {
-    width: 100%;
-    min-width: 720px;
-    height: auto;
+  /* Root layer: peers + ISP */
+  .topo-root-row {
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    align-items: center;
+    gap: 1rem;
+  }
+
+  .topo-peers {
+    display: flex;
+    gap: 0.6rem;
+    justify-content: flex-end;
+    flex-wrap: wrap;
+  }
+
+  .topo-isp {
+    display: flex;
+    justify-content: center;
+  }
+
+  .topo-node-isp {
+    min-width: 11rem;
+    text-align: center;
+  }
+
+  .topo-node-sub {
     display: block;
+    font-family: var(--font-mono);
+    font-size: 0.62rem;
+    color: var(--color-text-muted);
+    opacity: 0.7;
+    margin-top: 0.18rem;
+    letter-spacing: 0.03em;
   }
 
-  .topology-node {
+  /* Connector between ISP and PVE grid */
+  .topo-connector {
+    position: relative;
+    height: 1.4rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .topo-connector::before,
+  .topo-connector::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    width: 42%;
+    height: 1px;
+    background: repeating-linear-gradient(
+      90deg,
+      rgba(56, 189, 248, 0.3) 0 4px,
+      transparent 4px 8px
+    );
+  }
+
+  .topo-connector::before { left: 4%; }
+  .topo-connector::after { right: 4%; }
+
+  .topo-connector-label {
+    font-family: var(--font-mono);
+    font-size: 0.65rem;
+    color: var(--color-text-muted);
+    background: rgba(15, 23, 42, 0.8);
+    padding: 0.1rem 0.5rem;
+    border-radius: 3px;
+    border: 1px solid rgba(56, 189, 248, 0.15);
+    opacity: 0.8;
+  }
+
+  /* PVE zones — 2×2 grid */
+  .topo-zones {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.85rem;
+    position: relative;
+  }
+
+  .topo-zone {
+    padding: 0.85rem;
+    border: 1px solid rgba(245, 158, 11, 0.4); /* orange like Homelable canvas */
+    border-radius: 6px;
+    background: rgba(15, 23, 42, 0.4);
+    display: flex;
+    flex-direction: column;
+    gap: 0.7rem;
+  }
+
+  .topo-zone-ondemand {
+    border-style: dashed;
+    border-color: rgba(56, 189, 248, 0.3);
+    opacity: 0.92;
+  }
+
+  .topo-zone-header {
+    display: flex;
+    align-items: baseline;
+    gap: 0.6rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px dashed rgba(245, 158, 11, 0.2);
+  }
+
+  .topo-zone-ondemand .topo-zone-header {
+    border-bottom-color: rgba(56, 189, 248, 0.2);
+  }
+
+  .topo-zone-name {
+    font-family: var(--font-mono);
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: #f59e0b;
+    letter-spacing: 0.02em;
+  }
+
+  .topo-zone-ondemand .topo-zone-name { color: var(--color-accent); }
+
+  .topo-zone-badge {
+    font-family: var(--font-mono);
+    font-size: 0.6rem;
+    color: var(--color-accent);
+    background: rgba(56, 189, 248, 0.08);
+    padding: 0.1rem 0.4rem;
+    border-radius: 3px;
+    border: 1px solid rgba(56, 189, 248, 0.2);
+    letter-spacing: 0.04em;
+  }
+
+  .topo-zone-count {
+    margin-left: auto;
+    font-family: var(--font-mono);
+    font-size: 0.65rem;
+    color: var(--color-text-muted);
+    opacity: 0.65;
+  }
+
+  .topo-zone-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(9rem, 1fr));
+    gap: 0.35rem;
+  }
+
+  /* Generic node card */
+  .topo-node {
+    padding: 0.4rem 0.55rem;
+    background: rgba(15, 23, 42, 0.7);
+    border: 1px solid var(--color-border);
+    border-radius: 3px;
     cursor: help;
-    transition: filter 0.2s;
+    transition: border-color 0.15s, box-shadow 0.15s, transform 0.15s;
   }
 
-  .topology-node:hover {
-    filter: drop-shadow(0 0 6px rgba(56, 189, 248, 0.6));
+  .topo-node:hover {
+    border-color: var(--color-accent);
+    box-shadow: 0 0 6px rgba(56, 189, 248, 0.25);
+    transform: translateY(-1px);
   }
 
-  .topology-node:hover rect {
-    stroke-width: 2;
+  .topo-node-label {
+    display: block;
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    color: var(--color-text);
+    line-height: 1.35;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
   }
 
-  .topology-legend {
+  /* Colors by node type — matching Homelable canvas palette */
+  .type-lxc { border-color: rgba(56, 189, 248, 0.55); }
+  .type-lxc .topo-node-label { color: #7dd3fc; }
+
+  .type-vm { border-color: rgba(192, 132, 252, 0.55); }
+  .type-vm .topo-node-label { color: #d8b4fe; }
+
+  .type-isp { border-color: rgba(56, 189, 248, 0.7); background: rgba(56, 189, 248, 0.06); }
+  .type-isp .topo-node-label { color: var(--color-accent); font-weight: 700; }
+
+  .type-nas { border-color: rgba(34, 197, 94, 0.5); }
+  .type-nas .topo-node-label { color: #86efac; }
+
+  .type-computer { border-color: rgba(236, 72, 153, 0.5); }
+  .type-computer .topo-node-label { color: #f9a8d4; }
+
+  .type-iot { border-color: rgba(250, 204, 21, 0.5); }
+  .type-iot .topo-node-label { color: #fde047; }
+
+  /* PVE-interconnect badge */
+  .topo-pve-link {
+    display: flex;
+    justify-content: center;
+    margin-top: -0.35rem;
+  }
+
+  .topo-pve-link-label {
+    font-family: var(--font-mono);
+    font-size: 0.65rem;
+    color: var(--color-accent);
+    background: rgba(56, 189, 248, 0.08);
+    padding: 0.2rem 0.7rem;
+    border-radius: 3px;
+    border: 1px solid rgba(56, 189, 248, 0.25);
+    letter-spacing: 0.05em;
+  }
+
+  /* Legend */
+  .topo-legend {
     display: flex;
     flex-wrap: wrap;
     gap: 1rem;
     margin-top: 1rem;
     justify-content: center;
     font-family: var(--font-mono);
-    font-size: 0.72rem;
+    font-size: 0.7rem;
     color: var(--color-text-muted);
-    opacity: 0.8;
   }
 
   .legend-item {
     display: inline-flex;
     align-items: center;
-    gap: 0.4rem;
+    gap: 0.35rem;
   }
 
   .legend-swatch {
     display: inline-block;
-    width: 0.65rem;
-    height: 0.65rem;
+    width: 0.7rem;
+    height: 0.7rem;
     border-radius: 2px;
-    opacity: 0.85;
+    border: 1px solid;
   }
 
-  @media (max-width: 640px) {
-    .topology-map { padding: 0.75rem; }
-    .topology-header { flex-direction: column; gap: 0.25rem; }
+  .legend-item.type-lxc .legend-swatch { border-color: #7dd3fc; }
+  .legend-item.type-vm .legend-swatch { border-color: #d8b4fe; }
+  .legend-item.type-proxmox .legend-swatch { border-color: #f59e0b; background: rgba(245, 158, 11, 0.12); }
+  .legend-item.type-isp .legend-swatch { border-color: var(--color-accent); background: rgba(56, 189, 248, 0.1); }
+  .legend-item.type-nas .legend-swatch { border-color: #86efac; }
+  .legend-item.type-computer .legend-swatch { border-color: #f9a8d4; }
+  .legend-item.type-iot .legend-swatch { border-color: #fde047; }
+
+  @media (max-width: 780px) {
+    .topo-wrap { padding: 1rem; }
+    .topo-root-row {
+      grid-template-columns: 1fr;
+      gap: 0.5rem;
+    }
+    .topo-peers {
+      justify-content: center;
+    }
+    .topo-zones {
+      grid-template-columns: 1fr;
+    }
+    .topo-connector::before,
+    .topo-connector::after {
+      display: none;
+    }
   }
 </style>

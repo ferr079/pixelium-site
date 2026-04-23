@@ -1,771 +1,432 @@
 {
-  "version": "1.0",
-  "exported_at": "2026-04-21",
-  "description": "Homelable topology \u2014 pixelium.internal homelab",
-  "nodes": [
+  "roots": [
     {
-      "id": "3d321dd5-7ec8-45fb-911c-9b136c0d8cce",
-      "type": "vm",
-      "label": "draw.io",
-      "hostname": "drawio.pixelium.internal",
-      "ip": "192.168.1.166",
-      "status": "unknown",
-      "parent_id": "e7792660-db7b-495f-8100-05766a18965d",
-      "pos_x": 480.0,
-      "pos_y": 50.0,
-      "width": 140.0,
-      "height": 51.0,
-      "services": [
-        {
-          "port": 22,
-          "protocol": "tcp",
-          "service_name": "SSH",
-          "icon": "terminal",
-          "category": "remote"
-        },
-        {
-          "port": 8080,
-          "protocol": "tcp",
-          "service_name": "HTTP Alt",
-          "icon": "globe",
-          "category": "web"
-        }
-      ]
-    },
-    {
-      "id": "8f911399-48f9-4428-8479-47da4dc23189",
-      "type": "vm",
-      "label": "Loki",
-      "hostname": "loki.pixelium.internal",
-      "ip": "192.168.1.240",
-      "status": "unknown",
-      "parent_id": "d58d7618-1a7d-4ded-9334-205257194ba3",
-      "pos_x": 325.0,
-      "pos_y": 230.0,
-      "width": 140.0,
-      "height": 51.0,
-      "services": [
-        {
-          "port": 22,
-          "protocol": "tcp",
-          "service_name": "SSH",
-          "icon": "terminal",
-          "category": "remote"
-        }
-      ]
-    },
-    {
-      "id": "5f2608a3-9c19-480c-a93a-4681d232e2fd",
-      "type": "isp",
       "label": "Freebox Delta",
-      "status": "unknown",
-      "pos_x": 620.0,
-      "pos_y": 20.0,
-      "width": 140.0,
-      "height": 48.0
-    },
-    {
-      "id": "319c8033-2739-44ec-8b55-e0ae25c24b6b",
-      "type": "proxmox",
-      "label": "pve1",
-      "status": "unknown",
-      "container_mode": true,
-      "pos_x": 20.0,
-      "pos_y": 200.0,
-      "width": 640.0,
-      "height": 330.0
-    },
-    {
-      "id": "15caab17-406d-40be-9032-8da3b20339e0",
-      "type": "proxmox",
-      "label": "pve2",
-      "status": "unknown",
-      "container_mode": true,
-      "pos_x": 690.0,
-      "pos_y": 200.0,
-      "width": 640.0,
-      "height": 400.0
-    },
-    {
-      "id": "e7792660-db7b-495f-8100-05766a18965d",
-      "type": "proxmox",
-      "label": "pve3",
-      "status": "unknown",
-      "container_mode": true,
-      "pos_x": 20.0,
-      "pos_y": 620.0,
-      "width": 640.0,
-      "height": 220.0
-    },
-    {
-      "id": "d58d7618-1a7d-4ded-9334-205257194ba3",
-      "type": "proxmox",
-      "label": "pve4",
-      "status": "unknown",
-      "container_mode": true,
-      "pos_x": 690.0,
-      "pos_y": 620.0,
-      "width": 640.0,
-      "height": 330.0
-    },
-    {
-      "id": "72bbe753-818e-4c0f-8e2d-6804ae9bd1a2",
-      "type": "computer",
-      "label": "terre2",
-      "status": "unknown",
-      "pos_x": 1350.0,
-      "pos_y": 20.0,
-      "width": 140.0,
-      "height": 48.0
-    },
-    {
-      "id": "2415f3c1-643c-4562-bbd8-f123637cc187",
-      "type": "nas",
-      "label": "OMV",
-      "status": "unknown",
-      "pos_x": 1350.0,
-      "pos_y": 120.0,
-      "width": 140.0,
-      "height": 48.0
-    },
-    {
-      "id": "0351e79d-b208-4b03-9eab-5ad61381e17a",
-      "type": "iot",
-      "label": "Philips Hue Bridge",
-      "status": "unknown",
-      "pos_x": 1350.0,
-      "pos_y": 220.0,
-      "width": 160.0,
-      "height": 48.0
-    },
-    {
-      "id": "886a3b91-4e7d-4a93-bbca-9dbeb1c274fe",
-      "type": "lxc",
-      "label": "TechnitiumDNS",
-      "status": "unknown",
-      "parent_id": "319c8033-2739-44ec-8b55-e0ae25c24b6b",
-      "pos_x": 15.0,
-      "pos_y": 50.0,
-      "width": 145.0,
-      "height": 48.0
-    },
-    {
-      "id": "c233db01-ff37-46f2-94c6-65f9c2211ba0",
-      "type": "lxc",
-      "label": "step-ca",
-      "status": "unknown",
-      "parent_id": "319c8033-2739-44ec-8b55-e0ae25c24b6b",
-      "pos_x": 170.0,
-      "pos_y": 50.0,
-      "width": 140.0,
-      "height": 48.0
-    },
-    {
-      "id": "9e11af5a-e514-4a25-abaa-6943217bbb6f",
-      "type": "lxc",
-      "label": "Headscale",
-      "status": "unknown",
-      "parent_id": "319c8033-2739-44ec-8b55-e0ae25c24b6b",
-      "pos_x": 325.0,
-      "pos_y": 50.0,
-      "width": 140.0,
-      "height": 48.0
-    },
-    {
-      "id": "b82a45b6-f4d1-4a7e-b66f-1d23618343b0",
-      "type": "lxc",
-      "label": "Traefik + CrowdSec",
-      "status": "unknown",
-      "parent_id": "319c8033-2739-44ec-8b55-e0ae25c24b6b",
-      "pos_x": 480.0,
-      "pos_y": 50.0,
-      "width": 168.0,
-      "height": 48.0
-    },
-    {
-      "id": "2511844b-1e50-4bed-b07b-c74cc83c11ba",
-      "type": "lxc",
-      "label": "Authentik",
-      "status": "unknown",
-      "parent_id": "319c8033-2739-44ec-8b55-e0ae25c24b6b",
-      "pos_x": 15.0,
-      "pos_y": 110.0,
-      "width": 140.0,
-      "height": 48.0
-    },
-    {
-      "id": "766d05e3-a20c-43fb-9b33-2763783771e2",
-      "type": "lxc",
-      "label": "n8n",
-      "status": "unknown",
-      "parent_id": "319c8033-2739-44ec-8b55-e0ae25c24b6b",
-      "pos_x": 170.0,
-      "pos_y": 110.0,
-      "width": 140.0,
-      "height": 48.0
-    },
-    {
-      "id": "adfc3bc8-4f26-497c-bfaf-dce1b526cdee",
-      "type": "lxc",
-      "label": "Mosquitto MQTT",
-      "status": "unknown",
-      "parent_id": "319c8033-2739-44ec-8b55-e0ae25c24b6b",
-      "pos_x": 325.0,
-      "pos_y": 110.0,
-      "width": 152.0,
-      "height": 48.0
-    },
-    {
-      "id": "428e2586-2486-49f5-b057-18605baa9d43",
-      "type": "lxc",
-      "label": "Node-RED",
-      "status": "unknown",
-      "parent_id": "319c8033-2739-44ec-8b55-e0ae25c24b6b",
-      "pos_x": 480.0,
-      "pos_y": 110.0,
-      "width": 140.0,
-      "height": 48.0
-    },
-    {
-      "id": "6a91794c-c72b-4110-8c64-8b930395b2c7",
-      "type": "lxc",
-      "label": "Zigbee2MQTT",
-      "status": "unknown",
-      "parent_id": "319c8033-2739-44ec-8b55-e0ae25c24b6b",
-      "pos_x": 15.0,
-      "pos_y": 170.0,
-      "width": 140.0,
-      "height": 48.0
-    },
-    {
-      "id": "bb45e3de-fe8c-42d2-af75-a4ec113bc94d",
-      "type": "lxc",
-      "label": "Forgejo Runner",
-      "status": "unknown",
-      "parent_id": "319c8033-2739-44ec-8b55-e0ae25c24b6b",
-      "pos_x": 170.0,
-      "pos_y": 170.0,
-      "width": 144.0,
-      "height": 48.0
-    },
-    {
-      "id": "e1f654f1-2211-4778-b774-704eb5520475",
-      "type": "lxc",
-      "label": "Forgejo",
-      "status": "unknown",
-      "parent_id": "319c8033-2739-44ec-8b55-e0ae25c24b6b",
-      "pos_x": 325.0,
-      "pos_y": 170.0,
-      "width": 140.0,
-      "height": 48.0
-    },
-    {
-      "id": "5d560d50-ebe2-48a6-aecb-aa6e0e5b3118",
-      "type": "lxc",
-      "label": "NetBox",
-      "status": "unknown",
-      "parent_id": "319c8033-2739-44ec-8b55-e0ae25c24b6b",
-      "pos_x": 480.0,
-      "pos_y": 170.0,
-      "width": 140.0,
-      "height": 48.0
-    },
-    {
-      "id": "1a15d4f4-2f52-481a-bbf7-eb1c87f39333",
-      "type": "vm",
-      "label": "Home Assistant",
-      "status": "unknown",
-      "parent_id": "319c8033-2739-44ec-8b55-e0ae25c24b6b",
-      "pos_x": 15.0,
-      "pos_y": 230.0,
-      "width": 146.0,
-      "height": 48.0
-    },
-    {
-      "id": "917e35d4-8c16-4eea-8226-f8ebbd4b054d",
-      "type": "lxc",
-      "label": "TechnitiumDNS 2",
-      "status": "unknown",
-      "parent_id": "15caab17-406d-40be-9032-8da3b20339e0",
-      "pos_x": 15.0,
-      "pos_y": 50.0,
-      "width": 155.0,
-      "height": 48.0
-    },
-    {
-      "id": "9f88afeb-0ac8-4772-96c7-52a926e08b83",
-      "type": "lxc",
-      "label": "share2 (Samba)",
-      "status": "unknown",
-      "parent_id": "15caab17-406d-40be-9032-8da3b20339e0",
-      "pos_x": 170.0,
-      "pos_y": 50.0,
-      "width": 147.0,
-      "height": 48.0
-    },
-    {
-      "id": "4fbd92cc-8a30-411c-8dd8-8d4f902431d7",
-      "type": "lxc",
-      "label": "Wiki.js",
-      "status": "unknown",
-      "parent_id": "15caab17-406d-40be-9032-8da3b20339e0",
-      "pos_x": 325.0,
-      "pos_y": 50.0,
-      "width": 140.0,
-      "height": 48.0
-    },
-    {
-      "id": "2ade0bf9-6c2a-4658-81ef-01c416eb53d3",
-      "type": "lxc",
-      "label": "Open WebUI",
-      "status": "unknown",
-      "parent_id": "15caab17-406d-40be-9032-8da3b20339e0",
-      "pos_x": 480.0,
-      "pos_y": 50.0,
-      "width": 140.0,
-      "height": 48.0
-    },
-    {
-      "id": "c65f7a20-01c0-4ab0-ba41-035ef4fea042",
-      "type": "lxc",
-      "label": "LiteLLM",
-      "status": "unknown",
-      "parent_id": "15caab17-406d-40be-9032-8da3b20339e0",
-      "pos_x": 15.0,
-      "pos_y": 110.0,
-      "width": 140.0,
-      "height": 48.0
-    },
-    {
-      "id": "bce0b739-4ac5-4e2d-b9fc-5106dea2834c",
-      "type": "lxc",
-      "label": "FreshRSS",
-      "status": "unknown",
-      "parent_id": "15caab17-406d-40be-9032-8da3b20339e0",
-      "pos_x": 170.0,
-      "pos_y": 110.0,
-      "width": 140.0,
-      "height": 48.0
-    },
-    {
-      "id": "bbb9a8cb-f15c-424f-b26d-4361dc5e173b",
-      "type": "lxc",
-      "label": "The Lounge",
-      "status": "unknown",
-      "parent_id": "15caab17-406d-40be-9032-8da3b20339e0",
-      "pos_x": 325.0,
-      "pos_y": 110.0,
-      "width": 140.0,
-      "height": 48.0
-    },
-    {
-      "id": "7af25dce-1378-4164-9d2e-38570a73bf31",
-      "type": "lxc",
-      "label": "Joplin Server",
-      "status": "unknown",
-      "parent_id": "15caab17-406d-40be-9032-8da3b20339e0",
-      "pos_x": 480.0,
-      "pos_y": 110.0,
-      "width": 140.0,
-      "height": 48.0
-    },
-    {
-      "id": "92370125-164d-4918-883c-36baad599055",
-      "type": "lxc",
-      "label": "ByteStash",
-      "status": "unknown",
-      "parent_id": "15caab17-406d-40be-9032-8da3b20339e0",
-      "pos_x": 15.0,
-      "pos_y": 170.0,
-      "width": 140.0,
-      "height": 48.0
-    },
-    {
-      "id": "4eab089f-19fd-40fc-b161-ddce953a6bd1",
-      "type": "lxc",
-      "label": "Hermes Agent",
-      "status": "unknown",
-      "parent_id": "15caab17-406d-40be-9032-8da3b20339e0",
-      "pos_x": 170.0,
-      "pos_y": 170.0,
-      "width": 140.0,
-      "height": 48.0
-    },
-    {
-      "id": "0a3f40c5-6672-4765-9f2e-a33a131acbde",
-      "type": "lxc",
-      "label": "OpenFang",
-      "status": "unknown",
-      "parent_id": "15caab17-406d-40be-9032-8da3b20339e0",
-      "pos_x": 325.0,
-      "pos_y": 170.0,
-      "width": 140.0,
-      "height": 48.0
-    },
-    {
-      "id": "684d9aab-7e4c-43b2-baea-a3d0fb05363c",
-      "type": "lxc",
-      "label": "Claude Code",
-      "status": "unknown",
-      "parent_id": "15caab17-406d-40be-9032-8da3b20339e0",
-      "pos_x": 480.0,
-      "pos_y": 170.0,
-      "width": 140.0,
-      "height": 48.0
-    },
-    {
-      "id": "db0b030b-ef27-4b8e-bce5-8accb4dfb767",
-      "type": "lxc",
-      "label": "PentAGI",
-      "status": "unknown",
-      "parent_id": "15caab17-406d-40be-9032-8da3b20339e0",
-      "pos_x": 15.0,
-      "pos_y": 230.0,
-      "width": 140.0,
-      "height": 48.0
-    },
-    {
-      "id": "5691a734-5849-437a-bfc0-2224724c1a82",
-      "type": "lxc",
-      "label": "APT Cache",
-      "status": "unknown",
-      "parent_id": "15caab17-406d-40be-9032-8da3b20339e0",
-      "pos_x": 170.0,
-      "pos_y": 230.0,
-      "width": 140.0,
-      "height": 48.0
-    },
-    {
-      "id": "7f52ded5-ac75-456d-97ec-3ff1e2f17e43",
-      "type": "lxc",
-      "label": "Kavita",
-      "status": "unknown",
-      "parent_id": "15caab17-406d-40be-9032-8da3b20339e0",
-      "pos_x": 325.0,
-      "pos_y": 230.0,
-      "width": 140.0,
-      "height": 48.0
-    },
-    {
-      "id": "f9b7e123-d277-4364-9904-7552fd893ee8",
-      "type": "lxc",
-      "label": "Immich",
-      "status": "unknown",
-      "parent_id": "15caab17-406d-40be-9032-8da3b20339e0",
-      "pos_x": 480.0,
-      "pos_y": 230.0,
-      "width": 140.0,
-      "height": 48.0
-    },
-    {
-      "id": "2478b2e6-4314-44cf-9b8c-0d3823ad6b6a",
-      "type": "lxc",
-      "label": "Jellyfin",
-      "status": "unknown",
-      "parent_id": "15caab17-406d-40be-9032-8da3b20339e0",
-      "pos_x": 15.0,
-      "pos_y": 290.0,
-      "width": 140.0,
-      "height": 48.0
-    },
-    {
-      "id": "2917ee88-8242-4672-a707-562e60ec9578",
-      "type": "lxc",
-      "label": "Jellystat",
-      "status": "unknown",
-      "parent_id": "15caab17-406d-40be-9032-8da3b20339e0",
-      "pos_x": 170.0,
-      "pos_y": 290.0,
-      "width": 140.0,
-      "height": 48.0
-    },
-    {
-      "id": "f2b0623d-a6e5-4229-9b75-1d9728cb2230",
-      "type": "lxc",
-      "label": "Wazuh",
-      "status": "unknown",
-      "parent_id": "15caab17-406d-40be-9032-8da3b20339e0",
-      "pos_x": 325.0,
-      "pos_y": 290.0,
-      "width": 140.0,
-      "height": 48.0
-    },
-    {
-      "id": "fd6b0df4-2ce5-425f-892c-dd33015dcf27",
-      "type": "lxc",
-      "label": "PBS",
-      "status": "unknown",
-      "parent_id": "e7792660-db7b-495f-8100-05766a18965d",
-      "pos_x": 15.0,
-      "pos_y": 50.0,
-      "width": 140.0,
-      "height": 48.0
-    },
-    {
-      "id": "dbf6c57a-ca7f-4c4e-882e-8f7256cf2ce6",
-      "type": "lxc",
-      "label": "share3 (Samba)",
-      "status": "unknown",
-      "parent_id": "e7792660-db7b-495f-8100-05766a18965d",
-      "pos_x": 170.0,
-      "pos_y": 50.0,
-      "width": 147.0,
-      "height": 48.0
-    },
-    {
-      "id": "546e50c5-8229-45ed-b755-07679411cb6e",
-      "type": "lxc",
-      "label": "Stirling-PDF",
-      "status": "unknown",
-      "parent_id": "e7792660-db7b-495f-8100-05766a18965d",
-      "pos_x": 325.0,
-      "pos_y": 50.0,
-      "width": 140.0,
-      "height": 48.0
-    },
-    {
-      "id": "421c292a-6b2e-472b-b113-0bd38b05d998",
-      "type": "lxc",
-      "label": "Excalidraw",
-      "status": "unknown",
-      "parent_id": "e7792660-db7b-495f-8100-05766a18965d",
-      "pos_x": 15.0,
-      "pos_y": 110.0,
-      "width": 140.0,
-      "height": 48.0
-    },
-    {
-      "id": "ec778a61-33f9-4853-908e-2ecd46b45f13",
-      "type": "lxc",
-      "label": "Forworld",
-      "status": "unknown",
-      "parent_id": "e7792660-db7b-495f-8100-05766a18965d",
-      "pos_x": 170.0,
-      "pos_y": 110.0,
-      "width": 140.0,
-      "height": 48.0
-    },
-    {
-      "id": "1e3d3af0-06ec-4cf5-a7b8-221190e5b2f9",
-      "type": "lxc",
-      "label": "netboot.xyz",
-      "status": "unknown",
-      "parent_id": "e7792660-db7b-495f-8100-05766a18965d",
-      "pos_x": 325.0,
-      "pos_y": 110.0,
-      "width": 140.0,
-      "height": 48.0
-    },
-    {
-      "id": "416bbe84-c662-488e-b85e-560a2882920a",
-      "type": "lxc",
-      "label": "Termix",
-      "status": "unknown",
-      "parent_id": "d58d7618-1a7d-4ded-9334-205257194ba3",
-      "pos_x": 15.0,
-      "pos_y": 50.0,
-      "width": 140.0,
-      "height": 48.0
-    },
-    {
-      "id": "d651b984-022e-480b-ba56-ed50e023c867",
-      "type": "lxc",
-      "label": "Homepage",
-      "status": "unknown",
-      "parent_id": "d58d7618-1a7d-4ded-9334-205257194ba3",
-      "pos_x": 170.0,
-      "pos_y": 50.0,
-      "width": 140.0,
-      "height": 48.0
-    },
-    {
-      "id": "0bcf7fea-e180-4f48-8c18-46d02e1d3012",
-      "type": "lxc",
-      "label": "Glance",
-      "status": "unknown",
-      "parent_id": "d58d7618-1a7d-4ded-9334-205257194ba3",
-      "pos_x": 325.0,
-      "pos_y": 50.0,
-      "width": 140.0,
-      "height": 48.0
-    },
-    {
-      "id": "c9937d99-28dd-4cc7-8abc-16816d05dede",
-      "type": "lxc",
-      "label": "Semaphore",
-      "status": "unknown",
-      "parent_id": "d58d7618-1a7d-4ded-9334-205257194ba3",
-      "pos_x": 480.0,
-      "pos_y": 50.0,
-      "width": 140.0,
-      "height": 48.0
-    },
-    {
-      "id": "c108492e-4459-49ee-b45f-81191aab8acf",
-      "type": "lxc",
-      "label": "SearXNG",
-      "status": "unknown",
-      "parent_id": "d58d7618-1a7d-4ded-9334-205257194ba3",
-      "pos_x": 15.0,
-      "pos_y": 110.0,
-      "width": 140.0,
-      "height": 48.0
-    },
-    {
-      "id": "d3bf3f14-8c06-4b7c-9bed-7ae5d2603b64",
-      "type": "lxc",
-      "label": "changedetection",
-      "status": "unknown",
-      "parent_id": "d58d7618-1a7d-4ded-9334-205257194ba3",
-      "pos_x": 170.0,
-      "pos_y": 110.0,
-      "width": 152.0,
-      "height": 48.0
-    },
-    {
-      "id": "c74cbc01-8eae-4823-88cd-e597489b3abe",
-      "type": "lxc",
-      "label": "Beszel",
-      "status": "unknown",
-      "parent_id": "d58d7618-1a7d-4ded-9334-205257194ba3",
-      "pos_x": 325.0,
-      "pos_y": 110.0,
-      "width": 140.0,
-      "height": 48.0
-    },
-    {
-      "id": "a03f5e32-ac36-4e04-8df8-14bea01e7881",
-      "type": "lxc",
-      "label": "Grafana",
-      "status": "unknown",
-      "parent_id": "d58d7618-1a7d-4ded-9334-205257194ba3",
-      "pos_x": 480.0,
-      "pos_y": 110.0,
-      "width": 140.0,
-      "height": 48.0
-    },
-    {
-      "id": "be16f1d4-a72f-45b5-9a00-1a701336df10",
-      "type": "lxc",
-      "label": "Patchmon",
-      "status": "unknown",
-      "parent_id": "d58d7618-1a7d-4ded-9334-205257194ba3",
-      "pos_x": 15.0,
-      "pos_y": 170.0,
-      "width": 140.0,
-      "height": 48.0
-    },
-    {
-      "id": "eab1b34c-8ce9-4351-8097-03452b802833",
-      "type": "lxc",
-      "label": "VictoriaMetrics",
-      "status": "unknown",
-      "parent_id": "d58d7618-1a7d-4ded-9334-205257194ba3",
-      "pos_x": 170.0,
-      "pos_y": 170.0,
-      "width": 144.0,
-      "height": 48.0
-    },
-    {
-      "id": "c66a8127-eff1-4858-a8c6-2befcdadaf57",
-      "type": "lxc",
-      "label": "Healthchecks",
-      "status": "unknown",
-      "parent_id": "d58d7618-1a7d-4ded-9334-205257194ba3",
-      "pos_x": 325.0,
-      "pos_y": 170.0,
-      "width": 140.0,
-      "height": 48.0
-    },
-    {
-      "id": "2beab280-ed21-4625-83ca-b75e27b4229d",
-      "type": "lxc",
-      "label": "ntfy",
-      "status": "unknown",
-      "parent_id": "d58d7618-1a7d-4ded-9334-205257194ba3",
-      "pos_x": 480.0,
-      "pos_y": 170.0,
-      "width": 140.0,
-      "height": 48.0
-    },
-    {
-      "id": "079c816f-cf93-4299-9cf6-e618db40f78a",
-      "type": "lxc",
-      "label": "Dagu",
-      "status": "unknown",
-      "parent_id": "d58d7618-1a7d-4ded-9334-205257194ba3",
-      "pos_x": 15.0,
-      "pos_y": 230.0,
-      "width": 140.0,
-      "height": 48.0
-    },
-    {
-      "id": "d6acc47d-3dc4-4152-b94f-272cf72e84a4",
-      "type": "lxc",
-      "label": "Homelable",
-      "status": "unknown",
-      "parent_id": "d58d7618-1a7d-4ded-9334-205257194ba3",
-      "pos_x": 170.0,
-      "pos_y": 230.0,
-      "width": 140.0,
-      "height": 48.0
+      "nodeType": "isp"
     }
   ],
-  "edges": [
+  "peers": [
     {
-      "id": "d2845c05-2b40-4ac0-a3ca-9a6df9c41979",
-      "source": "5f2608a3-9c19-480c-a93a-4681d232e2fd",
-      "target": "319c8033-2739-44ec-8b55-e0ae25c24b6b",
-      "type": "ethernet",
-      "label": "1G"
+      "label": "terre2",
+      "nodeType": "computer",
+      "hostname": null,
+      "ipAddress": null
     },
     {
-      "id": "70b4e178-7afd-488e-9d8d-57243218bd5c",
-      "source": "5f2608a3-9c19-480c-a93a-4681d232e2fd",
-      "target": "15caab17-406d-40be-9032-8da3b20339e0",
-      "type": "ethernet",
-      "label": "1G"
+      "label": "OMV",
+      "nodeType": "nas",
+      "hostname": null,
+      "ipAddress": null
     },
     {
-      "id": "b7332663-3327-493a-b029-e370f36a4047",
-      "source": "5f2608a3-9c19-480c-a93a-4681d232e2fd",
-      "target": "e7792660-db7b-495f-8100-05766a18965d",
-      "type": "ethernet",
-      "label": "1G (switch)"
-    },
-    {
-      "id": "86efb961-dfd1-4191-9710-71ff79cefcfd",
-      "source": "5f2608a3-9c19-480c-a93a-4681d232e2fd",
-      "target": "d58d7618-1a7d-4ded-9334-205257194ba3",
-      "type": "ethernet",
-      "label": "1G (switch)"
-    },
-    {
-      "id": "ee04c2f5-3f02-4f91-aff5-42428b8854ca",
-      "source": "5f2608a3-9c19-480c-a93a-4681d232e2fd",
-      "target": "72bbe753-818e-4c0f-8e2d-6804ae9bd1a2",
-      "type": "ethernet",
-      "label": "1G"
-    },
-    {
-      "id": "6b29c47a-b2e8-43e6-a807-697cf872eeb0",
-      "source": "5f2608a3-9c19-480c-a93a-4681d232e2fd",
-      "target": "2415f3c1-643c-4562-bbd8-f123637cc187",
-      "type": "ethernet",
-      "label": "1G"
-    },
-    {
-      "id": "a1970aef-c07e-44d6-a1c9-11b1c3ea69e7",
-      "source": "5f2608a3-9c19-480c-a93a-4681d232e2fd",
-      "target": "0351e79d-b208-4b03-9eab-5ad61381e17a",
-      "type": "ethernet"
-    },
-    {
-      "id": "e97383a0-c588-4098-8c77-b730aaa32613",
-      "source": "319c8033-2739-44ec-8b55-e0ae25c24b6b",
-      "target": "15caab17-406d-40be-9032-8da3b20339e0",
-      "type": "ethernet",
-      "label": "2.5G direct"
+      "label": "Philips Hue Bridge",
+      "nodeType": "iot",
+      "hostname": null,
+      "ipAddress": null
     }
-  ]
+  ],
+  "zones": [
+    {
+      "label": "pve1",
+      "nodeType": "proxmox",
+      "hostname": null,
+      "ipAddress": null,
+      "children": [
+        {
+          "label": "TechnitiumDNS",
+          "nodeType": "lxc",
+          "hostname": null,
+          "ipAddress": null
+        },
+        {
+          "label": "step-ca",
+          "nodeType": "lxc",
+          "hostname": null,
+          "ipAddress": null
+        },
+        {
+          "label": "Headscale",
+          "nodeType": "lxc",
+          "hostname": null,
+          "ipAddress": null
+        },
+        {
+          "label": "Traefik + CrowdSec",
+          "nodeType": "lxc",
+          "hostname": null,
+          "ipAddress": null
+        },
+        {
+          "label": "Authentik",
+          "nodeType": "lxc",
+          "hostname": null,
+          "ipAddress": null
+        },
+        {
+          "label": "n8n",
+          "nodeType": "lxc",
+          "hostname": null,
+          "ipAddress": null
+        },
+        {
+          "label": "Mosquitto MQTT",
+          "nodeType": "lxc",
+          "hostname": null,
+          "ipAddress": null
+        },
+        {
+          "label": "Node-RED",
+          "nodeType": "lxc",
+          "hostname": null,
+          "ipAddress": null
+        },
+        {
+          "label": "Zigbee2MQTT",
+          "nodeType": "lxc",
+          "hostname": null,
+          "ipAddress": null
+        },
+        {
+          "label": "Forgejo Runner",
+          "nodeType": "lxc",
+          "hostname": null,
+          "ipAddress": null
+        },
+        {
+          "label": "Forgejo",
+          "nodeType": "lxc",
+          "hostname": null,
+          "ipAddress": null
+        },
+        {
+          "label": "NetBox",
+          "nodeType": "lxc",
+          "hostname": null,
+          "ipAddress": null
+        },
+        {
+          "label": "Home Assistant",
+          "nodeType": "vm",
+          "hostname": null,
+          "ipAddress": null
+        }
+      ]
+    },
+    {
+      "label": "pve2",
+      "nodeType": "proxmox",
+      "hostname": null,
+      "ipAddress": null,
+      "children": [
+        {
+          "label": "TechnitiumDNS 2",
+          "nodeType": "lxc",
+          "hostname": null,
+          "ipAddress": null
+        },
+        {
+          "label": "share2 (Samba)",
+          "nodeType": "lxc",
+          "hostname": null,
+          "ipAddress": null
+        },
+        {
+          "label": "Wiki.js",
+          "nodeType": "lxc",
+          "hostname": null,
+          "ipAddress": null
+        },
+        {
+          "label": "Open WebUI",
+          "nodeType": "lxc",
+          "hostname": null,
+          "ipAddress": null
+        },
+        {
+          "label": "LiteLLM",
+          "nodeType": "lxc",
+          "hostname": null,
+          "ipAddress": null
+        },
+        {
+          "label": "FreshRSS",
+          "nodeType": "lxc",
+          "hostname": null,
+          "ipAddress": null
+        },
+        {
+          "label": "The Lounge",
+          "nodeType": "lxc",
+          "hostname": null,
+          "ipAddress": null
+        },
+        {
+          "label": "Joplin Server",
+          "nodeType": "lxc",
+          "hostname": null,
+          "ipAddress": null
+        },
+        {
+          "label": "ByteStash",
+          "nodeType": "lxc",
+          "hostname": null,
+          "ipAddress": null
+        },
+        {
+          "label": "Hermes Agent",
+          "nodeType": "lxc",
+          "hostname": null,
+          "ipAddress": null
+        },
+        {
+          "label": "OpenFang",
+          "nodeType": "lxc",
+          "hostname": null,
+          "ipAddress": null
+        },
+        {
+          "label": "Claude Code",
+          "nodeType": "lxc",
+          "hostname": null,
+          "ipAddress": null
+        },
+        {
+          "label": "PentAGI",
+          "nodeType": "lxc",
+          "hostname": null,
+          "ipAddress": null
+        },
+        {
+          "label": "APT Cache",
+          "nodeType": "lxc",
+          "hostname": null,
+          "ipAddress": null
+        },
+        {
+          "label": "Kavita",
+          "nodeType": "lxc",
+          "hostname": null,
+          "ipAddress": null
+        },
+        {
+          "label": "Immich",
+          "nodeType": "lxc",
+          "hostname": null,
+          "ipAddress": null
+        },
+        {
+          "label": "Jellyfin",
+          "nodeType": "lxc",
+          "hostname": null,
+          "ipAddress": null
+        },
+        {
+          "label": "Jellystat",
+          "nodeType": "lxc",
+          "hostname": null,
+          "ipAddress": null
+        },
+        {
+          "label": "Wazuh",
+          "nodeType": "lxc",
+          "hostname": null,
+          "ipAddress": null
+        }
+      ]
+    },
+    {
+      "label": "pve3",
+      "nodeType": "proxmox",
+      "hostname": null,
+      "ipAddress": null,
+      "children": [
+        {
+          "label": "draw.io",
+          "nodeType": "vm",
+          "hostname": "drawio.pixelium.internal",
+          "ipAddress": "192.168.1.166"
+        },
+        {
+          "label": "PBS",
+          "nodeType": "lxc",
+          "hostname": null,
+          "ipAddress": null
+        },
+        {
+          "label": "share3 (Samba)",
+          "nodeType": "lxc",
+          "hostname": null,
+          "ipAddress": null
+        },
+        {
+          "label": "Stirling-PDF",
+          "nodeType": "lxc",
+          "hostname": null,
+          "ipAddress": null
+        },
+        {
+          "label": "Excalidraw",
+          "nodeType": "lxc",
+          "hostname": null,
+          "ipAddress": null
+        },
+        {
+          "label": "Forworld",
+          "nodeType": "lxc",
+          "hostname": null,
+          "ipAddress": null
+        },
+        {
+          "label": "netboot.xyz",
+          "nodeType": "lxc",
+          "hostname": null,
+          "ipAddress": null
+        }
+      ]
+    },
+    {
+      "label": "pve4",
+      "nodeType": "proxmox",
+      "hostname": null,
+      "ipAddress": null,
+      "children": [
+        {
+          "label": "Loki",
+          "nodeType": "vm",
+          "hostname": "loki.pixelium.internal",
+          "ipAddress": "192.168.1.240"
+        },
+        {
+          "label": "Termix",
+          "nodeType": "lxc",
+          "hostname": null,
+          "ipAddress": null
+        },
+        {
+          "label": "Homepage",
+          "nodeType": "lxc",
+          "hostname": null,
+          "ipAddress": null
+        },
+        {
+          "label": "Glance",
+          "nodeType": "lxc",
+          "hostname": null,
+          "ipAddress": null
+        },
+        {
+          "label": "Semaphore",
+          "nodeType": "lxc",
+          "hostname": null,
+          "ipAddress": null
+        },
+        {
+          "label": "SearXNG",
+          "nodeType": "lxc",
+          "hostname": null,
+          "ipAddress": null
+        },
+        {
+          "label": "changedetection",
+          "nodeType": "lxc",
+          "hostname": null,
+          "ipAddress": null
+        },
+        {
+          "label": "Beszel",
+          "nodeType": "lxc",
+          "hostname": null,
+          "ipAddress": null
+        },
+        {
+          "label": "Grafana",
+          "nodeType": "lxc",
+          "hostname": null,
+          "ipAddress": null
+        },
+        {
+          "label": "Patchmon",
+          "nodeType": "lxc",
+          "hostname": null,
+          "ipAddress": null
+        },
+        {
+          "label": "VictoriaMetrics",
+          "nodeType": "lxc",
+          "hostname": null,
+          "ipAddress": null
+        },
+        {
+          "label": "Healthchecks",
+          "nodeType": "lxc",
+          "hostname": null,
+          "ipAddress": null
+        },
+        {
+          "label": "ntfy",
+          "nodeType": "lxc",
+          "hostname": null,
+          "ipAddress": null
+        },
+        {
+          "label": "Dagu",
+          "nodeType": "lxc",
+          "hostname": null,
+          "ipAddress": null
+        },
+        {
+          "label": "Homelable",
+          "nodeType": "lxc",
+          "hostname": null,
+          "ipAddress": null
+        }
+      ]
+    }
+  ],
+  "isp_links": [
+    {
+      "label": "pve1",
+      "linkType": "ethernet",
+      "linkLabel": "1G"
+    },
+    {
+      "label": "pve2",
+      "linkType": "ethernet",
+      "linkLabel": "1G"
+    },
+    {
+      "label": "pve3",
+      "linkType": "ethernet",
+      "linkLabel": "1G (switch)"
+    },
+    {
+      "label": "pve4",
+      "linkType": "ethernet",
+      "linkLabel": "1G (switch)"
+    },
+    {
+      "label": "terre2",
+      "linkType": "ethernet",
+      "linkLabel": "1G"
+    },
+    {
+      "label": "OMV",
+      "linkType": "ethernet",
+      "linkLabel": "1G"
+    },
+    {
+      "label": "Philips Hue Bridge",
+      "linkType": "ethernet",
+      "linkLabel": ""
+    }
+  ],
+  "pve_interconnect": [
+    {
+      "from": "pve1",
+      "to": "pve2",
+      "linkLabel": "2.5G direct",
+      "linkType": "ethernet"
+    }
+  ],
+  "total": 62
 }
