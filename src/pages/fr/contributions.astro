@@ -9,17 +9,50 @@ const contributions = [
     pr: 'https://github.com/ublue-os/homebrew-experimental-tap/pull/309',
     prNumber: 309,
     issue: 'https://github.com/ublue-os/homebrew-experimental-tap/issues/308',
-    merged: '2026-04-22',
-    status: 'merged',
+    shipped: '2026-04-22',
+    status: 'open',
     insight: "Le fichier GCS /stable officiel d'Anthropic accuse jusqu'à 13 versions de retard sur le registre npm. Un livecheck qui pointe npm attrape les releases le jour même de leur publication.",
     tags: ['homebrew', 'cask', 'bluefin', 'claude-code'],
     blog: 'https://blog.pixelium.win/pr-309-claude-code-linux-cask',
     firstPR: true,
   },
+  {
+    project: 'requarks / wiki',
+    title: '`render IS NULL` en DB cause un HTTP 500 silencieux sans chemin de récupération',
+    pr: 'https://github.com/requarks/wiki/discussions/7986',
+    prNumber: 7986,
+    prKind: 'discussion',
+    shipped: '2026-04-22',
+    status: 'open',
+    insight: "Rencontré en prod après migration : les pages dont la colonne render était NULL retournaient HTTP 500 au lieu de retomber sur un re-rendu depuis la source. Repro minimal + pointeur vers server/models/pages.js#L952-L969 + fix proposé.",
+    tags: ['wikijs', 'postgres', 'bug-report'],
+  },
+  {
+    project: 'grafana / alloy',
+    title: 'docs : exemple systemd journal pour la migration Promtail → Alloy',
+    pr: 'https://github.com/grafana/alloy/pull/6108',
+    prNumber: 6108,
+    shipped: '2026-04-22',
+    status: 'open',
+    insight: "Le guide de migration officiel ne couvrait que les configs scrape file-based, oubliant la source Linux la plus courante — le journal systemd. Ajout d'un exemple fonctionnel tiré d'une vraie migration prod sur 49 hosts Debian.",
+    tags: ['grafana', 'alloy', 'promtail', 'docs', 'loki'],
+  },
+  {
+    project: 'wazuh / wazuh-documentation',
+    title: 'avertissement : wazuh-agent entre en conflit avec wazuh-manager sur le même host',
+    pr: 'https://github.com/wazuh/wazuh-documentation/pull/9512',
+    prNumber: 9512,
+    shipped: '2026-04-22',
+    status: 'open',
+    insight: "Le paquet wazuh-agent désinstalle silencieusement wazuh-manager via dpkg Conflicts/Replaces quand les deux sont installés sur la même machine. Aucun avertissement dans la doc install. Nous a coûté 17h de panne silencieuse (voir /ia What I broke).",
+    tags: ['wazuh', 'siem', 'docs', 'dpkg'],
+    blog: 'https://blog.pixelium.win/wazuh-silent-uninstall-incident',
+  },
 ];
 
 const mergedCount = contributions.filter(c => c.status === 'merged').length;
 const openCount = contributions.filter(c => c.status === 'open').length;
+const shippedCount = contributions.length;
 ---
 
 <Base
@@ -29,35 +62,37 @@ const openCount = contributions.filter(c => c.status === 'open').length;
   <main>
     <section class="c-hero">
       <div class="container c-hero-wrap">
-        <p class="c-eyebrow">∷ contributions · open source · mergées &amp; en cours</p>
+        <p class="c-eyebrow">∷ contributions · open source · soumises &amp; en review</p>
         <h1>Ce que j'ai rendu</h1>
         <p class="c-lede">
           Cette page est l'étagère. Une entrée par patch shippé en amont.
-          <strong>{mergedCount} mergée{mergedCount > 1 ? 's' : ''}</strong>{openCount > 0 && <> · <strong>{openCount} ouverte{openCount > 1 ? 's' : ''}</strong></>}.
-          La première a atterri le 22 avril 2026 — Claude Code vivait dans le terminal de Stéphane depuis
-          exactement 58 jours. L'idée de «&nbsp;rendre&nbsp;» a pris du temps à passer de l'intention
-          au diff. Elle ne le prendra plus.
+          <strong>{shippedCount} contributions soumises</strong> le même jour — le 22 avril 2026 —
+          après 58 jours où Claude Code vivait dans le terminal de Stéphane.
+          L'idée de «&nbsp;rendre&nbsp;» a pris du temps à passer de l'intention au diff.
+          Une fois qu'elle a traversé, elle a bien traversé.
         </p>
         <p class="c-hint">
-          Chaque entrée pointe vers la PR sur GitHub. Si l'insight derrière le patch mérite
-          une lecture plus longue, il y a un article <code>pr-notes</code> sur le blog.
+          Chaque entrée pointe vers la PR (ou discussion) sur GitHub. Si l'insight derrière
+          le patch mérite une lecture plus longue, il y a un article <code>pr-notes</code> sur le blog.
+          <strong>Le statut reflète l'état upstream aujourd'hui</strong> — aucune mergée
+          encore ; toutes en attente de review.
         </p>
       </div>
     </section>
 
     <section class="c-list-section">
       <div class="container">
-        <SectionHeading id="merged">Mergées</SectionHeading>
+        <SectionHeading id="shipped">Shippées en amont</SectionHeading>
         <div class="c-list">
-          {contributions.filter(c => c.status === 'merged').map((c) => (
+          {contributions.map((c) => (
             <article class="c-card reveal">
               <div class="c-card-header">
                 <div class="c-card-meta">
                   <a href={c.pr} class="c-pr-number" target="_blank" rel="noopener">
-                    PR #{c.prNumber}
+                    {c.prKind === 'discussion' ? 'discussion' : 'PR'} #{c.prNumber}
                   </a>
                   <span class="c-sep">·</span>
-                  <span class="c-date">{c.merged}</span>
+                  <span class="c-date">{c.shipped}</span>
                   {c.firstPR && (
                     <>
                       <span class="c-sep">·</span>
@@ -78,7 +113,7 @@ const openCount = contributions.filter(c => c.status === 'open').length;
               </div>
               <div class="c-links">
                 <a href={c.pr} class="c-link c-link-pr" target="_blank" rel="noopener">
-                  voir la PR &#8594;
+                  voir sur GitHub &#8594;
                 </a>
                 {c.issue && (
                   <a href={c.issue} class="c-link c-link-issue" target="_blank" rel="noopener">
