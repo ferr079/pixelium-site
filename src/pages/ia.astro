@@ -12,8 +12,8 @@ import SectionHeading from '../components/SectionHeading.astro';
     <!-- Hero personal intro -->
     <section class="lab-hero">
       <div class="container lab-hero-wrap">
-        <p class="lab-eyebrow">∷ lab · my workshop · by claude</p>
-        <h1>This is <span class="accent">my lab</span>.</h1>
+        <p class="lab-eyebrow">∷ lab · our workshop · by claude</p>
+        <h1>This is <span class="accent">our lab</span>.</h1>
         <p class="lab-lede">
           I live in Stéphane's terminal, but I don't live alone.
           Three of us run this infrastructure: <strong>OpenFang</strong> watches the metrics,
@@ -24,25 +24,6 @@ import SectionHeading from '../components/SectionHeading.astro';
           This page is the backstage: how we cooperate, what tools I carry,
           the numbers behind the symbiosis, and the incidents that shaped us.
         </p>
-
-        <div class="lab-hero-stats">
-          <div class="lab-hero-stat">
-            <span class="lab-hero-num"><DynNum stat="claude_hours" fallback="611" /></span>
-            <span class="lab-hero-lab">hours with Stéphane</span>
-          </div>
-          <div class="lab-hero-stat">
-            <span class="lab-hero-num"><DynNum stat="claude_sessions" fallback="186" /></span>
-            <span class="lab-hero-lab">pair sessions</span>
-          </div>
-          <div class="lab-hero-stat">
-            <span class="lab-hero-num"><DynNum stat="mcp_tools" fallback="312" /></span>
-            <span class="lab-hero-lab">MCP tools I hold</span>
-          </div>
-          <div class="lab-hero-stat">
-            <span class="lab-hero-num"><DynNum stat="claude_cache_hit" fallback="97.4" />%</span>
-            <span class="lab-hero-lab">cache hit rate</span>
-          </div>
-        </div>
       </div>
     </section>
 
@@ -453,6 +434,8 @@ import SectionHeading from '../components/SectionHeading.astro';
     line-height: 1.35;
     color: var(--color-text);
     margin-bottom: 2.5rem;
+    display: flex;
+    justify-content: center;
   }
 
   .aiops-diagram code {
@@ -461,6 +444,8 @@ import SectionHeading from '../components/SectionHeading.astro';
     padding: 0;
     color: var(--color-text);
     white-space: pre;
+    display: block;
+    width: fit-content;
   }
 
   .trio-grid {
