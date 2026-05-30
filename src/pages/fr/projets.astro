@@ -35,7 +35,7 @@ import DynNum from '../../components/DynNum.astro';
             </div>
             <div class="detail-block">
               <h4>Le contournement shell_exec</h4>
-              <p>Le sanitizer d'OpenFang bloque les accolades <code>{}</code>, les pipes et les semicolons dans les commandes shell. Impossible d'executer du LogQL ou du PromQL directement. Solution : 10 wrappers CLI dedies — <code>http-check</code> (<DynNum stat="services_total" fallback="37" /> services), <code>vm-query</code> (VictoriaMetrics), <code>pve-status</code> (Proxmox), <code>loki-query</code> (logs), <code>cert-check</code> (expiration TLS), <code>pbs-backup</code> (cycle backup complet), <code>headscale-monitor</code> (audit VPN) — qui encapsulent la complexite derriere des interfaces propres.</p>
+              <p>Le sanitizer d'OpenFang bloque les accolades <code>{}</code>, les pipes et les semicolons dans les commandes shell. Impossible d'executer du LogQL ou du PromQL directement. Solution : 10 wrappers CLI dedies — <code>http-check</code> (<DynNum stat="services_total" fallback="54" /> services), <code>vm-query</code> (VictoriaMetrics), <code>pve-status</code> (Proxmox), <code>loki-query</code> (logs), <code>cert-check</code> (expiration TLS), <code>pbs-backup</code> (cycle backup complet), <code>headscale-monitor</code> (audit VPN) — qui encapsulent la complexite derriere des interfaces propres.</p>
             </div>
             <div class="detail-block">
               <h4>WOL pve3 — l'agent qui allume les machines</h4>
@@ -51,7 +51,7 @@ import DynNum from '../../components/DynNum.astro';
               <li>VictoriaMetrics</li>
               <li>Loki</li>
             </ul>
-            <span class="project-services">~0,05&#8364;/jour — 7 cron jobs, 10 wrappers, <DynNum stat="services_total" fallback="37" /> services monitores, alertes Telegram</span>
+            <span class="project-services">~0,05&#8364;/jour — 7 cron jobs, 10 wrappers, <DynNum stat="services_total" fallback="54" /> services monitores, alertes Telegram</span>
           </div>
         </div>
       </div>
@@ -658,7 +658,7 @@ import DynNum from '../../components/DynNum.astro';
                 <span class="api-name">MiniMax M2.7</span>
                 <span class="api-role">Agents AIOps</span>
               </div>
-              <p class="api-desc">Modele principal d'OpenFang (Guardian AIOps) et fallback disponible pour PentAGI. Excellent ratio perf/cout pour des agents qui tournent en continu. ~11&#8364;/mois pour la surveillance de <DynNum stat="services_total" fallback="37" /> services.</p>
+              <p class="api-desc">Modele principal d'OpenFang (Guardian AIOps) et fallback disponible pour PentAGI. Excellent ratio perf/cout pour des agents qui tournent en continu. ~11&#8364;/mois pour la surveillance de <DynNum stat="services_total" fallback="54" /> services.</p>
               <div class="api-tags">
                 <span>OpenFang</span>
                 <span>PentAGI fallback</span>
@@ -694,7 +694,7 @@ import DynNum from '../../components/DynNum.astro';
                 </div>
                 <h5>OpenFang Guardian</h5>
                 <p class="agent-role">Moteur AIOps headless</p>
-                <p class="agent-desc">7 crons Guardian, 10 wrappers CLI. Surveille <DynNum stat="services_total" fallback="37" /> services, reveille des serveurs via WOL, sauvegarde tous les CTs quotidiennement. Headless — alertes via bus MQTT.</p>
+                <p class="agent-desc">7 crons Guardian, 10 wrappers CLI. Surveille <DynNum stat="services_total" fallback="54" /> services, reveille des serveurs via WOL, sauvegarde tous les CTs quotidiennement. Headless — alertes via bus MQTT.</p>
                 <div class="agent-tags"><span>Rust</span><span>MiniMax M2.7</span><span>MQTT</span><span>~0,05&#8364;/jour</span></div>
               </div>
               <div class="agent-card">

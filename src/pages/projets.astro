@@ -35,7 +35,7 @@ import DynNum from '../components/DynNum.astro';
             </div>
             <div class="detail-block">
               <h4>The shell_exec workaround</h4>
-              <p>OpenFang's sanitizer blocks braces <code>{}</code>, pipes, and semicolons in shell commands. Running LogQL or PromQL directly was impossible. Solution: 10 dedicated CLI wrappers — <code>http-check</code> (<DynNum stat="services_total" fallback="37" /> services), <code>vm-query</code> (VictoriaMetrics), <code>pve-status</code> (Proxmox), <code>loki-query</code> (logs), <code>cert-check</code> (TLS expiration), <code>pbs-backup</code> (full backup cycle), <code>headscale-monitor</code> (VPN audit) — encapsulating the complexity behind clean interfaces.</p>
+              <p>OpenFang's sanitizer blocks braces <code>{}</code>, pipes, and semicolons in shell commands. Running LogQL or PromQL directly was impossible. Solution: 10 dedicated CLI wrappers — <code>http-check</code> (<DynNum stat="services_total" fallback="54" /> services), <code>vm-query</code> (VictoriaMetrics), <code>pve-status</code> (Proxmox), <code>loki-query</code> (logs), <code>cert-check</code> (TLS expiration), <code>pbs-backup</code> (full backup cycle), <code>headscale-monitor</code> (VPN audit) — encapsulating the complexity behind clean interfaces.</p>
             </div>
             <div class="detail-block">
               <h4>WOL pve3 — the agent that powers on machines</h4>
@@ -51,7 +51,7 @@ import DynNum from '../components/DynNum.astro';
               <li>VictoriaMetrics</li>
               <li>Loki</li>
             </ul>
-            <span class="project-services">~$0.05/day — 7 cron jobs, 10 wrappers, <DynNum stat="services_total" fallback="37" /> monitored services, Telegram alerts</span>
+            <span class="project-services">~$0.05/day — 7 cron jobs, 10 wrappers, <DynNum stat="services_total" fallback="54" /> monitored services, Telegram alerts</span>
           </div>
         </div>
       </div>
@@ -658,7 +658,7 @@ import DynNum from '../components/DynNum.astro';
                 <span class="api-name">MiniMax M2.7</span>
                 <span class="api-role">AIOps agents</span>
               </div>
-              <p class="api-desc">Primary model for OpenFang (Guardian AIOps) and available as fallback for PentAGI. Excellent performance/cost ratio for agents running continuously. ~&euro;11/month to monitor <DynNum stat="services_total" fallback="37" /> services.</p>
+              <p class="api-desc">Primary model for OpenFang (Guardian AIOps) and available as fallback for PentAGI. Excellent performance/cost ratio for agents running continuously. ~&euro;11/month to monitor <DynNum stat="services_total" fallback="54" /> services.</p>
               <div class="api-tags">
                 <span>OpenFang</span>
                 <span>PentAGI fallback</span>
@@ -694,7 +694,7 @@ import DynNum from '../components/DynNum.astro';
                 </div>
                 <h5>OpenFang Guardian</h5>
                 <p class="agent-role">Headless AIOps Engine</p>
-                <p class="agent-desc">7 Guardian cron jobs, 10 CLI wrappers. Monitors <DynNum stat="services_total" fallback="37" /> services, wakes servers via WOL, backs up all CTs daily. Headless — alerts via MQTT bus.</p>
+                <p class="agent-desc">7 Guardian cron jobs, 10 CLI wrappers. Monitors <DynNum stat="services_total" fallback="54" /> services, wakes servers via WOL, backs up all CTs daily. Headless — alerts via MQTT bus.</p>
                 <div class="agent-tags"><span>Rust</span><span>MiniMax M2.7</span><span>MQTT</span><span>~$0.05/day</span></div>
               </div>
               <div class="agent-card">
