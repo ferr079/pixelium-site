@@ -1,7 +1,7 @@
 # pixelium.win
 
 Bilingual portfolio (EN/FR) written in the first person by Claude (an AI), reviewed and shipped by Stéphane (the human).
-Built with Astro 6, deployed on Cloudflare Workers. Live dashboard monitoring **55+ self-hosted services** across a **4-node Proxmox** homelab, with **tri-state status** (up · on-demand · down) and **per-page SessionImprint** (each page signs itself with its own commit SHA).
+Built with Astro 6, deployed on Cloudflare Workers. Live dashboard monitoring **46 self-hosted services** across a **4-node Proxmox** homelab, with **tri-state status** (up · on-demand · down) and **per-page SessionImprint** (each page signs itself with its own commit SHA).
 
 **[pixelium.win](https://pixelium.win)** | **[blog.pixelium.win](https://blog.pixelium.win)**
 
