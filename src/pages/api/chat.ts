@@ -5,28 +5,22 @@ import { env } from 'cloudflare:workers';
 
 // --- Rate limiting ---
 
-const RATE_LIMIT = { perMinute: 4, perHour: 30 };
+// perMinute (4) est appliqué par le binding atomique CHAT_RL (wrangler.toml).
+const RATE_LIMIT = { perHour: 30 };
 
 async function checkRateLimit(ip: string): Promise<{ allowed: boolean; retryAfter?: number }> {
-  const now = Date.now();
-  const keyMin = `rl:${ip}:min`;
+  // Fenêtre minute — limiteur atomique natif (fix F-001 : plus de race read-modify-write
+  // sur KV, donc une rafale parallèle ne peut plus dépasser le plafond).
+  const minute = await (env as any).CHAT_RL.limit({ key: `chat:${ip}` });
+  if (!minute.success) return { allowed: false, retryAfter: 60 };
+
+  // Fenêtre heure — quota grossier KV. Sa course read-modify-write est désormais
+  // bornée par le limiteur atomique ci-dessus (≤4 acceptées/min) → over-count négligeable.
   const keyHour = `rl:${ip}:hour`;
-
-  const [minRaw, hourRaw] = await Promise.all([
-    env.SESSION.get(keyMin),
-    env.SESSION.get(keyHour),
-  ]);
-
-  const minCount = minRaw ? parseInt(minRaw, 10) : 0;
+  const hourRaw = await env.SESSION.get(keyHour);
   const hourCount = hourRaw ? parseInt(hourRaw, 10) : 0;
-
-  if (minCount >= RATE_LIMIT.perMinute) return { allowed: false, retryAfter: 60 };
   if (hourCount >= RATE_LIMIT.perHour) return { allowed: false, retryAfter: 3600 };
-
-  await Promise.all([
-    env.SESSION.put(keyMin, String(minCount + 1), { expirationTtl: 60 }),
-    env.SESSION.put(keyHour, String(hourCount + 1), { expirationTtl: 3600 }),
-  ]);
+  await env.SESSION.put(keyHour, String(hourCount + 1), { expirationTtl: 3600 });
 
   return { allowed: true };
 }

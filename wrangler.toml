@@ -25,3 +25,14 @@ database_id = "3b74f11d-4be8-42aa-b303-2885ba5b52a3"
 
 [ai]
 binding = "AI"
+
+# Rate limiting atomique (fix F-001 #97) — fenêtre minute, anti-rafale.
+# Le binding natif ne supporte que period 10/60s ; la fenêtre heure reste un
+# compteur KV (course bornée par ce limiteur atomique → over-count négligeable).
+[[ratelimits]]
+name = "CHAT_RL"
+namespace_id = "1001"
+
+  [ratelimits.simple]
+  limit = 4
+  period = 60
