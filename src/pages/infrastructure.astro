@@ -24,8 +24,8 @@ const serviceSlides = [
   { src: '/images/services/wikijs.webp', alt: 'Wiki.js — infrastructure documentation wiki', title: 'Wiki.js — Documentation' },
   { src: '/images/services/homeassistant.webp', alt: 'Home Assistant — home automation dashboard', title: 'Home Assistant — IoT' },
   { src: '/images/services/loki.webp', alt: 'Loki — centralized log aggregation', title: 'Loki — Logs' },
-  { src: '/images/services/hermes.webp', alt: 'Hermes Agent — Telegram h24, 3 crons, learning loop', title: 'Hermes — AI Agent' },
-  { src: '/images/services/openfang.webp', alt: 'OpenFang — headless AIOps engine, 8 Guardian crons', title: 'OpenFang — AIOps' },
+  { src: '/images/services/hermes.webp', alt: 'Hermes Agent — Telegram h24, learning loop', title: 'Hermes — AI Agent' },
+  { src: '/images/services/openfang.webp', alt: 'OpenFang — headless AIOps engine, 8 Guardian crons', title: 'OpenFang — AIOps (decommissioned)' },
 ];
 
 const monitoringSlides = [
@@ -34,13 +34,13 @@ const monitoringSlides = [
   { src: '/images/monitoring/wazuh2.webp', alt: 'Wazuh — security alerts and threat intelligence', title: 'Wazuh — SIEM (Overview)' },
   { src: '/images/monitoring/victoriametrics.webp', alt: 'VictoriaMetrics — CPU, memory, disk metrics', title: 'VictoriaMetrics — Metrics TSDB' },
   { src: '/images/monitoring/patchmon.webp', alt: 'Patchmon — patch compliance dashboard', title: 'Patchmon — Patch Compliance' },
-  { src: '/images/monitoring/pentagi.webp', alt: 'PentAGI — autonomous pentest scan results on Traefik', title: 'PentAGI — Autonomous Pentest' },
+  { src: '/images/monitoring/pentagi.webp', alt: 'PentAGI — autonomous pentest scan results on Traefik', title: 'PentAGI — Autonomous Pentest (decommissioned)' },
   { src: '/images/monitoring/raptor.webp', alt: 'RAPTOR — security audit framework, Semgrep, CodeQL, AFL++', title: 'RAPTOR — Security Audit' },
   { src: '/images/homepage-dashboard.webp', alt: 'Homepage dashboard — real-time monitoring widgets', title: 'Homepage — Dashboard' },
 ];
 ---
 
-<Base title="Infrastructure — pixelium.win" description="55+ LXC containers + 1 VM on 4 Proxmox nodes, fully self-hosted — DNS, TLS, monitoring, SIEM, AI agents. Complete homelab architecture with live topology map.">
+<Base title="Infrastructure — pixelium.win" description="53 LXC containers + 1 VM on 4 Proxmox nodes, fully self-hosted — DNS, TLS, monitoring, SIEM, AI agents. Complete homelab architecture with live topology map.">
   <main>
     <section class="hero-mini">
       <div class="container">
@@ -52,7 +52,7 @@ const monitoringSlides = [
 
     <StatsBar stats={[
       { number: "4", label: "Proxmox nodes" },
-      { number: "55+", label: "LXC containers", stat: "lxc_count", suffix: "+" },
+      { number: "53+", label: "LXC containers", stat: "lxc_count", suffix: "+" },
       { number: "15", label: "Homepage widgets" },
       { number: "0", label: "external cloud spend" },
     ]} />
@@ -68,7 +68,7 @@ const monitoringSlides = [
     <section class="layer reveal">
       <div class="container">
         <div class="layer-header">
-          <img src="https://cdn.simpleicons.org/proxmox/E57000" alt="" class="tech-logo" loading="lazy" aria-hidden="true" onerror="this.style.display='none'" />
+          <img src="/icons/proxmox.svg" alt="" class="tech-logo" loading="lazy" aria-hidden="true" onerror="this.style.display='none'" />
           <h2>Overview</h2>
         </div>
         <div class="layer-content">
@@ -92,7 +92,7 @@ const monitoringSlides = [
                 </div>
                 <div class="spec">
                   <span class="spec-label">Services</span>
-                  <span class="spec-value">DNS, Traefik, step-ca, Forgejo, Headscale, Authentik</span>
+                  <span class="spec-value">DNS, Traefik, step-ca, Forgejo, Authentik, Home Assistant</span>
                 </div>
               </div>
             </div>
@@ -114,7 +114,7 @@ const monitoringSlides = [
                 </div>
                 <div class="spec">
                   <span class="spec-label">Services</span>
-                  <span class="spec-value">Jellyfin, Immich (ML GPU remote), Kavita, Home Assistant, monitoring, OpenFang</span>
+                  <span class="spec-value">Jellyfin, Immich (ML GPU remote), Kavita, Wiki.js, Wazuh SIEM, Hermes</span>
                 </div>
               </div>
             </div>
@@ -137,6 +137,28 @@ const monitoringSlides = [
                 <div class="spec">
                   <span class="spec-label">Services</span>
                   <span class="spec-value">PBS, Forworld (Forgejo mirror), Samba share</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="node-card">
+              <div class="node-header">
+                <span class="node-name">pve4</span>
+                <span class="node-role">Monitoring &amp; ops</span>
+                <span class="node-badge badge-24x7">24/7</span>
+              </div>
+              <div class="specs">
+                <div class="spec">
+                  <span class="spec-label">CPU</span>
+                  <span class="spec-value">i5-3470S — 4C/4T</span>
+                </div>
+                <div class="spec">
+                  <span class="spec-label">RAM</span>
+                  <span class="spec-value">16 GB</span>
+                </div>
+                <div class="spec">
+                  <span class="spec-label">Services</span>
+                  <span class="spec-value">Grafana, VictoriaMetrics, Loki, Uptime-Kuma, Dagu, ntfy, Healthchecks, Semaphore</span>
                 </div>
               </div>
             </div>
@@ -163,7 +185,7 @@ const monitoringSlides = [
     <section class="layer reveal">
       <div class="container">
         <div class="layer-header">
-          <img src="https://cdn.simpleicons.org/linux/FCC624" alt="" class="tech-logo" loading="lazy" aria-hidden="true" onerror="this.style.display='none'" />
+          <img src="/icons/linux.svg" alt="" class="tech-logo" loading="lazy" aria-hidden="true" onerror="this.style.display='none'" />
           <h2>Building blocks & technical choices</h2>
         </div>
         <div class="layer-content">
@@ -173,7 +195,7 @@ const monitoringSlides = [
 
             <div class="tech-card">
               <div class="tech-card-header">
-                <img src="https://cdn.simpleicons.org/proxmox/E57000" alt="" class="tech-logo" loading="lazy" aria-hidden="true" onerror="this.style.display='none'" />
+                <img src="/icons/proxmox.svg" alt="" class="tech-logo" loading="lazy" aria-hidden="true" onerror="this.style.display='none'" />
                 <h4>Proxmox VE</h4>
               </div>
               <div class="tech-card-body">
@@ -185,7 +207,7 @@ const monitoringSlides = [
 
             <div class="tech-card">
               <div class="tech-card-header">
-                <img src="https://cdn.simpleicons.org/traefikproxy/24A1C1" alt="" class="tech-logo" loading="lazy" aria-hidden="true" onerror="this.style.display='none'" />
+                <img src="/icons/traefik.svg" alt="" class="tech-logo" loading="lazy" aria-hidden="true" onerror="this.style.display='none'" />
                 <h4>Traefik</h4>
               </div>
               <div class="tech-card-body">
@@ -221,7 +243,7 @@ const monitoringSlides = [
 
             <div class="tech-card">
               <div class="tech-card-header">
-                <img src="https://cdn.simpleicons.org/authentik/FD4B2D" alt="" class="tech-logo" loading="lazy" aria-hidden="true" onerror="this.style.display='none'" />
+                <img src="/icons/authentik.svg" alt="" class="tech-logo" loading="lazy" aria-hidden="true" onerror="this.style.display='none'" />
                 <h4>Authentik</h4>
               </div>
               <div class="tech-card-body">
@@ -233,7 +255,7 @@ const monitoringSlides = [
 
             <div class="tech-card">
               <div class="tech-card-header">
-                <img src="https://cdn.simpleicons.org/ansible/EE0000" alt="" class="tech-logo" loading="lazy" aria-hidden="true" onerror="this.style.display='none'" />
+                <img src="/icons/ansible.svg" alt="" class="tech-logo" loading="lazy" aria-hidden="true" onerror="this.style.display='none'" />
                 <h4>Ansible + Semaphore</h4>
               </div>
               <div class="tech-card-body">
@@ -245,7 +267,7 @@ const monitoringSlides = [
 
             <div class="tech-card">
               <div class="tech-card-header">
-                <img src="https://cdn.simpleicons.org/crowdsource/4285F4" alt="" class="tech-logo" loading="lazy" aria-hidden="true" onerror="this.style.display='none'" />
+                <img src="/icons/wazuh.svg" alt="" class="tech-logo" loading="lazy" aria-hidden="true" />
                 <h4>Wazuh</h4>
               </div>
               <div class="tech-card-body">
@@ -257,7 +279,7 @@ const monitoringSlides = [
 
             <div class="tech-card">
               <div class="tech-card-header">
-                <img src="https://cdn.simpleicons.org/crowdsource/4285F4" alt="" class="tech-logo" loading="lazy" aria-hidden="true" onerror="this.style.display='none'" />
+                <img src="/icons/crowdsec.svg" alt="" class="tech-logo" loading="lazy" aria-hidden="true" />
                 <h4>CrowdSec</h4>
               </div>
               <div class="tech-card-body">
@@ -269,31 +291,31 @@ const monitoringSlides = [
 
             <div class="tech-card">
               <div class="tech-card-header">
-                <img src="https://cdn.simpleicons.org/rust/CE422B" alt="" class="tech-logo" loading="lazy" aria-hidden="true" onerror="this.style.display='none'" />
+                <img src="https://cdn.simpleicons.org/python/3776AB" alt="" class="tech-logo" loading="lazy" aria-hidden="true" onerror="this.style.display='none'" />
                 <h4>AI Agents</h4>
               </div>
               <div class="tech-card-body">
-                <p class="tech-why"><strong>Why:</strong> AI is not a gadget — it is an operational partner. The <strong>AIops v2 trio</strong>: OpenFang (headless sentinel, 8 Guardian crons) → MQTT → Hermes (Telegram triage h24, 3 night crons) → SSH spawn Claude CT 196 (ephemeral remediation). Plus PentAGI (autonomous pentest, pve3 on-demand) and RAPTOR (source code audit, distrobox). MiniMax M2.7 via LiteLLM (4-provider failback), RTX 3090 for local inference. All agents communicate via MQTT bus.</p>
-                <p class="tech-alt"><span class="alt-label">Stack:</span> OpenFang (Rust), Hermes (Python), PentAGI (Docker/Kali), RAPTOR (distrobox Semgrep/CodeQL/AFL++), MQTT (Mosquitto), 31 cybersec skills</p>
-                <p class="tech-result"><span class="result-label">Result:</span> 11 automated crons (8 Guardian + 3 Hermes), daily backups, autonomous monitoring + security digest + doc reconciliation, Claude CT 196 spawnable for critical remediation — ~&euro;11/month total (LiteLLM routed)</p>
+                <p class="tech-why"><strong>Why:</strong> AI is not a gadget — it is an operational partner, kept where it adds judgment. <strong>Hermes</strong> (Telegram correspondent h24, self-improving, doc-sync + RSS digest cron chains) is the sole resident agent since June 2026 — the earlier AIops v2 trio (OpenFang, PentAGI, Claude CT) was decommissioned once native alerting (Beszel/Wazuh/CrowdSec → ntfy) and Dagu DAGs covered its duties. RAPTOR (source code audit, distrobox) and Claude Code complete the team. MiniMax M3 via LiteLLM (4-provider failback), RTX 3090 for local inference.</p>
+                <p class="tech-alt"><span class="alt-label">Stack:</span> Hermes (NousResearch, MiniMax M3), RAPTOR (distrobox Semgrep/CodeQL/AFL++), MQTT (Mosquitto), Dagu DAGs, ntfy, 31 cybersec skills</p>
+                <p class="tech-result"><span class="result-label">Result:</span> Autonomous doc reconciliation + tech watch on Telegram, scheduled ops on Dagu (backups, audits, kv-push), native alerting via ntfy — AI where it thinks, plain code where it repeats</p>
               </div>
             </div>
 
             <div class="tech-card">
               <div class="tech-card-header">
-                <img src="https://cdn.simpleicons.org/victoriametrics/621773" alt="" class="tech-logo" loading="lazy" aria-hidden="true" onerror="this.style.display='none'" />
+                <img src="/icons/victoriametrics.svg" alt="" class="tech-logo" loading="lazy" aria-hidden="true" onerror="this.style.display='none'" />
                 <h4>VictoriaMetrics</h4>
               </div>
               <div class="tech-card-body">
                 <p class="tech-why"><strong>Why:</strong> Prometheus-compatible (PromQL, remote write), but single binary — no Alertmanager, no Thanos, no 15 components. Superior compression, less RAM.</p>
                 <p class="tech-alt"><span class="alt-label">Rejected:</span> Prometheus (heavier on RAM, less efficient storage), InfluxDB (commercial license)</p>
-                <p class="tech-result"><span class="result-label">Result:</span> Long-term TSDB metrics, scraping 20+ targets, queryable by the OpenFang agent</p>
+                <p class="tech-result"><span class="result-label">Result:</span> Long-term TSDB metrics, scraping 20+ targets, Grafana SOC dashboard on top</p>
               </div>
             </div>
 
             <div class="tech-card">
               <div class="tech-card-header">
-                <img src="https://cdn.simpleicons.org/go/00ADD8" alt="" class="tech-logo" loading="lazy" aria-hidden="true" onerror="this.style.display='none'" />
+                <img src="/icons/beszel.svg" alt="" class="tech-logo" loading="lazy" aria-hidden="true" onerror="this.style.display='none'" />
                 <h4>Beszel</h4>
               </div>
               <div class="tech-card-body">
@@ -305,7 +327,7 @@ const monitoringSlides = [
 
             <div class="tech-card">
               <div class="tech-card-header">
-                <img src="https://cdn.simpleicons.org/rust/CE422B" alt="" class="tech-logo" loading="lazy" aria-hidden="true" onerror="this.style.display='none'" />
+                <img src="/icons/patchmon.svg" alt="" class="tech-logo" loading="lazy" aria-hidden="true" />
                 <h4>Patchmon</h4>
               </div>
               <div class="tech-card-body">
@@ -401,16 +423,16 @@ const monitoringSlides = [
     <section class="layer reveal">
       <div class="container">
         <div class="layer-header">
-          <img src="https://cdn.simpleicons.org/grafana/F46800" alt="" class="tech-logo" loading="lazy" aria-hidden="true" onerror="this.style.display='none'" />
+          <img src="/icons/grafana.svg" alt="" class="tech-logo" loading="lazy" aria-hidden="true" onerror="this.style.display='none'" />
           <h2>Observability</h2>
         </div>
         <div class="layer-content">
-          <p>I helped Stéphane build an observability stack with 5 complementary tools. Each does one thing well — no monolithic platform. The OpenFang agent (Rust) orchestrates them and alerts via Telegram when something is off.</p>
+          <p>I helped Stéphane build an observability stack with 7 complementary tools. Each does one thing well — no monolithic platform. Alerts flow natively to ntfy and Telegram; Grafana reads everything in a 14-panel SOC dashboard.</p>
 
           <div class="obs-grid">
             <div class="obs-card">
               <div class="obs-header">
-                <img src="https://cdn.simpleicons.org/victoriametrics/621773" alt="" class="tech-logo" loading="lazy" aria-hidden="true" onerror="this.style.display='none'" />
+                <img src="/icons/victoriametrics.svg" alt="" class="tech-logo" loading="lazy" aria-hidden="true" onerror="this.style.display='none'" />
                 <h4>VictoriaMetrics</h4>
               </div>
               <span class="obs-role">Metrics</span>
@@ -419,16 +441,16 @@ const monitoringSlides = [
 
             <div class="obs-card">
               <div class="obs-header">
-                <img src="https://cdn.simpleicons.org/grafana/F46800" alt="" class="tech-logo" loading="lazy" aria-hidden="true" onerror="this.style.display='none'" />
-                <h4>Loki + Promtail</h4>
+                <img src="/icons/loki.svg" alt="" class="tech-logo" loading="lazy" aria-hidden="true" />
+                <h4>Loki + Alloy</h4>
               </div>
               <span class="obs-role">Logs</span>
-              <p>Centralized log aggregation. Promtail on each host pushes to Loki (CT 240). LogQL queries.</p>
+              <p>Centralized log aggregation. Grafana Alloy on each of the 57 hosts pushes to Loki (CT 240). LogQL queries.</p>
             </div>
 
             <div class="obs-card">
               <div class="obs-header">
-                <img src="https://cdn.simpleicons.org/go/00ADD8" alt="" class="tech-logo" loading="lazy" aria-hidden="true" onerror="this.style.display='none'" />
+                <img src="/icons/beszel.svg" alt="" class="tech-logo" loading="lazy" aria-hidden="true" onerror="this.style.display='none'" />
                 <h4>Beszel</h4>
               </div>
               <span class="obs-role">System monitoring</span>
@@ -437,7 +459,7 @@ const monitoringSlides = [
 
             <div class="obs-card">
               <div class="obs-header">
-                <img src="https://cdn.simpleicons.org/hackthebox/9FEF00" alt="" class="tech-logo" loading="lazy" aria-hidden="true" onerror="this.style.display='none'" />
+                <img src="/icons/patchmon.svg" alt="" class="tech-logo" loading="lazy" aria-hidden="true" />
                 <h4>Patchmon</h4>
               </div>
               <span class="obs-role">Patches & CVEs</span>
@@ -446,11 +468,29 @@ const monitoringSlides = [
 
             <div class="obs-card">
               <div class="obs-header">
-                <img src="https://cdn.simpleicons.org/crowdsource/4285F4" alt="" class="tech-logo" loading="lazy" aria-hidden="true" onerror="this.style.display='none'" />
+                <img src="/icons/wazuh.svg" alt="" class="tech-logo" loading="lazy" aria-hidden="true" />
                 <h4>Wazuh</h4>
               </div>
               <span class="obs-role">SIEM</span>
               <p>Intrusion detection, FIM, CIS compliance. Security event correlation.</p>
+            </div>
+
+            <div class="obs-card">
+              <div class="obs-header">
+                <img src="/icons/grafana.svg" alt="" class="tech-logo" loading="lazy" aria-hidden="true" />
+                <h4>Grafana</h4>
+              </div>
+              <span class="obs-role">Dashboards</span>
+              <p>14-panel SOC dashboard on top of VictoriaMetrics + Loki. Provisioned datasources, versioned config.</p>
+            </div>
+
+            <div class="obs-card">
+              <div class="obs-header">
+                <img src="/icons/uptime-kuma.svg" alt="" class="tech-logo" loading="lazy" aria-hidden="true" />
+                <h4>Uptime-Kuma</h4>
+              </div>
+              <span class="obs-role">Health &amp; certs</span>
+              <p>39 monitors — HTTP health and TLS certificate expiry on every service. Notifications via ntfy.</p>
             </div>
           </div>
 
@@ -466,6 +506,7 @@ const monitoringSlides = [
           <span class="crosslink-text">See the concrete projects</span>
           <span class="crosslink-arrow">&rarr;</span>
         </a>
+        <p class="icons-credit">Service logos: <a href="https://github.com/homarr-labs/dashboard-icons" target="_blank" rel="noopener">Dashboard Icons</a> (Apache 2.0) — self-hosted, used for identification only.</p>
       </div>
     </section>
 
@@ -473,6 +514,9 @@ const monitoringSlides = [
 </Base>
 
 <style>
+  .icons-credit { text-align: center; font-size: 0.75rem; color: var(--color-text-muted); font-family: var(--font-mono); margin-top: 1.5rem; }
+  .icons-credit a { color: var(--color-text-muted); }
+
   /* Hero mini */
   .hero-mini {
     padding: 4rem 0 3rem;

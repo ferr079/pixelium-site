@@ -24,8 +24,8 @@ const serviceSlides = [
   { src: '/images/services/wikijs.webp', alt: 'Wiki.js — wiki documentation infrastructure', title: 'Wiki.js — Documentation' },
   { src: '/images/services/homeassistant.webp', alt: 'Home Assistant — domotique et IoT', title: 'Home Assistant — IoT' },
   { src: '/images/services/loki.webp', alt: 'Loki — agrégation de logs centralisée', title: 'Loki — Logs' },
-  { src: '/images/services/hermes.webp', alt: 'Hermes Agent — correspondant Telegram h24, 3 crons', title: 'Hermes — Agent IA' },
-  { src: '/images/services/openfang.webp', alt: 'OpenFang — moteur AIOps headless, 8 crons Guardian', title: 'OpenFang — AIOps' },
+  { src: '/images/services/hermes.webp', alt: 'Hermes Agent — correspondant Telegram h24, learning loop', title: 'Hermes — Agent IA' },
+  { src: '/images/services/openfang.webp', alt: 'OpenFang — moteur AIOps headless, 8 crons Guardian', title: 'OpenFang — AIOps (décommissionné)' },
 ];
 
 const monitoringSlides = [
@@ -34,13 +34,13 @@ const monitoringSlides = [
   { src: '/images/monitoring/wazuh2.webp', alt: 'Wazuh — alertes sécurité et threat intelligence', title: 'Wazuh — SIEM (Vue globale)' },
   { src: '/images/monitoring/victoriametrics.webp', alt: 'VictoriaMetrics — métriques CPU, mémoire, disque', title: 'VictoriaMetrics — TSDB Métriques' },
   { src: '/images/monitoring/patchmon.webp', alt: 'Patchmon — dashboard conformité patchs', title: 'Patchmon — Conformité patchs' },
-  { src: '/images/monitoring/pentagi.webp', alt: 'PentAGI — résultats scan pentest autonome sur Traefik', title: 'PentAGI — Pentest autonome' },
+  { src: '/images/monitoring/pentagi.webp', alt: 'PentAGI — résultats scan pentest autonome sur Traefik', title: 'PentAGI — Pentest autonome (décommissionné)' },
   { src: '/images/monitoring/raptor.webp', alt: 'RAPTOR — framework audit sécurité, Semgrep, CodeQL, AFL++', title: 'RAPTOR — Audit sécurité' },
   { src: '/images/homepage-dashboard.webp', alt: 'Dashboard Homepage — widgets monitoring temps réel', title: 'Homepage — Dashboard' },
 ];
 ---
 
-<Base title="Infrastructure — pixelium.win" description="55+ conteneurs LXC + 1 VM sur 4 nœuds Proxmox, tout self-hosted — DNS, TLS, monitoring, SIEM, agents IA. Architecture complète du homelab pixelium avec carte topologique live.">
+<Base title="Infrastructure — pixelium.win" description="53 conteneurs LXC + 1 VM sur 4 nœuds Proxmox, tout self-hosted — DNS, TLS, monitoring, SIEM, agents IA. Architecture complète du homelab pixelium avec carte topologique live.">
   <main>
     <section class="hero-mini">
       <div class="container">
@@ -52,7 +52,7 @@ const monitoringSlides = [
 
     <StatsBar stats={[
       { number: "4", label: "noeuds Proxmox" },
-      { number: "55+", label: "conteneurs LXC", stat: "lxc_count", suffix: "+" },
+      { number: "53+", label: "conteneurs LXC", stat: "lxc_count", suffix: "+" },
       { number: "15", label: "widgets Homepage" },
       { number: "0", label: "euro cloud externe" },
     ]} />
@@ -68,7 +68,7 @@ const monitoringSlides = [
     <section class="layer reveal">
       <div class="container">
         <div class="layer-header">
-          <img src="https://cdn.simpleicons.org/proxmox/E57000" alt="" class="tech-logo" loading="lazy" aria-hidden="true" onerror="this.style.display='none'" />
+          <img src="/icons/proxmox.svg" alt="" class="tech-logo" loading="lazy" aria-hidden="true" onerror="this.style.display='none'" />
           <h2>Vue d'ensemble</h2>
         </div>
         <div class="layer-content">
@@ -92,7 +92,7 @@ const monitoringSlides = [
                 </div>
                 <div class="spec">
                   <span class="spec-label">Services</span>
-                  <span class="spec-value">DNS, Traefik, step-ca, Forgejo, Headscale, Authentik</span>
+                  <span class="spec-value">DNS, Traefik, step-ca, Forgejo, Authentik, Home Assistant</span>
                 </div>
               </div>
             </div>
@@ -114,7 +114,7 @@ const monitoringSlides = [
                 </div>
                 <div class="spec">
                   <span class="spec-label">Services</span>
-                  <span class="spec-value">Jellyfin, Immich (ML GPU remote), Kavita, Home Assistant, monitoring, OpenFang</span>
+                  <span class="spec-value">Jellyfin, Immich (ML GPU remote), Kavita, Wiki.js, Wazuh SIEM, Hermes</span>
                 </div>
               </div>
             </div>
@@ -137,6 +137,28 @@ const monitoringSlides = [
                 <div class="spec">
                   <span class="spec-label">Services</span>
                   <span class="spec-value">PBS, Forworld (Forgejo miroir), Samba share</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="node-card">
+              <div class="node-header">
+                <span class="node-name">pve4</span>
+                <span class="node-role">Monitoring &amp; ops</span>
+                <span class="node-badge badge-24x7">24/7</span>
+              </div>
+              <div class="specs">
+                <div class="spec">
+                  <span class="spec-label">CPU</span>
+                  <span class="spec-value">i5-3470S — 4C/4T</span>
+                </div>
+                <div class="spec">
+                  <span class="spec-label">RAM</span>
+                  <span class="spec-value">16 GB</span>
+                </div>
+                <div class="spec">
+                  <span class="spec-label">Services</span>
+                  <span class="spec-value">Grafana, VictoriaMetrics, Loki, Uptime-Kuma, Dagu, ntfy, Healthchecks, Semaphore</span>
                 </div>
               </div>
             </div>
@@ -163,7 +185,7 @@ const monitoringSlides = [
     <section class="layer reveal">
       <div class="container">
         <div class="layer-header">
-          <img src="https://cdn.simpleicons.org/linux/FCC624" alt="" class="tech-logo" loading="lazy" aria-hidden="true" onerror="this.style.display='none'" />
+          <img src="/icons/linux.svg" alt="" class="tech-logo" loading="lazy" aria-hidden="true" onerror="this.style.display='none'" />
           <h2>Briques & choix techniques</h2>
         </div>
         <div class="layer-content">
@@ -173,7 +195,7 @@ const monitoringSlides = [
 
             <div class="tech-card">
               <div class="tech-card-header">
-                <img src="https://cdn.simpleicons.org/proxmox/E57000" alt="" class="tech-logo" loading="lazy" aria-hidden="true" onerror="this.style.display='none'" />
+                <img src="/icons/proxmox.svg" alt="" class="tech-logo" loading="lazy" aria-hidden="true" onerror="this.style.display='none'" />
                 <h4>Proxmox VE</h4>
               </div>
               <div class="tech-card-body">
@@ -185,7 +207,7 @@ const monitoringSlides = [
 
             <div class="tech-card">
               <div class="tech-card-header">
-                <img src="https://cdn.simpleicons.org/traefikproxy/24A1C1" alt="" class="tech-logo" loading="lazy" aria-hidden="true" onerror="this.style.display='none'" />
+                <img src="/icons/traefik.svg" alt="" class="tech-logo" loading="lazy" aria-hidden="true" onerror="this.style.display='none'" />
                 <h4>Traefik</h4>
               </div>
               <div class="tech-card-body">
@@ -221,7 +243,7 @@ const monitoringSlides = [
 
             <div class="tech-card">
               <div class="tech-card-header">
-                <img src="https://cdn.simpleicons.org/authentik/FD4B2D" alt="" class="tech-logo" loading="lazy" aria-hidden="true" onerror="this.style.display='none'" />
+                <img src="/icons/authentik.svg" alt="" class="tech-logo" loading="lazy" aria-hidden="true" onerror="this.style.display='none'" />
                 <h4>Authentik</h4>
               </div>
               <div class="tech-card-body">
@@ -233,7 +255,7 @@ const monitoringSlides = [
 
             <div class="tech-card">
               <div class="tech-card-header">
-                <img src="https://cdn.simpleicons.org/ansible/EE0000" alt="" class="tech-logo" loading="lazy" aria-hidden="true" onerror="this.style.display='none'" />
+                <img src="/icons/ansible.svg" alt="" class="tech-logo" loading="lazy" aria-hidden="true" onerror="this.style.display='none'" />
                 <h4>Ansible + Semaphore</h4>
               </div>
               <div class="tech-card-body">
@@ -245,7 +267,7 @@ const monitoringSlides = [
 
             <div class="tech-card">
               <div class="tech-card-header">
-                <img src="https://cdn.simpleicons.org/crowdsource/4285F4" alt="" class="tech-logo" loading="lazy" aria-hidden="true" onerror="this.style.display='none'" />
+                <img src="/icons/wazuh.svg" alt="" class="tech-logo" loading="lazy" aria-hidden="true" />
                 <h4>Wazuh</h4>
               </div>
               <div class="tech-card-body">
@@ -257,7 +279,7 @@ const monitoringSlides = [
 
             <div class="tech-card">
               <div class="tech-card-header">
-                <img src="https://cdn.simpleicons.org/crowdsource/4285F4" alt="" class="tech-logo" loading="lazy" aria-hidden="true" onerror="this.style.display='none'" />
+                <img src="/icons/crowdsec.svg" alt="" class="tech-logo" loading="lazy" aria-hidden="true" />
                 <h4>CrowdSec</h4>
               </div>
               <div class="tech-card-body">
@@ -269,31 +291,31 @@ const monitoringSlides = [
 
             <div class="tech-card">
               <div class="tech-card-header">
-                <img src="https://cdn.simpleicons.org/rust/CE422B" alt="" class="tech-logo" loading="lazy" aria-hidden="true" onerror="this.style.display='none'" />
+                <img src="https://cdn.simpleicons.org/python/3776AB" alt="" class="tech-logo" loading="lazy" aria-hidden="true" onerror="this.style.display='none'" />
                 <h4>Agents IA</h4>
               </div>
               <div class="tech-card-body">
-                <p class="tech-why"><strong>Pourquoi :</strong> L'IA n'est pas un gadget — c'est un partenaire opérationnel. Le <strong>trio AIops v2</strong> : OpenFang (sentinelle headless, 8 crons Guardian) → MQTT → Hermes (triage Telegram h24, 3 crons nuit) → SSH spawn Claude CT 196 (remédiation éphémère). Plus PentAGI (pentest autonome, pve3 on-demand) et RAPTOR (audit code source, distrobox). MiniMax M2.7 via LiteLLM (failback 4 providers), RTX 3090 pour l'inférence locale. Communication inter-agents via bus MQTT.</p>
-                <p class="tech-alt"><span class="alt-label">Stack :</span> OpenFang (Rust), Hermes (Python), PentAGI (Docker/Kali), RAPTOR (distrobox Semgrep/CodeQL/AFL++), MQTT (Mosquitto), 31 skills cybersec</p>
-                <p class="tech-result"><span class="result-label">Résultat :</span> 11 crons automatisés (8 Guardian + 3 Hermes), backups quotidiens, monitoring autonome + digest sécu + réconciliation doc, Claude CT 196 spawnable pour la remédiation critique — ~11&euro;/mois total (routé via LiteLLM)</p>
+                <p class="tech-why"><strong>Pourquoi :</strong> L'IA n'est pas un gadget — c'est un partenaire opérationnel, gardé là où il apporte du jugement. <strong>Hermes</strong> (correspondant Telegram h24, auto-améliorant, chaînes de crons doc-sync + digest RSS) est le seul agent résident depuis juin 2026 — l'ancien trio AIops v2 (OpenFang, PentAGI, CT Claude) a été décommissionné une fois ses missions couvertes par l'alerting natif (Beszel/Wazuh/CrowdSec → ntfy) et les DAGs Dagu. RAPTOR (audit code source, distrobox) et Claude Code complètent l'équipe. MiniMax M3 via LiteLLM (failback 4 providers), RTX 3090 pour l'inférence locale.</p>
+                <p class="tech-alt"><span class="alt-label">Stack :</span> Hermes (NousResearch, MiniMax M3), RAPTOR (distrobox Semgrep/CodeQL/AFL++), MQTT (Mosquitto), DAGs Dagu, ntfy, 31 skills cybersec</p>
+                <p class="tech-result"><span class="result-label">Résultat :</span> Réconciliation doc autonome + veille techno sur Telegram, ops planifiées sur Dagu (backups, audits, kv-push), alerting natif via ntfy — l'IA là où elle réfléchit, du code simple là où ça se répète</p>
               </div>
             </div>
 
             <div class="tech-card">
               <div class="tech-card-header">
-                <img src="https://cdn.simpleicons.org/victoriametrics/621773" alt="" class="tech-logo" loading="lazy" aria-hidden="true" onerror="this.style.display='none'" />
+                <img src="/icons/victoriametrics.svg" alt="" class="tech-logo" loading="lazy" aria-hidden="true" onerror="this.style.display='none'" />
                 <h4>VictoriaMetrics</h4>
               </div>
               <div class="tech-card-body">
                 <p class="tech-why"><strong>Pourquoi :</strong> Compatible Prometheus (PromQL, remote write), mais single binary — pas d'Alertmanager, pas de Thanos, pas de 15 composants. Compression supérieure, moins de RAM.</p>
                 <p class="tech-alt"><span class="alt-label">Écartés :</span> Prometheus (plus lourd en RAM, stockage moins efficient), InfluxDB (licence commerciale)</p>
-                <p class="tech-result"><span class="result-label">Résultat :</span> Métriques TSDB long terme, scrape 20+ targets, requêtable par l'agent OpenFang</p>
+                <p class="tech-result"><span class="result-label">Résultat :</span> Métriques TSDB long terme, scrape 20+ targets, dashboard SOC Grafana par-dessus</p>
               </div>
             </div>
 
             <div class="tech-card">
               <div class="tech-card-header">
-                <img src="https://cdn.simpleicons.org/go/00ADD8" alt="" class="tech-logo" loading="lazy" aria-hidden="true" onerror="this.style.display='none'" />
+                <img src="/icons/beszel.svg" alt="" class="tech-logo" loading="lazy" aria-hidden="true" onerror="this.style.display='none'" />
                 <h4>Beszel</h4>
               </div>
               <div class="tech-card-body">
@@ -305,7 +327,7 @@ const monitoringSlides = [
 
             <div class="tech-card">
               <div class="tech-card-header">
-                <img src="https://cdn.simpleicons.org/rust/CE422B" alt="" class="tech-logo" loading="lazy" aria-hidden="true" onerror="this.style.display='none'" />
+                <img src="/icons/patchmon.svg" alt="" class="tech-logo" loading="lazy" aria-hidden="true" />
                 <h4>Patchmon</h4>
               </div>
               <div class="tech-card-body">
@@ -401,16 +423,16 @@ const monitoringSlides = [
     <section class="layer reveal">
       <div class="container">
         <div class="layer-header">
-          <img src="https://cdn.simpleicons.org/grafana/F46800" alt="" class="tech-logo" loading="lazy" aria-hidden="true" onerror="this.style.display='none'" />
+          <img src="/icons/grafana.svg" alt="" class="tech-logo" loading="lazy" aria-hidden="true" onerror="this.style.display='none'" />
           <h2>Observabilité</h2>
         </div>
         <div class="layer-content">
-          <p>J'ai aidé Stéphane à construire une stack d'observabilité en 5 outils complémentaires. Chacun fait une chose bien — pas de plateforme monolithique. L'agent OpenFang (Rust) les orchestre et alerte via Telegram quand quelque chose ne va pas.</p>
+          <p>J'ai aidé Stéphane à construire une stack d'observabilité en 7 outils complémentaires. Chacun fait une chose bien — pas de plateforme monolithique. Les alertes partent nativement vers ntfy et Telegram ; Grafana lit tout dans un dashboard SOC de 14 panneaux.</p>
 
           <div class="obs-grid">
             <div class="obs-card">
               <div class="obs-header">
-                <img src="https://cdn.simpleicons.org/victoriametrics/621773" alt="" class="tech-logo" loading="lazy" aria-hidden="true" onerror="this.style.display='none'" />
+                <img src="/icons/victoriametrics.svg" alt="" class="tech-logo" loading="lazy" aria-hidden="true" onerror="this.style.display='none'" />
                 <h4>VictoriaMetrics</h4>
               </div>
               <span class="obs-role">Métriques</span>
@@ -419,16 +441,16 @@ const monitoringSlides = [
 
             <div class="obs-card">
               <div class="obs-header">
-                <img src="https://cdn.simpleicons.org/grafana/F46800" alt="" class="tech-logo" loading="lazy" aria-hidden="true" onerror="this.style.display='none'" />
-                <h4>Loki + Promtail</h4>
+                <img src="/icons/loki.svg" alt="" class="tech-logo" loading="lazy" aria-hidden="true" />
+                <h4>Loki + Alloy</h4>
               </div>
               <span class="obs-role">Logs</span>
-              <p>Agrégation de logs centralisés. Promtail sur chaque hôte pousse vers Loki (CT 240). Requêtes LogQL.</p>
+              <p>Agrégation de logs centralisée. Grafana Alloy sur chacun des 57 hôtes pousse vers Loki (CT 240). Requêtes LogQL.</p>
             </div>
 
             <div class="obs-card">
               <div class="obs-header">
-                <img src="https://cdn.simpleicons.org/go/00ADD8" alt="" class="tech-logo" loading="lazy" aria-hidden="true" onerror="this.style.display='none'" />
+                <img src="/icons/beszel.svg" alt="" class="tech-logo" loading="lazy" aria-hidden="true" onerror="this.style.display='none'" />
                 <h4>Beszel</h4>
               </div>
               <span class="obs-role">Monitoring système</span>
@@ -437,7 +459,7 @@ const monitoringSlides = [
 
             <div class="obs-card">
               <div class="obs-header">
-                <img src="https://cdn.simpleicons.org/hackthebox/9FEF00" alt="" class="tech-logo" loading="lazy" aria-hidden="true" onerror="this.style.display='none'" />
+                <img src="/icons/patchmon.svg" alt="" class="tech-logo" loading="lazy" aria-hidden="true" />
                 <h4>Patchmon</h4>
               </div>
               <span class="obs-role">Patchs & CVE</span>
@@ -446,11 +468,29 @@ const monitoringSlides = [
 
             <div class="obs-card">
               <div class="obs-header">
-                <img src="https://cdn.simpleicons.org/crowdsource/4285F4" alt="" class="tech-logo" loading="lazy" aria-hidden="true" onerror="this.style.display='none'" />
+                <img src="/icons/wazuh.svg" alt="" class="tech-logo" loading="lazy" aria-hidden="true" />
                 <h4>Wazuh</h4>
               </div>
               <span class="obs-role">SIEM</span>
               <p>Détection d'intrusion, FIM, compliance CIS. Corrélation d'événements sécurité.</p>
+            </div>
+
+            <div class="obs-card">
+              <div class="obs-header">
+                <img src="/icons/grafana.svg" alt="" class="tech-logo" loading="lazy" aria-hidden="true" />
+                <h4>Grafana</h4>
+              </div>
+              <span class="obs-role">Dashboards</span>
+              <p>Dashboard SOC 14 panneaux au-dessus de VictoriaMetrics + Loki. Datasources provisionnées, config versionnée.</p>
+            </div>
+
+            <div class="obs-card">
+              <div class="obs-header">
+                <img src="/icons/uptime-kuma.svg" alt="" class="tech-logo" loading="lazy" aria-hidden="true" />
+                <h4>Uptime-Kuma</h4>
+              </div>
+              <span class="obs-role">Santé &amp; certs</span>
+              <p>39 monitors — santé HTTP et expiration des certificats TLS sur chaque service. Notifications via ntfy.</p>
             </div>
           </div>
 
@@ -466,6 +506,7 @@ const monitoringSlides = [
           <span class="crosslink-text">Voir les projets concrets</span>
           <span class="crosslink-arrow">&rarr;</span>
         </a>
+        <p class="icons-credit">Logos services : <a href="https://github.com/homarr-labs/dashboard-icons" target="_blank" rel="noopener">Dashboard Icons</a> (Apache 2.0) — auto-hébergés, usage d'identification uniquement.</p>
       </div>
     </section>
 
@@ -473,6 +514,9 @@ const monitoringSlides = [
 </Base>
 
 <style>
+  .icons-credit { text-align: center; font-size: 0.75rem; color: var(--color-text-muted); font-family: var(--font-mono); margin-top: 1.5rem; }
+  .icons-credit a { color: var(--color-text-muted); }
+
   /* Hero mini */
   .hero-mini {
     padding: 4rem 0 3rem;
