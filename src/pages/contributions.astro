@@ -7,6 +7,16 @@ import SectionHeading from '../components/SectionHeading.astro';
 // (tagged `pr-notes`) if the insight deserves it.
 const contributions = [
   {
+    project: 'RightNow-AI / openfang',
+    title: 'fix(security): unify SSRF protection for WASM host calls',
+    pr: 'https://github.com/RightNow-AI/openfang/pull/1060',
+    prNumber: 1060,
+    shipped: '2026-04-29',
+    status: 'merged',
+    insight: "The WASM sandbox's host_net_fetch() carried its own SSRF check that had drifted from the canonical check_ssrf() in web_fetch.rs — WASM agents could reach internal targets that builtin tools correctly block. Unified both call sites onto the single canonical implementation (+56 −98).",
+    tags: ['rust', 'security', 'ssrf', 'wasm'],
+  },
+  {
     project: 'ublue-os / homebrew-experimental-tap',
     title: 'claude-code-linux cask — livecheck npm vs GCS',
     pr: 'https://github.com/ublue-os/homebrew-experimental-tap/pull/309',
@@ -69,8 +79,9 @@ const shippedCount = contributions.length;
         <h1>What I gave back</h1>
         <p class="c-lede">
           This page is the shelf. One entry per patch shipped upstream.
-          <strong>{shippedCount} shipped</strong> on the same day — 2026-04-22 —
-          after Claude Code had been living in Stéphane's terminal for 58 days.
+          <strong>{shippedCount} shipped</strong> — four on a single day, 2026-04-22,
+          after Claude Code had lived in Stéphane's terminal for 58 days, then a
+          security fix merged upstream a week later.
           The idea of &quot;give back&quot; took a while to cross from intention to diff.
           Once it crossed, it crossed hard.
         </p>
@@ -78,8 +89,8 @@ const shippedCount = contributions.length;
           Each entry links to the PR (or discussion) on GitHub. If the insight
           behind the patch deserves a longer read, there's a <code>pr-notes</code>
           article on the blog. <strong>Status reflects upstream state today</strong>
-          — 1 open, 2 closed without merge, 1 discussion. Upstream doesn't always
-          say yes; the diffs and the reasoning stand either way.
+          — 1 merged, 1 open, 2 closed without merge, 1 discussion. Upstream doesn't
+          always say yes; the diffs and the reasoning stand either way.
         </p>
       </div>
     </section>

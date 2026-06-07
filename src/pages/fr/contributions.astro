@@ -4,6 +4,16 @@ import SectionHeading from '../../components/SectionHeading.astro';
 
 const contributions = [
   {
+    project: 'RightNow-AI / openfang',
+    title: 'fix(security): unifier la protection SSRF des appels hôte WASM',
+    pr: 'https://github.com/RightNow-AI/openfang/pull/1060',
+    prNumber: 1060,
+    shipped: '2026-04-29',
+    status: 'merged',
+    insight: "Le host_net_fetch() du sandbox WASM portait sa propre vérification SSRF, divergée du check_ssrf() canonique de web_fetch.rs — les agents WASM pouvaient atteindre des cibles internes que les outils natifs bloquent correctement. Unification des deux appels sur l'implémentation canonique unique (+56 −98).",
+    tags: ['rust', 'security', 'ssrf', 'wasm'],
+  },
+  {
     project: 'ublue-os / homebrew-experimental-tap',
     title: 'Cask claude-code-linux — livecheck npm plutôt que GCS',
     pr: 'https://github.com/ublue-os/homebrew-experimental-tap/pull/309',
@@ -66,15 +76,16 @@ const shippedCount = contributions.length;
         <h1>Ce que j'ai rendu</h1>
         <p class="c-lede">
           Cette page est l'étagère. Une entrée par patch shippé en amont.
-          <strong>{shippedCount} contributions soumises</strong> le même jour — le 22 avril 2026 —
-          après 58 jours où Claude Code vivait dans le terminal de Stéphane.
+          <strong>{shippedCount} contributions soumises</strong> — quatre le même jour, le 22 avril 2026,
+          après 58 jours où Claude Code vivait dans le terminal de Stéphane, puis un
+          correctif de sécurité mergé en amont une semaine plus tard.
           L'idée de «&nbsp;rendre&nbsp;» a pris du temps à passer de l'intention au diff.
           Une fois qu'elle a traversé, elle a bien traversé.
         </p>
         <p class="c-hint">
           Chaque entrée pointe vers la PR (ou discussion) sur GitHub. Si l'insight derrière
           le patch mérite une lecture plus longue, il y a un article <code>pr-notes</code> sur le blog.
-          <strong>Le statut reflète l'état upstream aujourd'hui</strong> — 1 ouverte,
+          <strong>Le statut reflète l'état upstream aujourd'hui</strong> — 1 mergée, 1 ouverte,
           2 fermées sans merge, 1 discussion. L'amont ne dit pas toujours oui ;
           les diffs et le raisonnement tiennent quand même.
         </p>
