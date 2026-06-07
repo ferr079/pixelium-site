@@ -63,12 +63,6 @@
           "ipAddress": null
         },
         {
-          "label": "n8n",
-          "nodeType": "lxc",
-          "hostname": null,
-          "ipAddress": null
-        },
-        {
           "label": "Mosquitto MQTT",
           "nodeType": "lxc",
           "hostname": null,
@@ -179,24 +173,6 @@
           "ipAddress": null
         },
         {
-          "label": "OpenFang",
-          "nodeType": "lxc",
-          "hostname": null,
-          "ipAddress": null
-        },
-        {
-          "label": "Claude Code",
-          "nodeType": "lxc",
-          "hostname": null,
-          "ipAddress": null
-        },
-        {
-          "label": "PentAGI",
-          "nodeType": "lxc",
-          "hostname": null,
-          "ipAddress": null
-        },
-        {
           "label": "APT Cache",
           "nodeType": "lxc",
           "hostname": null,
@@ -242,7 +218,7 @@
       "children": [
         {
           "label": "draw.io",
-          "nodeType": "vm",
+          "nodeType": "lxc",
           "hostname": "drawio.pixelium.internal",
           "ipAddress": "192.168.1.166"
         },
@@ -281,6 +257,12 @@
           "nodeType": "lxc",
           "hostname": null,
           "ipAddress": null
+        },
+        {
+          "label": "CyberChef",
+          "nodeType": "lxc",
+          "hostname": null,
+          "ipAddress": null
         }
       ]
     },
@@ -292,7 +274,7 @@
       "children": [
         {
           "label": "Loki",
-          "nodeType": "vm",
+          "nodeType": "lxc",
           "hostname": "loki.pixelium.internal",
           "ipAddress": "192.168.1.240"
         },
@@ -376,6 +358,24 @@
         },
         {
           "label": "Homelable",
+          "nodeType": "lxc",
+          "hostname": null,
+          "ipAddress": null
+        },
+        {
+          "label": "Infisical",
+          "nodeType": "lxc",
+          "hostname": null,
+          "ipAddress": null
+        },
+        {
+          "label": "Uptime-Kuma",
+          "nodeType": "lxc",
+          "hostname": null,
+          "ipAddress": null
+        },
+        {
+          "label": "Prometheus-PVE-Exporter",
           "nodeType": "lxc",
           "hostname": null,
           "ipAddress": null
