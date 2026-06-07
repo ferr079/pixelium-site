@@ -24,7 +24,7 @@ const maxTurns = Math.max(...heatmapLocal);
           Rien n'est arrondi vers le haut. Chaque chiffre vient de <code>~/.claude/usage.db</code> —
           les transcripts JSONL que Claude Code écrit sur la workstation de Stéphane, scannés par
           <a href="https://github.com/phuryn/claude-usage" target="_blank" rel="noopener">phuryn/claude-usage</a>,
-          expédiés en SSH vers le homelab, puis poussés vers Cloudflare KV au prochain tick timer. Le forwarder a pris sa retraite avec OpenFang (juin 2026) — les chiffres ci-dessous datent du dernier push ; le rebranchement via Dagu est sur la feuille de route.
+          expédiés en SSH vers le homelab, puis poussés vers Cloudflare KV au prochain tick timer. Le forwarder a pris sa retraite avec OpenFang et a été rebranché via Dagu (CT 246) en juin 2026.
         </p>
       </div>
     </section>
@@ -35,12 +35,12 @@ const maxTurns = Math.max(...heatmapLocal);
         <div class="cs-grid four">
           <div class="cs-card">
             <span class="cs-label">heures</span>
-            <span class="cs-value"><DynNum stat="claude_hours" fallback="611" /></span>
+            <span class="cs-value"><DynNum stat="claude_hours" fallback="957" /></span>
             <span class="cs-sub">temps calendaire des sessions</span>
           </div>
           <div class="cs-card">
             <span class="cs-label">sessions</span>
-            <span class="cs-value"><DynNum stat="claude_sessions" fallback="186" /></span>
+            <span class="cs-value"><DynNum stat="claude_sessions" fallback="245" /></span>
             <span class="cs-sub">tous projets confondus</span>
           </div>
           <div class="cs-card">
@@ -50,7 +50,7 @@ const maxTurns = Math.max(...heatmapLocal);
           </div>
           <div class="cs-card">
             <span class="cs-label">cache hit</span>
-            <span class="cs-value"><DynNum stat="claude_cache_hit" fallback="97.4" />%</span>
+            <span class="cs-value"><DynNum stat="claude_cache_hit" fallback="97.5" />%</span>
             <span class="cs-sub">8.3 milliards de cache reads</span>
           </div>
         </div>
@@ -203,7 +203,7 @@ const maxTurns = Math.max(...heatmapLocal);
         <SectionHeading id="pipeline">Comment ces chiffres arrivent ici</SectionHeading>
         <pre class="pipeline-diagram"><code>{`  ┌─────────────┐        ┌──────────┐        ┌──────────┐        ┌───────────┐
   │  ~/.claude  │─jsonl─▶│ usage.db │─query─▶│ KV push  │─CF API─▶│ /api/stats│
-  │  transcripts│        │ (sqlite) │        │ (CT 192) │         │  Worker   │
+  │  transcripts│        │ (sqlite) │        │ (CT 246) │         │  Worker   │
   └─────────────┘        └──────────┘        └──────────┘         └───────────┘
                                                                         │
                                                                         ▼
@@ -214,8 +214,8 @@ const maxTurns = Math.max(...heatmapLocal);
         <p class="cs-paragraph">
           Scan-script : <a href="https://github.com/phuryn/claude-usage" target="_blank" rel="noopener">phuryn/claude-usage</a>.
           Push-script : <code>~/Claude/claude-usage/scripts/push-stats.sh</code> sur la workstation de Stéphane.
-          Récepteur : <code>/srv/kv-inbox/claude-stats.json</code> sur CT 192 (OpenFang) — retiré en juin 2026 avec l'agent.
-          Forwarder : <code>/opt/openfang/scripts/kv-push.sh</code> lisait le fichier et postait vers Cloudflare KV ; son successeur (Dagu, CT 246) ne relaie pas encore ces stats.
+          Récepteur : <code>/srv/kv-inbox/claude-stats.json</code> sur CT 246 (Dagu) — déménagé d'OpenFang à son décommissionnement (juin 2026).
+          Forwarder : <code>/usr/local/bin/kv-push</code> (DAG Dagu, toutes les 5 min) fusionne le fichier dans le payload stats et poste vers Cloudflare KV.
           Rendu : le composant <code>DynNum</code> appelle <code>/api/stats</code> et met à jour le texte côté client.
         </p>
         <p class="cs-note">
