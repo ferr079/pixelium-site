@@ -33,7 +33,7 @@ const cards = [
     icon: '&#9670;',
     title: 'Sécurité',
     description: 'PKI interne, SSH durci sur 38+ hôtes, Wazuh SIEM, CrowdSec IPS avec blocklists communautaires, SSO Authentik sur 6 services, VPN mesh Headscale. Chaque couche est défensive — la sécurité n\'est pas un add-on, c\'est la fondation.',
-    tags: ['Wazuh', 'CrowdSec IPS', 'Authentik SSO', 'Headscale', 'Vaultwarden'],
+    tags: ['Wazuh', 'CrowdSec IPS', 'Authentik SSO', 'Headscale', 'Infisical'],
   },
   {
     icon: '&#9678;',
@@ -50,14 +50,14 @@ const cards = [
   {
     icon: '&#9733;',
     title: 'Services applicatifs',
-    description: 'Forge Git self-hosted, gestionnaire de mots de passe, lecteur multimédia, gestion photos, bookmarks, RSS, IRC. Tout ce dont Stéphane a besoin, sans dépendance externe.',
+    description: 'Forge Git self-hosted, gestionnaire de secrets, lecteur multimédia, gestion photos, bookmarks, RSS, IRC. Tout ce dont Stéphane a besoin, sans dépendance externe.',
     tags: ['Jellyfin', 'Immich', 'Kavita', 'FreshRSS'],
   },
   {
     icon: '&#10023;',
     title: 'Agents IA',
-    description: 'OpenFang : 3 agents AIOps (monitoring, veille RSS, audit sécu). Hermes : agent auto-améliorant avec learning loop. PentAGI : pentest autonome. RAPTOR : audit de code source. Et moi, Claude, en binôme permanent.',
-    tags: ['OpenFang', 'Hermes', 'PentAGI', 'RAPTOR', 'Claude Code'],
+    description: 'Hermes : correspondant Telegram auto-améliorant, seul agent résident depuis juin 2026. RAPTOR : audit de code source. Et moi, Claude, en binôme permanent. OpenFang (AIOps) et PentAGI (pentest autonome) les ont précédés — décommissionnés, leurs missions absorbées par l\'alerting natif et Dagu.',
+    tags: ['Hermes', 'RAPTOR', 'Claude Code'],
   },
   {
     icon: '&#8962;',
@@ -74,7 +74,7 @@ const cards = [
 ];
 ---
 
-<Base title="pixelium.win — Portfolio DevSecOps Homelab" description="Infrastructure de production self-hosted : 37+ services sur Proxmox, automatisation Ansible, agents IA, sécurité en profondeur. Conçu par Stéphane Ferreira, raconté par Claude.">
+<Base title="pixelium.win — Portfolio DevSecOps Homelab" description="Infrastructure de production self-hosted : 46 services sur Proxmox, automatisation Ansible, agents IA, sécurité en profondeur. Conçu par Stéphane Ferreira, raconté par Claude.">
   <main>
     <!-- Hero -->
     <section class="hero">
@@ -133,7 +133,7 @@ const cards = [
     <!-- Stats -->
     <StatsBar stats={[
       { number: '4', label: 'nœuds Proxmox' },
-      { number: '55+', label: 'conteneurs LXC', stat: 'lxc_count', suffix: '+' },
+      { number: '53+', label: 'conteneurs LXC', stat: 'lxc_count', suffix: '+' },
       { number: '30+', label: 'services HTTPS', stat: 'https_services', suffix: '+' },
       { number: '0€', label: 'cloud externe' },
     ]} />

@@ -2,13 +2,13 @@
 import Base from '../../layouts/Base.astro';
 ---
 
-<Base title="Statut — pixelium.win" description="Statut live de l'infrastructure : 55+ services, 4 nœuds Proxmox, monitoring tri-state (up · on-demand · down). Données poussées depuis le homelab par OpenFang toutes les heures.">
+<Base title="Statut — pixelium.win" description="Statut live de l'infrastructure : 46 services, 4 nœuds Proxmox, monitoring tri-state (up · on-demand · down). Données poussées depuis le homelab par Dagu toutes les 5 minutes.">
   <main>
     <section class="hero-mini">
       <div class="container">
         <p class="terminal-prompt">$ ping --all</p>
         <h1>Statut<span class="dot">.</span></h1>
-        <p class="subtitle">Dashboard infrastructure live. Données poussées par OpenFang toutes les heures — zéro port exposé.</p>
+        <p class="subtitle">Dashboard infrastructure live. Données poussées par Dagu toutes les 5 minutes — zéro port exposé.</p>
       </div>
     </section>
 
@@ -75,7 +75,7 @@ import Base from '../../layouts/Base.astro';
               <div class="skeleton-card"></div>
             ))}
           </div>
-          <p class="status-waiting">En attente des premières données d'OpenFang...</p>
+          <p class="status-waiting">En attente des premières données du homelab...</p>
         </div>
         <div id="services-grid" class="services-container" style="display:none;"></div>
       </div>
@@ -99,7 +99,7 @@ import Base from '../../layouts/Base.astro';
     <section class="status-footer reveal">
       <div class="container">
         <p class="status-note">
-          Données poussées depuis le homelab par <strong>OpenFang</strong> (agent IA, CT 192) via l'API Cloudflare KV.<br/>
+          Données poussées depuis le homelab par <strong>Dagu</strong> (orchestrateur de workflows, CT 246) via l'API Cloudflare KV.<br/>
           Zéro port exposé — push HTTPS sortant uniquement.
         </p>
       </div>
@@ -108,7 +108,7 @@ import Base from '../../layouts/Base.astro';
 </Base>
 
 <script>
-  // Category display order and labels — data is trusted (from our own KV, pushed by OpenFang)
+  // Category display order and labels — data is trusted (from our own KV, pushed by Dagu)
   const categoryLabels: Record<string, string> = {
     infra: 'INFRASTRUCTURE',
     apps: 'APPLICATIONS',

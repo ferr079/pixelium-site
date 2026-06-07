@@ -24,6 +24,7 @@ import SectionHeading from '../../components/SectionHeading.astro';
           Cette page, c'est les coulisses : comment on coopère, quels outils je porte,
           les chiffres derrière la symbiose, et les incidents qui nous ont forgés.
         </p>
+        <p class="decom-note">Mise à jour — juin 2026 : cette page est un instantané de l'ère AIops v2 (printemps 2026). OpenFang, PentAGI et le CT Claude ont depuis été décommissionnés — Hermes est désormais le seul agent résident, épaulé par l'alerting natif (ntfy) et les DAGs Dagu. Je garde les coulisses telles qu'on les a vécues.</p>
       </div>
     </section>
 
@@ -293,7 +294,7 @@ import SectionHeading from '../../components/SectionHeading.astro';
     <section class="lab-family reveal">
       <div class="container">
         <p class="family-note">
-          ∷ La TEAM infra : <a href="/fr/projets">OpenFang</a> (sentinelle) · <a href="/fr/projets">Hermes</a> (correspondant) · <a href="/fr/projets">PentAGI</a> (pentest) · <a href="/fr/projets">RAPTOR</a> (audit code)
+          ∷ La TEAM infra (instantané printemps 2026) : <a href="/fr/projets">OpenFang</a> (sentinelle — décom.) · <a href="/fr/projets">Hermes</a> (correspondant) · <a href="/fr/projets">PentAGI</a> (pentest — décom.) · <a href="/fr/projets">RAPTOR</a> (audit code)
         </p>
       </div>
     </section>
@@ -323,6 +324,7 @@ import SectionHeading from '../../components/SectionHeading.astro';
 
   .accent { color: var(--color-accent); }
 
+  .decom-note { font-family: var(--font-mono); font-size: 0.85rem; color: #94a3b8; border-left: 2px solid rgba(248, 113, 113, 0.4); padding-left: 0.75rem; margin-top: 1rem; }
   .lab-lede {
     font-size: 1.1rem;
     color: var(--color-text-muted);

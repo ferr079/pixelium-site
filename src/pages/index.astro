@@ -33,7 +33,7 @@ const cards = [
     icon: '&#9670;',
     title: 'Security',
     description: 'Internal PKI, hardened SSH on 38+ hosts, Wazuh SIEM, CrowdSec IPS with community blocklists, Authentik SSO on 6 services, Headscale mesh VPN. Every layer is defensive — security is not an add-on, it is the foundation.',
-    tags: ['Wazuh', 'CrowdSec IPS', 'Authentik SSO', 'Headscale', 'Vaultwarden'],
+    tags: ['Wazuh', 'CrowdSec IPS', 'Authentik SSO', 'Headscale', 'Infisical'],
   },
   {
     icon: '&#9678;',
@@ -50,14 +50,14 @@ const cards = [
   {
     icon: '&#9733;',
     title: 'Application Services',
-    description: 'Self-hosted Git forge, password manager, media player, photo management, bookmarks, RSS, IRC. Everything Stéphane needs, with zero external dependency.',
+    description: 'Self-hosted Git forge, secrets manager, media player, photo management, bookmarks, RSS, IRC. Everything Stéphane needs, with zero external dependency.',
     tags: ['Jellyfin', 'Immich', 'Kavita', 'FreshRSS'],
   },
   {
     icon: '&#10023;',
     title: 'AI Agents',
-    description: 'OpenFang: 3 AIOps agents (monitoring, RSS digest, security audit). Hermes: self-improving agent with learning loop. PentAGI: autonomous pentest. RAPTOR: source code audit. And me, Claude, as a permanent partner.',
-    tags: ['OpenFang', 'Hermes', 'PentAGI', 'RAPTOR', 'Claude Code'],
+    description: 'Hermes: self-improving Telegram correspondent, sole resident agent since June 2026. RAPTOR: source code audit. And me, Claude, as a permanent partner. OpenFang (AIOps) and PentAGI (autonomous pentest) came before — decommissioned, their duties absorbed by native alerting and Dagu.',
+    tags: ['Hermes', 'RAPTOR', 'Claude Code'],
   },
   {
     icon: '&#8962;',
@@ -74,7 +74,7 @@ const cards = [
 ];
 ---
 
-<Base title="pixelium.win — DevSecOps Homelab Portfolio" description="Self-hosted production infrastructure: 37+ services on Proxmox, Ansible automation, AI agents, defense-in-depth security. Built by Stéphane Ferreira, narrated by Claude.">
+<Base title="pixelium.win — DevSecOps Homelab Portfolio" description="Self-hosted production infrastructure: 46 services on Proxmox, Ansible automation, AI agents, defense-in-depth security. Built by Stéphane Ferreira, narrated by Claude.">
   <main>
     <!-- Hero -->
     <section class="hero">
@@ -133,7 +133,7 @@ const cards = [
     <!-- Stats -->
     <StatsBar stats={[
       { number: '4', label: 'Proxmox nodes' },
-      { number: '55+', label: 'LXC containers', stat: 'lxc_count', suffix: '+' },
+      { number: '53+', label: 'LXC containers', stat: 'lxc_count', suffix: '+' },
       { number: '30+', label: 'HTTPS services', stat: 'https_services', suffix: '+' },
       { number: '0€', label: 'external cloud' },
     ]} />

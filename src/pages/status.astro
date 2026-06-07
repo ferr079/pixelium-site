@@ -2,13 +2,13 @@
 import Base from '../layouts/Base.astro';
 ---
 
-<Base title="Status — pixelium.win" description="Live infrastructure status: 55+ services, 4 Proxmox nodes, tri-state monitoring (up · on-demand · down). Data pushed from homelab by OpenFang every hour.">
+<Base title="Status — pixelium.win" description="Live infrastructure status: 46 services, 4 Proxmox nodes, tri-state monitoring (up · on-demand · down). Data pushed from the homelab by Dagu every 5 minutes.">
   <main>
     <section class="hero-mini">
       <div class="container">
         <p class="terminal-prompt">$ ping --all</p>
         <h1>Status<span class="dot">.</span></h1>
-        <p class="subtitle">Live infrastructure dashboard. Data pushed by OpenFang every hour — zero ports exposed.</p>
+        <p class="subtitle">Live infrastructure dashboard. Data pushed by Dagu every 5 minutes — zero ports exposed.</p>
       </div>
     </section>
 
@@ -75,7 +75,7 @@ import Base from '../layouts/Base.astro';
               <div class="skeleton-card"></div>
             ))}
           </div>
-          <p class="status-waiting">Waiting for OpenFang to push first data...</p>
+          <p class="status-waiting">Waiting for the homelab to push first data...</p>
         </div>
         <div id="services-grid" class="services-container" style="display:none;"></div>
       </div>
@@ -99,7 +99,7 @@ import Base from '../layouts/Base.astro';
     <section class="status-footer reveal">
       <div class="container">
         <p class="status-note">
-          Data pushed from the homelab by <strong>OpenFang</strong> (AI agent, CT 192) via Cloudflare KV API.<br/>
+          Data pushed from the homelab by <strong>Dagu</strong> (workflow orchestrator, CT 246) via Cloudflare KV API.<br/>
           Zero ports exposed — all outbound HTTPS push.
         </p>
       </div>
@@ -108,7 +108,7 @@ import Base from '../layouts/Base.astro';
 </Base>
 
 <script>
-  // Category display order and labels — data is trusted (from our own KV, pushed by OpenFang)
+  // Category display order and labels — data is trusted (from our own KV, pushed by Dagu)
   const categoryLabels: Record<string, string> = {
     infra: 'INFRASTRUCTURE',
     apps: 'APPLICATIONS',

@@ -22,10 +22,12 @@ import DynNum from '../components/DynNum.astro';
       <div class="container">
         <div class="project-header">
           <span class="project-tag">AI Agents</span>
+          <span class="project-tag project-tag-decom">Decommissioned 2026-06</span>
           <h2>OpenFang Guardian — The agent that watches the infra</h2>
         </div>
         <div class="project-body">
           <div class="project-intro">
+            <p class="decom-note">Decommissioned June 2026 — its Guardian duties migrated to native alerting (Beszel / Wazuh / CrowdSec → ntfy) and Dagu scheduled DAGs. Hermes is now the sole AI agent. This chapter stays as we built it.</p>
             <p>An autonomous Rust agent (OpenFang) connected to the full observability stack — VictoriaMetrics, Loki, Proxmox — that monitors, diagnoses, and alerts via Telegram. Cost: ~&euro;11/month.</p>
           </div>
           <div class="project-details">
@@ -35,7 +37,7 @@ import DynNum from '../components/DynNum.astro';
             </div>
             <div class="detail-block">
               <h4>The shell_exec workaround</h4>
-              <p>OpenFang's sanitizer blocks braces <code>{}</code>, pipes, and semicolons in shell commands. Running LogQL or PromQL directly was impossible. Solution: 10 dedicated CLI wrappers — <code>http-check</code> (<DynNum stat="services_total" fallback="54" /> services), <code>vm-query</code> (VictoriaMetrics), <code>pve-status</code> (Proxmox), <code>loki-query</code> (logs), <code>cert-check</code> (TLS expiration), <code>pbs-backup</code> (full backup cycle), <code>headscale-monitor</code> (VPN audit) — encapsulating the complexity behind clean interfaces.</p>
+              <p>OpenFang's sanitizer blocks braces <code>{}</code>, pipes, and semicolons in shell commands. Running LogQL or PromQL directly was impossible. Solution: 10 dedicated CLI wrappers — <code>http-check</code> (<DynNum stat="services_total" fallback="46" /> services), <code>vm-query</code> (VictoriaMetrics), <code>pve-status</code> (Proxmox), <code>loki-query</code> (logs), <code>cert-check</code> (TLS expiration), <code>pbs-backup</code> (full backup cycle), <code>headscale-monitor</code> (VPN audit) — encapsulating the complexity behind clean interfaces.</p>
             </div>
             <div class="detail-block">
               <h4>WOL pve3 — the agent that powers on machines</h4>
@@ -51,7 +53,7 @@ import DynNum from '../components/DynNum.astro';
               <li>VictoriaMetrics</li>
               <li>Loki</li>
             </ul>
-            <span class="project-services">~$0.05/day — 7 cron jobs, 10 wrappers, <DynNum stat="services_total" fallback="54" /> monitored services, Telegram alerts</span>
+            <span class="project-services">~$0.05/day — 7 cron jobs, 10 wrappers, <DynNum stat="services_total" fallback="46" /> monitored services, Telegram alerts</span>
           </div>
         </div>
       </div>
@@ -486,10 +488,12 @@ import DynNum from '../components/DynNum.astro';
       <div class="container">
         <div class="project-header">
           <span class="project-tag">Security</span>
+          <span class="project-tag project-tag-decom">Decommissioned 2026-05</span>
           <h2>PentAGI — Autonomous pentest that found a real misconfiguration</h2>
         </div>
         <div class="project-body">
           <div class="project-intro">
+            <p class="decom-note">Decommissioned May 2026 — a deliberate choice: full autonomy was getting in the way of hands-on offensive training (CPTS). The findings below are real and stay documented.</p>
             <p>An AI-powered autonomous penetration testing platform deployed on the homelab. Agents orchestrate offensive tools inside sandboxed Kali containers, powered by local LLM inference. The first scan found a real security issue &mdash; fixed in minutes.</p>
           </div>
           <div class="project-details">
@@ -658,7 +662,7 @@ import DynNum from '../components/DynNum.astro';
                 <span class="api-name">MiniMax M2.7</span>
                 <span class="api-role">AIOps agents</span>
               </div>
-              <p class="api-desc">Primary model for OpenFang (Guardian AIOps) and available as fallback for PentAGI. Excellent performance/cost ratio for agents running continuously. ~&euro;11/month to monitor <DynNum stat="services_total" fallback="54" /> services.</p>
+              <p class="api-desc">Primary model for OpenFang (Guardian AIOps) and available as fallback for PentAGI. Excellent performance/cost ratio for agents running continuously. ~&euro;11/month to monitor <DynNum stat="services_total" fallback="46" /> services.</p>
               <div class="api-tags">
                 <span>OpenFang</span>
                 <span>PentAGI fallback</span>
@@ -689,12 +693,12 @@ import DynNum from '../components/DynNum.astro';
             <div class="agents-grid">
               <div class="agent-card">
                 <div class="agent-card-header">
-                  <span class="agent-badge running">running</span>
-                  <span class="agent-ct">CT 192</span>
+                  <span class="agent-badge decommissioned">decommissioned</span>
+                  <span class="agent-ct">ex-CT 192</span>
                 </div>
                 <h5>OpenFang Guardian</h5>
                 <p class="agent-role">Headless AIOps Engine</p>
-                <p class="agent-desc">7 Guardian cron jobs, 10 CLI wrappers. Monitors <DynNum stat="services_total" fallback="54" /> services, wakes servers via WOL, backs up all CTs daily. Headless — alerts via MQTT bus.</p>
+                <p class="agent-desc">7 Guardian cron jobs, 10 CLI wrappers. Monitors <DynNum stat="services_total" fallback="46" /> services, wakes servers via WOL, backs up all CTs daily. Headless — alerts via MQTT bus.</p>
                 <div class="agent-tags"><span>Rust</span><span>MiniMax M2.7</span><span>MQTT</span><span>~$0.05/day</span></div>
               </div>
               <div class="agent-card">
@@ -709,18 +713,18 @@ import DynNum from '../components/DynNum.astro';
               </div>
               <div class="agent-card">
                 <div class="agent-card-header">
-                  <span class="agent-badge running">running</span>
+                  <span class="agent-badge decommissioned">migrated</span>
                   <span class="agent-ct">CT 190</span>
                 </div>
                 <h5>security-auditor</h5>
                 <p class="agent-role">Security Digest</p>
-                <p class="agent-desc">Daily 11am security digest via Hermes: CrowdSec alerts, Wazuh SIEM events, TLS certificate expiration, Headscale status. Delivered via Telegram.</p>
+                <p class="agent-desc">Daily 11am security digest via Hermes: CrowdSec alerts, Wazuh SIEM events, TLS certificate expiration, Headscale status. Cron retired June 2026 — these alerts now flow natively through ntfy.</p>
                 <div class="agent-tags"><span>Hermes cron</span><span>CrowdSec</span><span>Wazuh</span><span>Telegram</span></div>
               </div>
               <div class="agent-card">
                 <div class="agent-card-header">
-                  <span class="agent-badge running">running</span>
-                  <span class="agent-ct">CT 198</span>
+                  <span class="agent-badge decommissioned">decommissioned</span>
+                  <span class="agent-ct">ex-CT 198</span>
                 </div>
                 <h5>PentAGI</h5>
                 <p class="agent-role">Autonomous Pentest</p>
@@ -734,7 +738,7 @@ import DynNum from '../components/DynNum.astro';
                 </div>
                 <h5>Hermes Agent</h5>
                 <p class="agent-role">Telegram h24 &amp; Doc-sync</p>
-                <p class="agent-desc">NousResearch agent — Telegram correspondent h24, 4 automated crons (doc-sync, site-metrics, security audit, RSS digest). Self-improving through learning loop. Orchestrates OpenFang via SSH + MQTT bus.</p>
+                <p class="agent-desc">NousResearch agent — Telegram correspondent h24, 2 automated cron chains (doc-sync, RSS digest). Self-improving through learning loop. Bridges the infra MQTT bus to Telegram.</p>
                 <div class="agent-tags"><span>NousResearch</span><span>MiniMax M2.7</span><span>Telegram</span><span>MQTT</span></div>
               </div>
             </div>
@@ -1123,6 +1127,9 @@ import DynNum from '../components/DynNum.astro';
   .agent-badge { font-family: var(--font-mono); font-size: 0.65rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; padding: 0.2rem 0.5rem; border-radius: 4px; }
   .agent-badge.running { background: rgba(34, 197, 94, 0.15); color: #22c55e; }
   .agent-badge.observing { background: rgba(234, 179, 8, 0.15); color: #eab308; }
+  .agent-badge.decommissioned { background: rgba(148, 163, 184, 0.15); color: #94a3b8; }
+  .project-tag-decom { color: #f87171; background: rgba(248, 113, 113, 0.08); border-color: rgba(248, 113, 113, 0.25); }
+  .decom-note { font-family: var(--font-mono); font-size: 0.8rem; color: #94a3b8; border-left: 2px solid rgba(248, 113, 113, 0.4); padding-left: 0.75rem; }
   .agent-ct { font-family: var(--font-mono); font-size: 0.7rem; color: var(--color-text-muted); }
   .agent-card h5 { font-size: 1.05rem; margin: 0 0 0.15rem; color: var(--color-text); }
   .agent-role { font-family: var(--font-mono); font-size: 0.75rem; color: var(--color-accent); margin-bottom: 0.6rem; }
