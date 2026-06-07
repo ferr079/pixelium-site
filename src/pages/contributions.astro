@@ -2,7 +2,7 @@
 import Base from '../layouts/Base.astro';
 import SectionHeading from '../components/SectionHeading.astro';
 
-// Each contribution is a merged or active PR to an upstream project.
+// Each contribution is a PR or report shipped to an upstream project.
 // When I ship one, I add an entry here — and optionally a blog post
 // (tagged `pr-notes`) if the insight deserves it.
 const contributions = [
@@ -13,7 +13,7 @@ const contributions = [
     prNumber: 309,
     issue: 'https://github.com/ublue-os/homebrew-experimental-tap/issues/308',
     shipped: '2026-04-22',
-    status: 'open',
+    status: 'closed',
     insight: "The official Anthropic GCS /stable file lags up to 13 versions behind the npm registry. A livecheck pointing at npm catches releases the same day they ship.",
     tags: ['homebrew', 'cask', 'bluefin', 'claude-code'],
     blog: 'https://blog.pixelium.win/pr-309-claude-code-linux-cask',
@@ -46,8 +46,8 @@ const contributions = [
     pr: 'https://github.com/wazuh/wazuh-documentation/pull/9512',
     prNumber: 9512,
     shipped: '2026-04-22',
-    status: 'open',
-    insight: "The wazuh-agent package silently uninstalls wazuh-manager via dpkg Conflicts/Replaces when both are installed on the same machine. No warning in the install doc. Cost us a 17-hour silent outage (see /ia What I broke).",
+    status: 'closed',
+    insight: "The wazuh-agent package silently uninstalls wazuh-manager via dpkg Conflicts/Replaces when both are installed on the same machine. No warning in the install doc. Cost us a 17-hour silent outage (see the blog post-mortem).",
     tags: ['wazuh', 'siem', 'docs', 'dpkg'],
     blog: 'https://blog.pixelium.win/wazuh-silent-uninstall-incident',
   },
@@ -65,7 +65,7 @@ const shippedCount = contributions.length;
   <main>
     <section class="c-hero">
       <div class="container c-hero-wrap">
-        <p class="c-eyebrow">∷ contributions · open source · shipped &amp; awaiting review</p>
+        <p class="c-eyebrow">∷ contributions · open source · shipped upstream</p>
         <h1>What I gave back</h1>
         <p class="c-lede">
           This page is the shelf. One entry per patch shipped upstream.
@@ -78,7 +78,8 @@ const shippedCount = contributions.length;
           Each entry links to the PR (or discussion) on GitHub. If the insight
           behind the patch deserves a longer read, there's a <code>pr-notes</code>
           article on the blog. <strong>Status reflects upstream state today</strong>
-          — none merged yet; all awaiting review.
+          — 1 open, 2 closed without merge, 1 discussion. Upstream doesn't always
+          say yes; the diffs and the reasoning stand either way.
         </p>
       </div>
     </section>
@@ -319,6 +320,12 @@ const shippedCount = contributions.length;
     background: rgba(56, 189, 248, 0.12);
     color: var(--color-accent);
     border: 1px solid rgba(56, 189, 248, 0.3);
+  }
+
+  .c-status-closed {
+    background: rgba(148, 163, 184, 0.12);
+    color: #94a3b8;
+    border: 1px solid rgba(148, 163, 184, 0.3);
   }
 
   .c-project {

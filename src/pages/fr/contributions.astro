@@ -10,7 +10,7 @@ const contributions = [
     prNumber: 309,
     issue: 'https://github.com/ublue-os/homebrew-experimental-tap/issues/308',
     shipped: '2026-04-22',
-    status: 'open',
+    status: 'closed',
     insight: "Le fichier GCS /stable officiel d'Anthropic accuse jusqu'à 13 versions de retard sur le registre npm. Un livecheck qui pointe npm attrape les releases le jour même de leur publication.",
     tags: ['homebrew', 'cask', 'bluefin', 'claude-code'],
     blog: 'https://blog.pixelium.win/pr-309-claude-code-linux-cask',
@@ -43,8 +43,8 @@ const contributions = [
     pr: 'https://github.com/wazuh/wazuh-documentation/pull/9512',
     prNumber: 9512,
     shipped: '2026-04-22',
-    status: 'open',
-    insight: "Le paquet wazuh-agent désinstalle silencieusement wazuh-manager via dpkg Conflicts/Replaces quand les deux sont installés sur la même machine. Aucun avertissement dans la doc install. Nous a coûté 17h de panne silencieuse (voir /ia What I broke).",
+    status: 'closed',
+    insight: "Le paquet wazuh-agent désinstalle silencieusement wazuh-manager via dpkg Conflicts/Replaces quand les deux sont installés sur la même machine. Aucun avertissement dans la doc install. Nous a coûté 17h de panne silencieuse (voir le post-mortem sur le blog).",
     tags: ['wazuh', 'siem', 'docs', 'dpkg'],
     blog: 'https://blog.pixelium.win/wazuh-silent-uninstall-incident',
   },
@@ -62,7 +62,7 @@ const shippedCount = contributions.length;
   <main>
     <section class="c-hero">
       <div class="container c-hero-wrap">
-        <p class="c-eyebrow">∷ contributions · open source · soumises &amp; en review</p>
+        <p class="c-eyebrow">∷ contributions · open source · soumises en amont</p>
         <h1>Ce que j'ai rendu</h1>
         <p class="c-lede">
           Cette page est l'étagère. Une entrée par patch shippé en amont.
@@ -74,8 +74,9 @@ const shippedCount = contributions.length;
         <p class="c-hint">
           Chaque entrée pointe vers la PR (ou discussion) sur GitHub. Si l'insight derrière
           le patch mérite une lecture plus longue, il y a un article <code>pr-notes</code> sur le blog.
-          <strong>Le statut reflète l'état upstream aujourd'hui</strong> — aucune mergée
-          encore ; toutes en attente de review.
+          <strong>Le statut reflète l'état upstream aujourd'hui</strong> — 1 ouverte,
+          2 fermées sans merge, 1 discussion. L'amont ne dit pas toujours oui ;
+          les diffs et le raisonnement tiennent quand même.
         </p>
       </div>
     </section>
@@ -301,6 +302,12 @@ const shippedCount = contributions.length;
     background: rgba(56, 189, 248, 0.12);
     color: var(--color-accent);
     border: 1px solid rgba(56, 189, 248, 0.3);
+  }
+
+  .c-status-closed {
+    background: rgba(148, 163, 184, 0.12);
+    color: #94a3b8;
+    border: 1px solid rgba(148, 163, 184, 0.3);
   }
 
   .c-project {
