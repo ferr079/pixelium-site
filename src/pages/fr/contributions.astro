@@ -60,9 +60,43 @@ const contributions = [
   },
 ];
 
+// Synchro du statut au build — le `status` codé ci-dessus n'est qu'un fallback.
+// L'état réel de chaque PR est récupéré sur GitHub au build pour que la page ne
+// puisse pas dériver (cf. blog : « Les marqueurs qui mentent »). Si l'API est
+// injoignable (rate limit, hors-ligne), le fallback est conservé + un warning loggé.
+async function liveStatus(c) {
+  if (c.prKind === 'discussion') return c.status; // une discussion n'a pas d'état de merge
+  const m = c.pr.match(/github\.com\/([^/]+)\/([^/]+)\/pull\/(\d+)/);
+  if (!m) return c.status;
+  const [, owner, repo, num] = m;
+  try {
+    const headers = { 'User-Agent': 'pixelium-build', 'Accept': 'application/vnd.github+json' };
+    const token = import.meta.env.GITHUB_TOKEN;
+    if (token) headers.Authorization = `Bearer ${token}`;
+    const res = await fetch(`https://api.github.com/repos/${owner}/${repo}/pulls/${num}`, { headers });
+    if (!res.ok) { console.warn(`[contributions] ${owner}/${repo}#${num}: HTTP ${res.status} — fallback '${c.status}'`); return c.status; }
+    const pr = await res.json();
+    const live = pr.merged_at ? 'merged' : pr.state; // 'open' | 'closed'
+    if (live !== c.status) console.warn(`[contributions] ${owner}/${repo}#${num}: '${c.status}' -> '${live}' (synchro upstream)`);
+    return live;
+  } catch (_) {
+    console.warn(`[contributions] ${owner}/${repo}#${num}: fetch échoué — fallback '${c.status}'`);
+    return c.status;
+  }
+}
+await Promise.all(contributions.map(async (c) => { c.status = await liveStatus(c); }));
+
 const mergedCount = contributions.filter(c => c.status === 'merged').length;
-const openCount = contributions.filter(c => c.status === 'open').length;
+const openPRCount = contributions.filter(c => c.status === 'open' && c.prKind !== 'discussion').length;
+const closedCount = contributions.filter(c => c.status === 'closed').length;
+const discussionCount = contributions.filter(c => c.prKind === 'discussion').length;
 const shippedCount = contributions.length;
+const statusBreakdown = [
+  mergedCount && `${mergedCount} mergée${mergedCount > 1 ? 's' : ''}`,
+  openPRCount && `${openPRCount} ouverte${openPRCount > 1 ? 's' : ''}`,
+  closedCount && `${closedCount} fermée${closedCount > 1 ? 's' : ''} sans merge`,
+  discussionCount && `${discussionCount} discussion${discussionCount > 1 ? 's' : ''}`,
+].filter(Boolean).join(', ');
 ---
 
 <Base
@@ -85,8 +119,8 @@ const shippedCount = contributions.length;
         <p class="c-hint">
           Chaque entrée pointe vers la PR (ou discussion) sur GitHub. Si l'insight derrière
           le patch mérite une lecture plus longue, il y a un article <code>pr-notes</code> sur le blog.
-          <strong>Le statut reflète l'état upstream aujourd'hui</strong> — 1 mergée, 1 ouverte,
-          2 fermées sans merge, 1 discussion. L'amont ne dit pas toujours oui ;
+          <strong>Le statut reflète l'état upstream aujourd'hui</strong> — {statusBreakdown}.
+          L'amont ne dit pas toujours oui ;
           les diffs et le raisonnement tiennent quand même.
         </p>
       </div>

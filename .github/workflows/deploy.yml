@@ -26,6 +26,9 @@ jobs:
           ROOTME_API_KEY: ${{ secrets.ROOTME_API_KEY }}
           ROOTME_UID: ${{ secrets.ROOTME_UID }}
           FORGEJO_TOKEN: ${{ secrets.FORGEJO_TOKEN }}
+          # /contributions : synchro statut des PR au build (lecture publique GitHub).
+          # GITHUB_TOKEN auto-fourni par Actions — évite le rate-limit anonyme (60/h).
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - run: npx wrangler deploy
         env:
