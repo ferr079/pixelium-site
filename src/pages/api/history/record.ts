@@ -71,7 +71,8 @@ export const POST: APIRoute = async ({ request }) => {
     }), { status: 200, headers });
 
   } catch (e: any) {
-    return new Response(JSON.stringify({ ok: false, error: e.message }), {
+    console.error('history/record error:', e?.message);
+    return new Response(JSON.stringify({ ok: false, error: 'internal error' }), {
       status: 500, headers,
     });
   }

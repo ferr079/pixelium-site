@@ -66,7 +66,8 @@ export const GET: APIRoute = async ({ url }) => {
     }), { status: 200, headers });
 
   } catch (e: any) {
-    return new Response(JSON.stringify({ ok: false, error: e.message }), {
+    console.error('history error:', e?.message);
+    return new Response(JSON.stringify({ ok: false, error: 'internal error' }), {
       status: 500, headers,
     });
   }
