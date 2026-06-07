@@ -67,7 +67,9 @@ Pages `ctf.astro` (EN + FR) fetch live stats at build time:
 - **THM**: no public API — stats hardcoded, update manually after sessions
 - Fallback values if API unreachable (last known stats hardcoded in `let` declarations)
 - GitHub secrets configured: `HTB_API_TOKEN`, `ROOTME_API_KEY`, `ROOTME_UID`
-- Local build: `source ~/.claude/secrets.env && HTB_API_TOKEN="$HTB_API_TOKEN" ROOTME_API_KEY="$ROOTME_API_KEY" ROOTME_UID="$ROOTME_UID" npm run build`
+- Local build: `source ~/.claude/secrets.env && HTB_API_TOKEN="$HTB_API_TOKEN" ROOTME_API_KEY="$ROOTME_API_KEY" ROOTME_UID="$ROOTME_UID" GITHUB_TOKEN="$GITHUB_TOKEN" npm run build`
+
+**`contributions.astro` (EN+FR) — statut PR synchronisé au build** : le tableau `contributions` porte le contenu éditorial (insight/tags/blog) + un `status` *fallback* ; au build, `liveStatus()` fetch `api.github.com/repos/{o}/{r}/pulls/{n}` → `merged`/`open`/`closed` réel (override le fallback ; warning loggé `[contributions] …` si dérive ou échec). Résumé du hero (`statusBreakdown`) dérivé du live. Discussions exclues (pas d'état de merge). Token : `GITHUB_TOKEN` (CI = auto-Actions `secrets.GITHUB_TOKEN`, lecture publique). ⚠️ **Une NOUVELLE contribution s'ajoute toujours à la main** (l'éditorial n'est pas auto-généré) — seul le statut est auto-synchro. Vérifier les nouvelles PR mergées : `gh search prs --author ferr079 --merged`.
 
 ## Images organization
 
