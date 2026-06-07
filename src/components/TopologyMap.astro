@@ -20,7 +20,9 @@ interface Topology {
   roots: Child[];
   peers: Child[];
   zones: Zone[];
-  isp_links: Array<{ label: string; linkLabel: string; linkType: string }>;
+  switch?: Child;
+  switch_uplink?: { label: string; linkLabel: string; linkType: string };
+  switch_links?: Array<{ label: string; linkLabel: string; linkType: string }>;
   pve_interconnect: Array<{ from: string; to: string; linkLabel: string; linkType: string }>;
   total: number;
 }
@@ -68,15 +70,30 @@ const nodeTitle = (n: { label: string; hostname?: string | null; ipAddress?: str
         {topology.roots.map((r) => (
           <div class={`topo-node topo-node-isp type-${r.nodeType}`} title={nodeTitle(r)}>
             <span class="topo-node-label">{r.label}</span>
-            <span class="topo-node-sub">ISP · 1G to all PVE</span>
+            <span class="topo-node-sub">ISP · 10G SFP+ to switch</span>
           </div>
         ))}
       </div>
     </div>
 
-    <!-- Connector line to PVE layer -->
+    <!-- Freebox → switch : fibre 10G SFP+ -->
     <div class="topo-connector" aria-hidden="true">
-      <span class="topo-connector-label">1G ethernet</span>
+      <span class="topo-connector-label topo-link-fibre">{topology.switch_uplink?.linkLabel ?? '10G SFP+'} · fibre</span>
+    </div>
+
+    <!-- Switch layer -->
+    {topology.switch && (
+      <div class="topo-switch-row">
+        <div class="topo-node topo-node-switch type-switch" title={nodeTitle(topology.switch)}>
+          <span class="topo-node-label">{topology.switch.label}</span>
+          <span class="topo-node-sub">8×2.5G RJ45 + 2×SFP+ 10G</span>
+        </div>
+      </div>
+    )}
+
+    <!-- Switch → hosts -->
+    <div class="topo-connector" aria-hidden="true">
+      <span class="topo-connector-label">2.5G → pve1·pve2 &nbsp;·&nbsp; 1G → pve3·pve4·OMV·port1 &nbsp;·&nbsp; <span class="topo-link-fibre-inline">10G SFP+ → terre2</span></span>
     </div>
 
     <!-- PVE zones grid 2×2 -->
@@ -113,6 +130,7 @@ const nodeTitle = (n: { label: string; hostname?: string | null; ipAddress?: str
     <span class="legend-item type-vm"><span class="legend-swatch"></span>vm</span>
     <span class="legend-item type-proxmox"><span class="legend-swatch"></span>proxmox zone</span>
     <span class="legend-item type-isp"><span class="legend-swatch"></span>isp</span>
+    <span class="legend-item type-switch"><span class="legend-swatch"></span>switch</span>
     <span class="legend-item type-nas"><span class="legend-swatch"></span>nas</span>
     <span class="legend-item type-computer"><span class="legend-swatch"></span>computer</span>
     <span class="legend-item type-iot"><span class="legend-swatch"></span>iot</span>
@@ -206,6 +224,21 @@ const nodeTitle = (n: { label: string; hostname?: string | null; ipAddress?: str
   }
 
   /* Connector between ISP and PVE grid */
+  .topo-switch-row {
+    display: flex;
+    justify-content: center;
+  }
+  .topo-node-switch {
+    min-width: 13rem;
+    text-align: center;
+  }
+  .type-switch { border-color: rgba(45, 212, 191, 0.65); }
+  .topo-link-fibre {
+    color: #2dd4bf;
+    border-color: rgba(45, 212, 191, 0.3);
+  }
+  .topo-link-fibre-inline { color: #2dd4bf; }
+
   .topo-connector {
     position: relative;
     height: 1.4rem;
@@ -407,6 +440,7 @@ const nodeTitle = (n: { label: string; hostname?: string | null; ipAddress?: str
   .legend-item.type-vm .legend-swatch { border-color: #d8b4fe; }
   .legend-item.type-proxmox .legend-swatch { border-color: #f59e0b; background: rgba(245, 158, 11, 0.12); }
   .legend-item.type-isp .legend-swatch { border-color: var(--color-accent); background: rgba(56, 189, 248, 0.1); }
+  .legend-item.type-switch .legend-swatch { border-color: #2dd4bf; }
   .legend-item.type-nas .legend-swatch { border-color: #86efac; }
   .legend-item.type-computer .legend-swatch { border-color: #f9a8d4; }
   .legend-item.type-iot .legend-swatch { border-color: #fde047; }

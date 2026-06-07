@@ -23,6 +23,12 @@
       "nodeType": "iot",
       "hostname": null,
       "ipAddress": null
+    },
+    {
+      "label": "port1",
+      "nodeType": "computer",
+      "hostname": "ASUS X751LD",
+      "ipAddress": "192.168.1.60"
     }
   ],
   "zones": [
@@ -383,43 +389,6 @@
       ]
     }
   ],
-  "isp_links": [
-    {
-      "label": "pve1",
-      "linkType": "ethernet",
-      "linkLabel": "1G"
-    },
-    {
-      "label": "pve2",
-      "linkType": "ethernet",
-      "linkLabel": "1G"
-    },
-    {
-      "label": "pve3",
-      "linkType": "ethernet",
-      "linkLabel": "1G (switch)"
-    },
-    {
-      "label": "pve4",
-      "linkType": "ethernet",
-      "linkLabel": "1G (switch)"
-    },
-    {
-      "label": "terre2",
-      "linkType": "ethernet",
-      "linkLabel": "1G"
-    },
-    {
-      "label": "OMV",
-      "linkType": "ethernet",
-      "linkLabel": "1G"
-    },
-    {
-      "label": "Philips Hue Bridge",
-      "linkType": "ethernet",
-      "linkLabel": ""
-    }
-  ],
   "pve_interconnect": [
     {
       "from": "pve1",
@@ -428,5 +397,53 @@
       "linkType": "ethernet"
     }
   ],
-  "total": 62
+  "total": 64,
+  "switch": {
+    "label": "Switch XikeStor",
+    "nodeType": "switch",
+    "hostname": "SKS3200-8E2X",
+    "ipAddress": "192.168.1.99"
+  },
+  "switch_uplink": {
+    "label": "Freebox Delta",
+    "linkLabel": "10G SFP+",
+    "linkType": "fibre"
+  },
+  "switch_links": [
+    {
+      "label": "pve1",
+      "linkLabel": "2.5G",
+      "linkType": "ethernet"
+    },
+    {
+      "label": "pve2",
+      "linkLabel": "2.5G",
+      "linkType": "ethernet"
+    },
+    {
+      "label": "pve3",
+      "linkLabel": "1G",
+      "linkType": "ethernet"
+    },
+    {
+      "label": "pve4",
+      "linkLabel": "1G",
+      "linkType": "ethernet"
+    },
+    {
+      "label": "terre2",
+      "linkLabel": "10G SFP+",
+      "linkType": "fibre"
+    },
+    {
+      "label": "OMV",
+      "linkLabel": "1G",
+      "linkType": "ethernet"
+    },
+    {
+      "label": "port1",
+      "linkLabel": "1G",
+      "linkType": "ethernet"
+    }
+  ]
 }
