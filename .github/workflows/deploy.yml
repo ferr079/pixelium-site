@@ -29,8 +29,11 @@ jobs:
 
       - run: npx wrangler deploy
         env:
-          # F-003 #97 : token scopé (Workers/KV/D1/AI) au lieu de la Global API Key.
-          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          # F-003 #97 : bascule token scopé EN ATTENTE — le token doit avoir
+          # Workers KV Storage:Edit + D1:Edit (sinon code 10023 au deploy).
+          # Restauré sur Global API Key tant que le scope n'est pas corrigé.
+          CLOUDFLARE_API_KEY: ${{ secrets.CLOUDFLARE_API_KEY }}
+          CLOUDFLARE_EMAIL: ${{ secrets.CLOUDFLARE_EMAIL }}
 
       - name: Notify Telegram on failure
         if: failure()
