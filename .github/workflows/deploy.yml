@@ -29,11 +29,12 @@ jobs:
 
       - run: npx wrangler deploy
         env:
-          # F-003 #97 : bascule token scopé EN ATTENTE — le token doit avoir
-          # Workers KV Storage:Edit + D1:Edit (sinon code 10023 au deploy).
-          # Restauré sur Global API Key tant que le scope n'est pas corrigé.
-          CLOUDFLARE_API_KEY: ${{ secrets.CLOUDFLARE_API_KEY }}
-          CLOUDFLARE_EMAIL: ${{ secrets.CLOUDFLARE_EMAIL }}
+          # F-003 #97 (fait 2026-06-07) : token scopé `pixelium-site-ci` —
+          # Workers Scripts/KV/D1 Write + Workers AI Read + Account Settings Read
+          # + User Details/Memberships Read. Validé en dry-run avant bascule.
+          # Rollback : remettre CLOUDFLARE_API_KEY + CLOUDFLARE_EMAIL (secrets conservés).
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
 
       - name: Notify Telegram on failure
         if: failure()
