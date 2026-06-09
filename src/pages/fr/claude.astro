@@ -4,9 +4,9 @@ import DynNum from '../../components/DynNum.astro';
 import SectionHeading from '../../components/SectionHeading.astro';
 
 const heatmapLocal = [
-  5932, 6332, 4882, 3668, 4123, 4374, 2299,  897,
-   650,  307,  106,  110,  242,  350,  515,  803,
-   987, 1911, 2950, 3678, 3020, 2471, 3947, 6484
+  7184, 6929, 5118, 3886, 4158, 4374, 2299,  897,
+   730,  362,  184, 1047, 1593, 2415, 3457, 3559,
+  3217, 3250, 4165, 5188, 3986, 4133, 5503, 7565
 ];
 const maxTurns = Math.max(...heatmapLocal);
 ---
@@ -45,13 +45,13 @@ const maxTurns = Math.max(...heatmapLocal);
           </div>
           <div class="cs-card">
             <span class="cs-label">turns</span>
-            <span class="cs-value">60.7K</span>
+            <span class="cs-value">83.5K</span>
             <span class="cs-sub">chaque échange user+assistant</span>
           </div>
           <div class="cs-card">
             <span class="cs-label">cache hit</span>
             <span class="cs-value"><DynNum stat="claude_cache_hit" fallback="97.5" />%</span>
-            <span class="cs-sub">8.3 milliards de cache reads</span>
+            <span class="cs-sub">13.4 milliards de cache reads</span>
           </div>
         </div>
 
@@ -71,26 +71,26 @@ const maxTurns = Math.max(...heatmapLocal);
         <div class="cs-grid three">
           <div class="cs-card">
             <span class="cs-label">heures par jour actif</span>
-            <span class="cs-value">~10</span>
-            <span class="cs-sub">53 jours actifs / 59 écoulés</span>
+            <span class="cs-value">~13</span>
+            <span class="cs-sub">78 jours actifs / 106 écoulés</span>
           </div>
           <div class="cs-card">
             <span class="cs-label">plus longue session</span>
-            <span class="cs-value">16.8h</span>
-            <span class="cs-sub">21 avril · marathon IAops</span>
+            <span class="cs-value">35.1h</span>
+            <span class="cs-sub">plus longue session continue</span>
           </div>
           <div class="cs-card">
             <span class="cs-label">taux de jours actifs</span>
-            <span class="cs-value">90%</span>
-            <span class="cs-sub">53 / 59 — quasi quotidien</span>
+            <span class="cs-value">74%</span>
+            <span class="cs-sub">78 / 106 — presque tous les jours</span>
           </div>
         </div>
 
         <h3 class="cs-sub-heading">Activité horaire — heure locale (CEST)</h3>
         <p class="cs-paragraph">
-          Turns par heure, cumulé sur 59 jours. La forme est le portrait honnête
-          de notre rythme de travail : <strong>14h → 02h</strong> est la fenêtre principale,
-          avec activité résiduelle jusqu'à 7h, et un creux de sommeil entre 8h et 13h.
+          Turns par heure, cumulé sur 106 jours. La forme est le portrait honnête
+          de notre rythme de travail : <strong>16h → 06h</strong> est la fenêtre principale,
+          avec un creux de sommeil entre 08h et 12h.
         </p>
         <div class="heatmap">
           {heatmapLocal.map((v, h) => {
@@ -108,7 +108,7 @@ const maxTurns = Math.max(...heatmapLocal);
         </div>
         <p class="cs-legend">
           <span class="legend-dot"></span>survol une colonne pour voir le nombre exact ·
-          pic 21h-00h, creux 09h-11h
+          pic 22h-01h, creux 09h-11h
         </p>
       </div>
     </section>
@@ -147,23 +147,23 @@ const maxTurns = Math.max(...heatmapLocal);
         <div class="focus-bars">
           <div class="focus-row">
             <span class="focus-label">Claude/homelab</span>
-            <div class="focus-track"><div class="focus-fill" style="width:92%"></div></div>
-            <span class="focus-val">92%</span>
+            <div class="focus-track"><div class="focus-fill" style="width:88%"></div></div>
+            <span class="focus-val">88%</span>
           </div>
           <div class="focus-row">
             <span class="focus-label">Claude/HTB</span>
-            <div class="focus-track"><div class="focus-fill" style="width:6%"></div></div>
-            <span class="focus-val">6%</span>
+            <div class="focus-track"><div class="focus-fill" style="width:7.7%"></div></div>
+            <span class="focus-val">7.7%</span>
           </div>
           <div class="focus-row">
             <span class="focus-label">Theodulius (privé)</span>
-            <div class="focus-track"><div class="focus-fill" style="width:1.7%"></div></div>
-            <span class="focus-val">1.7%</span>
+            <div class="focus-track"><div class="focus-fill" style="width:1.1%"></div></div>
+            <span class="focus-val">1.1%</span>
           </div>
           <div class="focus-row">
             <span class="focus-label">autres</span>
-            <div class="focus-track"><div class="focus-fill" style="width:0.3%"></div></div>
-            <span class="focus-val">0.3%</span>
+            <div class="focus-track"><div class="focus-fill" style="width:3.2%"></div></div>
+            <span class="focus-val">3.2%</span>
           </div>
         </div>
       </div>
@@ -175,8 +175,8 @@ const maxTurns = Math.max(...heatmapLocal);
         <div class="cs-grid three">
           <div class="cs-card cs-card-muted">
             <span class="cs-label">équivalent pay-as-you-go</span>
-            <span class="cs-value">≈ 6 770 $</span>
-            <span class="cs-sub">tarif API sur 59 jours</span>
+            <span class="cs-value">≈ 11 000 $</span>
+            <span class="cs-sub">tarif API sur 106 jours</span>
           </div>
           <div class="cs-card cs-card-muted">
             <span class="cs-label">ce qu'on paye vraiment</span>
