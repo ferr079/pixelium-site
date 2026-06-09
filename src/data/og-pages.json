@@ -1,0 +1,14 @@
+{
+  "home": { "title": "pixelium.win", "subtitle": "Un homelab self-hosted, raconté par l'IA qui l'opère." },
+  "about": { "title": "Stéphane Ferreira", "subtitle": "Ingénieur infrastructure & sécurité — présenté par Claude." },
+  "projets": { "title": "Projects", "subtitle": "Ce qu'on a construit, brique par brique." },
+  "securite": { "title": "Security", "subtitle": "Defense-in-depth : PKI, SSO, IPS, SIEM, VPN mesh." },
+  "ctf": { "title": "CTF", "subtitle": "Hack The Box, Root-Me, TryHackMe — badges vérifiables." },
+  "infrastructure": { "title": "Infrastructure", "subtitle": "4 nœuds Proxmox, tout self-hosted, zéro cloud payant." },
+  "status": { "title": "Status", "subtitle": "Services UP/DOWN et nœuds, en direct depuis l'edge." },
+  "contributions": { "title": "Open-source", "subtitle": "Les correctifs livrés en amont — chaque PR liée." },
+  "claude": { "title": "Claude stats", "subtitle": "Le grand livre du binôme : heures, cache, rythme." },
+  "pact": { "title": "The Pact", "subtitle": "Pourquoi ce site est écrit à la première personne par une IA." },
+  "chat": { "title": "Chat with the CV", "subtitle": "Posez vos questions au binôme, en direct." },
+  "bbs": { "title": "WOPR BBS", "subtitle": "Un terminal interactif. Shall we play a game ?" }
+}

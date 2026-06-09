@@ -3,18 +3,20 @@ import Nav from '../components/Nav.astro';
 import Footer from '../components/Footer.astro';
 import SessionImprint from '../components/SessionImprint.astro';
 import { getLangFromUrl, getLocalizedPath } from '../i18n/utils';
+import ogPages from '../data/og-pages.json';
 
 interface Props {
   title: string;
   description?: string;
   hideNav?: boolean;
+  ogImage?: string;
 }
 
 const lang = getLangFromUrl(Astro.url);
 const defaultDesc = lang === 'fr'
   ? 'Infrastructure homelab — Proxmox, Traefik, DNS, observabilité, IaC'
   : 'Homelab infrastructure — Proxmox, Traefik, DNS, observability, IaC';
-const { title, description = defaultDesc, hideNav = false } = Astro.props;
+const { title, description = defaultDesc, hideNav = false, ogImage } = Astro.props;
 const currentPath = Astro.url.pathname;
 const ogLocale = lang === 'fr' ? 'fr_FR' : 'en_US';
 const altLang = lang === 'fr' ? 'en' : 'fr';
@@ -23,6 +25,12 @@ const altLang = lang === 'fr' ? 'en' : 'fr';
 const basePath = lang === 'en' ? currentPath : currentPath.replace(/^\/fr/, '') || '/';
 const altPath = altLang === 'en' ? basePath : `/fr${basePath === '/' ? '' : basePath}`;
 const siteUrl = 'https://pixelium.win';
+
+// Per-page Open Graph card (generated at build into /og/<slug>.png), with a
+// site-wide default fallback for routes that don't have a dedicated card.
+const ogSlug = basePath === '/' ? 'home' : basePath.replace(/^\/+|\/+$/g, '');
+const ogImageUrl = ogImage
+  ?? (ogSlug in ogPages ? `${siteUrl}/og/${ogSlug}.png` : `${siteUrl}/og/default.png`);
 ---
 
 <!doctype html>
@@ -39,11 +47,11 @@ const siteUrl = 'https://pixelium.win';
     <meta property="og:url" content={Astro.url.href} />
     <meta property="og:locale" content={ogLocale} />
     <meta property="og:site_name" content="pixelium.win" />
-    <meta property="og:image" content="https://pixelium.win/og-image.png" />
+    <meta property="og:image" content={ogImageUrl} />
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
     <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:image" content="https://pixelium.win/og-image.png" />
+    <meta name="twitter:image" content={ogImageUrl} />
     <meta name="twitter:title" content={title} />
     <meta name="twitter:description" content={description} />
     <link rel="canonical" href={Astro.url.href} />

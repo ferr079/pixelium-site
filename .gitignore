@@ -24,3 +24,6 @@ pnpm-debug.log*
 
 # jetbrains setting folder
 .idea/
+
+# Generated Open Graph cards (rebuilt by scripts/og/gen-og.mjs at build)
+public/og/

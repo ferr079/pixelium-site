@@ -7,7 +7,8 @@
   },
   "scripts": {
     "dev": "astro dev",
-    "build": "astro build",
+    "og": "node scripts/og/gen-og.mjs",
+    "build": "node scripts/og/gen-og.mjs && astro build",
     "preview": "astro preview",
     "astro": "astro"
   },
@@ -17,7 +18,9 @@
     "astro": "^6.4.4"
   },
   "devDependencies": {
+    "@resvg/resvg-js": "^2.6.2",
     "playwright": "^1.60.0",
+    "satori": "^0.26.0",
     "wrangler": "^4.98.0"
   }
 }
