@@ -12,15 +12,15 @@ try {
   if (htbRes.ok) {
     const data = await htbRes.json();
     htb = { ...htb, rank: data.profile.rank, ranking: data.profile.ranking, system_owns: data.profile.system_owns, user_owns: data.profile.user_owns };
-  }
+  } else console.warn(`[ctf] HTB basic profile HTTP ${htbRes.status} — keeping fallback`);
   const actRes = await fetch('https://labs.hackthebox.com/api/v4/user/profile/activity/1161145', {
     headers: { 'Authorization': `Bearer ${import.meta.env.HTB_API_TOKEN}` },
   });
   if (actRes.ok) {
     const actData = await actRes.json();
     htb.flags = (actData.profile?.activity || []).length;
-  }
-} catch (_) {}
+  } else console.warn(`[ctf] HTB activity HTTP ${actRes.status}`);
+} catch (e) { console.warn('[ctf] HTB fetch failed —', e); }
 const htbFlags = htb.flags;
 
 // Root-Me — fetch at build time
@@ -32,8 +32,8 @@ try {
   if (rmRes.ok) {
     const data = await rmRes.json();
     rootme = { score: parseInt(data.score) || 765, position: data.position ?? 21847, validations: (data.validations || []).length || 63 };
-  }
-} catch (_) {}
+  } else console.warn(`[ctf] Root-Me HTTP ${rmRes.status} — keeping fallback`);
+} catch (e) { console.warn('[ctf] Root-Me fetch failed —', e); }
 ---
 
 <Base title="CTF — pixelium.win" description={`Profils Capture The Flag — HTB (rang ${htb.rank}, #${htb.ranking}), TryHackMe (Top 15%), Root-Me (${rootme.score} pts). Entraînement offensif vérifié par Stéphane, documenté par Claude.`}>
