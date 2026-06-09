@@ -25,6 +25,10 @@ const CHECKS = [
   { file: 'src/pages/api/chat.ts', re: /Ansible playbooks, (\d+) hosts/, key: 'ansible_hosts', label: 'chat.ts — Ansible hosts' },
   { file: 'src/pages/securite.astro', re: /number: '(\d+)', label: 'hardened SSH hosts'/, key: 'ansible_hosts', label: 'securite.astro — SSH hosts StatsBar' },
   { file: 'src/pages/fr/securite.astro', re: /number: '(\d+)', label: 'hosts SSH durci'/, key: 'ansible_hosts', label: 'fr/securite.astro — SSH hosts StatsBar' },
+  { file: 'src/pages/index.astro', re: /hardened SSH on (\d+) hosts/, key: 'ansible_hosts', label: 'index.astro — SSH hosts (Security card)' },
+  { file: 'src/pages/index.astro', re: /(\d+) playbooks covering/, key: 'ansible_playbooks', label: 'index.astro — Ansible playbooks (IaC card)' },
+  { file: 'src/pages/fr/index.astro', re: /SSH durci sur (\d+) h(?:ô|o)tes/, key: 'ansible_hosts', label: 'fr/index.astro — SSH hosts (Security card)' },
+  { file: 'src/pages/fr/index.astro', re: /(\d+) playbooks couvrent/, key: 'ansible_playbooks', label: 'fr/index.astro — Ansible playbooks (IaC card)' },
 ];
 
 const STATS_URL = 'https://pixelium.win/api/stats';

@@ -188,12 +188,12 @@ import DynNum from '../components/DynNum.astro';
         </div>
         <div class="project-body">
           <div class="project-intro">
-            <p>Native Proxmox firewall with DROP default, CrowdSec IPS with 57 scenarios and community blocklists, hardened SSH on 38+ hosts, YubiKey FIDO2, HTTPS-secured APT repos.</p>
+            <p>Native Proxmox firewall with DROP default, CrowdSec IPS with 57 scenarios and community blocklists, hardened SSH on 34 hosts, YubiKey FIDO2, HTTPS-secured APT repos.</p>
           </div>
           <div class="project-details">
             <div class="detail-block">
               <h4>PVE firewall — DROP by default</h4>
-              <p>Datacenter firewall enabled on all 3 nodes. IP Sets (LAN, PVE nodes), Security Groups (management, DNS, web). Host-level explicit DROP — only SSH, WebUI, and ICMP from LAN are allowed through. CT traffic uses the vmbr0 bridge (FORWARD) and is unaffected.</p>
+              <p>Datacenter firewall enabled on all 4 nodes. IP Sets (LAN, PVE nodes), Security Groups (management, DNS, web). Host-level explicit DROP — only SSH, WebUI, and ICMP from LAN are allowed through. CT traffic uses the vmbr0 bridge (FORWARD) and is unaffected.</p>
             </div>
             <div class="detail-block">
               <h4>CrowdSec — community-driven IPS</h4>
@@ -212,7 +212,7 @@ import DynNum from '../components/DynNum.astro';
               <li>Ansible</li>
               <li>Wazuh</li>
             </ul>
-            <span class="project-services">3 nodes FW, 57 IPS scenarios, 38+ hardened SSH hosts</span>
+            <span class="project-services">4 nodes FW, 57 IPS scenarios, 34 hardened SSH hosts</span>
           </div>
         </div>
       </div>
@@ -275,7 +275,7 @@ import DynNum from '../components/DynNum.astro';
             </div>
             <div class="detail-block">
               <h4>Beszel — mass deployment</h4>
-              <p>30 agents deployed in a single pass via Ansible (playbook + Semaphore). The trap: the agent requires a <code>KEY</code> variable (hub's public key) in its systemd service — without it, it starts, crashes, and logs nothing. We added a TCP 45876 firewall rule in the <code>pve-management</code> group across all 3 nodes to allow communication through the PVE firewall.</p>
+              <p>30 agents deployed in a single pass via Ansible (playbook + Semaphore). The trap: the agent requires a <code>KEY</code> variable (hub's public key) in its systemd service — without it, it starts, crashes, and logs nothing. We added a TCP 45876 firewall rule in the <code>pve-management</code> group across all 4 nodes to allow communication through the PVE firewall.</p>
             </div>
             <div class="detail-block">
               <h4>Why not Grafana</h4>

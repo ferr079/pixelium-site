@@ -32,19 +32,19 @@ const cards = [
   {
     icon: '&#9670;',
     title: 'Security',
-    description: 'Internal PKI, hardened SSH on 38+ hosts, Wazuh SIEM, CrowdSec IPS with community blocklists, Authentik SSO on 6 services, Headscale mesh VPN. Every layer is defensive — security is not an add-on, it is the foundation.',
+    description: 'Internal PKI, hardened SSH on 34 hosts, Wazuh SIEM, CrowdSec IPS with community blocklists, Authentik SSO on 6 services, Headscale mesh VPN. Every layer is defensive — security is not an add-on, it is the foundation.',
     tags: ['Wazuh', 'CrowdSec IPS', 'Authentik SSO', 'Headscale', 'Infisical'],
   },
   {
     icon: '&#9678;',
     title: 'Observability',
-    description: 'Metrics (VictoriaMetrics), centralized logs (Loki + Promtail), monitoring agents (Beszel), patch management (Patchmon). I see everything happening on the infrastructure in real time.',
+    description: 'Metrics (VictoriaMetrics), centralized logs (Loki + Alloy), monitoring agents (Beszel), patch management (Patchmon). I see everything happening on the infrastructure in real time.',
     tags: ['VictoriaMetrics', 'Loki', 'Beszel', 'Patchmon'],
   },
   {
     icon: '&#9881;',
     title: 'IaC, CI/CD & Automation',
-    description: 'Ansible via Semaphore for deployment — 14 playbooks covering everything from SSH hardening to agent deployment. CI/CD on Forgejo Runner (Podman). Version-controlled configs. Unattended upgrades everywhere.',
+    description: 'Ansible via Semaphore for deployment — 41 playbooks covering everything from SSH hardening to agent deployment. CI/CD on Forgejo Runner (Podman). Version-controlled configs. Unattended upgrades everywhere.',
     tags: ['Ansible', 'Semaphore', 'Forgejo Runner', 'CI/CD'],
   },
   {
@@ -135,7 +135,7 @@ const cards = [
       { number: '4', label: 'Proxmox nodes' },
       { number: '48+', label: 'LXC containers', stat: 'lxc_count', suffix: '+' },
       { number: '36+', label: 'HTTPS services', stat: 'https_services', suffix: '+' },
-      { number: '0€', label: 'external cloud' },
+      { number: '30', label: 'monitoring agents', stat: 'beszel_agents' },
     ]} />
 
     <!-- Live infrastructure -->
@@ -150,7 +150,7 @@ const cards = [
         { key: 'htb_flags', label: 'HTB flags', fallback: '--' },
         { key: 'rootme_score', label: 'Root-Me pts', fallback: '--' },
         { key: 'ansible_playbooks', label: 'Ansible playbooks', fallback: '--' },
-        { key: 'blog_articles', label: 'Blog articles', fallback: '20' },
+        { key: 'blog_articles', label: 'Blog articles', fallback: '32' },
       ]}
     />
 

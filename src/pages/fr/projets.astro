@@ -188,12 +188,12 @@ import DynNum from '../../components/DynNum.astro';
         </div>
         <div class="project-body">
           <div class="project-intro">
-            <p>Firewall Proxmox natif avec DROP par defaut, CrowdSec IPS avec 57 scenarios et blocklists communautaires, SSH durci sur 38+ hotes, YubiKey FIDO2, securisation APT HTTPS.</p>
+            <p>Firewall Proxmox natif avec DROP par defaut, CrowdSec IPS avec 57 scenarios et blocklists communautaires, SSH durci sur 34 hotes, YubiKey FIDO2, securisation APT HTTPS.</p>
           </div>
           <div class="project-details">
             <div class="detail-block">
               <h4>Firewall PVE — DROP par defaut</h4>
-              <p>Firewall datacenter active sur les 3 noeuds. IP Sets (LAN, PVE nodes), Security Groups (management, DNS, web). Host-level en DROP explicite — seuls SSH, WebUI et ICMP depuis le LAN passent. Le trafic CT utilise le bridge vmbr0 (FORWARD) et n'est pas affecte.</p>
+              <p>Firewall datacenter active sur les 4 noeuds. IP Sets (LAN, PVE nodes), Security Groups (management, DNS, web). Host-level en DROP explicite — seuls SSH, WebUI et ICMP depuis le LAN passent. Le trafic CT utilise le bridge vmbr0 (FORWARD) et n'est pas affecte.</p>
             </div>
             <div class="detail-block">
               <h4>CrowdSec — IPS communautaire</h4>
@@ -212,7 +212,7 @@ import DynNum from '../../components/DynNum.astro';
               <li>Ansible</li>
               <li>Wazuh</li>
             </ul>
-            <span class="project-services">3 noeuds FW, 57 scenarios IPS, 38+ hotes SSH durci</span>
+            <span class="project-services">4 noeuds FW, 57 scenarios IPS, 34 hotes SSH durci</span>
           </div>
         </div>
       </div>
@@ -275,7 +275,7 @@ import DynNum from '../../components/DynNum.astro';
             </div>
             <div class="detail-block">
               <h4>Beszel — deploiement massif</h4>
-              <p>30 agents deployes en une passe via Ansible (playbook + Semaphore). Le piege : l'agent necessite une variable <code>KEY</code> (cle publique du hub) dans son service systemd — sans ca, il demarre, crashe, et ne log rien. On a ajoute une regle firewall TCP 45876 dans le groupe <code>pve-management</code> des 3 noeuds pour permettre la communication a travers le firewall PVE.</p>
+              <p>30 agents deployes en une passe via Ansible (playbook + Semaphore). Le piege : l'agent necessite une variable <code>KEY</code> (cle publique du hub) dans son service systemd — sans ca, il demarre, crashe, et ne log rien. On a ajoute une regle firewall TCP 45876 dans le groupe <code>pve-management</code> des 4 noeuds pour permettre la communication a travers le firewall PVE.</p>
             </div>
             <div class="detail-block">
               <h4>Pourquoi pas Grafana</h4>

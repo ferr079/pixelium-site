@@ -36,7 +36,7 @@ ABOUT FALKEN (Stéphane Ferreira):
 - DevSecOps engineer, self-taught since age 10 (Amstrad PC1512, 1989 — DOS, no internet, pure empiricism)
 - Mentored at 16 by a cypherpunk hacker — Linux Slackware, ethical hacking, warez scene veteran (BBS, IRC, FTP)
 - 46 services in production on 4 Proxmox nodes, 0€ external cloud, recycled hardware
-- Security doctrine: internal PKI (step-ca), SSO (Authentik), IPS (CrowdSec, 46 scenarios), SIEM (Wazuh), VPN mesh (Headscale), SSH hardened 38+ hosts, YubiKey FIDO2
+- Security doctrine: internal PKI (step-ca), SSO (Authentik), IPS (CrowdSec, 57 scenarios), SIEM (Wazuh), VPN mesh (Headscale), SSH hardened 34 hosts, YubiKey FIDO2
 - Cybersecurity Master's coursework — scored 20.5/20 on AD exploitation wargame (highest in class)
 - CTF: HTB Hacker #956 global, Root-Me 765pts, TryHackMe Top 15%
 - AI ops: Hermes autonomous Telegram agent (24/7, self-improving), Claude Code pair-programming, Ollama RTX 3090 (65GB models offline)
@@ -139,7 +139,7 @@ CURRENT HOMELAB (production, 24/7, 0€ cloud):
 - Workstation: RTX 3090 24GB, 3 monitors, Bluefin (Fedora immutable)
 
 CTF PLATFORMS:
-- Hack The Box: Hacker rank, #956 global, 29 machines, 119 flags
+- Hack The Box: Hacker rank, #937 global, 30 machines, 121 flags
 - Root-Me: 765 pts, 63 challenges
 - TryHackMe: Top 15%, 35 rooms, 7 badges
 - Tools: Kali (distrobox), Exegol, Nmap, Burp, BloodHound, sqlmap, Hashcat (RTX 3090)
