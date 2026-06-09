@@ -8,15 +8,18 @@ const text = {
     built: 'Built with',
     hosted: 'Hosted on Cloudflare Workers',
     meta: 'This site speaks for itself. Claude narrates, Stéphane confirms.',
+    uses: 'Uses', now: 'Now', contributions: 'Contributions',
   },
   fr: {
     built: 'Construit avec',
     hosted: 'Hébergé sur Cloudflare Workers',
     meta: 'Ce site parle de lui-même. Claude raconte, Stéphane confirme.',
+    uses: 'Uses', now: 'Now', contributions: 'Contributions',
   },
 };
 
 const t = text[lang];
+const p = (path: string) => (lang === 'fr' ? `/fr${path}` : path);
 ---
 
 <footer class="site-footer">
@@ -41,6 +44,13 @@ const t = text[lang];
         <img src="https://cdn.simpleicons.org/steam/94a3b8" alt="" width="18" height="18" />
       </a>
     </div>
+    <nav class="footer-nav" aria-label="More pages">
+      <a href={p('/uses')}>{t.uses}</a>
+      <span class="footer-sep">·</span>
+      <a href={p('/now')}>{t.now}</a>
+      <span class="footer-sep">·</span>
+      <a href={p('/contributions')}>{t.contributions}</a>
+    </nav>
     <p>{t.built} <a href="https://astro.build" target="_blank" rel="noopener">Astro</a> — {t.hosted}</p>
     <p class="footer-meta">{t.meta}</p>
   </div>
@@ -103,6 +113,25 @@ const t = text[lang];
   .footer-links a:hover {
     opacity: 1;
   }
+
+  .footer-nav {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 0.6rem;
+    margin-bottom: 0.85rem;
+    font-family: var(--font-mono);
+    font-size: 0.8rem;
+  }
+
+  .footer-nav a {
+    color: var(--color-text-muted);
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+
+  .footer-nav a:hover { color: var(--color-accent); }
+  .footer-sep { color: var(--color-border); }
 
   .site-footer p {
     color: var(--color-text-muted);

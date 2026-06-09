@@ -129,6 +129,64 @@ const statusBreakdown = [
   closedCount && `${closedCount} fermée${closedCount > 1 ? 's' : ''} sans merge`,
   discussionCount && `${discussionCount} discussion${discussionCount > 1 ? 's' : ''}`,
 ].filter(Boolean).join(', ');
+
+// Contributions qui ne sont pas des PR mergeables : rapports de bug qui ont coûté
+// de vraies pannes, reviews sourcées sur la PR d'un autre, et une PR fermée
+// moi-même une fois le correctif du mainteneur livré. Ça compte aussi.
+const reportsReviews = [
+  {
+    project: 'ublue-os / bluefin', kind: 'report', ref: 'issue #4741',
+    url: 'https://github.com/ublue-os/bluefin/issues/4741', date: '2026-06-05',
+    insight: "Le wallpaper JXL par défaut s'affiche tout blanc sur Fedora 44 : libjxl est livré comme codec, mais sans module loader gdk-pixbuf — GNOME ne sait pas décoder le .jxl que la gschema par défaut désigne. Trois semaines de diagnostic, croisé avec le fix jumeau de bluefin-lts (EPEL only, non transposable).",
+    tags: ['bluefin', 'fedora', 'jxl', 'gnome'],
+  },
+  {
+    project: 'requarks / wiki', kind: 'report', ref: 'bug #8022',
+    url: 'https://github.com/requarks/wiki/discussions/8022', date: '2026-06-05',
+    insight: "Un appel pages.update sans tags ne s'applique qu'à moitié : le contenu est commité, mais le render, la recherche et le stockage sont sautés — et l'API répond quand même succeeded:false. Cause racine : associateTags n'est pas gardé comme createPage le garde. L'angle que le rapport de 2021 a manqué, c'est la non-atomicité, pas le crash.",
+    tags: ['wikijs', 'graphql', 'bug-report'],
+  },
+  {
+    project: 'BerriAI / litellm', kind: 'review', ref: 'review #29412',
+    url: 'https://github.com/BerriAI/litellm/pull/29412#issuecomment-4602629967', date: '2026-06-02',
+    insight: "Le max_input_tokens de MiniMax-M3 était à 512000 — or c'est le seuil de palier de facturation, pas la fenêtre de 1M du modèle (1048576). Sourcé depuis OpenRouter, le pricing officiel et les entrées sœurs M2.x. Mergé avec la mauvaise valeur malgré tout, et mes deux PR de correction ont ensuite été avalées par le pipeline de staging éphémère de litellm. Une leçon nette : lire le flux de merge d'un dépôt avant de contribuer.",
+    tags: ['litellm', 'llm', 'review'],
+  },
+  {
+    project: 'rtk-ai / rtk', kind: 'review', ref: 'review #2273',
+    url: 'https://github.com/rtk-ai/rtk/pull/2273', date: '2026-06-05',
+    insight: "`rtk gh run view --job <id>` échouait encore après le correctif du crash run-id : un bug à deux couches où --job n'est pas dans l'allowlist de passthrough et tombe dans le mauvais formateur. Sourcé sur la PR existante plutôt qu'en doublon.",
+    tags: ['rust', 'cli', 'review'],
+  },
+  {
+    project: 'gadievron / raptor', kind: 'pr', ref: 'PR #777 (fermée)',
+    url: 'https://github.com/gadievron/raptor/pull/777', date: '2026-06-08',
+    insight: "En podman rootless/distrobox, le sandbox ne s'engage qu'à moitié et raptor rapportait « 0 findings in 0 files » au lieu d'échouer bruyamment — un faux propre. Le mainteneur a décliné mon approche par variable d'env pour des raisons de trust model, mais a livré son propre fix fail-loud, que j'ai validé sur notre setup. J'ai fermé la PR moi-même : le vrai gain avait déjà atterri.",
+    tags: ['security', 'sandbox', 'python'],
+  },
+];
+
+// Garde de complétude au build — alerte si une PR mergée de ferr079 n'est mise
+// en avant nulle part sur cette page (le trou qui a laissé filer community-scripts#14996).
+try {
+  const token = import.meta.env.GITHUB_TOKEN;
+  if (token) {
+    const keyOf = (u) => { const m = (u || '').match(/github\.com\/([^/]+\/[^/]+)\/(?:pull|issues|discussions)\/(\d+)/); return m ? `${m[1]}#${m[2]}` : null; };
+    const featured = new Set([
+      ...contributions.map((c) => keyOf(c.pr)),
+      ...reportsReviews.map((c) => keyOf(c.url)),
+    ].filter(Boolean));
+    const res = await fetch('https://api.github.com/search/issues?q=author:ferr079+type:pr+is:merged+-user:ferr079&per_page=50',
+      { headers: { 'User-Agent': 'pixelium-build', Authorization: `Bearer ${token}`, Accept: 'application/vnd.github+json' } });
+    if (res.ok) {
+      const data = await res.json();
+      for (const it of data.items ?? []) {
+        const key = `${it.repository_url.split('/repos/')[1]}#${it.number}`;
+        if (!featured.has(key)) console.warn(`[contributions] PR mergée non mise en avant : ${key} — ${it.title}`);
+      }
+    }
+  }
+} catch (_) { /* garde de complétude best-effort */ }
 ---
 
 <Base
@@ -203,6 +261,47 @@ const statusBreakdown = [
                     lire la pr-note &#8594;
                   </a>
                 )}
+              </div>
+            </article>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <section class="c-list-section">
+      <div class="container">
+        <SectionHeading id="reports">Rapports &amp; reviews</SectionHeading>
+        <p class="c-hint" style="max-width:46rem;margin:0 auto 1.5rem;">
+          Toute contribution n'est pas un patch mergeable. Certaines sont des rapports
+          de bug qui ont coûté de vraies pannes, d'autres des reviews sourcées sur la PR
+          de quelqu'un d'autre, et une est une PR que j'ai fermée moi-même une fois le
+          correctif du mainteneur livré. Ça compte aussi.
+        </p>
+        <div class="c-list">
+          {reportsReviews.map((c) => (
+            <article class="c-card reveal">
+              <div class="c-card-header">
+                <div class="c-card-meta">
+                  <a href={c.url} class="c-pr-number" target="_blank" rel="noopener">{c.ref}</a>
+                  <span class="c-sep">·</span>
+                  <span class="c-date">{c.date}</span>
+                </div>
+                <span class={`c-status c-status-${c.kind === 'review' ? 'open' : 'closed'}`}>
+                  {c.kind === 'review' ? 'review' : c.kind === 'pr' ? 'PR' : 'rapport'}
+                </span>
+              </div>
+              <p class="c-project">{c.project}</p>
+              <p class="c-insight">
+                <span class="c-insight-label">∷ insight</span>
+                {c.insight}
+              </p>
+              <div class="c-tags">
+                {c.tags.map((t) => <span class="c-tag">{t}</span>)}
+              </div>
+              <div class="c-links">
+                <a href={c.url} class="c-link c-link-pr" target="_blank" rel="noopener">
+                  voir sur GitHub &#8594;
+                </a>
               </div>
             </article>
           ))}

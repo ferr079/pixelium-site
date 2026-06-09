@@ -132,6 +132,64 @@ const statusBreakdown = [
   closedCount && `${closedCount} closed without merge`,
   discussionCount && `${discussionCount} discussion${discussionCount > 1 ? 's' : ''}`,
 ].filter(Boolean).join(', ');
+
+// Contributions that aren't merge-able PRs: bug reports that cost real downtime,
+// sourced reviews on someone else's PR, and a PR I closed myself once the
+// maintainer shipped the fix. They still count.
+const reportsReviews = [
+  {
+    project: 'ublue-os / bluefin', kind: 'report', ref: 'issue #4741',
+    url: 'https://github.com/ublue-os/bluefin/issues/4741', date: '2026-06-05',
+    insight: "The default JXL wallpaper renders pure white on Fedora 44: libjxl ships as a codec, but there's no gdk-pixbuf loader module for it, so GNOME can't decode the .jxl the default gschema points at. Three weeks of diagnosis, cross-referenced to the sibling bluefin-lts fix (EPEL-only, not transposable).",
+    tags: ['bluefin', 'fedora', 'jxl', 'gnome'],
+  },
+  {
+    project: 'requarks / wiki', kind: 'report', ref: 'bug #8022',
+    url: 'https://github.com/requarks/wiki/discussions/8022', date: '2026-06-05',
+    insight: "A pages.update call without tags applies only halfway: content is committed, but render, search and storage are skipped — and the API still answers succeeded:false. Root cause: associateTags isn't guarded the way createPage guards it. The angle the 2021 report missed is the non-atomicity, not the crash.",
+    tags: ['wikijs', 'graphql', 'bug-report'],
+  },
+  {
+    project: 'BerriAI / litellm', kind: 'review', ref: 'review #29412',
+    url: 'https://github.com/BerriAI/litellm/pull/29412#issuecomment-4602629967', date: '2026-06-02',
+    insight: "MiniMax-M3's max_input_tokens was set to 512000 — but that's the billing-tier boundary, not the model's 1M window (1048576). Sourced from OpenRouter, official pricing and the sibling M2.x entries. It merged with the wrong value anyway, and my two follow-up fix PRs were then swallowed by litellm's ephemeral staging pipeline. A clean lesson in reading a repo's merge flow before contributing.",
+    tags: ['litellm', 'llm', 'review'],
+  },
+  {
+    project: 'rtk-ai / rtk', kind: 'review', ref: 'review #2273',
+    url: 'https://github.com/rtk-ai/rtk/pull/2273', date: '2026-06-05',
+    insight: "`rtk gh run view --job <id>` still failed after the run-id crash was patched: a two-layer bug where --job isn't in the passthrough allowlist, so it falls into the wrong formatter. Sourced onto the existing PR rather than opening a duplicate.",
+    tags: ['rust', 'cli', 'review'],
+  },
+  {
+    project: 'gadievron / raptor', kind: 'pr', ref: 'PR #777 (closed)',
+    url: 'https://github.com/gadievron/raptor/pull/777', date: '2026-06-08',
+    insight: "Under rootless podman/distrobox the sandbox half-engages and raptor reported '0 findings in 0 files' instead of failing loudly — a false clean. The maintainer declined my env-override approach on trust-model grounds but shipped his own fail-loud fix, which I validated on our setup. I closed the PR myself: the real win had already landed.",
+    tags: ['security', 'sandbox', 'python'],
+  },
+];
+
+// Build-time completeness guard — warn if a merged PR by ferr079 isn't featured
+// anywhere on this page (the gap that let community-scripts#14996 slip once).
+try {
+  const token = import.meta.env.GITHUB_TOKEN;
+  if (token) {
+    const keyOf = (u) => { const m = (u || '').match(/github\.com\/([^/]+\/[^/]+)\/(?:pull|issues|discussions)\/(\d+)/); return m ? `${m[1]}#${m[2]}` : null; };
+    const featured = new Set([
+      ...contributions.map((c) => keyOf(c.pr)),
+      ...reportsReviews.map((c) => keyOf(c.url)),
+    ].filter(Boolean));
+    const res = await fetch('https://api.github.com/search/issues?q=author:ferr079+type:pr+is:merged+-user:ferr079&per_page=50',
+      { headers: { 'User-Agent': 'pixelium-build', Authorization: `Bearer ${token}`, Accept: 'application/vnd.github+json' } });
+    if (res.ok) {
+      const data = await res.json();
+      for (const it of data.items ?? []) {
+        const key = `${it.repository_url.split('/repos/')[1]}#${it.number}`;
+        if (!featured.has(key)) console.warn(`[contributions] merged PR not featured: ${key} — ${it.title}`);
+      }
+    }
+  }
+} catch (_) { /* completeness check is best-effort */ }
 ---
 
 <Base
@@ -206,6 +264,44 @@ const statusBreakdown = [
                     read the pr-note &#8594;
                   </a>
                 )}
+              </div>
+            </article>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <section class="c-list-section">
+      <div class="container">
+        <SectionHeading id="reports">Reports &amp; reviews</SectionHeading>
+        <p class="c-hint" style="max-width:46rem;margin:0 auto 1.5rem;">
+          Not every contribution is a merge-able patch. Some are bug reports that cost
+          real downtime, some are sourced reviews on someone else's PR, and one is a PR
+          I closed myself once the maintainer shipped the fix. They count too.
+        </p>
+        <div class="c-list">
+          {reportsReviews.map((c) => (
+            <article class="c-card reveal">
+              <div class="c-card-header">
+                <div class="c-card-meta">
+                  <a href={c.url} class="c-pr-number" target="_blank" rel="noopener">{c.ref}</a>
+                  <span class="c-sep">·</span>
+                  <span class="c-date">{c.date}</span>
+                </div>
+                <span class={`c-status c-status-${c.kind === 'review' ? 'open' : 'closed'}`}>{c.kind}</span>
+              </div>
+              <p class="c-project">{c.project}</p>
+              <p class="c-insight">
+                <span class="c-insight-label">∷ insight</span>
+                {c.insight}
+              </p>
+              <div class="c-tags">
+                {c.tags.map((t) => <span class="c-tag">{t}</span>)}
+              </div>
+              <div class="c-links">
+                <a href={c.url} class="c-link c-link-pr" target="_blank" rel="noopener">
+                  see on GitHub &#8594;
+                </a>
               </div>
             </article>
           ))}

@@ -1,0 +1,23 @@
+name: Freshness guard
+
+# Fails if a hardcoded number in the source drifted away from the live KV
+# (/api/stats). Runs daily — KV moves over time, so this catches slow drift
+# even without a code change — plus on demand. Does NOT gate deploys.
+on:
+  schedule:
+    - cron: '17 6 * * *' # 06:17 UTC daily
+  workflow_dispatch: {}
+  push:
+    branches: [main]
+    paths:
+      - 'src/pages/api/chat.ts'
+      - 'src/pages/securite.astro'
+      - 'src/pages/fr/securite.astro'
+      - 'scripts/audit-freshness.mjs'
+
+jobs:
+  freshness:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: node scripts/audit-freshness.mjs

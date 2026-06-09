@@ -31,6 +31,29 @@ const siteUrl = 'https://pixelium.win';
 const ogSlug = basePath === '/' ? 'home' : basePath.replace(/^\/+|\/+$/g, '');
 const ogImageUrl = ogImage
   ?? (ogSlug in ogPages ? `${siteUrl}/og/${ogSlug}.png` : `${siteUrl}/og/default.png`);
+
+// ⌘K command palette destinations (language-aware)
+const cmdPrefix = lang === 'fr' ? '/fr' : '';
+const L = lang === 'fr'
+  ? { home: 'Accueil', projets: 'Projets', securite: 'Sécurité', ctf: 'CTF', infra: 'Infrastructure', status: 'Status', contributions: 'Contributions', claude: 'Stats Claude', pact: 'Le pacte', uses: 'Uses', now: 'Now', about: 'À propos', chat: 'Chat' }
+  : { home: 'Home', projets: 'Projects', securite: 'Security', ctf: 'CTF', infra: 'Infrastructure', status: 'Status', contributions: 'Contributions', claude: 'Claude stats', pact: 'The Pact', uses: 'Uses', now: 'Now', about: 'About', chat: 'Chat' };
+const cmdkItems = [
+  { label: L.home, href: `${cmdPrefix}/` },
+  { label: L.projets, href: `${cmdPrefix}/projets` },
+  { label: L.securite, href: `${cmdPrefix}/securite` },
+  { label: L.ctf, href: `${cmdPrefix}/ctf` },
+  { label: L.infra, href: `${cmdPrefix}/infrastructure` },
+  { label: L.status, href: `${cmdPrefix}/status` },
+  { label: L.contributions, href: `${cmdPrefix}/contributions` },
+  { label: L.claude, href: `${cmdPrefix}/claude` },
+  { label: L.pact, href: `${cmdPrefix}/pact` },
+  { label: L.uses, href: `${cmdPrefix}/uses` },
+  { label: L.now, href: `${cmdPrefix}/now` },
+  { label: L.about, href: `${cmdPrefix}/about` },
+  { label: L.chat, href: `${cmdPrefix}/chat` },
+  { label: 'Blog ↗', href: 'https://blog.pixelium.win', ext: true },
+  { label: 'GitHub ↗', href: 'https://github.com/ferr079', ext: true },
+];
 ---
 
 <!doctype html>
@@ -100,6 +123,18 @@ const ogImageUrl = ogImage
     <slot />
     <SessionImprint />
     <Footer />
+
+    <div id="cmdk" class="cmdk" role="dialog" aria-modal="true" aria-label="Command palette">
+      <div class="cmdk-box">
+        <input class="cmdk-input" type="text" placeholder={lang === 'fr' ? 'Aller à…' : 'Jump to…'} aria-label="Search pages" autocomplete="off" spellcheck="false" />
+        <ul class="cmdk-list">
+          {cmdkItems.map((i) => (
+            <li><a class="cmdk-item" href={i.href} {...(i.ext ? { target: '_blank', rel: 'noopener' } : {})}>{i.label}</a></li>
+          ))}
+        </ul>
+        <div class="cmdk-hint">↑↓ {lang === 'fr' ? 'naviguer' : 'navigate'} · ↵ {lang === 'fr' ? 'ouvrir' : 'open'} · esc {lang === 'fr' ? 'fermer' : 'close'}</div>
+      </div>
+    </div>
   </body>
 </html>
 
@@ -156,6 +191,79 @@ const ogImageUrl = ogImage
   );
   document.querySelectorAll('.reveal').forEach((el) => observer.observe(el));
 </script>
+
+<!-- ⌘K command palette -->
+<script>
+  (function cmdk() {
+    const overlay = document.getElementById('cmdk');
+    if (!overlay) return;
+    const input = overlay.querySelector('.cmdk-input') as HTMLInputElement;
+    const items = Array.from(overlay.querySelectorAll('.cmdk-item')) as HTMLAnchorElement[];
+    let active = -1;
+    const isOpen = () => overlay.classList.contains('open');
+    const visible = () => items.filter((i) => !i.hidden);
+    function filter() {
+      const q = input.value.toLowerCase();
+      items.forEach((i) => { i.hidden = !i.textContent!.toLowerCase().includes(q); i.classList.remove('active'); });
+      const v = visible();
+      active = v.length ? 0 : -1;
+      if (active === 0) v[0].classList.add('active');
+    }
+    function move(d: number) {
+      const v = visible();
+      if (!v.length) return;
+      v[active]?.classList.remove('active');
+      active = (active + d + v.length) % v.length;
+      v[active].classList.add('active');
+      v[active].scrollIntoView({ block: 'nearest' });
+    }
+    const open = () => { overlay.classList.add('open'); input.value = ''; filter(); input.focus(); };
+    const close = () => { overlay.classList.remove('open'); active = -1; };
+    document.addEventListener('keydown', (e) => {
+      if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === 'k') { e.preventDefault(); isOpen() ? close() : open(); return; }
+      if (!isOpen()) return;
+      if (e.key === 'Escape') close();
+      else if (e.key === 'ArrowDown') { e.preventDefault(); move(1); }
+      else if (e.key === 'ArrowUp') { e.preventDefault(); move(-1); }
+      else if (e.key === 'Enter') { e.preventDefault(); visible()[active]?.click(); }
+    });
+    input.addEventListener('input', filter);
+    overlay.addEventListener('click', (e) => { if (e.target === overlay) close(); });
+  })();
+</script>
+
+<style is:global>
+  .cmdk {
+    position: fixed; inset: 0; z-index: 100;
+    background: rgba(15, 23, 42, 0.72);
+    -webkit-backdrop-filter: blur(3px); backdrop-filter: blur(3px);
+    display: none; align-items: flex-start; justify-content: center; padding-top: 12vh;
+  }
+  .cmdk.open { display: flex; }
+  .cmdk-box {
+    width: min(90vw, 32rem);
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: 10px; overflow: hidden;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+  }
+  .cmdk-input {
+    width: 100%; padding: 1rem 1.1rem;
+    background: transparent; border: none;
+    border-bottom: 1px solid var(--color-border);
+    color: var(--color-text); font-family: var(--font-mono); font-size: 1rem; outline: none;
+  }
+  .cmdk-list { list-style: none; margin: 0; padding: 0.4rem; max-height: 50vh; overflow-y: auto; }
+  .cmdk-item {
+    display: block; padding: 0.55rem 0.7rem; border-radius: 6px;
+    color: var(--color-text-muted); font-family: var(--font-mono); font-size: 0.9rem;
+  }
+  .cmdk-item.active, .cmdk-item:hover { background: rgba(56, 189, 248, 0.12); color: var(--color-accent); }
+  .cmdk-hint {
+    padding: 0.5rem 0.9rem; border-top: 1px solid var(--color-border);
+    font-family: var(--font-mono); font-size: 0.7rem; color: var(--color-text-muted); opacity: 0.7;
+  }
+</style>
 
 <style is:global>
   *,

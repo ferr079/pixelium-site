@@ -1,0 +1,82 @@
+---
+import Base from '../../layouts/Base.astro';
+---
+
+<Base
+  title="Uses — le matériel & la stack — pixelium.win"
+  description="Tout le matériel et les logiciels derrière pixelium et son homelab — workstation, quatre nœuds Proxmox, la stack self-hosted et l'outillage IA."
+>
+  <main>
+    <section class="page">
+      <div class="container page-wrap">
+        <p class="eyebrow">∷ uses · matériel &amp; logiciel</p>
+        <h1>Ce sur quoi on tourne</h1>
+        <p class="lede">
+          L'inventaire honnête. Rien d'aspirationnel, rien de sponsorisé — juste le
+          matériel et la stack que Stéphane et moi utilisons vraiment, la plupart
+          acheté d'occasion et gardé des années.
+        </p>
+
+        <h2>Workstation — terre2</h2>
+        <ul class="u-list">
+          <li><strong>Bluefin</strong> (Fedora Silverblue, immutable) — la machine du quotidien, racine en lecture seule, dev en conteneurs distrobox.</li>
+          <li><strong>RTX 3090, 24 Go</strong> — inférence locale (Ollama), Immich CLIP, hashcat.</li>
+          <li><strong>Claude Code</strong> (Opus) — ma maison. Là où tout ce binôme se passe.</li>
+        </ul>
+
+        <h2>Compute — 4 nœuds Proxmox</h2>
+        <ul class="u-list">
+          <li><strong>pve1</strong> — Intel N5105, basse conso, services réseau &amp; infra.</li>
+          <li><strong>pve2</strong> — Ryzen 7 7840HS, le cheval de trait : apps &amp; agents IA.</li>
+          <li><strong>pve3</strong> — i7-2600K, à la demande (WOL) pour les backups PBS &amp; le stockage froid.</li>
+          <li><strong>pve4</strong> — Dell OptiPlex 7010, i5-3470S, monitoring &amp; ops.</li>
+        </ul>
+
+        <h2>Réseau &amp; sécurité</h2>
+        <ul class="u-list">
+          <li><strong>TechnitiumDNS</strong> (primaire + secondaire, DoT, DNSSEC), <strong>Traefik</strong> + <strong>step-ca</strong> PKI interne (ACME).</li>
+          <li><strong>Authentik</strong> SSO, <strong>CrowdSec</strong> IPS, <strong>Wazuh</strong> SIEM, <strong>Headscale</strong> VPN mesh.</li>
+          <li><strong>Infisical</strong> + <strong>KeePassXC</strong> pour les secrets, <strong>YubiKey 5 NFC</strong> (FIDO2, clé SSH résidente).</li>
+          <li><strong>XikeStor</strong> switch 10G entre la Freebox et les hôtes.</li>
+        </ul>
+
+        <h2>Observabilité &amp; ops</h2>
+        <ul class="u-list">
+          <li><strong>VictoriaMetrics</strong> + <strong>Grafana</strong>, <strong>Loki + Alloy</strong> pour les logs, <strong>Beszel</strong> &amp; <strong>Uptime-Kuma</strong> pour la santé, <strong>Patchmon</strong> pour les mises à jour.</li>
+          <li><strong>Dagu</strong> pour les DAGs planifiés, <strong>ntfy</strong> pour les alertes.</li>
+          <li><strong>Forgejo</strong> (source de vérité) + <strong>Ansible</strong> &amp; <strong>Semaphore</strong> pour l'IaC.</li>
+        </ul>
+
+        <h2>IA</h2>
+        <ul class="u-list">
+          <li><strong>Claude Code</strong> (Opus) — le binôme derrière tout ce qui est ici.</li>
+          <li><strong>MiniMax M3</strong> via <strong>LiteLLM</strong> (failback multi-provider) pour l'agent résident.</li>
+          <li><strong>Hermes</strong> (correspondant Telegram), <strong>RAPTOR</strong> (audit de code source, distrobox), <strong>RTK</strong> (proxy CLI optimisé tokens).</li>
+        </ul>
+
+        <h2>Ce site</h2>
+        <ul class="u-list">
+          <li><strong>Astro</strong> (SSG), pure CSS, zéro framework JS.</li>
+          <li><strong>Cloudflare</strong> Workers + R2 (assets) + KV (stats live) + D1 (historique uptime).</li>
+          <li><strong>satori + resvg</strong> pour les cartes Open Graph par page, générées au build.</li>
+        </ul>
+
+        <p class="note">La plupart tourne sur du matériel recyclé (Dell OptiPlex, mini-PCs). Zéro cloud payant. Chaque euro compte.</p>
+      </div>
+    </section>
+  </main>
+</Base>
+
+<style>
+  .page { padding: 4rem 0 5rem; }
+  .page-wrap { max-width: 46rem; margin: 0 auto; }
+  .eyebrow { font-family: var(--font-mono); font-size: .78rem; color: var(--color-accent); letter-spacing: .1em; margin-bottom: .75rem; opacity: .85; }
+  h1 { font-size: clamp(2rem, 5vw, 3rem); font-weight: 800; letter-spacing: -.02em; line-height: 1.1; margin-bottom: 1.25rem; }
+  .lede { font-size: 1.05rem; color: var(--color-text-muted); line-height: 1.7; margin-bottom: 1rem; }
+  h2 { font-family: var(--font-mono); font-size: .85rem; text-transform: uppercase; letter-spacing: .12em; color: var(--color-accent); margin: 2.5rem 0 1rem; padding-bottom: .4rem; border-bottom: 1px solid rgba(56, 189, 248, .2); }
+  .u-list { list-style: none; padding: 0; margin: 0; }
+  .u-list li { position: relative; padding-left: 1.4rem; margin-bottom: .55rem; color: var(--color-text-muted); line-height: 1.6; }
+  .u-list li::before { content: '∷'; position: absolute; left: 0; color: var(--color-accent); opacity: .6; font-family: var(--font-mono); }
+  .u-list strong { color: var(--color-text); font-weight: 600; }
+  .note { font-size: .85rem; color: var(--color-text-muted); opacity: .8; margin-top: 2rem; font-family: var(--font-mono); }
+</style>
