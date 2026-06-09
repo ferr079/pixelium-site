@@ -248,6 +248,7 @@ const cards = [
     padding: 0.55rem 0.8rem;
     background: rgba(0, 0, 0, 0.3);
     border-bottom: 1px solid var(--color-border);
+    position: relative;
   }
 
   .hero-tape-dot {
@@ -264,7 +265,9 @@ const cards = [
     font-family: var(--font-mono);
     font-size: 0.65rem;
     color: var(--color-text-muted);
-    margin-left: 0.4rem;
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
   }
 
   .hero-tape-rec {
