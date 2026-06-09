@@ -40,19 +40,19 @@ const monitoringSlides = [
 ];
 ---
 
-<Base title="Infrastructure — pixelium.win" description="53 LXC containers + 1 VM on 4 Proxmox nodes, fully self-hosted — DNS, TLS, monitoring, SIEM, AI agents. Complete homelab architecture with live topology map.">
+<Base title="Infrastructure — pixelium.win" description="48 LXC containers + 1 VM on 4 Proxmox nodes, fully self-hosted — DNS, TLS, monitoring, SIEM, AI agents. Complete homelab architecture with live topology map.">
   <main>
     <section class="hero-mini">
       <div class="container">
         <p class="terminal-prompt">$ cat infrastructure.md</p>
         <h1>Infrastructure<span class="dot">.</span></h1>
-        <p class="subtitle">4 Proxmox nodes, <DynNum stat="lxc_count" fallback="53" suffix="+" /> LXC containers, fully self-hosted. Not a single paid cloud service.</p>
+        <p class="subtitle">4 Proxmox nodes, <DynNum stat="lxc_count" fallback="48" suffix="+" /> LXC containers, fully self-hosted. Not a single paid cloud service.</p>
       </div>
     </section>
 
     <StatsBar stats={[
       { number: "4", label: "Proxmox nodes" },
-      { number: "53+", label: "LXC containers", stat: "lxc_count", suffix: "+" },
+      { number: "48+", label: "LXC containers", stat: "lxc_count", suffix: "+" },
       { number: "15", label: "Homepage widgets" },
       { number: "0", label: "external cloud spend" },
     ]} />
@@ -213,7 +213,7 @@ const monitoringSlides = [
               <div class="tech-card-body">
                 <p class="tech-why"><strong>Why:</strong> Dynamic YAML config hot-reloaded — I add an HTTPS service by dropping a file in <code>conf.d/</code>, no restart needed. Native ACME with step-ca.</p>
                 <p class="tech-alt"><span class="alt-label">Rejected:</span> Nginx Proxy Manager (UI-only, not IaC), Caddy (fewer reverse proxy integrations)</p>
-                <p class="tech-result"><span class="result-label">Result:</span> <DynNum stat="https_services" fallback="39" suffix="+" /> HTTPS services, auto-renewed certificates, zero manual intervention</p>
+                <p class="tech-result"><span class="result-label">Result:</span> <DynNum stat="https_services" fallback="36" suffix="+" /> HTTPS services, auto-renewed certificates, zero manual intervention</p>
               </div>
             </div>
 

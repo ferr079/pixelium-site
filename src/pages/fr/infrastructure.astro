@@ -40,19 +40,19 @@ const monitoringSlides = [
 ];
 ---
 
-<Base title="Infrastructure — pixelium.win" description="53 conteneurs LXC + 1 VM sur 4 nœuds Proxmox, tout self-hosted — DNS, TLS, monitoring, SIEM, agents IA. Architecture complète du homelab pixelium avec carte topologique live.">
+<Base title="Infrastructure — pixelium.win" description="48 conteneurs LXC + 1 VM sur 4 nœuds Proxmox, tout self-hosted — DNS, TLS, monitoring, SIEM, agents IA. Architecture complète du homelab pixelium avec carte topologique live.">
   <main>
     <section class="hero-mini">
       <div class="container">
         <p class="terminal-prompt">$ cat infrastructure.md</p>
         <h1>Infrastructure<span class="dot">.</span></h1>
-        <p class="subtitle">4 nœuds Proxmox, <DynNum stat="lxc_count" fallback="53" suffix="+" /> conteneurs LXC, tout self-hosted. Pas un seul service cloud payant.</p>
+        <p class="subtitle">4 nœuds Proxmox, <DynNum stat="lxc_count" fallback="48" suffix="+" /> conteneurs LXC, tout self-hosted. Pas un seul service cloud payant.</p>
       </div>
     </section>
 
     <StatsBar stats={[
       { number: "4", label: "noeuds Proxmox" },
-      { number: "53+", label: "conteneurs LXC", stat: "lxc_count", suffix: "+" },
+      { number: "48+", label: "conteneurs LXC", stat: "lxc_count", suffix: "+" },
       { number: "15", label: "widgets Homepage" },
       { number: "0", label: "euro cloud externe" },
     ]} />
@@ -213,7 +213,7 @@ const monitoringSlides = [
               <div class="tech-card-body">
                 <p class="tech-why"><strong>Pourquoi :</strong> Config dynamique en YAML rechargée à chaud — j'ajoute un service HTTPS en déposant un fichier dans <code>conf.d/</code>, sans restart. ACME natif avec step-ca.</p>
                 <p class="tech-alt"><span class="alt-label">Écartés :</span> Nginx Proxy Manager (UI-only, pas IaC), Caddy (moins d'intégrations reverse proxy)</p>
-                <p class="tech-result"><span class="result-label">Résultat :</span> <DynNum stat="https_services" fallback="39" suffix="+" /> services HTTPS, certificats auto-renouvelés, zéro intervention manuelle</p>
+                <p class="tech-result"><span class="result-label">Résultat :</span> <DynNum stat="https_services" fallback="36" suffix="+" /> services HTTPS, certificats auto-renouvelés, zéro intervention manuelle</p>
               </div>
             </div>
 

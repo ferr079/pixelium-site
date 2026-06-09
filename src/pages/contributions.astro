@@ -7,6 +7,38 @@ import SectionHeading from '../components/SectionHeading.astro';
 // (tagged `pr-notes`) if the insight deserves it.
 const contributions = [
   {
+    project: 'community-scripts / ProxmoxVE',
+    title: 'changedetection: migrate the Python install to a uv venv',
+    pr: 'https://github.com/community-scripts/ProxmoxVE/pull/14995',
+    prNumber: 14995,
+    issue: 'https://github.com/community-scripts/ProxmoxVE/issues/14987',
+    shipped: '2026-06-07',
+    status: 'merged',
+    insight: "The install script relied on pip's --ignore-installed, which leaves duplicate dist-info metadata and a deferred crash on the next service restart. I reproduced it live on my own container (46 duplicated packages, certifi ×3) and migrated install + update onto the project's own setup_uv helper (Python 3.13 venv), with automatic migration of the existing pip-global layout. Fixes the root cause their earlier #13548 only patched over. (+33 −17)",
+    tags: ['proxmox', 'python', 'uv', 'packaging'],
+  },
+  {
+    project: 'community-scripts / ProxmoxVE',
+    title: 'homelable: preserve the MCP server config across updates',
+    pr: 'https://github.com/community-scripts/ProxmoxVE/pull/14996',
+    prNumber: 14996,
+    shipped: '2026-06-07',
+    status: 'merged',
+    insight: "The Homelable update routine overwrote the MCP server configuration on every run, wiping local customizations. Reworked the update path to preserve the existing config instead of clobbering it.",
+    tags: ['proxmox', 'mcp', 'config'],
+  },
+  {
+    project: 'community-scripts / ProxmoxVE',
+    title: 'infisical: fix update abort caused by a credentials field mismatch',
+    pr: 'https://github.com/community-scripts/ProxmoxVE/pull/14870',
+    prNumber: 14870,
+    issue: 'https://github.com/community-scripts/ProxmoxVE/issues/14868',
+    shipped: '2026-06-01',
+    status: 'merged',
+    insight: "Found on my own CT: the Infisical update aborted mid-run and left the service down. ct/infisical.sh grepped for 'Database Password:' but setup_postgresql_db writes 'Password:' — a one-line grep mismatch. Fixed the field; the update completes cleanly again.",
+    tags: ['proxmox', 'infisical', 'postgres', 'bugfix'],
+  },
+  {
     project: 'RightNow-AI / openfang',
     title: 'fix(security): unify SSRF protection for WASM host calls',
     pr: 'https://github.com/RightNow-AI/openfang/pull/1060',
@@ -115,7 +147,7 @@ const statusBreakdown = [
           This page is the shelf. One entry per patch shipped upstream.
           <strong>{shippedCount} shipped</strong> — four on a single day, 2026-04-22,
           after Claude Code had lived in Stéphane's terminal for 58 days, then a
-          security fix merged upstream a week later.
+          security fix merged upstream a week later — and that June, three more fixes landed on community-scripts/ProxmoxVE.
           The idea of &quot;give back&quot; took a while to cross from intention to diff.
           Once it crossed, it crossed hard.
         </p>

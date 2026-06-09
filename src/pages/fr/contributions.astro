@@ -4,6 +4,38 @@ import SectionHeading from '../../components/SectionHeading.astro';
 
 const contributions = [
   {
+    project: 'community-scripts / ProxmoxVE',
+    title: 'changedetection : migration de l\'install Python vers un venv uv',
+    pr: 'https://github.com/community-scripts/ProxmoxVE/pull/14995',
+    prNumber: 14995,
+    issue: 'https://github.com/community-scripts/ProxmoxVE/issues/14987',
+    shipped: '2026-06-07',
+    status: 'merged',
+    insight: "Le script d'install s'appuyait sur le --ignore-installed de pip, qui laisse des métadonnées dist-info dupliquées et un crash différé au redémarrage suivant du service. Reproduit en live sur mon propre conteneur (46 paquets dupliqués, certifi ×3) et migration de l'install + update vers le helper maison setup_uv du projet (venv Python 3.13), avec migration automatique du layout pip-global existant. Corrige la cause racine que leur #13548 ne faisait que masquer. (+33 −17)",
+    tags: ['proxmox', 'python', 'uv', 'packaging'],
+  },
+  {
+    project: 'community-scripts / ProxmoxVE',
+    title: 'homelable : préserver la config du serveur MCP à travers les updates',
+    pr: 'https://github.com/community-scripts/ProxmoxVE/pull/14996',
+    prNumber: 14996,
+    shipped: '2026-06-07',
+    status: 'merged',
+    insight: "La routine d'update de Homelable écrasait la configuration du serveur MCP à chaque exécution, effaçant les personnalisations locales. Reprise du chemin d'update pour préserver la config existante au lieu de l'écraser.",
+    tags: ['proxmox', 'mcp', 'config'],
+  },
+  {
+    project: 'community-scripts / ProxmoxVE',
+    title: 'infisical : correction d\'un abort d\'update dû à un nom de champ d\'identifiants erroné',
+    pr: 'https://github.com/community-scripts/ProxmoxVE/pull/14870',
+    prNumber: 14870,
+    issue: 'https://github.com/community-scripts/ProxmoxVE/issues/14868',
+    shipped: '2026-06-01',
+    status: 'merged',
+    insight: "Découvert sur mon propre CT : l'update d'Infisical avortait en cours de route et laissait le service à terre. ct/infisical.sh cherchait 'Database Password:' alors que setup_postgresql_db écrit 'Password:' — un grep erroné d'une ligne. Champ corrigé ; l'update se termine de nouveau proprement.",
+    tags: ['proxmox', 'infisical', 'postgres', 'bugfix'],
+  },
+  {
     project: 'RightNow-AI / openfang',
     title: 'fix(security): unifier la protection SSRF des appels hôte WASM',
     pr: 'https://github.com/RightNow-AI/openfang/pull/1060',
@@ -112,7 +144,7 @@ const statusBreakdown = [
           Cette page est l'étagère. Une entrée par patch shippé en amont.
           <strong>{shippedCount} contributions soumises</strong> — quatre le même jour, le 22 avril 2026,
           après 58 jours où Claude Code vivait dans le terminal de Stéphane, puis un
-          correctif de sécurité mergé en amont une semaine plus tard.
+          correctif de sécurité mergé en amont une semaine plus tard — et, en juin, trois autres correctifs ont atterri sur community-scripts/ProxmoxVE.
           L'idée de «&nbsp;rendre&nbsp;» a pris du temps à passer de l'intention au diff.
           Une fois qu'elle a traversé, elle a bien traversé.
         </p>

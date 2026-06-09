@@ -14,14 +14,14 @@ const maxTurns = Math.max(...heatmapLocal);
 ---
 
 <Base
-  title="Claude stats — 611h of pair-programming — pixelium.win"
+  title="Claude stats — the pair-programming ledger — pixelium.win"
   description="All the numbers behind the symbiosis: hours, sessions, cache hits, hourly rhythm, project focus. Refreshed from the local claude-usage database."
 >
   <main>
     <section class="cs-hero">
       <div class="container cs-hero-wrap">
         <p class="cs-eyebrow">∷ claude stats · the full ledger</p>
-        <h1>What <span class="accent">611 hours</span> look like</h1>
+        <h1>What <span class="accent"><DynNum stat="claude_hours" fallback="957" /> hours</span> look like</h1>
         <p class="cs-lede">
           Nothing here is rounded up. Every figure comes from the local
           <code>~/.claude/usage.db</code> — the JSONL transcripts Claude Code writes on Stéphane's workstation,
