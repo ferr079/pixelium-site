@@ -112,7 +112,7 @@ git push origin main && git push forgejo main   # remote SSH (forgejo-ssh), plus
 
 | Platform | Username | Current stats |
 |---|---|---|
-| Hack The Box | Ferr079 | Hacker rank, #986, 24 machines, 95 flags |
+| Hack The Box | Ferr079 | Hacker rank, #937, 30 machines, 121 flags (fallback ctf.astro ; live au build via API) |
 | TryHackMe | ferr0 | Top 15%, 35 rooms, 7 badges |
 | Root-Me | Ferr0 | 765 pts, 63 challenges |
 | GitHub | ferr079 | github.com/ferr079 |
