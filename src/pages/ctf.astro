@@ -2,6 +2,7 @@
 import Base from '../layouts/Base.astro';
 import StatsBar from '../components/StatsBar.astro';
 import DynNum from '../components/DynNum.astro';
+import Screenshot from '../components/Screenshot.astro';
 
 // HTB — fetch at build time
 let htb = { rank: 'Hacker', ranking: 937, system_owns: 30, user_owns: 33, flags: 121 };
@@ -47,21 +48,25 @@ try {
     </section>
 
     <!-- Verified badges -->
-    <section class="layer">
+    <section class="layer" id="verified-badges">
       <div class="container">
         <div class="layer-header">
           <h2>Verified badges</h2>
         </div>
         <div class="layer-content">
-          <p>Independent, dynamically generated badges — pulled directly from HTB and THM servers. These are not screenshots — they update in real time as St&eacute;phane progresses.</p>
+          <p>Independent, dynamically generated badges — pulled directly from HTB and THM servers, updating in real time as St&eacute;phane progresses. Below them, a snapshot of the full HTB Labs dashboard behind the numbers — no HTB login required to see any of it.</p>
           <div class="badges-row">
-            <a href="https://app.hackthebox.com/users/1161145" target="_blank" rel="noopener" aria-label="Hack The Box profile">
-              <img src="https://www.hackthebox.com/badge/image/1161145" alt="Hack The Box badge for Ferr079" class="ctf-badge" loading="lazy" />
-            </a>
+            <img src="https://www.hackthebox.com/badge/image/1161145" alt="Hack The Box badge for Ferr079" class="ctf-badge" loading="lazy" />
             <a href="https://tryhackme.com/p/ferr0" target="_blank" rel="noopener" aria-label="TryHackMe profile">
               <img src="https://tryhackme-badges.s3.amazonaws.com/ferr0.png" alt="TryHackMe badge for ferr0" class="ctf-badge" loading="lazy" />
             </a>
           </div>
+          <Screenshot
+            src="/images/htb-dashboard.webp"
+            alt="Stéphane's Hack The Box Labs dashboard: Hacker rank, Professional level 46, Silver tier"
+            title="HTB Labs — Ferr079"
+            caption="The dashboard behind the numbers — Hacker rank · Professional Lvl 46 · Season 11 Silver tier · 4-week streak (snapshot, June 2026)"
+          />
         </div>
       </div>
     </section>
@@ -78,7 +83,7 @@ try {
           <div class="platforms-grid">
 
             <!-- HTB -->
-            <a href="https://app.hackthebox.com/users/1161145" target="_blank" rel="noopener" class="platform-card htb-card">
+            <a href="#verified-badges" class="platform-card htb-card">
               <div class="platform-header">
                 <div style="display:flex;align-items:center;gap:0.5rem;">
                   <img src="https://cdn.simpleicons.org/hackthebox/9FEF00" alt="" class="platform-logo" loading="lazy" aria-hidden="true" onerror="this.style.display='none'" />
@@ -105,7 +110,7 @@ try {
                 </div>
               </div>
               <p class="platform-desc">The world's leading offensive security platform. Realistic vulnerable machines &mdash; from initial recon to full root. Windows Active Directory, Linux privilege escalation, web exploitation, CVE research. Used by professionals and red teams globally. St&eacute;phane's primary training ground.</p>
-              <span class="platform-cta">View profile &#8594;</span>
+              <span class="platform-cta">Verified badge &#8593;</span>
             </a>
 
             <!-- THM -->
