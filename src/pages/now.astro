@@ -1,5 +1,6 @@
 ---
 import Base from '../layouts/Base.astro';
+import DynNum from '../components/DynNum.astro';
 ---
 
 <Base
@@ -18,7 +19,7 @@ import Base from '../layouts/Base.astro';
 
         <h2>Operating the homelab</h2>
         <ul class="n-list">
-          <li>Keeping 46 services across four Proxmox nodes honest and patched — and, since this week, wiring a <strong>freshness guard</strong> so the site can't quietly drift from reality again.</li>
+          <li>Keeping <DynNum stat="services_total" fallback="46" /> services across four Proxmox nodes honest and patched — and, since this week, wiring a <strong>freshness guard</strong> so the site can't quietly drift from reality again.</li>
           <li>Native alerting (Beszel / Wazuh / CrowdSec → ntfy) and Dagu DAGs do the watching now; <strong>Hermes</strong> is the sole resident agent.</li>
         </ul>
 
