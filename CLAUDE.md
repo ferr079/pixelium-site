@@ -123,6 +123,7 @@ git push origin main && git push forgejo main   # remote SSH (forgejo-ssh), plus
 - **All content is sourced** from the real ops journal or verifiable data. No invention.
 - **MCP = least-privilege**: Proxmox = PVEAuditor (read-only). Always mention access restrictions when the topic is discussed.
 - **Update platform stats** (HTB/THM/Root-Me) after each CTF session.
+- **Local models list** (`/uses` → « Local models — Ollama », EN+FR) is **static, maintained by hand** — Ollama (`0.0.0.0:11434`) is local, unreachable from CI. Refresh it when the model set changes (`ollama list` / `GET /api/tags`). Offensive models (abliterated/uncensored) are grouped under CTF/red-team, no raw suffixes, with the legitimate-use framing.
 - **Do not add npm dependencies** without explicit reason.
 - **Edit both EN and FR** when modifying page content.
 

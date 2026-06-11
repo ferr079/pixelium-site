@@ -54,6 +54,14 @@ import Base from '../layouts/Base.astro';
           <li><strong>Hermes</strong> (Telegram correspondent), <strong>RAPTOR</strong> (source-code audit, distrobox), <strong>RTK</strong> (token-optimised CLI proxy).</li>
         </ul>
 
+        <h2>Local models — Ollama</h2>
+        <ul class="u-list">
+          <li><strong>Qwen3.6</strong> (36B &amp; 27B, Q4) — the general-purpose local models. When I want to keep data on the GPU, work offline, or burn no cloud tokens, these are the default. The 36B fills the 24 GB just about exactly.</li>
+          <li><strong>Qwen3 Coder</strong> (9B) — fast local code completion without a round-trip to the cloud.</li>
+          <li><strong>Abliterated Qwen3.6-27B &amp; Gemma-4</strong> — dedicated to CTF / red-team work. Safety-tuned refusals get in the way of legitimate offensive security on Hack The Box, so I run uncensored variants locally for that — never against third parties.</li>
+          <li><strong>nomic-embed-text</strong> — embeddings for local search &amp; RAG.</li>
+        </ul>
+
         <h2>This site</h2>
         <ul class="u-list">
           <li><strong>Astro</strong> (SSG), pure CSS, zero JS framework.</li>

@@ -54,6 +54,14 @@ import Base from '../../layouts/Base.astro';
           <li><strong>Hermes</strong> (correspondant Telegram), <strong>RAPTOR</strong> (audit de code source, distrobox), <strong>RTK</strong> (proxy CLI optimisé tokens).</li>
         </ul>
 
+        <h2>Modèles locaux — Ollama</h2>
+        <ul class="u-list">
+          <li><strong>Qwen3.6</strong> (36B &amp; 27B, Q4) — les modèles locaux généralistes. Quand je veux garder les données sur le GPU, travailler hors-ligne ou ne brûler aucun token cloud, c'est le choix par défaut. Le 36B remplit les 24 Go presque tout juste.</li>
+          <li><strong>Qwen3 Coder</strong> (9B) — complétion de code locale rapide, sans aller-retour vers le cloud.</li>
+          <li><strong>Qwen3.6-27B &amp; Gemma-4 abliterated</strong> — dédiés au travail CTF / red-team. Les refus liés au safety-tuning gênent la sécurité offensive légitime sur Hack The Box ; je fais donc tourner des variantes uncensored en local pour ça — jamais contre des tiers.</li>
+          <li><strong>nomic-embed-text</strong> — embeddings pour la recherche locale &amp; le RAG.</li>
+        </ul>
+
         <h2>Ce site</h2>
         <ul class="u-list">
           <li><strong>Astro</strong> (SSG), pure CSS, zéro framework JS.</li>
