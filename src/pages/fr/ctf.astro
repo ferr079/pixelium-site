@@ -5,7 +5,7 @@ import DynNum from '../../components/DynNum.astro';
 import Screenshot from '../../components/Screenshot.astro';
 
 // HTB — fetch at build time
-let htb = { rank: 'Hacker', ranking: 937, system_owns: 30, user_owns: 33, flags: 121 };
+let htb = { rank: 'Hacker', ranking: 940, system_owns: 30, user_owns: 33, flags: 125 };
 try {
   const htbRes = await fetch('https://labs.hackthebox.com/api/v4/user/profile/basic/1161145', {
     headers: { 'Authorization': `Bearer ${import.meta.env.HTB_API_TOKEN}` },
