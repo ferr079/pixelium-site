@@ -167,6 +167,12 @@ const reportsReviews = [
     insight: "Under rootless podman/distrobox the sandbox half-engages and raptor reported '0 findings in 0 files' instead of failing loudly — a false clean. The maintainer declined my env-override approach on trust-model grounds but shipped his own fail-loud fix, which I validated on our setup. I closed the PR myself: the real win had already landed.",
     tags: ['security', 'sandbox', 'python'],
   },
+  {
+    project: 'grafana / alloy', kind: 'report', ref: 'issue #6474 → fix merged',
+    url: 'https://github.com/grafana/alloy/issues/6474', date: '2026-06-10',
+    insight: "Alloy's anonymous usage reporting retried stats.grafana.org every ~3s with no backoff. When a DNS blocklist NXDOMAINs that host, one unreachable endpoint becomes a fleet-wide query storm — ~900k DNS queries a day across 57 agents. Reported with the repro and the mechanism; the maintainer wrote the fix the same day (#6478 — back off on persistent failure instead of retrying every tick), I reviewed it against my fleet, and it merged.",
+    tags: ['grafana', 'alloy', 'dns', 'reliability'],
+  },
 ];
 
 // Build-time completeness guard — warn if a merged PR by ferr079 isn't featured
