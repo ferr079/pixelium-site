@@ -3,6 +3,11 @@ name: Deploy to Cloudflare Workers
 on:
   push:
     branches: [main]
+  # Rebuild quotidien : re-fetch toutes les données build-time (HTB, Root-Me,
+  # statuts PR /contributions) → chaque page se rafraîchit seule, sans commit.
+  schedule:
+    - cron: '0 5 * * *' # 05:00 UTC daily (avant le Freshness guard de 06:17)
+  workflow_dispatch: {}
 
 concurrency:
   group: deploy

@@ -332,35 +332,13 @@ try {
   </main>
 </Base>
 
-<script>
-  (async function liveHTB() {
-    try {
-      const res = await fetch('/api/stats');
-      if (!res.ok) return;
-      const { stats } = await res.json();
-      if (!stats) return;
-      const map: Record<string, string> = {
-        rank: stats.htb_rank,
-        system_owns: String(stats.htb_system_owns),
-        user_owns: String(stats.htb_user_owns),
-        flags: String(stats.htb_flags),
-        ranking: `#${stats.htb_ranking}`,
-      };
-      document.querySelectorAll('[data-htb]').forEach(el => {
-        const key = (el as HTMLElement).dataset.htb!;
-        if (map[key]) el.textContent = map[key];
-      });
-      document.querySelectorAll('[data-stat^="htb_"]').forEach(el => {
-        const key = (el as HTMLElement).dataset.stat!;
-        const val = stats[key];
-        if (val == null) return;
-        const suffix = (el as HTMLElement).dataset.statSuffix || '';
-        (el as HTMLElement).dataset.target = key === 'htb_ranking' ? `#${val}` : `${val}${suffix}`;
-        el.textContent = key === 'htb_ranking' ? `#${val}` : `${val}${suffix}`;
-      });
-    } catch (_) {}
-  })();
-</script>
+{/*
+  HTB stats are build-time only (authoritative, refreshed daily by the scheduled
+  deploy). The old liveHTB() client overwrite from /api/stats was removed: the KV
+  htb_* keys (fed by kv-push) had gone stale and were clobbering the correct
+  build-time values (e.g. 30 machines rendered server-side, overwritten to 24).
+  HTB moves slowly — a daily rebuild is the right cadence; no client refresh needed.
+*/}
 
 <style>
   .hero-mini { padding: 4rem 0 3rem; }
