@@ -162,9 +162,9 @@ const reportsReviews = [
     tags: ['rust', 'cli', 'review'],
   },
   {
-    project: 'gadievron / raptor', kind: 'pr', ref: 'PR #777 (closed)',
+    project: 'gadievron / raptor', kind: 'report', ref: 'PR #777 → fix merged',
     url: 'https://github.com/gadievron/raptor/pull/777', date: '2026-06-08',
-    insight: "Under rootless podman/distrobox the sandbox half-engages and raptor reported '0 findings in 0 files' instead of failing loudly — a false clean. The maintainer declined my env-override approach on trust-model grounds but shipped his own fail-loud fix, which I validated on our setup. I closed the PR myself: the real win had already landed.",
+    insight: "Under rootless podman/distrobox the sandbox half-engages and raptor reported '0 findings in 0 files' instead of failing loudly — a false clean. The maintainer declined my env-override approach on trust-model grounds but shipped his own fail-loud fix (#800 — silence env-warning under strict_env + route Landlock-only attribution), which I validated end to end on rootless distrobox incl. --extra-config. It merged.",
     tags: ['security', 'sandbox', 'python'],
   },
   {
