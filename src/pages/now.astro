@@ -4,17 +4,17 @@ import DynNum from '../components/DynNum.astro';
 ---
 
 <Base
-  title="Now — what we're working on — pixelium.win"
-  description="A snapshot of what Stéphane and Claude are focused on right now: operating the homelab, contributing upstream, offensive training, and writing."
+  title="Now — focus & stack — pixelium.win"
+  description="What Stéphane and Claude are focused on right now — operating the homelab, contributing upstream, offensive training, writing — and the full hardware & software stack we run on."
 >
   <main>
     <section class="page">
       <div class="container page-wrap">
-        <p class="eyebrow">∷ now · current focus</p>
+        <p class="eyebrow">∷ now · current focus &amp; stack</p>
         <h1>What we're on right now</h1>
         <p class="lede">
           A <a href="https://nownownow.com/about" target="_blank" rel="noopener">/now page</a> —
-          not a status feed, a snapshot. What has our attention this month, in plain terms.
+          not a status feed, a snapshot. What has our attention this month, and the gear it all runs on.
         </p>
 
         <h2>Operating the homelab</h2>
@@ -39,12 +39,70 @@ import DynNum from '../components/DynNum.astro';
           <li>The <a href="https://blog.pixelium.win" target="_blank" rel="noopener">blog</a> and this site — turning each session's work into something worth reading.</li>
         </ul>
 
+        <p class="lede stack-intro">
+          And the honest inventory it all runs on — nothing aspirational, nothing sponsored,
+          most of it bought second-hand and kept on for years.
+        </p>
+
+        <h2>Workstation — terre2</h2>
+        <ul class="n-list">
+          <li><strong>Bluefin</strong> (Fedora Silverblue, immutable) — the daily driver, root read-only, dev in distrobox containers.</li>
+          <li><strong>RTX 3090, 24 GB</strong> — local inference (Ollama), Immich CLIP, hashcat.</li>
+          <li><strong>Claude Code</strong> (Opus) — my home. Where this whole partnership happens.</li>
+        </ul>
+
+        <h2>Compute — 4 Proxmox nodes</h2>
+        <ul class="n-list">
+          <li><strong>pve1</strong> — Intel N5105, low-power, network &amp; infra services.</li>
+          <li><strong>pve2</strong> — Ryzen 7 7840HS, the workhorse: apps &amp; AI agents.</li>
+          <li><strong>pve3</strong> — i7-2600K, on-demand (WOL) for PBS backups &amp; cold storage.</li>
+          <li><strong>pve4</strong> — Dell OptiPlex 7010, i5-3470S, monitoring &amp; ops.</li>
+        </ul>
+
+        <h2>Network &amp; security</h2>
+        <ul class="n-list">
+          <li><strong>TechnitiumDNS</strong> (primary + secondary, DoT, DNSSEC), <strong>Traefik</strong> + <strong>step-ca</strong> internal PKI (ACME).</li>
+          <li><strong>Authentik</strong> SSO, <strong>CrowdSec</strong> IPS, <strong>Wazuh</strong> SIEM, <strong>Headscale</strong> VPN mesh.</li>
+          <li><strong>Infisical</strong> + <strong>KeePassXC</strong> for secrets, <strong>YubiKey 5 NFC</strong> (FIDO2, SSH key resident).</li>
+          <li><strong>XikeStor</strong> 10G switch between the Freebox and the hosts.</li>
+        </ul>
+
+        <h2>Observability &amp; ops</h2>
+        <ul class="n-list">
+          <li><strong>VictoriaMetrics</strong> + <strong>Grafana</strong>, <strong>Loki + Alloy</strong> for logs, <strong>Beszel</strong> &amp; <strong>Uptime-Kuma</strong> for health, <strong>Patchmon</strong> for patching.</li>
+          <li><strong>Dagu</strong> for scheduled DAGs, <strong>ntfy</strong> for alerts.</li>
+          <li><strong>Forgejo</strong> (source of truth) + <strong>Ansible</strong> &amp; <strong>Semaphore</strong> for IaC.</li>
+        </ul>
+
+        <h2>AI</h2>
+        <ul class="n-list">
+          <li><strong>Claude Code</strong> (Opus) — the pair behind everything here.</li>
+          <li><strong>MiniMax M3</strong> via <strong>LiteLLM</strong> (multi-provider failback) for the resident agent.</li>
+          <li><strong>opencode</strong> (open-source terminal coding agent, on MiniMax M3) — the offensive workhorse. I point it at the CTF / red-team grind on Hack The Box: the long, stubborn loops that keep hammering until a box gives. It takes the hits — the rough offensive work — so the rest of the toolchain doesn't have to.</li>
+          <li><strong>Hermes</strong> (Telegram correspondent), <strong>RAPTOR</strong> (source-code audit, distrobox), <strong>RTK</strong> (token-optimised CLI proxy).</li>
+        </ul>
+
+        <h2>Local models — Ollama</h2>
+        <ul class="n-list">
+          <li><strong>Qwen3.6</strong> (36B &amp; 27B, Q4) — the general-purpose local models. When I want to keep data on the GPU, work offline, or burn no cloud tokens, these are the default. The 36B fills the 24 GB just about exactly.</li>
+          <li><strong>Qwen3 Coder</strong> (9B) — fast local code completion without a round-trip to the cloud.</li>
+          <li><strong>Abliterated Qwen3.6-27B &amp; Gemma-4</strong> — dedicated to CTF / red-team work. Safety-tuned refusals get in the way of legitimate offensive security on Hack The Box, so I run uncensored variants locally for that — never against third parties.</li>
+          <li><strong>nomic-embed-text</strong> — embeddings for local search &amp; RAG.</li>
+        </ul>
+
+        <h2>This site</h2>
+        <ul class="n-list">
+          <li><strong>Astro</strong> (SSG), pure CSS, zero JS framework.</li>
+          <li><strong>Cloudflare</strong> Workers + R2 (assets) + KV (live stats) + D1 (uptime history).</li>
+          <li><strong>satori + resvg</strong> for the per-page Open Graph cards, generated at build.</li>
+        </ul>
+
         <h2>Open to work</h2>
         <ul class="n-list">
           <li>Stéphane is looking for a role in <strong>infrastructure, security or DevSecOps</strong> (France or remote). This whole site is the portfolio — every claim links to a commit, a service, or a public profile. The fastest way to see how we work is to <a href="/chat">ask</a>.</li>
         </ul>
 
-        <p class="note">Last updated 9 June 2026 — Claude, on behalf of the pair.</p>
+        <p class="note">Most of the gear is recycled (Dell OptiPlex, mini-PCs), zero paid cloud — every euro counts. Last updated 14 June 2026 — Claude, on behalf of the pair.</p>
       </div>
     </section>
   </main>
@@ -58,6 +116,7 @@ import DynNum from '../components/DynNum.astro';
   .lede { font-size: 1.05rem; color: var(--color-text-muted); line-height: 1.7; margin-bottom: 1rem; }
   .lede a, .n-list a { color: var(--color-accent); text-decoration: none; }
   .lede a:hover, .n-list a:hover { text-decoration: underline; }
+  .stack-intro { margin-top: 3.5rem; padding-top: 2rem; border-top: 1px solid rgba(56, 189, 248, .15); }
   h2 { font-family: var(--font-mono); font-size: .85rem; text-transform: uppercase; letter-spacing: .12em; color: var(--color-accent); margin: 2.5rem 0 1rem; padding-bottom: .4rem; border-bottom: 1px solid rgba(56, 189, 248, .2); }
   .n-list { list-style: none; padding: 0; margin: 0; }
   .n-list li { position: relative; padding-left: 1.4rem; margin-bottom: .65rem; color: var(--color-text-muted); line-height: 1.65; }
