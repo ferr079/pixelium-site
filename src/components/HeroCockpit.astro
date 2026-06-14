@@ -13,11 +13,11 @@ const { lang = 'en' } = Astro.props;
 const p = lang === 'fr' ? '/fr' : '';
 
 const t = lang === 'fr'
-  ? { role: 'DevSecOps • Infrastructure • Agents IA',
+  ? { title: 'Je suis Claude', role: 'DevSecOps • Infrastructure • Agents IA',
       tagline: "Je suis l'IA qui a conçu et bâti cette infrastructure avec Stéphane. Voici son état, en direct.",
       ask: 'Demander à Claude', work: 'Notre travail', wopr: 'Terminal WOPR', arch: 'Architecture',
       live: 'live', up: 'actifs', uptime: 'uptime', nodes: 'nœuds PVE', legend: 'topologie réelle, en direct' }
-  : { role: 'DevSecOps • Infrastructure • AI Agents',
+  : { title: 'I am Claude', role: 'DevSecOps • Infrastructure • AI Agents',
       tagline: 'I am the AI that designed and built this infrastructure with Stéphane. Here is its state, live.',
       ask: 'Ask Claude', work: 'Our work', wopr: 'WOPR Terminal', arch: 'Architecture',
       live: 'live', up: 'up', uptime: 'uptime', nodes: 'PVE nodes', legend: 'real topology, live' };
@@ -28,7 +28,7 @@ const topoJson = JSON.stringify(topology);
 <section class="hero-cockpit">
   <div class="hc-inner container">
     <div class="hc-text">
-      <h1 class="hc-title">I am Claude<span class="hc-dot">.</span></h1>
+      <h1 class="hc-title glitch" data-text={`${t.title}.`}>{t.title}<span class="hc-dot">.</span></h1>
       <p class="hc-role">{t.role}</p>
       <p class="hc-tagline">{t.tagline}</p>
       <div class="hc-links">
@@ -48,7 +48,7 @@ const topoJson = JSON.stringify(topology);
       <div class="hc-stats">
         <span class="hc-stat"><DynNum stat="services_up" fallback="44" />/<DynNum stat="services_total" fallback="46" /> {t.up}</span>
         <span class="hc-sep" aria-hidden="true">·</span>
-        <span class="hc-stat"><DynNum stat="uptime_pct" fallback="95.7" suffix="%" /> {t.uptime}</span>
+        <span class="hc-stat"><DynNum stat="uptime_pct" fallback="95.7%" suffix="%" /> {t.uptime}</span>
         <span class="hc-sep" aria-hidden="true">·</span>
         <span class="hc-stat">4 {t.nodes}</span>
       </div>
@@ -81,22 +81,22 @@ const topoJson = JSON.stringify(topology);
       const add = (label: string, type: string, x: number, y: number, r: number) => {
         nodes.push({ label, type, x, y, bx: x, by: y, r, down: false }); idx[label] = nodes.length - 1; return nodes.length - 1;
       };
-      const iIsp = add(topo.roots?.[0]?.label || 'ISP', 'isp', W * 0.5, H * 0.11, 4);
-      const iSw = add(topo.switch?.label || 'switch', 'switch', W * 0.5, H * 0.25, 3.4);
+      const iIsp = add(topo.roots?.[0]?.label || 'ISP', 'isp', W * 0.5, H * 0.08, 4);
+      const iSw = add(topo.switch?.label || 'switch', 'switch', W * 0.5, H * 0.22, 3.4);
       edges.push([iIsp, iSw]);
       const zones = topo.zones || [];
       const zoneIdx: Record<string, number> = {};
       zones.forEach((z: any, k: number) => {
         const x = W * (0.16 + 0.68 * (zones.length > 1 ? k / (zones.length - 1) : 0.5));
-        const y = H * 0.50;
+        const y = H * 0.48;
         const iz = add(z.label, 'proxmox', x, y, 3.6); zoneIdx[z.label] = iz;
         edges.push([iSw, iz]);
         const ch = z.children || [];
         ch.forEach((c: any, j: number) => {
           const ang = Math.PI * (0.12 + 0.76 * (ch.length > 1 ? j / (ch.length - 1) : 0.5));
-          const rad = Math.min(W, H) * 0.17;
+          const rad = Math.min(W, H) * 0.22;
           const cx = x + Math.cos(ang) * rad;
-          const cy = y + Math.sin(ang) * rad * 0.75 + H * 0.05;
+          const cy = y + Math.sin(ang) * rad * 0.9 + H * 0.11;
           const ic = add(c.label, c.nodeType === 'vm' ? 'vm' : 'lxc', cx, cy, 1.8);
           edges.push([iz, ic]);
         });
@@ -180,6 +180,53 @@ const topoJson = JSON.stringify(topology);
   .hc-inner { display: grid; grid-template-columns: 1.05fr 1fr; gap: 2.5rem; align-items: center; }
   .hc-title { font-size: clamp(2.6rem, 6vw, 4.2rem); font-weight: 800; letter-spacing: -.03em; line-height: 1; margin: 0 0 1rem; }
   .hc-dot { color: var(--color-accent); }
+
+  /* Glitch on the title — restored at Stéphane's request */
+  .hc-title.glitch { position: relative; animation: hc-glitch-base 3s ease-in-out 1.5s infinite; }
+  .hc-title.glitch::before, .hc-title.glitch::after { content: attr(data-text); position: absolute; top: 0; left: 0; width: 100%; height: 100%; opacity: 0; pointer-events: none; }
+  .hc-title.glitch::before { color: #ff6b6b; text-shadow: 2px 0 #ff6b6b; animation: hc-glitch-1 3s ease-in-out infinite; }
+  .hc-title.glitch::after { color: var(--color-accent); text-shadow: -2px 0 var(--color-accent); animation: hc-glitch-2 3s ease-in-out infinite; }
+  @keyframes hc-glitch-base {
+    0%, 72%, 84%, 100% { text-shadow: none; transform: none; }
+    74% { transform: translate(1px, 0); text-shadow: -2px 0 rgba(255, 107, 107, 0.3), 2px 0 rgba(56, 189, 248, 0.3); }
+    76% { transform: translate(-1px, 0); text-shadow: 2px 0 rgba(255, 107, 107, 0.2), -2px 0 rgba(56, 189, 248, 0.2); }
+    78% { transform: none; text-shadow: none; }
+    80% { transform: translate(2px, -1px); text-shadow: -3px 0 rgba(255, 107, 107, 0.4), 3px 0 rgba(56, 189, 248, 0.4); }
+    81% { transform: translate(-1px, 1px); text-shadow: none; }
+    82% { transform: none; }
+  }
+  @keyframes hc-glitch-1 {
+    0%, 72%, 84%, 100% { opacity: 0; transform: none; }
+    73% { opacity: 0.9; transform: translate(-5px, 2px); clip-path: inset(8% 0 72% 0); }
+    74% { opacity: 1; transform: translate(6px, -1px); clip-path: inset(42% 0 28% 0); }
+    75% { opacity: 0.8; transform: translate(-3px, 0); clip-path: inset(68% 0 8% 0); }
+    76% { opacity: 0; transform: none; }
+    77% { opacity: 0.9; transform: translate(4px, 2px); clip-path: inset(15% 0 55% 0); }
+    78% { opacity: 1; transform: translate(-6px, -2px); clip-path: inset(52% 0 18% 0); }
+    79% { opacity: 0.7; transform: translate(3px, 1px); clip-path: inset(78% 0 2% 0); }
+    80% { opacity: 0; transform: none; }
+    81% { opacity: 0.9; transform: translate(-4px, -1px); clip-path: inset(25% 0 45% 0); }
+    82% { opacity: 1; transform: translate(5px, 2px); clip-path: inset(60% 0 12% 0); }
+    83% { opacity: 0; transform: none; }
+  }
+  @keyframes hc-glitch-2 {
+    0%, 72%, 84%, 100% { opacity: 0; transform: none; }
+    73.5% { opacity: 0.8; transform: translate(5px, -2px); clip-path: inset(22% 0 48% 0); }
+    74.5% { opacity: 1; transform: translate(-6px, 1px); clip-path: inset(55% 0 15% 0); }
+    75.5% { opacity: 0.7; transform: translate(3px, 2px); clip-path: inset(5% 0 78% 0); }
+    76.5% { opacity: 0; transform: none; }
+    77.5% { opacity: 0.8; transform: translate(-4px, -2px); clip-path: inset(35% 0 35% 0); }
+    78.5% { opacity: 1; transform: translate(6px, 0); clip-path: inset(70% 0 5% 0); }
+    79.5% { opacity: 0.9; transform: translate(-3px, 1px); clip-path: inset(12% 0 62% 0); }
+    80.5% { opacity: 0; transform: none; }
+    81.5% { opacity: 0.8; transform: translate(4px, -1px); clip-path: inset(48% 0 22% 0); }
+    82.5% { opacity: 1; transform: translate(-5px, 2px); clip-path: inset(75% 0 3% 0); }
+    83.5% { opacity: 0; transform: none; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .hc-title.glitch, .hc-title.glitch::before, .hc-title.glitch::after { animation: none; }
+    .hc-title.glitch::before, .hc-title.glitch::after { opacity: 0; }
+  }
   .hc-role { font-family: var(--font-mono); font-size: .82rem; letter-spacing: .08em; text-transform: uppercase; color: var(--color-accent); margin: 0 0 1rem; }
   .hc-tagline { font-size: 1.1rem; line-height: 1.65; color: var(--color-text-muted); max-width: 34rem; margin: 0 0 1.75rem; }
   .hc-links { display: flex; flex-wrap: wrap; gap: .6rem; }
@@ -194,7 +241,7 @@ const topoJson = JSON.stringify(topology);
   .hc-live-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--color-ok, #22c55e); box-shadow: 0 0 0 0 rgba(34,197,94,.5); animation: hc-pulse 2.4s ease-out infinite; }
   .hc-live--stale, .hc-live--stale .hc-live-dot { color: #eab308; background: #eab308; }
   .hc-legend { color: var(--color-text-muted); opacity: .7; }
-  .hc-canvas { display: block; width: 100%; height: 320px; }
+  .hc-canvas { display: block; width: 100%; height: 300px; }
   .hc-stats { display: flex; flex-wrap: wrap; align-items: center; gap: .5rem; font-family: var(--font-mono); font-size: .8rem; color: var(--color-text); margin-top: .5rem; padding-top: .6rem; border-top: 1px solid var(--color-border); }
   .hc-stat strong, .hc-stat :global([data-stat]) { color: var(--color-accent); }
   .hc-sep { opacity: .35; }
