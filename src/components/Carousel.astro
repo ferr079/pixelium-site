@@ -1,5 +1,6 @@
 ---
 import { assetUrl } from '../config';
+import WindowChrome from './WindowChrome.astro';
 
 interface Slide {
   src: string;
@@ -24,13 +25,9 @@ const slides = rawSlides.map(s => ({
     {slides.map((slide, i) => (
       <a href={slide.src} target="_blank" rel="noopener" class="carousel-slide" title="Click to enlarge">
         <div class="carousel-window">
-          <div class="carousel-bar">
-            <span class="carousel-dot"></span>
-            <span class="carousel-dot"></span>
-            <span class="carousel-dot"></span>
-            <span class="carousel-bar-title">{slide.title}</span>
+          <WindowChrome title={slide.title}>
             <span class="carousel-expand" aria-hidden="true">&#8599;</span>
-          </div>
+          </WindowChrome>
           <img src={slide.src} alt={slide.alt} loading="lazy" />
         </div>
       </a>
@@ -98,33 +95,6 @@ const slides = rawSlides.map(s => ({
     overflow: hidden;
     background: rgba(0, 0, 0, 0.3);
     margin: 0 0.25rem;
-  }
-
-  .carousel-bar {
-    display: flex;
-    align-items: center;
-    gap: 0.4rem;
-    padding: 0.5rem 0.75rem;
-    background: rgba(0, 0, 0, 0.2);
-    border-bottom: 1px solid var(--color-border);
-  }
-
-  .carousel-dot {
-    width: 0.55rem;
-    height: 0.55rem;
-    border-radius: 50%;
-    background: var(--color-border);
-  }
-
-  .carousel-dot:nth-child(1) { background: #ef4444; }
-  .carousel-dot:nth-child(2) { background: #eab308; }
-  .carousel-dot:nth-child(3) { background: #22c55e; }
-
-  .carousel-bar-title {
-    font-family: var(--font-mono);
-    font-size: 0.7rem;
-    color: var(--color-text-muted);
-    margin-left: 0.5rem;
   }
 
   .carousel-expand {

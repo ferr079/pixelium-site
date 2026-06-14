@@ -1,0 +1,32 @@
+---
+// WindowChrome (refonte V4) — the single source of the macOS-style 3-dot window bar,
+// previously duplicated across Terminal/Carousel/hero-tape. Uses the named state-colour trio.
+interface Props {
+  title?: string;
+  bg?: string;
+}
+const { title, bg } = Astro.props;
+---
+<div class="winchrome" style={bg ? `--winchrome-bg: ${bg}` : undefined}>
+  <span class="winchrome-dot winchrome-dot--r"></span>
+  <span class="winchrome-dot winchrome-dot--y"></span>
+  <span class="winchrome-dot winchrome-dot--g"></span>
+  {title && <span class="winchrome-title">{title}</span>}
+  <slot />
+</div>
+
+<style>
+  .winchrome {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    padding: 0.6rem 0.8rem;
+    background: var(--winchrome-bg, rgba(0, 0, 0, 0.2));
+    border-bottom: 1px solid var(--color-border);
+  }
+  .winchrome-dot { width: 0.5rem; height: 0.5rem; border-radius: 50%; flex: none; }
+  .winchrome-dot--r { background: var(--color-down, #ef4444); }
+  .winchrome-dot--y { background: var(--color-warn, #eab308); }
+  .winchrome-dot--g { background: var(--color-ok, #22c55e); }
+  .winchrome-title { font-family: var(--font-mono); font-size: 0.7rem; color: var(--color-text-muted); margin-left: 0.5rem; }
+</style>
