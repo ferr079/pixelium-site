@@ -11,13 +11,14 @@ interface Props {
   hideNav?: boolean;
   ogImage?: string;
   enOnly?: boolean;
+  noindex?: boolean;
 }
 
 const lang = getLangFromUrl(Astro.url);
 const defaultDesc = lang === 'fr'
   ? 'Infrastructure homelab — Proxmox, Traefik, DNS, observabilité, IaC'
   : 'Homelab infrastructure — Proxmox, Traefik, DNS, observability, IaC';
-const { title, description = defaultDesc, hideNav = false, ogImage, enOnly = false } = Astro.props;
+const { title, description = defaultDesc, hideNav = false, ogImage, enOnly = false, noindex = false } = Astro.props;
 const currentPath = Astro.url.pathname;
 const ogLocale = lang === 'fr' ? 'fr_FR' : 'en_US';
 const altLang = lang === 'fr' ? 'en' : 'fr';
@@ -65,6 +66,7 @@ const cmdkItems = [
     <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="description" content={description} />
+    {noindex && <meta name="robots" content="noindex, follow" />}
     <meta property="og:type" content="website" />
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />

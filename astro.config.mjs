@@ -10,7 +10,10 @@ export default defineConfig({
     prerenderEnvironment: 'node',
     remoteBindings: false,
   }),
-  integrations: [sitemap()],
+  integrations: [sitemap({
+    // Exclude archived / redirect-only pages from the sitemap (refonte V4)
+    filter: (page) => !/\/(ia|uses|cybersecurite|symbiose)(\/|$)/.test(page),
+  })],
   i18n: {
     locales: ['en', 'fr'],
     defaultLocale: 'en',
