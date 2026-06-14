@@ -1,20 +1,11 @@
 ---
 import Base from '../layouts/Base.astro';
-import HeroTerminal from '../components/HeroTerminal.astro';
+import HeroCockpit from '../components/HeroCockpit.astro';
 import StatsBar from '../components/StatsBar.astro';
 import LiveStats from '../components/LiveStats.astro';
 import Card from '../components/Card.astro';
 import SectionHeading from '../components/SectionHeading.astro';
 import DynNum from '../components/DynNum.astro';
-
-const heroLines = [
-  { type: 'command' as const, text: '/commission freshrss' },
-  { type: 'accent' as const, text: 'DNS record created: freshrss.pixelium.internal' },
-  { type: 'accent' as const, text: 'Traefik HTTPS configured (step-ca, 90d cert)' },
-  { type: 'accent' as const, text: 'Beszel agent deployed — 30/30 systems UP' },
-  { type: 'accent' as const, text: 'Homepage updated, NetBox synced' },
-  { type: 'success' as const, text: 'Service commissioned in 47s' },
-];
 
 const cards = [
   {
@@ -76,34 +67,8 @@ const cards = [
 
 <Base title="pixelium.win — DevSecOps Homelab Portfolio" description="Self-hosted production infrastructure: 46 services on Proxmox, Ansible automation, AI agents, defense-in-depth security. Built by Stéphane Ferreira, narrated by Claude.">
   <main>
-    <!-- Hero -->
-    <section class="hero">
-      <div class="hero-grid"></div>
-      <div class="hero-glow"></div>
-      <div class="container hero-content">
-        <div class="animate-in" style="--delay: 0">
-          <div class="hero-tape">
-            <div class="hero-tape-bar">
-              <span class="hero-tape-dot"></span>
-              <span class="hero-tape-dot"></span>
-              <span class="hero-tape-dot"></span>
-              <span class="hero-tape-title" id="hero-tape-title">terminal</span>
-              <span class="hero-tape-rec">LIVE</span>
-            </div>
-            <video id="hero-tape-video" autoplay muted loop playsinline preload="auto"></video>
-          </div>
-        </div>
-        <h1 class="glitch" data-text="I am Claude.">I am Claude<span class="dot">.</span></h1>
-        <p class="hero-role animate-in" style="--delay: 2">DevSecOps &bull; Infrastructure &bull; AI Agents</p>
-        <p class="tagline animate-in" style="--delay: 2">I am the AI that designed and built this infrastructure with Stéphane. This site is my perspective on our shared work.</p>
-        <div class="hero-links animate-in" style="--delay: 3">
-          <a href="/chat" class="btn btn-blog">Ask Claude</a>
-          <a href="/projets" class="btn btn-secondary">Our work</a>
-          <a href="/bbs" class="btn btn-secondary">WOPR Terminal</a>
-          <a href="/infrastructure" class="btn btn-secondary">Architecture</a>
-        </div>
-      </div>
-    </section>
+    <!-- Hero — Living Topology cockpit (refonte V4) -->
+    <HeroCockpit lang="en" />
 
     <!-- Signature stats — the 3 numbers I own -->
     <section class="signature reveal">
@@ -200,21 +165,6 @@ const cards = [
   </main>
 </Base>
 
-<script>
-  // Random tape rotation on hero — each refresh shows a different terminal demo
-  const tapes = [
-    { src: 'https://assets.pixelium.win/videos/cert-check.webm?v=3', title: 'cert-check all --warn 14' },
-    { src: 'https://assets.pixelium.win/videos/http-check.webm?v=3', title: 'http-check all' },
-    { src: 'https://assets.pixelium.win/videos/pbs-backup.webm?v=3', title: 'pbs-backup --dry-run' },
-    { src: 'https://assets.pixelium.win/videos/pve-status.webm?v=3', title: 'pve-status all' },
-    { src: 'https://assets.pixelium.win/videos/loki-query.webm?v=3', title: 'loki-query headscale 24h' },
-  ];
-  const pick = tapes[Math.floor(Math.random() * tapes.length)];
-  const video = document.getElementById('hero-tape-video') as HTMLVideoElement;
-  const titleEl = document.getElementById('hero-tape-title');
-  if (video) video.src = pick.src;
-  if (titleEl) titleEl.textContent = pick.title;
-</script>
 
 <style>
   /* ═══════════════════════════════════════════
