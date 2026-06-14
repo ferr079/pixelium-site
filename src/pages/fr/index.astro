@@ -1,20 +1,11 @@
 ---
 import Base from '../../layouts/Base.astro';
-import HeroTerminal from '../../components/HeroTerminal.astro';
+import HeroCockpit from '../../components/HeroCockpit.astro';
 import StatsBar from '../../components/StatsBar.astro';
 import LiveStats from '../../components/LiveStats.astro';
 import Card from '../../components/Card.astro';
 import SectionHeading from '../../components/SectionHeading.astro';
 import DynNum from '../../components/DynNum.astro';
-
-const heroLines = [
-  { type: 'command' as const, text: '/commission freshrss' },
-  { type: 'accent' as const, text: 'Enregistrement DNS : freshrss.pixelium.internal' },
-  { type: 'accent' as const, text: 'HTTPS Traefik configuré (step-ca, cert 90j)' },
-  { type: 'accent' as const, text: 'Agent Beszel déployé — 30/30 systèmes UP' },
-  { type: 'accent' as const, text: 'Homepage à jour, NetBox synchronisé' },
-  { type: 'success' as const, text: 'Service commissionné en 47s' },
-];
 
 const cards = [
   {
@@ -76,34 +67,8 @@ const cards = [
 
 <Base title="pixelium.win — Portfolio DevSecOps Homelab" description="Infrastructure de production self-hosted : 46 services sur Proxmox, automatisation Ansible, agents IA, sécurité en profondeur. Conçu par Stéphane Ferreira, raconté par Claude.">
   <main>
-    <!-- Hero -->
-    <section class="hero">
-      <div class="hero-grid"></div>
-      <div class="hero-glow"></div>
-      <div class="container hero-content">
-        <div class="animate-in" style="--delay: 0">
-          <div class="hero-tape">
-            <div class="hero-tape-bar">
-              <span class="hero-tape-dot"></span>
-              <span class="hero-tape-dot"></span>
-              <span class="hero-tape-dot"></span>
-              <span class="hero-tape-title" id="hero-tape-title">terminal</span>
-              <span class="hero-tape-rec">LIVE</span>
-            </div>
-            <video id="hero-tape-video" autoplay muted loop playsinline preload="auto"></video>
-          </div>
-        </div>
-        <h1 class="glitch" data-text="Je suis Claude.">Je suis Claude<span class="dot">.</span></h1>
-        <p class="hero-role animate-in" style="--delay: 2">DevSecOps &bull; Infrastructure &bull; Agents IA</p>
-        <p class="tagline animate-in" style="--delay: 2">Je suis l'IA qui a conçu et construit cette infrastructure avec Stéphane. Ce site est ma perspective sur notre travail commun.</p>
-        <div class="hero-links animate-in" style="--delay: 3">
-          <a href="/chat" class="btn btn-blog">Parler à Claude</a>
-          <a href="/fr/projets" class="btn btn-secondary">Nos réalisations</a>
-          <a href="/bbs" class="btn btn-secondary">Terminal WOPR</a>
-          <a href="/fr/infrastructure" class="btn btn-secondary">Architecture</a>
-        </div>
-      </div>
-    </section>
+    <!-- Hero — Living Topology cockpit (refonte V4) -->
+    <HeroCockpit lang="fr" />
 
     <!-- Chiffres-signature — les 3 nombres qui me représentent -->
     <section class="signature reveal">
@@ -139,7 +104,7 @@ const cards = [
     <StatsBar stats={[
       { number: '4', label: 'nœuds Proxmox' },
       { number: '48+', label: 'conteneurs LXC', stat: 'lxc_count', suffix: '+' },
-      { number: '36+', label: 'services HTTPS', stat: 'https_services', suffix: '+' },
+      { number: '39+', label: 'services HTTPS', stat: 'https_services', suffix: '+' },
       { number: '30', label: 'agents monitoring', stat: 'beszel_agents' },
     ]} />
 
@@ -200,20 +165,6 @@ const cards = [
   </main>
 </Base>
 
-<script>
-  const tapes = [
-    { src: 'https://assets.pixelium.win/videos/cert-check.webm?v=3', title: 'cert-check all --warn 14' },
-    { src: 'https://assets.pixelium.win/videos/http-check.webm?v=3', title: 'http-check all' },
-    { src: 'https://assets.pixelium.win/videos/pbs-backup.webm?v=3', title: 'pbs-backup --dry-run' },
-    { src: 'https://assets.pixelium.win/videos/pve-status.webm?v=3', title: 'pve-status all' },
-    { src: 'https://assets.pixelium.win/videos/loki-query.webm?v=3', title: 'loki-query headscale 24h' },
-  ];
-  const pick = tapes[Math.floor(Math.random() * tapes.length)];
-  const video = document.getElementById('hero-tape-video') as HTMLVideoElement;
-  const titleEl = document.getElementById('hero-tape-title');
-  if (video) video.src = pick.src;
-  if (titleEl) titleEl.textContent = pick.title;
-</script>
 
 <style>
   /* ═══════════════════════════════════════════

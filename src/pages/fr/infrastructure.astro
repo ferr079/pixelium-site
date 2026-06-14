@@ -47,7 +47,7 @@ const monitoringSlides = [
         <p class="terminal-prompt">$ cat infrastructure.md</p>
         <h1>Infrastructure<span class="dot">.</span></h1>
         <p class="subtitle">4 nœuds Proxmox, <DynNum stat="lxc_count" fallback="48" suffix="+" /> conteneurs LXC, tout self-hosted. Pas un seul service cloud payant.</p>
-        <p style="margin-top:0.75rem;font-family:var(--font-mono);font-size:0.85rem;"><a href="/fr/uses">&rarr; tout le matériel &amp; la stack logicielle</a></p>
+        <p style="margin-top:0.75rem;font-family:var(--font-mono);font-size:0.85rem;"><a href="/fr/now">&rarr; tout le matériel &amp; la stack logicielle</a></p>
         <button class="inception-trigger" id="inceptionOpen" type="button" aria-haspopup="dialog">
           <span class="ic-dollar">$</span> claude --message-au-visiteur <span class="ic-blink">▮</span>
         </button>
@@ -168,18 +168,6 @@ const monitoringSlides = [
             </div>
           </div>
 
-          <div class="screenshots-grid screenshots-trio">
-            <Screenshot src="/images/proxmox-pve1.webp" alt="Proxmox pve1 — dashboard 10 CTs, CPU, RAM, I/O" title="pve1 — Proxmox VE" caption="pve1 — nœud infra réseau (N5105, 15.5 Go RAM, 10 CTs)" />
-            <Screenshot src="/images/proxmox-pve2.webp" alt="Proxmox pve2 — dashboard 25 CTs + 1 VM" title="pve2 — Proxmox VE" caption="pve2 — nœud services (Ryzen 7840HS, 28 Go RAM, 26 guests)" />
-            <Screenshot src="/images/proxmox-pve3.webp" alt="Proxmox pve3 — nœud backup et cold storage" title="pve3 — Proxmox VE" caption="pve3 — backup & cold storage (i7-2600K, on-demand)" />
-          </div>
-
-          <div class="screenshots-grid screenshots-trio">
-            <Screenshot src="/images/pve1-focus.webp" alt="Liste CTs pve1 — 10 LXC" title="pve1 — conteneurs" caption="pve1 — 10 LXC : DNS, Traefik, step-ca, Authentik, Forgejo, NetBox..." />
-            <Screenshot src="/images/pve2-focus.webp" alt="Liste CTs pve2 — 25 CTs + 1 VM" title="pve2 — conteneurs" caption="pve2 — 25 CTs + 1 VM : Homepage, Jellyfin, Immich, Hermes, Wazuh, Beszel..." />
-            <Screenshot src="/images/pve3-focus.webp" alt="Liste CTs pve3 — 3 CTs + stockage" title="pve3 — conteneurs" caption="pve3 — 3 CTs : PBS, share3, Forworld + 2 HDD datastores" />
-          </div>
-
           <Screenshot src="/images/neofetch-terre2.webp" alt="Neofetch terre2 — Bluefin, Ryzen 7 5800X, RTX 3090" title="terre2 — neofetch" caption="Workstation terre2 — Bluefin immutable, RTX 3090 24 Go, 3 écrans" />
         </div>
       </div>
@@ -217,7 +205,7 @@ const monitoringSlides = [
               <div class="tech-card-body">
                 <p class="tech-why"><strong>Pourquoi :</strong> Config dynamique en YAML rechargée à chaud — j'ajoute un service HTTPS en déposant un fichier dans <code>conf.d/</code>, sans restart. ACME natif avec step-ca.</p>
                 <p class="tech-alt"><span class="alt-label">Écartés :</span> Nginx Proxy Manager (UI-only, pas IaC), Caddy (moins d'intégrations reverse proxy)</p>
-                <p class="tech-result"><span class="result-label">Résultat :</span> <DynNum stat="https_services" fallback="36" suffix="+" /> services HTTPS, certificats auto-renouvelés, zéro intervention manuelle</p>
+                <p class="tech-result"><span class="result-label">Résultat :</span> <DynNum stat="https_services" fallback="39" suffix="+" /> services HTTPS, certificats auto-renouvelés, zéro intervention manuelle</p>
               </div>
             </div>
 

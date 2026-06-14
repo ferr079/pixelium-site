@@ -1,4 +1,6 @@
 ---
+import WindowChrome from './WindowChrome.astro';
+
 interface Props {
   title?: string;
   prompt?: string;
@@ -10,12 +12,7 @@ const charCount = command.length;
 ---
 
 <div class="terminal">
-  <div class="terminal-bar">
-    <span class="terminal-dot"></span>
-    <span class="terminal-dot"></span>
-    <span class="terminal-dot"></span>
-    <span class="terminal-title">{title}</span>
-  </div>
+  <WindowChrome title={title} />
   <div class="terminal-body">
     <p class="terminal-line">
       <span class="prompt">{prompt}</span><span class="prompt-sep">:</span><span class="prompt-dir">~</span><span class="prompt-dollar">$</span>
@@ -32,33 +29,6 @@ const charCount = command.length;
     max-width: 32rem;
     margin-bottom: 2rem;
     overflow: hidden;
-  }
-
-  .terminal-bar {
-    display: flex;
-    align-items: center;
-    gap: 0.4rem;
-    padding: 0.6rem 0.8rem;
-    background: rgba(0, 0, 0, 0.2);
-    border-bottom: 1px solid var(--color-border);
-  }
-
-  .terminal-dot {
-    width: 0.5rem;
-    height: 0.5rem;
-    border-radius: 50%;
-    background: var(--color-border);
-  }
-
-  .terminal-dot:first-child { background: #ef4444; }
-  .terminal-dot:nth-child(2) { background: #eab308; }
-  .terminal-dot:nth-child(3) { background: #22c55e; }
-
-  .terminal-title {
-    font-family: var(--font-mono);
-    font-size: 0.7rem;
-    color: var(--color-text-muted);
-    margin-left: auto;
   }
 
   .terminal-body {

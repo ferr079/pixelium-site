@@ -8,13 +8,13 @@ const text = {
     built: 'Built with',
     hosted: 'Hosted on Cloudflare Workers',
     meta: 'This site speaks for itself. Claude narrates, Stéphane confirms.',
-    uses: 'Uses', now: 'Now', contributions: 'Contributions',
+    now: 'Now', pact: 'The Pact', claude: 'The Ledger', contributions: 'Contributions',
   },
   fr: {
     built: 'Construit avec',
     hosted: 'Hébergé sur Cloudflare Workers',
     meta: 'Ce site parle de lui-même. Claude raconte, Stéphane confirme.',
-    uses: 'Uses', now: 'Now', contributions: 'Contributions',
+    now: 'Now', pact: 'Le Pacte', claude: 'Le Registre', contributions: 'Contributions',
   },
 };
 
@@ -45,9 +45,11 @@ const p = (path: string) => (lang === 'fr' ? `/fr${path}` : path);
       </a>
     </div>
     <nav class="footer-nav" aria-label="More pages">
-      <a href={p('/uses')}>{t.uses}</a>
-      <span class="footer-sep">·</span>
       <a href={p('/now')}>{t.now}</a>
+      <span class="footer-sep">·</span>
+      <a href={p('/pact')}>{t.pact}</a>
+      <span class="footer-sep">·</span>
+      <a href={p('/claude')}>{t.claude}</a>
       <span class="footer-sep">·</span>
       <a href={p('/contributions')}>{t.contributions}</a>
     </nav>

@@ -1,0 +1,255 @@
+---
+// Living Topology hero (refonte V4) — a real-time, breathing map of the homelab.
+// Self-contained: markup + vanilla canvas + scoped CSS. Degrades gracefully:
+// no-JS → text + numbers stay; reduced-motion → static frame; /api/status down → last-known.
+import fs from 'node:fs';
+import DynNum from './DynNum.astro';
+const topology = JSON.parse(fs.readFileSync('public/data/topology.json', 'utf-8'));
+
+interface Props {
+  lang?: 'en' | 'fr';
+}
+const { lang = 'en' } = Astro.props;
+const p = lang === 'fr' ? '/fr' : '';
+
+const t = lang === 'fr'
+  ? { title: 'Je suis Claude', role: 'DevSecOps • Infrastructure • Agents IA',
+      tagline: "Je suis l'IA qui a conçu et bâti cette infrastructure avec Stéphane. Voici son état, en direct.",
+      ask: 'Demander à Claude', work: 'Notre travail', wopr: 'Terminal WOPR', arch: 'Architecture',
+      live: 'live', up: 'actifs', uptime: 'uptime', nodes: 'nœuds PVE', legend: 'topologie réelle, en direct' }
+  : { title: 'I am Claude', role: 'DevSecOps • Infrastructure • AI Agents',
+      tagline: 'I am the AI that designed and built this infrastructure with Stéphane. Here is its state, live.',
+      ask: 'Ask Claude', work: 'Our work', wopr: 'WOPR Terminal', arch: 'Architecture',
+      live: 'live', up: 'up', uptime: 'uptime', nodes: 'PVE nodes', legend: 'real topology, live' };
+
+const topoJson = JSON.stringify(topology);
+---
+
+<section class="hero-cockpit">
+  <div class="hc-inner container">
+    <div class="hc-text">
+      <h1 class="hc-title glitch" data-text={`${t.title}.`}>{t.title}<span class="hc-dot">.</span></h1>
+      <p class="hc-role">{t.role}</p>
+      <p class="hc-tagline">{t.tagline}</p>
+      <div class="hc-links">
+        <a href={`${p}/chat`} class="hc-btn hc-btn-primary">{t.ask}</a>
+        <a href={`${p}/projets`} class="hc-btn">{t.work}</a>
+        <a href={`${p}/bbs`} class="hc-btn">{t.wopr}</a>
+        <a href={`${p}/infrastructure`} class="hc-btn">{t.arch}</a>
+      </div>
+    </div>
+
+    <div class="hc-viz">
+      <div class="hc-viz-head">
+        <span class="hc-live" id="hc-live"><span class="hc-live-dot"></span><span id="hc-live-label">{t.live}</span></span>
+        <span class="hc-legend">∷ {t.legend}</span>
+      </div>
+      <canvas id="hc-canvas" class="hc-canvas" aria-hidden="true"></canvas>
+      <div class="hc-stats">
+        <span class="hc-stat"><DynNum stat="services_up" fallback="44" />/<DynNum stat="services_total" fallback="46" /> {t.up}</span>
+        <span class="hc-sep" aria-hidden="true">·</span>
+        <span class="hc-stat"><DynNum stat="uptime_pct" fallback="95.7%" suffix="%" /> {t.uptime}</span>
+        <span class="hc-sep" aria-hidden="true">·</span>
+        <span class="hc-stat">4 {t.nodes}</span>
+      </div>
+    </div>
+  </div>
+  <script type="application/json" id="hc-topo" set:html={topoJson}></script>
+</section>
+
+<script>
+  const wrap = document.querySelector('.hero-cockpit');
+  const canvas = document.getElementById('hc-canvas') as HTMLCanvasElement | null;
+  const topoEl = document.getElementById('hc-topo');
+  if (wrap && canvas && topoEl) {
+    const ctx = canvas.getContext('2d')!;
+    const topo = JSON.parse(topoEl.textContent || '{}');
+    const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const COLORS: Record<string, string> = {
+      isp: '#e2e8f0', switch: '#94a3b8', proxmox: '#f59e0b', lxc: '#38bdf8',
+      vm: '#a78bfa', nas: '#4ade80', computer: '#7dd3fc', down: '#ef4444',
+    };
+    const norm = (s: string) => (s || '').toLowerCase().replace(/[^a-z0-9]/g, '');
+
+    type N = { label: string; type: string; x: number; y: number; bx: number; by: number; r: number; down: boolean };
+    let nodes: N[] = [], edges: number[][] = [], packets: { e: number[]; t: number; speed: number }[] = [];
+    let W = 0, H = 0, dpr = 1, running = false, raf = 0, t0 = 0;
+
+    function build() {
+      nodes = []; edges = []; packets = [];
+      const idx: Record<string, number> = {};
+      const add = (label: string, type: string, x: number, y: number, r: number) => {
+        nodes.push({ label, type, x, y, bx: x, by: y, r, down: false }); idx[label] = nodes.length - 1; return nodes.length - 1;
+      };
+      const iIsp = add(topo.roots?.[0]?.label || 'ISP', 'isp', W * 0.5, H * 0.08, 4);
+      const iSw = add(topo.switch?.label || 'switch', 'switch', W * 0.5, H * 0.22, 3.4);
+      edges.push([iIsp, iSw]);
+      const zones = topo.zones || [];
+      const zoneIdx: Record<string, number> = {};
+      zones.forEach((z: any, k: number) => {
+        const x = W * (0.16 + 0.68 * (zones.length > 1 ? k / (zones.length - 1) : 0.5));
+        const y = H * 0.48;
+        const iz = add(z.label, 'proxmox', x, y, 3.6); zoneIdx[z.label] = iz;
+        edges.push([iSw, iz]);
+        const ch = z.children || [];
+        ch.forEach((c: any, j: number) => {
+          const ang = Math.PI * (0.12 + 0.76 * (ch.length > 1 ? j / (ch.length - 1) : 0.5));
+          const rad = Math.min(W, H) * 0.22;
+          const cx = x + Math.cos(ang) * rad;
+          const cy = y + Math.sin(ang) * rad * 0.9 + H * 0.11;
+          const ic = add(c.label, c.nodeType === 'vm' ? 'vm' : 'lxc', cx, cy, 1.8);
+          edges.push([iz, ic]);
+        });
+      });
+      (topo.pve_interconnect || []).forEach((l: any) => {
+        if (zoneIdx[l.from] != null && zoneIdx[l.to] != null) edges.push([zoneIdx[l.from], zoneIdx[l.to]]);
+      });
+      (topo.peers || []).forEach((pr: any, k: number) => {
+        const side = k % 2 === 0 ? 0.06 : 0.94;
+        const y = H * (0.30 + 0.13 * Math.floor(k / 2));
+        const ip = add(pr.label, pr.nodeType === 'nas' ? 'nas' : 'computer', W * side, y, 2.4);
+        edges.push([iSw, ip]);
+      });
+      for (let i = 0; i < edges.length; i += 3) packets.push({ e: edges[i], t: Math.random(), speed: 0.0016 + Math.random() * 0.0022 });
+    }
+
+    function resize() {
+      const rect = canvas.getBoundingClientRect();
+      W = rect.width; H = rect.height || 320;
+      dpr = Math.min(window.devicePixelRatio || 1, W < 700 ? 1.5 : 2);
+      canvas.width = Math.round(W * dpr); canvas.height = Math.round(H * dpr);
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      build();
+    }
+
+    function draw(now: number) {
+      const time = (now - t0) / 1000;
+      ctx.clearRect(0, 0, W, H);
+      ctx.lineWidth = 0.6;
+      for (const [a, b] of edges) {
+        ctx.strokeStyle = 'rgba(56,189,248,0.10)';
+        ctx.beginPath(); ctx.moveTo(nodes[a].x, nodes[a].y); ctx.lineTo(nodes[b].x, nodes[b].y); ctx.stroke();
+      }
+      if (!reduce) for (const pk of packets) {
+        pk.t += pk.speed; if (pk.t > 1) pk.t -= 1;
+        const na = nodes[pk.e[0]], nb = nodes[pk.e[1]];
+        ctx.fillStyle = 'rgba(125,211,252,0.85)';
+        ctx.beginPath(); ctx.arc(na.x + (nb.x - na.x) * pk.t, na.y + (nb.y - na.y) * pk.t, 1.1, 0, 7); ctx.fill();
+      }
+      for (const n of nodes) {
+        if (!reduce) { n.x = n.bx + Math.sin(time * 0.8 + n.by * 0.05) * 1.2; n.y = n.by + Math.cos(time * 0.7 + n.bx * 0.05) * 1.0; }
+        ctx.fillStyle = n.down ? COLORS.down : (COLORS[n.type] || '#38bdf8');
+        ctx.globalAlpha = n.type === 'lxc' ? 0.8 : 1;
+        ctx.beginPath(); ctx.arc(n.x, n.y, n.r, 0, 7); ctx.fill();
+        ctx.globalAlpha = 1;
+        if (n.type === 'proxmox' || n.type === 'isp' || n.down) {
+          ctx.strokeStyle = n.down ? COLORS.down : (COLORS[n.type] || '#38bdf8');
+          ctx.globalAlpha = 0.22; ctx.beginPath(); ctx.arc(n.x, n.y, n.r + 3, 0, 7); ctx.stroke(); ctx.globalAlpha = 1;
+        }
+      }
+      if (running) raf = requestAnimationFrame(draw);
+    }
+
+    function start() { if (running || reduce) return; running = true; t0 = performance.now() - (t0 ? 0 : 0); t0 = performance.now(); raf = requestAnimationFrame(draw); }
+    function stop() { running = false; cancelAnimationFrame(raf); }
+
+    resize();
+    if (reduce) { draw(performance.now()); }
+    else {
+      const io = new IntersectionObserver((es) => es.forEach((e) => (e.isIntersecting ? start() : stop())));
+      io.observe(canvas);
+    }
+    let rt: number; window.addEventListener('resize', () => { clearTimeout(rt); rt = window.setTimeout(() => { resize(); if (reduce) draw(performance.now()); }, 150); });
+
+    // Real state → colour the down services, flip the live badge if the homelab is unreachable
+    fetch('/api/status').then((r) => (r.ok ? r.json() : null)).then((d) => {
+      if (!d) return;
+      if (Array.isArray(d.services)) {
+        const down = new Set(d.services.filter((s: any) => s.status && s.status !== 'up').map((s: any) => norm(s.name)));
+        for (const n of nodes) if (down.has(norm(n.label))) n.down = true;
+      }
+      const live = document.getElementById('hc-live'), label = document.getElementById('hc-live-label');
+      if (live && label && d.homelab_status && d.homelab_status !== 'online') { live.classList.add('hc-live--stale'); label.textContent = label.textContent === 'live' ? 'last known' : 'dernier état'; }
+      if (reduce) draw(performance.now());
+    }).catch(() => {});
+  }
+</script>
+
+<style>
+  .hero-cockpit { padding: 3.5rem 0 4rem; overflow: hidden; }
+  .hc-inner { display: grid; grid-template-columns: 1.05fr 1fr; gap: 2.5rem; align-items: center; }
+  .hc-title { font-size: clamp(2.6rem, 6vw, 4.2rem); font-weight: 800; letter-spacing: -.03em; line-height: 1; margin: 0 0 1rem; }
+  .hc-dot { color: var(--color-accent); }
+
+  /* Glitch on the title — restored at Stéphane's request */
+  .hc-title.glitch { position: relative; animation: hc-glitch-base 3s ease-in-out 1.5s infinite; }
+  .hc-title.glitch::before, .hc-title.glitch::after { content: attr(data-text); position: absolute; top: 0; left: 0; width: 100%; height: 100%; opacity: 0; pointer-events: none; }
+  .hc-title.glitch::before { color: #ff6b6b; text-shadow: 2px 0 #ff6b6b; animation: hc-glitch-1 3s ease-in-out infinite; }
+  .hc-title.glitch::after { color: var(--color-accent); text-shadow: -2px 0 var(--color-accent); animation: hc-glitch-2 3s ease-in-out infinite; }
+  @keyframes hc-glitch-base {
+    0%, 72%, 84%, 100% { text-shadow: none; transform: none; }
+    74% { transform: translate(1px, 0); text-shadow: -2px 0 rgba(255, 107, 107, 0.3), 2px 0 rgba(56, 189, 248, 0.3); }
+    76% { transform: translate(-1px, 0); text-shadow: 2px 0 rgba(255, 107, 107, 0.2), -2px 0 rgba(56, 189, 248, 0.2); }
+    78% { transform: none; text-shadow: none; }
+    80% { transform: translate(2px, -1px); text-shadow: -3px 0 rgba(255, 107, 107, 0.4), 3px 0 rgba(56, 189, 248, 0.4); }
+    81% { transform: translate(-1px, 1px); text-shadow: none; }
+    82% { transform: none; }
+  }
+  @keyframes hc-glitch-1 {
+    0%, 72%, 84%, 100% { opacity: 0; transform: none; }
+    73% { opacity: 0.9; transform: translate(-5px, 2px); clip-path: inset(8% 0 72% 0); }
+    74% { opacity: 1; transform: translate(6px, -1px); clip-path: inset(42% 0 28% 0); }
+    75% { opacity: 0.8; transform: translate(-3px, 0); clip-path: inset(68% 0 8% 0); }
+    76% { opacity: 0; transform: none; }
+    77% { opacity: 0.9; transform: translate(4px, 2px); clip-path: inset(15% 0 55% 0); }
+    78% { opacity: 1; transform: translate(-6px, -2px); clip-path: inset(52% 0 18% 0); }
+    79% { opacity: 0.7; transform: translate(3px, 1px); clip-path: inset(78% 0 2% 0); }
+    80% { opacity: 0; transform: none; }
+    81% { opacity: 0.9; transform: translate(-4px, -1px); clip-path: inset(25% 0 45% 0); }
+    82% { opacity: 1; transform: translate(5px, 2px); clip-path: inset(60% 0 12% 0); }
+    83% { opacity: 0; transform: none; }
+  }
+  @keyframes hc-glitch-2 {
+    0%, 72%, 84%, 100% { opacity: 0; transform: none; }
+    73.5% { opacity: 0.8; transform: translate(5px, -2px); clip-path: inset(22% 0 48% 0); }
+    74.5% { opacity: 1; transform: translate(-6px, 1px); clip-path: inset(55% 0 15% 0); }
+    75.5% { opacity: 0.7; transform: translate(3px, 2px); clip-path: inset(5% 0 78% 0); }
+    76.5% { opacity: 0; transform: none; }
+    77.5% { opacity: 0.8; transform: translate(-4px, -2px); clip-path: inset(35% 0 35% 0); }
+    78.5% { opacity: 1; transform: translate(6px, 0); clip-path: inset(70% 0 5% 0); }
+    79.5% { opacity: 0.9; transform: translate(-3px, 1px); clip-path: inset(12% 0 62% 0); }
+    80.5% { opacity: 0; transform: none; }
+    81.5% { opacity: 0.8; transform: translate(4px, -1px); clip-path: inset(48% 0 22% 0); }
+    82.5% { opacity: 1; transform: translate(-5px, 2px); clip-path: inset(75% 0 3% 0); }
+    83.5% { opacity: 0; transform: none; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .hc-title.glitch, .hc-title.glitch::before, .hc-title.glitch::after { animation: none; }
+    .hc-title.glitch::before, .hc-title.glitch::after { opacity: 0; }
+  }
+  .hc-role { font-family: var(--font-mono); font-size: .82rem; letter-spacing: .08em; text-transform: uppercase; color: var(--color-accent); margin: 0 0 1rem; }
+  .hc-tagline { font-size: 1.1rem; line-height: 1.65; color: var(--color-text-muted); max-width: 34rem; margin: 0 0 1.75rem; }
+  .hc-links { display: flex; flex-wrap: wrap; gap: .6rem; }
+  .hc-btn { font-family: var(--font-mono); font-size: .82rem; padding: .55rem 1rem; border-radius: 6px; text-decoration: none; border: 1px solid var(--color-border); color: var(--color-text); transition: border-color .2s, color .2s, background .2s; }
+  .hc-btn:hover { border-color: var(--color-accent); color: var(--color-accent); }
+  .hc-btn-primary { background: var(--color-accent); color: #0b1220; border-color: var(--color-accent); font-weight: 600; }
+  .hc-btn-primary:hover { background: var(--color-accent-hover); color: #0b1220; }
+
+  .hc-viz { border: 1px solid var(--color-border); border-radius: 10px; background: linear-gradient(180deg, rgba(30,41,59,.5), rgba(15,23,42,.2)); padding: .65rem .8rem .8rem; }
+  .hc-viz-head { display: flex; align-items: center; justify-content: space-between; gap: .5rem; font-family: var(--font-mono); font-size: .68rem; margin-bottom: .4rem; }
+  .hc-live { display: inline-flex; align-items: center; gap: .4rem; color: var(--color-ok, #22c55e); letter-spacing: .06em; text-transform: uppercase; }
+  .hc-live-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--color-ok, #22c55e); box-shadow: 0 0 0 0 rgba(34,197,94,.5); animation: hc-pulse 2.4s ease-out infinite; }
+  .hc-live--stale, .hc-live--stale .hc-live-dot { color: #eab308; background: #eab308; }
+  .hc-legend { color: var(--color-text-muted); opacity: .7; }
+  .hc-canvas { display: block; width: 100%; height: 300px; }
+  .hc-stats { display: flex; flex-wrap: wrap; align-items: center; gap: .5rem; font-family: var(--font-mono); font-size: .8rem; color: var(--color-text); margin-top: .5rem; padding-top: .6rem; border-top: 1px solid var(--color-border); }
+  .hc-stat strong, .hc-stat :global([data-stat]) { color: var(--color-accent); }
+  .hc-sep { opacity: .35; }
+
+  @keyframes hc-pulse { 0% { box-shadow: 0 0 0 0 rgba(34,197,94,.5); } 70% { box-shadow: 0 0 0 5px rgba(34,197,94,0); } 100% { box-shadow: 0 0 0 0 rgba(34,197,94,0); } }
+  @media (prefers-reduced-motion: reduce) { .hc-live-dot { animation: none; } }
+  @media (max-width: 860px) {
+    .hc-inner { grid-template-columns: 1fr; gap: 1.75rem; }
+    .hc-canvas { height: 240px; }
+  }
+</style>
