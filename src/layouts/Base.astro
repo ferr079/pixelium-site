@@ -10,13 +10,14 @@ interface Props {
   description?: string;
   hideNav?: boolean;
   ogImage?: string;
+  enOnly?: boolean;
 }
 
 const lang = getLangFromUrl(Astro.url);
 const defaultDesc = lang === 'fr'
   ? 'Infrastructure homelab — Proxmox, Traefik, DNS, observabilité, IaC'
   : 'Homelab infrastructure — Proxmox, Traefik, DNS, observability, IaC';
-const { title, description = defaultDesc, hideNav = false, ogImage } = Astro.props;
+const { title, description = defaultDesc, hideNav = false, ogImage, enOnly = false } = Astro.props;
 const currentPath = Astro.url.pathname;
 const ogLocale = lang === 'fr' ? 'fr_FR' : 'en_US';
 const altLang = lang === 'fr' ? 'en' : 'fr';
@@ -79,7 +80,7 @@ const cmdkItems = [
     <meta name="twitter:description" content={description} />
     <link rel="canonical" href={Astro.url.href} />
     <link rel="alternate" hreflang={lang} href={`${siteUrl}${currentPath}`} />
-    <link rel="alternate" hreflang={altLang} href={`${siteUrl}${altPath}`} />
+    {!enOnly && <link rel="alternate" hreflang={altLang} href={`${siteUrl}${altPath}`} />}
     <link rel="alternate" hreflang="x-default" href={`${siteUrl}${basePath}`} />
     <meta name="theme-color" content="#0f172a" />
     <link rel="author" href="/humans.txt" />
@@ -110,8 +111,7 @@ const cmdkItems = [
           "knowsAbout": ["DevSecOps", "Proxmox", "Ansible", "Cybersecurity", "Infrastructure as Code", "Self-hosted", "Linux", "AI Agents"],
           "sameAs": [
             "https://github.com/ferr079",
-            "https://x.com/ferr079",
-            "https://app.hackthebox.com/users/Ferr079"
+            "https://x.com/ferr079"
           ]
         }
       ]
@@ -119,6 +119,15 @@ const cmdkItems = [
     <title>{title}</title>
   </head>
   <body>
+    <div class="sysbar" role="status">
+      <span class="sysbar-dot" aria-hidden="true"></span>
+      <span class="sysbar-status">{lang === 'fr' ? 'DISPONIBLE' : 'OPEN TO WORK'}</span>
+      <span class="sysbar-sep" aria-hidden="true">·</span>
+      <span class="sysbar-role">DevSecOps / SOC</span>
+      <span class="sysbar-sep" aria-hidden="true">·</span>
+      <span class="sysbar-loc">{lang === 'fr' ? 'France + télétravail' : 'France + remote'}</span>
+      <a class="sysbar-cta" href={`${cmdPrefix}/about`}>{lang === 'fr' ? 'me contacter →' : 'get in touch →'}</a>
+    </div>
     {!hideNav && <Nav currentPath={currentPath} />}
     <slot />
     <SessionImprint />
@@ -285,6 +294,54 @@ const cmdkItems = [
     --font-mono: 'JetBrains Mono', 'Fira Code', ui-monospace, monospace;
     --font-sans: system-ui, -apple-system, sans-serif;
     --max-width: 64rem;
+    --color-ok: #22c55e;
+  }
+
+  /* System status bar — persistent "open to work" signal (refonte V4) */
+  .sysbar {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.3rem 1.1rem;
+    background: var(--color-surface);
+    border-bottom: 1px solid var(--color-border);
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    letter-spacing: 0.02em;
+    color: var(--color-text-muted);
+  }
+  .sysbar-dot {
+    flex: none;
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: var(--color-ok);
+    box-shadow: 0 0 0 0 rgba(34, 197, 94, 0.55);
+    animation: sysbar-pulse 2.4s ease-out infinite;
+  }
+  .sysbar-status {
+    color: #4ade80;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+  }
+  .sysbar-sep { opacity: 0.4; }
+  .sysbar-cta {
+    margin-left: auto;
+    color: var(--color-accent);
+    text-decoration: none;
+    white-space: nowrap;
+  }
+  .sysbar-cta:hover { color: var(--color-accent-hover); }
+  @keyframes sysbar-pulse {
+    0% { box-shadow: 0 0 0 0 rgba(34, 197, 94, 0.55); }
+    70% { box-shadow: 0 0 0 6px rgba(34, 197, 94, 0); }
+    100% { box-shadow: 0 0 0 0 rgba(34, 197, 94, 0); }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .sysbar-dot { animation: none; }
+  }
+  @media (max-width: 560px) {
+    .sysbar-role, .sysbar-loc, .sysbar-sep { display: none; }
   }
 
   html {
