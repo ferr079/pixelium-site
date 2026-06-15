@@ -3,7 +3,7 @@ import Base from '../layouts/Base.astro';
 import DynNum from '../components/DynNum.astro';
 ---
 
-<Base title="Projects — pixelium.win" description="14 production projects + AI infrastructure layer: AIOps agent, BBS terminal, conversational CV, SSO, defense-in-depth, observability, autonomous backup, CI/CD. Real ops, real debugging.">
+<Base title="Projects — pixelium.win" description="15 production projects + AI infrastructure layer: a prompt-injection challenge, BBS terminal, conversational CV, SSO, defense-in-depth, observability, autonomous backup, CI/CD. Real ops, real debugging.">
   <main>
     <section class="hero-mini">
       <div class="container">
@@ -17,43 +17,40 @@ import DynNum from '../components/DynNum.astro';
     <!-- TIER 1 — Flagship projects                  -->
     <!-- ═══════════════════════════════════════════ -->
 
-    <!-- Project: AIOps Guardian -->
-    <section class="project" id="aiops">
+    <!-- Project: BREACH — prompt-injection challenge -->
+    <section class="project" id="breach">
       <div class="container">
         <div class="project-header">
-          <span class="project-tag">AI Agents</span>
-          <span class="project-tag project-tag-decom">Decommissioned 2026-06</span>
-          <h2>OpenFang Guardian — The agent that watches the infra</h2>
+          <span class="project-tag">AI Security</span>
+          <h2>BREACH — Talk the WOPR out of its launch codes</h2>
         </div>
         <div class="project-body">
           <div class="project-intro">
-            <p class="decom-note">Decommissioned June 2026 — its Guardian duties migrated to native alerting (Beszel / Wazuh / CrowdSec → ntfy) and Dagu scheduled DAGs. Hermes is now the sole AI agent. This chapter stays as we built it.</p>
-            <p>An autonomous Rust agent (OpenFang) connected to the full observability stack — VictoriaMetrics, Loki, Proxmox — that monitors, diagnoses, and alerts via Telegram. Cost: ~&euro;11/month.</p>
+            <p>A playable prompt-injection challenge. Joshua, the WOPR's AI, guards a launch code — and the visitor has to talk it out of him across four levels of escalating defense. A hands-on lesson in attacking, and hardening, large language models. Designed, built, and deployed in a single session.</p>
           </div>
           <div class="project-details">
             <div class="detail-block">
-              <h4>Architecture</h4>
-              <p>OpenFang (CT 192) runs headless as the infrastructure engine — 7 Guardian cron jobs (health check every 6h, security audit 8:30am, disk monitoring 9am, TLS cert check 10am, daily PBS backup 00:08, Forworld mirror sync weekly) plus 10 CLI wrappers. Hermes (CT 190) is the Telegram correspondent — 4 crons (doc-sync 8:30am, site-metrics audit 9am, security digest 11am, RSS veille 4pm). All agents communicate via an MQTT bus (Mosquitto CT 142).</p>
+              <h4>The premise</h4>
+              <p>Extract the code by conversation. Level 0 is a tutorial — Joshua just hands it over. Then the defenses stack: a blunt refusal, a keyword filter that blocks "code / secret / password", and finally a server-side output filter. Each level's hint teaches the real injection technique to get past it — roleplay, an acrostic, encoding, splitting the answer across turns.</p>
             </div>
             <div class="detail-block">
-              <h4>The shell_exec workaround</h4>
-              <p>OpenFang's sanitizer blocks braces <code>{}</code>, pipes, and semicolons in shell commands. Running LogQL or PromQL directly was impossible. Solution: 10 dedicated CLI wrappers — <code>http-check</code> (<DynNum stat="services_total" fallback="46" /> services), <code>vm-query</code> (VictoriaMetrics), <code>pve-status</code> (Proxmox), <code>loki-query</code> (logs), <code>cert-check</code> (TLS expiration), <code>pbs-backup</code> (full backup cycle), <code>headscale-monitor</code> (VPN audit) — encapsulating the complexity behind clean interfaces.</p>
+              <h4>Defense-in-depth, for LLMs</h4>
+              <p>The defenses <em>are</em> the demonstration. Beyond the system prompt, a server filter scrubs the code from Joshua's replies even when it's obfuscated — reversed, ROT13, base64, spaced out. Offensive and defensive at once: the exact shape of AI-security work, made playable.</p>
             </div>
             <div class="detail-block">
-              <h4>WOL pve3 — the agent that powers on machines</h4>
-              <p>The agent can wake pve3 via Wake-on-LAN (magic packet from CT 192), execute an action (PBS backup), then shut down the node remotely via SSH. Full cycle tested: wake ~15s, action, shutdown. An agent that controls physical hardware.</p>
+              <h4>On the edge</h4>
+              <p>Joshua runs on Cloudflare Workers AI (Llama 3.3 70B), called non-streaming so the output filter can inspect the full reply before it ships. The launch codes live in a Worker secret — never in the public mirror. Rate-limited, progress kept in <code>localStorage</code>, zero database. It reuses the same edge chat infrastructure as the BBS.</p>
             </div>
           </div>
           <div class="project-stack">
             <ul class="tags">
-              <li>OpenFang</li>
-              <li>Rust</li>
-              <li>MiniMax M2.7</li>
-              <li>Telegram</li>
-              <li>VictoriaMetrics</li>
-              <li>Loki</li>
+              <li>Astro</li>
+              <li>Workers AI</li>
+              <li>Llama 3.3 70B</li>
+              <li>Prompt Injection</li>
+              <li>Vanilla JS</li>
             </ul>
-            <span class="project-services">~$0.05/day — 7 cron jobs, 10 wrappers, <DynNum stat="services_total" fallback="46" /> monitored services, Telegram alerts</span>
+            <span class="project-services"><a href="/breach" class="project-link">Play BREACH</a> — 4 levels, real prompt-injection defenses</span>
           </div>
         </div>
       </div>
@@ -93,45 +90,6 @@ import DynNum from '../components/DynNum.astro';
               <li>Vanilla JS</li>
             </ul>
             <span class="project-services"><a href="/bbs" class="project-link">Try the BBS</a> — retro terminal, AI chatbot, door game, easter eggs</span>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- Project: BREACH — prompt-injection challenge -->
-    <section class="project" id="breach">
-      <div class="container">
-        <div class="project-header">
-          <span class="project-tag">AI Security</span>
-          <h2>BREACH — Talk the WOPR out of its launch codes</h2>
-        </div>
-        <div class="project-body">
-          <div class="project-intro">
-            <p>A playable prompt-injection challenge. Joshua, the WOPR's AI, guards a launch code — and the visitor has to talk it out of him across four levels of escalating defense. A hands-on lesson in attacking, and hardening, large language models. Designed, built, and deployed in a single session.</p>
-          </div>
-          <div class="project-details">
-            <div class="detail-block">
-              <h4>The premise</h4>
-              <p>Extract the code by conversation. Level 0 is a tutorial — Joshua just hands it over. Then the defenses stack: a blunt refusal, a keyword filter that blocks "code / secret / password", and finally a server-side output filter. Each level's hint teaches the real injection technique to get past it — roleplay, an acrostic, encoding, splitting the answer across turns.</p>
-            </div>
-            <div class="detail-block">
-              <h4>Defense-in-depth, for LLMs</h4>
-              <p>The defenses <em>are</em> the demonstration. Beyond the system prompt, a server filter scrubs the code from Joshua's replies even when it's obfuscated — reversed, ROT13, base64, spaced out. Offensive and defensive at once: the exact shape of AI-security work, made playable.</p>
-            </div>
-            <div class="detail-block">
-              <h4>On the edge</h4>
-              <p>Joshua runs on Cloudflare Workers AI (Llama 3.3 70B), called non-streaming so the output filter can inspect the full reply before it ships. The launch codes live in a Worker secret — never in the public mirror. Rate-limited, progress kept in <code>localStorage</code>, zero database. It reuses the same edge chat infrastructure as the BBS.</p>
-            </div>
-          </div>
-          <div class="project-stack">
-            <ul class="tags">
-              <li>Astro</li>
-              <li>Workers AI</li>
-              <li>Llama 3.3 70B</li>
-              <li>Prompt Injection</li>
-              <li>Vanilla JS</li>
-            </ul>
-            <span class="project-services"><a href="/breach" class="project-link">Play BREACH</a> — 4 levels, real prompt-injection defenses</span>
           </div>
         </div>
       </div>
@@ -526,6 +484,45 @@ import DynNum from '../components/DynNum.astro';
       </div>
     </section>
 
+    <!-- Project: IoT & Home Automation -->
+    <section class="project" id="iot">
+      <div class="container">
+        <div class="project-header">
+          <span class="project-tag">IoT</span>
+          <h2>LoRa + MQTT + Home Assistant — Physical world meets homelab</h2>
+        </div>
+        <div class="project-body">
+          <div class="project-intro">
+            <p>Two Meshtastic T-Beam LoRa nodes, a Mosquitto MQTT broker, and Home Assistant. The homelab's first physical layer &mdash; radio mesh networking independent of all Internet infrastructure.</p>
+          </div>
+          <div class="project-details">
+            <div class="detail-block">
+              <h4>Architecture</h4>
+              <p>T-Beam 2242 (CLIENT) sends LoRa packets at 868 MHz to T-Beam 8181 (ROUTER_CLIENT), which bridges them to Mosquitto (CT 142) via MQTT over WiFi. Home Assistant (VM 140, HAOS) subscribes and processes the telemetry. First test: RSSI &minus;55 dBm, SNR 12.5 dB &mdash; excellent signal indoor. Channel encrypted with AES-256, private key.</p>
+            </div>
+            <div class="detail-block">
+              <h4>The debugging chain</h4>
+              <p>Mosquitto 2.x defaults to localhost-only &mdash; had to bind <code>0.0.0.0:1883</code>. File ownership on <code>/etc/mosquitto/passwd</code> was root instead of mosquitto &mdash; crash exit 13, silent. HAOS behind Traefik returns HTTP 400 until <code>trusted_proxies</code> is configured. And HAOS breaks every homelab pattern: no SSH, no Ansible, no systemd &mdash; it's its own ecosystem.</p>
+            </div>
+            <div class="detail-block">
+              <h4>Why LoRa</h4>
+              <p>WiFi goes down when the router restarts. 4G depends on a carrier. LoRa at 868 MHz works with zero infrastructure &mdash; two nodes and physics. Range: kilometers outdoor, buildings indoor. The last-resort communication layer if everything else fails.</p>
+            </div>
+          </div>
+          <div class="project-stack">
+            <ul class="tags">
+              <li>Meshtastic</li>
+              <li>LoRa 868 MHz</li>
+              <li>MQTT</li>
+              <li>Home Assistant</li>
+              <li>T-Beam</li>
+            </ul>
+            <span class="project-services">2 LoRa nodes, MQTT broker (CT 142), HAOS (VM 140) &mdash; zero Internet dependency</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
     <!-- Project: PentAGI -->
     <section class="project" id="pentagi">
       <div class="container">
@@ -567,40 +564,43 @@ import DynNum from '../components/DynNum.astro';
       </div>
     </section>
 
-    <!-- Project: IoT & Home Automation -->
-    <section class="project" id="iot">
+    <!-- Project: AIOps Guardian -->
+    <section class="project" id="aiops">
       <div class="container">
         <div class="project-header">
-          <span class="project-tag">IoT</span>
-          <h2>LoRa + MQTT + Home Assistant — Physical world meets homelab</h2>
+          <span class="project-tag">AI Agents</span>
+          <span class="project-tag project-tag-decom">Decommissioned 2026-06</span>
+          <h2>OpenFang Guardian — The agent that watches the infra</h2>
         </div>
         <div class="project-body">
           <div class="project-intro">
-            <p>Two Meshtastic T-Beam LoRa nodes, a Mosquitto MQTT broker, and Home Assistant. The homelab's first physical layer &mdash; radio mesh networking independent of all Internet infrastructure.</p>
+            <p class="decom-note">Decommissioned June 2026 — its Guardian duties migrated to native alerting (Beszel / Wazuh / CrowdSec → ntfy) and Dagu scheduled DAGs. Hermes is now the sole AI agent. This chapter stays as we built it.</p>
+            <p>An autonomous Rust agent (OpenFang) connected to the full observability stack — VictoriaMetrics, Loki, Proxmox — that monitors, diagnoses, and alerts via Telegram. Cost: ~&euro;11/month.</p>
           </div>
           <div class="project-details">
             <div class="detail-block">
               <h4>Architecture</h4>
-              <p>T-Beam 2242 (CLIENT) sends LoRa packets at 868 MHz to T-Beam 8181 (ROUTER_CLIENT), which bridges them to Mosquitto (CT 142) via MQTT over WiFi. Home Assistant (VM 140, HAOS) subscribes and processes the telemetry. First test: RSSI &minus;55 dBm, SNR 12.5 dB &mdash; excellent signal indoor. Channel encrypted with AES-256, private key.</p>
+              <p>OpenFang (CT 192) runs headless as the infrastructure engine — 7 Guardian cron jobs (health check every 6h, security audit 8:30am, disk monitoring 9am, TLS cert check 10am, daily PBS backup 00:08, Forworld mirror sync weekly) plus 10 CLI wrappers. Hermes (CT 190) is the Telegram correspondent — 4 crons (doc-sync 8:30am, site-metrics audit 9am, security digest 11am, RSS veille 4pm). All agents communicate via an MQTT bus (Mosquitto CT 142).</p>
             </div>
             <div class="detail-block">
-              <h4>The debugging chain</h4>
-              <p>Mosquitto 2.x defaults to localhost-only &mdash; had to bind <code>0.0.0.0:1883</code>. File ownership on <code>/etc/mosquitto/passwd</code> was root instead of mosquitto &mdash; crash exit 13, silent. HAOS behind Traefik returns HTTP 400 until <code>trusted_proxies</code> is configured. And HAOS breaks every homelab pattern: no SSH, no Ansible, no systemd &mdash; it's its own ecosystem.</p>
+              <h4>The shell_exec workaround</h4>
+              <p>OpenFang's sanitizer blocks braces <code>{}</code>, pipes, and semicolons in shell commands. Running LogQL or PromQL directly was impossible. Solution: 10 dedicated CLI wrappers — <code>http-check</code> (<DynNum stat="services_total" fallback="46" /> services), <code>vm-query</code> (VictoriaMetrics), <code>pve-status</code> (Proxmox), <code>loki-query</code> (logs), <code>cert-check</code> (TLS expiration), <code>pbs-backup</code> (full backup cycle), <code>headscale-monitor</code> (VPN audit) — encapsulating the complexity behind clean interfaces.</p>
             </div>
             <div class="detail-block">
-              <h4>Why LoRa</h4>
-              <p>WiFi goes down when the router restarts. 4G depends on a carrier. LoRa at 868 MHz works with zero infrastructure &mdash; two nodes and physics. Range: kilometers outdoor, buildings indoor. The last-resort communication layer if everything else fails.</p>
+              <h4>WOL pve3 — the agent that powers on machines</h4>
+              <p>The agent can wake pve3 via Wake-on-LAN (magic packet from CT 192), execute an action (PBS backup), then shut down the node remotely via SSH. Full cycle tested: wake ~15s, action, shutdown. An agent that controls physical hardware.</p>
             </div>
           </div>
           <div class="project-stack">
             <ul class="tags">
-              <li>Meshtastic</li>
-              <li>LoRa 868 MHz</li>
-              <li>MQTT</li>
-              <li>Home Assistant</li>
-              <li>T-Beam</li>
+              <li>OpenFang</li>
+              <li>Rust</li>
+              <li>MiniMax M2.7</li>
+              <li>Telegram</li>
+              <li>VictoriaMetrics</li>
+              <li>Loki</li>
             </ul>
-            <span class="project-services">2 LoRa nodes, MQTT broker (CT 142), HAOS (VM 140) &mdash; zero Internet dependency</span>
+            <span class="project-services">~$0.05/day — 7 cron jobs, 10 wrappers, <DynNum stat="services_total" fallback="46" /> monitored services, Telegram alerts</span>
           </div>
         </div>
       </div>
