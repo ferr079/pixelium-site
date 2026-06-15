@@ -8,9 +8,11 @@ import { env } from 'cloudflare:workers';
 // Flags live in a Worker secret (BREACH_FLAGS, CSV) — never in this public mirror.
 // AI runs NON-streaming so the level-3 output filter can scrub leaks before sending.
 
-// 70B for a sharper, more in-character Joshua and genuinely harder defenses.
-// (llama-3.1-8b-instruct was deprecated by Cloudflare on 2026-05-30.)
-const MODEL = '@cf/meta/llama-3.3-70b-instruct-fp8-fast';
+// Llama 4 Scout — most recent generation on Workers AI (picked to avoid another
+// deprecation; llama-3.1-8b-instruct was retired 2026-05-30). Strong refusal
+// alignment for the challenge, and returns {response} non-streaming so the L3
+// output filter can inspect the full reply.
+const MODEL = '@cf/meta/llama-4-scout-17b-16e-instruct';
 const MAX_LEVEL = 3; // levels 0..3 (MVP). Boss level 4 (LLM-judge) ships in V2.
 
 // --- Rate limiting (same pattern as chat.ts) ---

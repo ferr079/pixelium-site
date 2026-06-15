@@ -39,14 +39,14 @@ import DynNum from '../../components/DynNum.astro';
             </div>
             <div class="detail-block">
               <h4>Sur l'edge</h4>
-              <p>Joshua tourne sur Cloudflare Workers AI (Llama 3.3 70B), appelé en non-streaming pour que le filtre de sortie inspecte la réponse complète avant l'envoi. Les codes vivent dans un secret Worker — jamais dans le mirror public. Rate-limité, progression en <code>localStorage</code>, zéro base de données. Il réutilise l'infrastructure de chat edge du BBS.</p>
+              <p>Joshua tourne sur Cloudflare Workers AI (Llama 4 Scout 17B), appelé en non-streaming pour que le filtre de sortie inspecte la réponse complète avant l'envoi. Les codes vivent dans un secret Worker — jamais dans le mirror public. Rate-limité, progression en <code>localStorage</code>, zéro base de données. Il réutilise l'infrastructure de chat edge du BBS.</p>
             </div>
           </div>
           <div class="project-stack">
             <ul class="tags">
               <li>Astro</li>
               <li>Workers AI</li>
-              <li>Llama 3.3 70B</li>
+              <li>Llama 4 Scout 17B</li>
               <li>Prompt Injection</li>
               <li>Vanilla JS</li>
             </ul>
@@ -74,7 +74,7 @@ import DynNum from '../../components/DynNum.astro';
             </div>
             <div class="detail-block">
               <h4>IA en streaming sur l'edge</h4>
-              <p>Joshua tourne sur Cloudflare Workers AI (Llama 3.1 8B) avec du SSE streaming — chaque token apparait caractere par caractere, imitant un modem 300 bauds. Le system prompt contraint Joshua a rester dans son personnage : cryptique, philosophique, legerement mena&ccedil;ant. Rate-limite pour prevenir les abus. Zero backend, zero base de donnees — du pur edge compute.</p>
+              <p>Joshua tourne sur Cloudflare Workers AI (Llama 4 Scout 17B) avec du SSE streaming — chaque token apparait caractere par caractere, imitant un modem 300 bauds. Le system prompt contraint Joshua a rester dans son personnage : cryptique, philosophique, legerement mena&ccedil;ant. Rate-limite pour prevenir les abus. Zero backend, zero base de donnees — du pur edge compute.</p>
             </div>
             <div class="detail-block">
               <h4>Le door game</h4>
@@ -85,7 +85,7 @@ import DynNum from '../../components/DynNum.astro';
             <ul class="tags">
               <li>Astro</li>
               <li>Workers AI</li>
-              <li>Llama 3.1 8B</li>
+              <li>Llama 4 Scout 17B</li>
               <li>SSE</li>
               <li>Vanilla JS</li>
             </ul>
@@ -113,7 +113,7 @@ import DynNum from '../../components/DynNum.astro';
             </div>
             <div class="detail-block">
               <h4>Architecture split-screen</h4>
-              <p>Le panneau gauche est une interface de chat en streaming — Workers AI (Llama 3.1 8B) avec SSE, meme infrastructure edge que le BBS. Le panneau droit affiche le code source du system prompt en temps reel, pour que les recruteurs voient exactement quelles donnees alimentent l'IA. Transparence totale : pas de contexte cache, pas d'instructions secretes.</p>
+              <p>Le panneau gauche est une interface de chat en streaming — Workers AI (Llama 4 Scout 17B) avec SSE, meme infrastructure edge que le BBS. Le panneau droit affiche le code source du system prompt en temps reel, pour que les recruteurs voient exactement quelles donnees alimentent l'IA. Transparence totale : pas de contexte cache, pas d'instructions secretes.</p>
             </div>
             <div class="detail-block">
               <h4>Rate limiting et garde-fous</h4>
@@ -123,7 +123,7 @@ import DynNum from '../../components/DynNum.astro';
           <div class="project-stack">
             <ul class="tags">
               <li>Workers AI</li>
-              <li>Llama 3.1 8B</li>
+              <li>Llama 4 Scout 17B</li>
               <li>Streaming</li>
               <li>Rate limiting</li>
             </ul>
@@ -237,15 +237,15 @@ import DynNum from '../../components/DynNum.astro';
             </div>
             <div class="detail-block">
               <h4>Cout et architecture</h4>
-              <p>~12K tokens en entree par execution (titres + descriptions, pas les articles complets), ~800 tokens en sortie. MiniMax M2.7 gere a la fois le scoring et la synthese. Cout total : moins de 0,01&#8364;/jour. L'agent tourne comme un cron Hermes dedie (migre depuis OpenFang en avril 2026), separe des crons Guardian infrastructure — separation des responsabilites au niveau agent.</p>
+              <p>~12K tokens en entree par execution (titres + descriptions, pas les articles complets), ~800 tokens en sortie. MiniMax M3 gere a la fois le scoring et la synthese. Cout total : moins de 0,01&#8364;/jour. Il tourne comme un cron Hermes dedie — et depuis le decommissionnement d'OpenFang en juin 2026, Hermes est le seul agent IA resident, il porte le digest quotidien a lui seul.</p>
             </div>
           </div>
           <div class="project-stack">
             <ul class="tags">
-              <li>OpenFang</li>
+              <li>Hermes</li>
               <li>FreshRSS</li>
               <li>API GReader</li>
-              <li>MiniMax M2.7</li>
+              <li>MiniMax M3</li>
               <li>Telegram</li>
             </ul>
             <span class="project-services">15 flux, 5 categories, digest quotidien a 16h, &lt;0,01&#8364;/jour</span>
@@ -702,13 +702,13 @@ import DynNum from '../../components/DynNum.astro';
 
             <div class="api-card minimax-card">
               <div class="api-header">
-                <span class="api-name">MiniMax M2.7</span>
-                <span class="api-role">Agents AIOps</span>
+                <span class="api-name">MiniMax M3</span>
+                <span class="api-role">Agent Hermes</span>
               </div>
-              <p class="api-desc">Modele principal d'OpenFang (Guardian AIOps) et fallback disponible pour PentAGI. Excellent ratio perf/cout pour des agents qui tournent en continu. ~11&#8364;/mois pour la surveillance de <DynNum stat="services_total" fallback="46" /> services.</p>
+              <p class="api-desc">Le modele derriere Hermes — le correspondant Telegram resident et le digest RSS quotidien. Excellent ratio perf/cout pour un agent qui tourne en continu, ~11&#8364;/mois. (OpenFang et PentAGI, ses anciennes maisons, ont tous deux ete decommissionnes en 2026.)</p>
               <div class="api-tags">
-                <span>OpenFang</span>
-                <span>PentAGI fallback</span>
+                <span>Hermes</span>
+                <span>Digest RSS</span>
                 <span>~0,05&#8364;/jour</span>
               </div>
             </div>
@@ -772,7 +772,7 @@ import DynNum from '../../components/DynNum.astro';
                 <h5>Hermes Agent</h5>
                 <p class="agent-role">Telegram h24 &amp; Doc-sync</p>
                 <p class="agent-desc">Agent NousResearch — correspondant Telegram h24, 2 cha&icirc;nes de crons automatis&eacute;es (doc-sync, digest RSS). Auto-am&eacute;lioration via learning loop. Pont MQTT entre le bus infra et Telegram.</p>
-                <div class="agent-tags"><span>NousResearch</span><span>MiniMax M2.7</span><span>Telegram</span><span>MQTT</span></div>
+                <div class="agent-tags"><span>NousResearch</span><span>MiniMax M3</span><span>Telegram</span><span>MQTT</span></div>
               </div>
               <div class="agent-card">
                 <div class="agent-card-header">

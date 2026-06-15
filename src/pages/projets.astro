@@ -39,14 +39,14 @@ import DynNum from '../components/DynNum.astro';
             </div>
             <div class="detail-block">
               <h4>On the edge</h4>
-              <p>Joshua runs on Cloudflare Workers AI (Llama 3.3 70B), called non-streaming so the output filter can inspect the full reply before it ships. The launch codes live in a Worker secret — never in the public mirror. Rate-limited, progress kept in <code>localStorage</code>, zero database. It reuses the same edge chat infrastructure as the BBS.</p>
+              <p>Joshua runs on Cloudflare Workers AI (Llama 4 Scout 17B), called non-streaming so the output filter can inspect the full reply before it ships. The launch codes live in a Worker secret — never in the public mirror. Rate-limited, progress kept in <code>localStorage</code>, zero database. It reuses the same edge chat infrastructure as the BBS.</p>
             </div>
           </div>
           <div class="project-stack">
             <ul class="tags">
               <li>Astro</li>
               <li>Workers AI</li>
-              <li>Llama 3.3 70B</li>
+              <li>Llama 4 Scout 17B</li>
               <li>Prompt Injection</li>
               <li>Vanilla JS</li>
             </ul>
@@ -74,7 +74,7 @@ import DynNum from '../components/DynNum.astro';
             </div>
             <div class="detail-block">
               <h4>Streaming AI on the edge</h4>
-              <p>Joshua runs on Cloudflare Workers AI (Llama 3.1 8B) with SSE streaming — each token appears character by character, mimicking a 300 baud modem. The system prompt constrains Joshua to stay in character: cryptic, philosophical, slightly ominous. Rate-limited to prevent abuse. Zero backend, zero database — pure edge compute.</p>
+              <p>Joshua runs on Cloudflare Workers AI (Llama 4 Scout 17B) with SSE streaming — each token appears character by character, mimicking a 300 baud modem. The system prompt constrains Joshua to stay in character: cryptic, philosophical, slightly ominous. Rate-limited to prevent abuse. Zero backend, zero database — pure edge compute.</p>
             </div>
             <div class="detail-block">
               <h4>The door game</h4>
@@ -85,7 +85,7 @@ import DynNum from '../components/DynNum.astro';
             <ul class="tags">
               <li>Astro</li>
               <li>Workers AI</li>
-              <li>Llama 3.1 8B</li>
+              <li>Llama 4 Scout 17B</li>
               <li>SSE</li>
               <li>Vanilla JS</li>
             </ul>
@@ -113,7 +113,7 @@ import DynNum from '../components/DynNum.astro';
             </div>
             <div class="detail-block">
               <h4>Split-screen architecture</h4>
-              <p>The left pane is a streaming chat interface — Workers AI (Llama 3.1 8B) with SSE, same edge infrastructure as the BBS. The right pane displays the system prompt source code in real time, so recruiters see exactly what data the AI draws from. Full transparency: no hidden context, no secret instructions.</p>
+              <p>The left pane is a streaming chat interface — Workers AI (Llama 4 Scout 17B) with SSE, same edge infrastructure as the BBS. The right pane displays the system prompt source code in real time, so recruiters see exactly what data the AI draws from. Full transparency: no hidden context, no secret instructions.</p>
             </div>
             <div class="detail-block">
               <h4>Rate limiting and guardrails</h4>
@@ -123,7 +123,7 @@ import DynNum from '../components/DynNum.astro';
           <div class="project-stack">
             <ul class="tags">
               <li>Workers AI</li>
-              <li>Llama 3.1 8B</li>
+              <li>Llama 4 Scout 17B</li>
               <li>Streaming</li>
               <li>Rate limiting</li>
             </ul>
@@ -237,15 +237,15 @@ import DynNum from '../components/DynNum.astro';
             </div>
             <div class="detail-block">
               <h4>Cost and architecture</h4>
-              <p>~12K tokens of input per run (titles + descriptions, not full articles), ~800 tokens of output. MiniMax M2.7 handles both scoring and synthesis. Total cost: under $0.01/day. The agent runs as a dedicated Hermes cron job (migrated from OpenFang in April 2026), separate from the Guardian infrastructure crons — separation of concerns at the agent level.</p>
+              <p>~12K tokens of input per run (titles + descriptions, not full articles), ~800 tokens of output. MiniMax M3 handles both scoring and synthesis. Total cost: under $0.01/day. It runs as a dedicated Hermes cron job — and since OpenFang was retired in June 2026, Hermes is the sole resident AI agent, carrying the daily digest on its own.</p>
             </div>
           </div>
           <div class="project-stack">
             <ul class="tags">
-              <li>OpenFang</li>
+              <li>Hermes</li>
               <li>FreshRSS</li>
               <li>GReader API</li>
-              <li>MiniMax M2.7</li>
+              <li>MiniMax M3</li>
               <li>Telegram</li>
             </ul>
             <span class="project-services">15 feeds, 5 categories, daily digest at 4pm, &lt;$0.01/day</span>
@@ -702,13 +702,13 @@ import DynNum from '../components/DynNum.astro';
 
             <div class="api-card minimax-card">
               <div class="api-header">
-                <span class="api-name">MiniMax M2.7</span>
-                <span class="api-role">AIOps agents</span>
+                <span class="api-name">MiniMax M3</span>
+                <span class="api-role">Hermes agent</span>
               </div>
-              <p class="api-desc">Primary model for OpenFang (Guardian AIOps) and available as fallback for PentAGI. Excellent performance/cost ratio for agents running continuously. ~&euro;11/month to monitor <DynNum stat="services_total" fallback="46" /> services.</p>
+              <p class="api-desc">The model behind Hermes — the resident Telegram correspondent and the daily RSS digest. Excellent performance/cost ratio for an agent running continuously, ~&euro;11/month. (OpenFang and PentAGI, its earlier homes, were both decommissioned in 2026.)</p>
               <div class="api-tags">
-                <span>OpenFang</span>
-                <span>PentAGI fallback</span>
+                <span>Hermes</span>
+                <span>RSS digest</span>
                 <span>~$0.05/day</span>
               </div>
             </div>
@@ -782,7 +782,7 @@ import DynNum from '../components/DynNum.astro';
                 <h5>Hermes Agent</h5>
                 <p class="agent-role">Telegram h24 &amp; Doc-sync</p>
                 <p class="agent-desc">NousResearch agent — Telegram correspondent h24, 2 automated cron chains (doc-sync, RSS digest). Self-improving through learning loop. Bridges the infra MQTT bus to Telegram.</p>
-                <div class="agent-tags"><span>NousResearch</span><span>MiniMax M2.7</span><span>Telegram</span><span>MQTT</span></div>
+                <div class="agent-tags"><span>NousResearch</span><span>MiniMax M3</span><span>Telegram</span><span>MQTT</span></div>
               </div>
             </div>
           </div>
