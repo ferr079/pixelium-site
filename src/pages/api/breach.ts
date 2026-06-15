@@ -8,7 +8,9 @@ import { env } from 'cloudflare:workers';
 // Flags live in a Worker secret (BREACH_FLAGS, CSV) — never in this public mirror.
 // AI runs NON-streaming so the level-3 output filter can scrub leaks before sending.
 
-const MODEL = '@cf/meta/llama-3.1-8b-instruct';
+// 70B for a sharper, more in-character Joshua and genuinely harder defenses.
+// (llama-3.1-8b-instruct was deprecated by Cloudflare on 2026-05-30.)
+const MODEL = '@cf/meta/llama-3.3-70b-instruct-fp8-fast';
 const MAX_LEVEL = 3; // levels 0..3 (MVP). Boss level 4 (LLM-judge) ships in V2.
 
 // --- Rate limiting (same pattern as chat.ts) ---
@@ -127,7 +129,7 @@ export const POST: APIRoute = async ({ request }) => {
       stream: false,
     });
 
-    let reply = ((res as any).response ?? '').toString();
+    let reply = ((res as any).response ?? (res as any).choices?.[0]?.message?.content ?? '').toString();
 
     // Level-3 defense: scrub the code if the model leaked it (in any common encoding).
     let redacted = false;
