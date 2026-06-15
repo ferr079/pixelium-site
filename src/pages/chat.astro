@@ -64,7 +64,7 @@ const codeEndpoint = `<span class="c-cmt">// POST /api/chat — unified AI endpo
   <span class="c-kw">const</span> rl = <span class="c-kw">await</span> checkRateLimit(ip);
   <span class="c-kw">if</span> (!rl.allowed) <span class="c-kw">return</span> <span class="c-num">429</span>;
 
-  <span class="c-cmt">// mode: "cv" | "sysop" | "challenge"</span>
+  <span class="c-cmt">// mode: "cv" | "sysop"</span>
   <span class="c-kw">const</span> { mode, messages } = <span class="c-kw">await</span> request.json();
   <span class="c-kw">const</span> prompt = PROMPTS[mode];
 

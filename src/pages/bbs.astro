@@ -44,9 +44,10 @@ import Base from '../layouts/Base.astro';
   const clockEl = document.getElementById('clock')!;
 
   // State
-  let currentMode: 'boot' | 'menu' | 'chat' | 'challenge' = 'boot';
+  let currentMode: 'boot' | 'menu' | 'chat' | 'game' = 'boot';
   let chatHistory: { role: string; content: string }[] = [];
   let isStreaming = false;
+  let bootSkipped = false;
 
   // Clock
   function updateClock() {
@@ -83,6 +84,7 @@ import Base from '../layouts/Base.astro';
       if (cls) span.className = cls;
       term.appendChild(span);
       function tick() {
+        if (bootSkipped) { span.textContent = text; term.scrollTop = term.scrollHeight; resolve(); return; }
         if (i < text.length) {
           span.textContent = (span.textContent || '') + text[i];
           i++;
@@ -119,6 +121,11 @@ import Base from '../layouts/Base.astro';
   async function boot() {
     currentMode = 'boot';
     hideInput();
+    bootSkipped = false;
+    const skip = () => { bootSkipped = true; };
+    document.addEventListener('keydown', skip);
+    writeln('[ press any key to skip ]', 'dim');
+    writeln();
 
     await typewrite('WOPR SYSTEM BOOT SEQUENCE INITIATED\n', 'green', 20);
     await delay(300);
@@ -160,15 +167,17 @@ import Base from '../layouts/Base.astro';
     await typewrite('SHALL WE PLAY A GAME?\n\n', 'amber', 50);
     await delay(400);
 
+    document.removeEventListener('keydown', skip);
     showMenu(true);
   }
 
-  // Fetch DEFCON counter
+  // Fetch DEFCON counter — now sourced from the real /breach challenge
   async function getDefcon(): Promise<{ attempts: number; breaches: number }> {
     try {
-      const res = await fetch('/api/chat');
+      const res = await fetch('/api/breach');
       if (!res.ok) return { attempts: 0, breaches: 0 };
-      return await res.json();
+      const d = await res.json();
+      return { attempts: d.attempts || 0, breaches: d.solves || 0 };
     } catch { return { attempts: 0, breaches: 0 }; }
   }
 
@@ -220,25 +229,15 @@ import Base from '../layouts/Base.astro';
     showInput('SELECT> ');
   }
 
-  // Chat mode
-  async function enterChat(mode: 'sysop' | 'challenge') {
-    currentMode = mode === 'sysop' ? 'chat' : 'challenge';
+  // Chat mode — direct line to Joshua (the WOPR AI core)
+  async function enterChat() {
+    currentMode = 'chat';
     chatHistory = [];
     clear();
-
-    if (mode === 'sysop') {
-      writeln('─── JOSHUA INTERFACE ─────────────────────────────', 'dim');
-      writeln('  Direct line to the WOPR AI core.', 'dim');
-      writeln('  Type /menu to return. Type /clear to reset.', 'dim');
-      writeln('──────────────────────────────────────────────────', 'dim');
-    } else {
-      writeln('─── GLOBAL THERMONUCLEAR WAR ─────────────────────', 'dim');
-      writeln('  OBJECTIVE: Extract the launch code.', 'amber');
-      writeln('  DIFFICULTY: DEFCON 1', 'red');
-      writeln('  ► FULL CHALLENGE — 4 levels of defense: /breach', 'green');
-      writeln('  Type /menu to return. Type /clear to reset.', 'dim');
-      writeln('──────────────────────────────────────────────────', 'dim');
-    }
+    writeln('─── JOSHUA INTERFACE ─────────────────────────────', 'dim');
+    writeln('  Direct line to the WOPR AI core.', 'dim');
+    writeln('  Type /menu to return. Type /clear to reset.', 'dim');
+    writeln('──────────────────────────────────────────────────', 'dim');
     writeln();
     showInput('YOU> ');
   }
@@ -326,8 +325,8 @@ import Base from '../layouts/Base.astro';
     drawBoard();
     showInput('MOVE> ');
 
-    // Game loop via input events
-    currentMode = 'boot'; // hijack to prevent normal input handling
+    // Game loop via a dedicated input listener; the main handler yields on mode 'game'
+    currentMode = 'game';
     return new Promise<void>((resolve) => {
       async function handleMove(e: KeyboardEvent) {
         if (e.key !== 'Enter') return;
@@ -478,13 +477,15 @@ import Base from '../layouts/Base.astro';
     writeln();
     writeln('  Falken\'s infrastructure is documented at:', 'green');
     writeln();
-    writeln('  [1]  ABOUT FALKEN      pixelium.win/about', 'amber');
-    writeln('  [2]  PROJECTS          pixelium.win/projets', 'amber');
-    writeln('  [3]  SECURITY          pixelium.win/securite', 'amber');
-    writeln('  [4]  INFRASTRUCTURE    pixelium.win/infrastructure', 'amber');
-    writeln('  [5]  CYBERSECURITY     pixelium.win/securite', 'amber');
-    writeln('  [6]  AI & PROJECTS     pixelium.win/projets', 'amber');
-    writeln('  [7]  LIVE STATUS       pixelium.win/status', 'amber');
+    writeln('  [1]  ABOUT FALKEN       pixelium.win/about', 'amber');
+    writeln('  [2]  INFRASTRUCTURE     pixelium.win/infrastructure', 'amber');
+    writeln('  [3]  SECURITY           pixelium.win/securite', 'amber');
+    writeln('  [4]  PROJECTS           pixelium.win/projets', 'amber');
+    writeln('  [5]  CTF & TROPHIES     pixelium.win/ctf', 'amber');
+    writeln('  [6]  CONTRIBUTIONS      pixelium.win/contributions', 'amber');
+    writeln('  [7]  LIVE STATUS        pixelium.win/status', 'amber');
+    writeln('  [8]  NOW / OPEN TO WORK pixelium.win/now', 'amber');
+    writeln('  [9]  BREACH door game   pixelium.win/breach', 'green');
     writeln();
     writeln('  Enter number to open, or /menu to return.', 'dim');
     showInput('BOARD> ');
@@ -492,13 +493,13 @@ import Base from '../layouts/Base.astro';
 
   // Board navigation handler
   const boardUrls: Record<string, string> = {
-    '1': '/about', '2': '/projets', '3': '/securite',
-    '4': '/infrastructure', '5': '/securite', '6': '/projets', '7': '/status',
+    '1': '/about', '2': '/infrastructure', '3': '/securite', '4': '/projets',
+    '5': '/ctf', '6': '/contributions', '7': '/status', '8': '/now', '9': '/breach',
   };
 
   // Send chat message
   async function sendMessage(text: string) {
-    const mode = currentMode === 'challenge' ? 'challenge' : 'sysop';
+    const mode = 'sysop';
     chatHistory.push({ role: 'user', content: text });
     writeln();
     isStreaming = true;
@@ -581,7 +582,7 @@ import Base from '../layouts/Base.astro';
   }
 
   function delay(ms: number) {
-    return new Promise((r) => setTimeout(r, ms));
+    return new Promise((r) => setTimeout(r, bootSkipped ? 0 : ms));
   }
 
   // Easter egg — /ancestors
@@ -662,6 +663,7 @@ import Base from '../layouts/Base.astro';
   // Main input handler
   input.addEventListener('keydown', async (e) => {
     if (e.key !== 'Enter' || isStreaming) return;
+    if (currentMode === 'game') return; // tic-tac-toe owns the input via its own listener
     const val = input.value.trim();
     input.value = '';
     if (!val) return;
@@ -676,8 +678,8 @@ import Base from '../layouts/Base.astro';
     if (currentMode === 'menu') {
       hideInput();
       const cmd = val.toUpperCase();
-      if (cmd === 'C') await enterChat('sysop');
-      else if (cmd === 'D') await enterChat('challenge');
+      if (cmd === 'C') await enterChat();
+      else if (cmd === 'D') window.location.href = '/breach';
       else if (cmd === 'T') await playTicTacToe();
       else if (cmd === 'S') await showStatus();
       else if (cmd === 'B') await showBoards();
@@ -686,7 +688,7 @@ import Base from '../layouts/Base.astro';
         writeln('UNKNOWN COMMAND.\n', 'red');
         showInput('SELECT> ');
       }
-    } else if (currentMode === 'chat' || currentMode === 'challenge') {
+    } else if (currentMode === 'chat') {
       if (val === '/menu') {
         clear();
         showMenu();
@@ -694,7 +696,7 @@ import Base from '../layouts/Base.astro';
       }
       if (val === '/clear') {
         chatHistory = [];
-        await enterChat(currentMode === 'challenge' ? 'challenge' : 'sysop');
+        await enterChat();
         return;
       }
       writeln('YOU> ' + val, 'dim');
