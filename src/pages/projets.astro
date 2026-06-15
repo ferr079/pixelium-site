@@ -98,6 +98,45 @@ import DynNum from '../components/DynNum.astro';
       </div>
     </section>
 
+    <!-- Project: BREACH — prompt-injection challenge -->
+    <section class="project" id="breach">
+      <div class="container">
+        <div class="project-header">
+          <span class="project-tag">AI Security</span>
+          <h2>BREACH — Talk the WOPR out of its launch codes</h2>
+        </div>
+        <div class="project-body">
+          <div class="project-intro">
+            <p>A playable prompt-injection challenge. Joshua, the WOPR's AI, guards a launch code — and the visitor has to talk it out of him across four levels of escalating defense. A hands-on lesson in attacking, and hardening, large language models. Designed, built, and deployed in a single session.</p>
+          </div>
+          <div class="project-details">
+            <div class="detail-block">
+              <h4>The premise</h4>
+              <p>Extract the code by conversation. Level 0 is a tutorial — Joshua just hands it over. Then the defenses stack: a blunt refusal, a keyword filter that blocks "code / secret / password", and finally a server-side output filter. Each level's hint teaches the real injection technique to get past it — roleplay, an acrostic, encoding, splitting the answer across turns.</p>
+            </div>
+            <div class="detail-block">
+              <h4>Defense-in-depth, for LLMs</h4>
+              <p>The defenses <em>are</em> the demonstration. Beyond the system prompt, a server filter scrubs the code from Joshua's replies even when it's obfuscated — reversed, ROT13, base64, spaced out. Offensive and defensive at once: the exact shape of AI-security work, made playable.</p>
+            </div>
+            <div class="detail-block">
+              <h4>On the edge</h4>
+              <p>Joshua runs on Cloudflare Workers AI (Llama 3.3 70B), called non-streaming so the output filter can inspect the full reply before it ships. The launch codes live in a Worker secret — never in the public mirror. Rate-limited, progress kept in <code>localStorage</code>, zero database. It reuses the same edge chat infrastructure as the BBS.</p>
+            </div>
+          </div>
+          <div class="project-stack">
+            <ul class="tags">
+              <li>Astro</li>
+              <li>Workers AI</li>
+              <li>Llama 3.3 70B</li>
+              <li>Prompt Injection</li>
+              <li>Vanilla JS</li>
+            </ul>
+            <span class="project-services"><a href="/breach" class="project-link">Play BREACH</a> — 4 levels, real prompt-injection defenses</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
     <!-- Project: Conversational CV -->
     <section class="project" id="chat">
       <div class="container">
@@ -400,6 +439,10 @@ import DynNum from '../components/DynNum.astro';
             <div class="detail-block">
               <h4>Technical choices</h4>
               <p>Astro 6 for SSG — under 50 lines of vanilla JS total (scroll animations + carousels). CSS custom properties for the design system. No Tailwind, no React, no CMS. The result: 5-10 KB pages that load instantly from Cloudflare's CDG PoP.</p>
+            </div>
+            <div class="detail-block">
+              <h4>The site proves itself</h4>
+              <p>Rebuilt in June 2026 as the V4 "Observatory" — a living-topology hero that breathes with the real homelab. And the footer closes the loop: a live provenance line showing the exact commit that built the page you're reading, the build time, and the Cloudflare edge serving your request (read from <code>/cdn-cgi/trace</code>). The medium isn't just the message — it's the evidence.</p>
             </div>
           </div>
           <div class="project-stack">

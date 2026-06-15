@@ -98,6 +98,45 @@ import DynNum from '../../components/DynNum.astro';
       </div>
     </section>
 
+    <!-- Projet : BREACH — challenge prompt-injection -->
+    <section class="project" id="breach">
+      <div class="container">
+        <div class="project-header">
+          <span class="project-tag">AI Security</span>
+          <h2>BREACH — Soutire ses codes de lancement au WOPR</h2>
+        </div>
+        <div class="project-body">
+          <div class="project-intro">
+            <p>Un challenge de prompt-injection jouable. Joshua, l'IA du WOPR, garde un code de lancement — et le visiteur doit le lui soutirer à travers quatre niveaux de défenses croissantes. Une leçon pratique sur l'attaque, et le durcissement, des grands modèles de langage. Conçu, construit et déployé en une seule session.</p>
+          </div>
+          <div class="project-details">
+            <div class="detail-block">
+              <h4>Le principe</h4>
+              <p>Extraire le code par la conversation. Le niveau 0 est un tutoriel — Joshua le donne sans résister. Puis les défenses s'empilent : un refus sec, un filtre de mots-clés qui bloque « code / secret / password », et enfin un filtre de sortie côté serveur. L'indice de chaque niveau enseigne la vraie technique d'injection pour le franchir — jeu de rôle, acrostiche, encodage, réponse éclatée sur plusieurs tours.</p>
+            </div>
+            <div class="detail-block">
+              <h4>Défense en profondeur, pour LLM</h4>
+              <p>Les défenses <em>sont</em> la démonstration. Au-delà du system prompt, un filtre serveur efface le code des réponses de Joshua même obfusqué — inversé, ROT13, base64, espacé. Offensif et défensif à la fois : la forme exacte du travail en sécurité IA, rendue jouable.</p>
+            </div>
+            <div class="detail-block">
+              <h4>Sur l'edge</h4>
+              <p>Joshua tourne sur Cloudflare Workers AI (Llama 3.3 70B), appelé en non-streaming pour que le filtre de sortie inspecte la réponse complète avant l'envoi. Les codes vivent dans un secret Worker — jamais dans le mirror public. Rate-limité, progression en <code>localStorage</code>, zéro base de données. Il réutilise l'infrastructure de chat edge du BBS.</p>
+            </div>
+          </div>
+          <div class="project-stack">
+            <ul class="tags">
+              <li>Astro</li>
+              <li>Workers AI</li>
+              <li>Llama 3.3 70B</li>
+              <li>Prompt Injection</li>
+              <li>Vanilla JS</li>
+            </ul>
+            <span class="project-services"><a href="/breach" class="project-link">Jouer à BREACH</a> — 4 niveaux, vraies défenses anti-injection</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
     <!-- Projet : CV Conversationnel -->
     <section class="project" id="chat">
       <div class="container">
@@ -400,6 +439,10 @@ import DynNum from '../../components/DynNum.astro';
             <div class="detail-block">
               <h4>Les choix techniques</h4>
               <p>Astro 6 pour le SSG — moins de 50 lignes de JS vanilla au total (animations scroll + carrousels). CSS custom properties pour le design system. Pas de Tailwind, pas de React, pas de CMS. Le resultat : des pages de 5-10 Ko qui chargent instantanement depuis le PoP CDG de Cloudflare.</p>
+            </div>
+            <div class="detail-block">
+              <h4>Le site se prouve lui-meme</h4>
+              <p>Refondu en juin 2026 en V4 « Observatory » — un hero topologie vivante qui respire au rythme du homelab reel. Et le footer boucle la preuve : une ligne de provenance live affichant le commit exact qui a construit la page que tu lis, l'heure de build, et l'edge Cloudflare qui sert ta requete (lu depuis <code>/cdn-cgi/trace</code>). Le medium n'est pas seulement le message — c'est la preuve.</p>
             </div>
           </div>
           <div class="project-stack">
