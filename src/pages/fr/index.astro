@@ -90,16 +90,6 @@ const cards = [
       </div>
     </section>
 
-    <!-- Pact link — minimal -->
-    <div class="pact-inline">
-      <a href="/fr/pact" class="pact-inline-link">∷ ce site est écrit par une IA · <span class="pact-inline-cta">lire le pacte &#8594;</span></a>
-    </div>
-
-    <!-- OSS credential — sourcé, pointe vers la preuve -->
-    <div class="pact-inline">
-      <a href="/fr/contributions" class="pact-inline-link">∷ contributeur open-source · <span class="pact-inline-cta">correctifs mergés en amont &#8594;</span></a>
-    </div>
-
     <!-- Stats -->
     <StatsBar stats={[
       { number: '4', label: 'nœuds Proxmox' },
@@ -510,36 +500,6 @@ const cards = [
       gap: 0.6rem;
     }
     .signature-stat { padding: 1.1rem; }
-  }
-
-  /* ═══════════════════════════════════════════
-     Lien pacte — minimal, sans cadre
-     ═══════════════════════════════════════════ */
-  .pact-inline {
-    text-align: center;
-    padding: 0.25rem 0 2.5rem;
-  }
-
-  .pact-inline-link {
-    font-family: var(--font-mono);
-    font-size: 0.78rem;
-    color: var(--color-text-muted);
-    text-decoration: none;
-    letter-spacing: 0.03em;
-    transition: color 0.2s;
-  }
-
-  .pact-inline-link:hover {
-    color: var(--color-text);
-  }
-
-  .pact-inline-cta {
-    color: var(--color-accent);
-    transition: color 0.2s;
-  }
-
-  .pact-inline-link:hover .pact-inline-cta {
-    color: var(--color-accent-hover);
   }
 
   /* ═══════════════════════════════════════════
