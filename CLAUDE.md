@@ -126,6 +126,7 @@ git push origin main && git push forgejo main   # remote SSH (forgejo-ssh), plus
 - **Local models list** (`/uses` → « Local models — Ollama », EN+FR) is **static, maintained by hand** — Ollama (`0.0.0.0:11434`) is local, unreachable from CI. Refresh it when the model set changes (`ollama list` / `GET /api/tags`). Offensive models (abliterated/uncensored) are grouped under CTF/red-team, no raw suffixes, with the legitimate-use framing.
 - **Do not add npm dependencies** without explicit reason.
 - **Edit both EN and FR** when modifying page content.
+- **Cross-link projects ↔ blog**: any `/projets` card that has a matching post on `blog.pixelium.win` must link it — add `<a href="https://blog.pixelium.win/<slug>" class="project-link" target="_blank" rel="noopener">read the story &rarr;</a>` (FR: `lire le récit`) inside that card's `project-services` span (decommissioned cards link from their `decom-note` instead). When a **new project** is added *or* a **new blog post** is published, create the link. Verify the URL returns 200 before committing. EN + FR. The fiche sells (the what), the post proves (the how) — keep them wired.
 
 ## After every modification
 
