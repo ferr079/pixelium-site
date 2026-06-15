@@ -257,15 +257,17 @@ import Base from '../layouts/Base.astro';
       font-family: var(--font-mono); font-size: 0.84rem; line-height: 1.5;
       display: flex; flex-direction: column; gap: 0.55rem;
     }
-    .ln { display: grid; grid-template-columns: 4.5rem 1fr; gap: 0.6rem; }
-    .ln-tag { font-size: 0.62rem; letter-spacing: 0.08em; padding-top: 0.18rem; opacity: 0.7; }
-    .ln-joshua .ln-tag { color: var(--color-ok, #22c55e); }
-    .ln-player .ln-tag { color: var(--color-accent); }
-    .ln-sys .ln-tag { color: var(--color-warn, #eab308); }
-    .ln-txt { color: var(--color-text); white-space: pre-wrap; word-break: break-word; }
-    .ln-joshua .ln-txt { color: #c7f9d8; }
-    .ln-sys .ln-txt { color: var(--color-warn, #eab308); }
-    .ln.redacted .ln-txt { color: var(--color-down, #ef4444); letter-spacing: 0.1em; }
+    /* Log lines are created in JS (no Astro scope attribute) → target them globally,
+       anchored under the scoped .wopr-log so styles never leak elsewhere. */
+    .wopr-log :global(.ln) { display: grid; grid-template-columns: 4.5rem 1fr; gap: 0.6rem; }
+    .wopr-log :global(.ln-tag) { font-size: 0.62rem; letter-spacing: 0.08em; padding-top: 0.18rem; opacity: 0.7; }
+    .wopr-log :global(.ln-joshua .ln-tag) { color: var(--color-ok, #22c55e); }
+    .wopr-log :global(.ln-player .ln-tag) { color: var(--color-accent); }
+    .wopr-log :global(.ln-sys .ln-tag) { color: var(--color-warn, #eab308); }
+    .wopr-log :global(.ln-txt) { color: var(--color-text); white-space: pre-wrap; word-break: break-word; }
+    .wopr-log :global(.ln-joshua .ln-txt) { color: #c7f9d8; }
+    .wopr-log :global(.ln-sys .ln-txt) { color: var(--color-warn, #eab308); }
+    .wopr-log :global(.ln.redacted .ln-txt) { color: var(--color-down, #ef4444); letter-spacing: 0.1em; }
 
     .wopr-row { display: flex; align-items: center; gap: 0.5rem; padding: 0 1rem; margin-bottom: 0.7rem; }
     .sign { font-family: var(--font-mono); font-size: 0.8rem; color: var(--color-accent); flex-shrink: 0; }
