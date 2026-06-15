@@ -97,7 +97,7 @@ const commitUrl = COMMIT_SHA !== 'dev' ? `https://github.com/ferr079/pixelium-si
     fetch('/api/deployment').then((r) => r.json()).then((d) => {
       const coloEl = edgeEl.querySelector('.fd-colo');
       if (coloEl) coloEl.textContent = d.colo || '??';
-      const bits = [d.country && `country ${d.country}`, d.protocol, d.ray && `ray ${d.ray}`].filter(Boolean);
+      const bits = [d.country && `loc ${d.country}`, d.protocol, d.tls, d.ray && `ray ${d.ray}`].filter(Boolean);
       if (bits.length) edgeEl.setAttribute('title', bits.join(' · '));
     }).catch(() => {});
   }
