@@ -139,8 +139,8 @@ export const POST: APIRoute = async ({ request }) => {
     }
 
     return json({ ok: true, reply, level, redacted });
-  } catch {
-    return json({ ok: false, error: 'WOPR offline — AI inference failed' }, 500);
+  } catch (e) {
+    return json({ ok: false, error: 'WOPR offline — AI inference failed', detail: String((e as any)?.message ?? e).slice(0, 200) }, 500);
   }
 };
 
