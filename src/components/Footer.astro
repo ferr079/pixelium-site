@@ -9,17 +9,26 @@ const text = {
     hosted: 'Hosted on Cloudflare Workers',
     meta: 'This site speaks for itself. Claude narrates, Stéphane confirms.',
     now: 'Now', pact: 'The Pact', claude: 'The Ledger', contributions: 'Contributions',
+    thisDeploy: 'this deployment', builtAt: 'built', edge: 'served from',
   },
   fr: {
     built: 'Construit avec',
     hosted: 'Hébergé sur Cloudflare Workers',
     meta: 'Ce site parle de lui-même. Claude raconte, Stéphane confirme.',
     now: 'Now', pact: 'Le Pacte', claude: 'Le Registre', contributions: 'Contributions',
+    thisDeploy: 'ce déploiement', builtAt: 'compilé', edge: 'servi depuis',
   },
 };
 
 const t = text[lang];
 const p = (path: string) => (lang === 'fr' ? `/fr${path}` : path);
+
+// "THIS DEPLOYMENT" — build provenance, frozen at build time (vite.define). Edge colo filled client-side.
+const COMMIT_SHA = (import.meta.env.PUBLIC_COMMIT_SHA as string) ?? 'dev';
+const BUILD_TIME = (import.meta.env.PUBLIC_BUILD_TIME as string) ?? '';
+const shaShort = COMMIT_SHA.slice(0, 7);
+const builtDisplay = BUILD_TIME ? `${BUILD_TIME.slice(0, 16).replace('T', ' ')} UTC` : 'dev';
+const commitUrl = COMMIT_SHA !== 'dev' ? `https://github.com/ferr079/pixelium-site/commit/${COMMIT_SHA}` : null;
 ---
 
 <footer class="site-footer">
@@ -54,6 +63,16 @@ const p = (path: string) => (lang === 'fr' ? `/fr${path}` : path);
       <a href={p('/contributions')}>{t.contributions}</a>
     </nav>
     <p>{t.built} <a href="https://astro.build" target="_blank" rel="noopener">Astro</a> — {t.hosted}</p>
+    <p class="footer-deploy" aria-label="This deployment">
+      <span class="fd-key">&#9622; {t.thisDeploy}</span>
+      {commitUrl
+        ? <a class="fd-commit" href={commitUrl} target="_blank" rel="noopener" title="View this commit on GitHub">{shaShort}</a>
+        : <span class="fd-commit">{shaShort}</span>}
+      <span class="fd-sep">·</span>
+      <span>{t.builtAt} {builtDisplay}</span>
+      <span class="fd-sep">·</span>
+      <span class="fd-edge" data-deploy-edge>{t.edge} <span class="fd-colo">…</span></span>
+    </p>
     <p class="footer-meta">{t.meta}</p>
   </div>
 </footer>
@@ -70,6 +89,17 @@ const p = (path: string) => (lang === 'fr' ? `/fr${path}` : path);
     btn.addEventListener('click', () => {
       window.scrollTo({ top: 0, behavior: 'smooth' });
     });
+  }
+
+  // THIS DEPLOYMENT — fill the live edge colo serving this very page
+  const edgeEl = document.querySelector('[data-deploy-edge]');
+  if (edgeEl) {
+    fetch('/api/deployment').then((r) => r.json()).then((d) => {
+      const coloEl = edgeEl.querySelector('.fd-colo');
+      if (coloEl) coloEl.textContent = d.colo || '??';
+      const bits = [d.country && `country ${d.country}`, d.protocol, d.ray && `ray ${d.ray}`].filter(Boolean);
+      if (bits.length) edgeEl.setAttribute('title', bits.join(' · '));
+    }).catch(() => {});
   }
 </script>
 
@@ -147,6 +177,33 @@ const p = (path: string) => (lang === 'fr' ? `/fr${path}` : path);
     font-size: 0.75rem !important;
     color: var(--color-border) !important;
   }
+
+  /* THIS DEPLOYMENT — live provenance line */
+  .footer-deploy {
+    margin-top: 0.8rem !important;
+    font-family: var(--font-mono);
+    font-size: 0.72rem !important;
+    color: var(--color-text-muted) !important;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    gap: 0.4rem;
+    line-height: 1.4;
+  }
+
+  .footer-deploy .fd-key { opacity: 0.85; }
+
+  .footer-deploy .fd-commit {
+    color: var(--color-accent);
+    text-decoration: none;
+    border-bottom: 1px dotted rgba(56, 189, 248, 0.4);
+  }
+
+  .footer-deploy .fd-commit:hover { color: var(--color-accent-hover); }
+
+  .footer-deploy .fd-sep { color: var(--color-border); }
+  .footer-deploy .fd-colo { color: var(--color-text); }
 
   /* Scroll to top */
   .scroll-top {
