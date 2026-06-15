@@ -10,12 +10,12 @@ import type { APIRoute } from 'astro';
 export const GET: APIRoute = async ({ request }) => {
   let colo: string | null = null;
   let country: string | null = null;
-  let protocol: string | null = null;
-  let tls: string | null = null;
   let ray: string | null = null;
 
   try { ray = request.headers.get('cf-ray'); } catch { /* no header */ }
 
+  // Note: /cdn-cgi/trace's `http`/`tls` describe this internal sub-request, not the
+  // visitor's connection, so we only surface colo + loc (the serving datacenter) — both honest.
   try {
     const res = await fetch('https://pixelium.win/cdn-cgi/trace');
     if (res.ok) {
@@ -26,8 +26,6 @@ export const GET: APIRoute = async ({ request }) => {
       }
       colo = map.colo ?? null;
       country = map.loc ?? null;
-      protocol = map.http ?? null;
-      tls = map.tls ?? null;
     }
   } catch { /* trace unreachable — provenance still returned */ }
 
@@ -36,8 +34,6 @@ export const GET: APIRoute = async ({ request }) => {
     builtAt: import.meta.env.PUBLIC_BUILD_TIME ?? null,
     colo,
     country,
-    protocol,
-    tls,
     ray,
   };
 
