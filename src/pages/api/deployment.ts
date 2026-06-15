@@ -8,6 +8,18 @@ import type { APIRoute } from 'astro';
 // Each edge lookup is guarded: the cf-ray suffix already encodes the serving colo, so the
 // colo resolves even if the richer `cf` object is unavailable in this runtime context.
 export const GET: APIRoute = async ({ request, locals }) => {
+  if (new URL(request.url).searchParams.get('debug') === '1') {
+    const rt: any = (locals as any)?.runtime;
+    return new Response(JSON.stringify({
+      localsKeys: Object.keys((locals as any) || {}),
+      runtimeKeys: Object.keys(rt || {}),
+      cfType: typeof rt?.cf,
+      cfKeys: Object.keys(rt?.cf || {}),
+      reqCfType: typeof (request as any).cf,
+      reqCfKeys: Object.keys((request as any).cf || {}),
+    }), { headers: { 'Content-Type': 'application/json' } });
+  }
+
   let colo: string | null = null;
   let country: string | null = null;
   let city: string | null = null;
