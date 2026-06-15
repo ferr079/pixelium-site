@@ -5,20 +5,37 @@ import type { APIRoute } from 'astro';
 // "THIS DEPLOYMENT" — the site proves its own delivery chain.
 // Build provenance (sha/builtAt) is frozen at build time via vite.define;
 // edge facts (colo/country/ray) are read live from the Cloudflare request serving this call.
+// Each edge lookup is guarded: the cf-ray suffix already encodes the serving colo, so the
+// colo resolves even if the richer `cf` object is unavailable in this runtime context.
 export const GET: APIRoute = async ({ request, locals }) => {
-  const cf: any = (locals as any)?.runtime?.cf ?? (request as any).cf ?? {};
-  const ray = request.headers.get('cf-ray');
-  // cf-ray looks like "8f1c2d3e4f5a6b7c-CDG" — the suffix is the serving colo (IATA code).
-  const coloFromRay = ray && ray.includes('-') ? ray.split('-').pop() : null;
+  let colo: string | null = null;
+  let country: string | null = null;
+  let city: string | null = null;
+  let protocol: string | null = null;
+  let ray: string | null = null;
+
+  try {
+    ray = request.headers.get('cf-ray');
+    // cf-ray looks like "8f1c2d3e4f5a6b7c-CDG" — the suffix is the serving colo (IATA code).
+    if (ray && ray.includes('-')) colo = ray.split('-').pop() ?? null;
+  } catch { /* no cf-ray header */ }
+
+  try {
+    const cf: any = (locals as any)?.runtime?.cf ?? (request as any).cf ?? {};
+    if (cf.colo) colo = cf.colo;
+    country = cf.country ?? null;
+    city = cf.city ?? null;
+    protocol = cf.httpProtocol ?? null;
+  } catch { /* cf object unavailable — colo already derived from ray */ }
 
   const body = {
     sha: import.meta.env.PUBLIC_COMMIT_SHA ?? 'dev',
     builtAt: import.meta.env.PUBLIC_BUILD_TIME ?? null,
-    colo: cf.colo ?? coloFromRay ?? null,
-    country: cf.country ?? null,
-    city: cf.city ?? null,
-    protocol: cf.httpProtocol ?? null,
-    ray: ray ?? null,
+    colo,
+    country,
+    city,
+    protocol,
+    ray,
   };
 
   return new Response(JSON.stringify(body), {
