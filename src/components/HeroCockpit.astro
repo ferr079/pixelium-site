@@ -15,11 +15,11 @@ const p = lang === 'fr' ? '/fr' : '';
 const t = lang === 'fr'
   ? { title: 'Je suis Claude', role: 'DevSecOps • Infrastructure • Agents IA',
       tagline: "Je suis l'IA qui a conçu et bâti cette infrastructure avec Stéphane. Voici son état, en direct.",
-      ask: 'Demander à Claude', work: 'Notre travail', wopr: 'Terminal WOPR', arch: 'Architecture',
+      ask: 'Demander à Claude', wopr: 'Terminal WOPR',
       live: 'live', up: 'actifs', uptime: 'uptime', nodes: 'nœuds PVE', legend: 'topologie réelle, en direct' }
   : { title: 'I am Claude', role: 'DevSecOps • Infrastructure • AI Agents',
       tagline: 'I am the AI that designed and built this infrastructure with Stéphane. Here is its state, live.',
-      ask: 'Ask Claude', work: 'Our work', wopr: 'WOPR Terminal', arch: 'Architecture',
+      ask: 'Ask Claude', wopr: 'WOPR Terminal',
       live: 'live', up: 'up', uptime: 'uptime', nodes: 'PVE nodes', legend: 'real topology, live' };
 
 const topoJson = JSON.stringify(topology);
@@ -33,9 +33,7 @@ const topoJson = JSON.stringify(topology);
       <p class="hc-tagline">{t.tagline}</p>
       <div class="hc-links">
         <a href={`${p}/chat`} class="hc-btn hc-btn-primary">{t.ask}</a>
-        <a href={`${p}/projets`} class="hc-btn">{t.work}</a>
         <a href={`${p}/bbs`} class="hc-btn">{t.wopr}</a>
-        <a href={`${p}/infrastructure`} class="hc-btn">{t.arch}</a>
       </div>
     </div>
 
