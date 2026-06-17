@@ -2,7 +2,6 @@
 import { Font } from 'astro:assets';
 import Nav from '../components/Nav.astro';
 import Footer from '../components/Footer.astro';
-import SessionImprint from '../components/SessionImprint.astro';
 import { getLangFromUrl, getLocalizedPath } from '../i18n/utils';
 import ogPages from '../data/og-pages.json';
 
@@ -133,7 +132,6 @@ const cmdkItems = [
     </div>
     {!hideNav && <Nav currentPath={currentPath} />}
     <slot />
-    <SessionImprint />
     <Footer />
 
     <div id="cmdk" class="cmdk" role="dialog" aria-modal="true" aria-label="Command palette">
