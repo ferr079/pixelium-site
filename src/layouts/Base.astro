@@ -1,4 +1,5 @@
 ---
+import { Font } from 'astro:assets';
 import Nav from '../components/Nav.astro';
 import Footer from '../components/Footer.astro';
 import SessionImprint from '../components/SessionImprint.astro';
@@ -63,7 +64,7 @@ const cmdkItems = [
     <meta charset="utf-8" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
-    <link rel="preload" href="/fonts/jetbrains-mono-latin-400.woff2" as="font" type="font/woff2" crossorigin />
+    <Font cssVariable="--font-jetbrains-mono" preload />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="description" content={description} />
     {noindex && <meta name="robots" content="noindex, follow" />}
@@ -254,11 +255,8 @@ const cmdkItems = [
     padding: 0;
   }
 
-  /* Self-hosted JetBrains Mono (refonte V4) — guarantees the signature mono render, same-origin (no third-party webfont) */
-  @font-face { font-family: 'JetBrains Mono'; font-style: normal; font-weight: 400; font-display: swap; src: url('/fonts/jetbrains-mono-latin-400.woff2') format('woff2'); }
-  @font-face { font-family: 'JetBrains Mono'; font-style: normal; font-weight: 500; font-display: swap; src: url('/fonts/jetbrains-mono-latin-500.woff2') format('woff2'); }
-  @font-face { font-family: 'JetBrains Mono'; font-style: normal; font-weight: 600; font-display: swap; src: url('/fonts/jetbrains-mono-latin-600.woff2') format('woff2'); }
-  @font-face { font-family: 'JetBrains Mono'; font-style: normal; font-weight: 700; font-display: swap; src: url('/fonts/jetbrains-mono-latin-700.woff2') format('woff2'); }
+  /* JetBrains Mono is provided by the Astro Fonts API (<Font> in head) — same-origin,
+     auto preload + optimized fallback metrics (no CLS). See astro.config fonts. */
 
   :root {
     --color-bg: #0f172a;
@@ -268,7 +266,7 @@ const cmdkItems = [
     --color-text-muted: #94a3b8;
     --color-accent: #38bdf8;
     --color-accent-hover: #7dd3fc;
-    --font-mono: 'JetBrains Mono', 'Fira Code', ui-monospace, monospace;
+    --font-mono: var(--font-jetbrains-mono, 'JetBrains Mono', 'Fira Code', ui-monospace, monospace);
     --font-sans: system-ui, -apple-system, sans-serif;
     --max-width: 64rem;
     --color-ok: #22c55e;
