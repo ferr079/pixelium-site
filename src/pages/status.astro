@@ -81,6 +81,18 @@ import Base from '../layouts/Base.astro';
       </div>
     </section>
 
+    <!-- On-demand (pve3 Wake-on-LAN) -->
+    <section class="layer reveal" id="ondemand-section" style="display:none;">
+      <div class="container">
+        <div class="ondemand-head">
+          <h3 class="ondemand-title">On-demand · pve3 <span class="ondemand-tag">Wake-on-LAN</span></h3>
+          <span class="ondemand-state" id="ondemand-state">—</span>
+        </div>
+        <div class="service-grid" id="ondemand-grid"></div>
+        <p class="ondemand-note" id="ondemand-note"></p>
+      </div>
+    </section>
+
     <!-- Nodes -->
     <section class="layer reveal">
       <div class="container">
@@ -129,6 +141,57 @@ import Base from '../layouts/Base.astro';
     return e;
   }
 
+  // pve3 is a Wake-on-LAN node that sleeps by design. Its services get their own
+  // section, with state derived from the node: awake → up (green), asleep → on-demand
+  // (sky), never red. The 4 tool CTs below aren't in the monitoring payload, so they're
+  // declared here; PBS + netboot.xyz are, and keep their real state when the node is awake.
+  const PVE3_SERVICES = ['PBS', 'netboot.xyz', 'CyberChef', 'Stirling-PDF', 'draw.io', 'Excalidraw'];
+  const PVE3_SET = new Set(PVE3_SERVICES);
+
+  function renderOnDemand(data: any) {
+    const section = document.getElementById('ondemand-section');
+    const grid = document.getElementById('ondemand-grid');
+    const stateEl = document.getElementById('ondemand-state');
+    const noteEl = document.getElementById('ondemand-note');
+    if (!section || !grid) return;
+
+    const pve3 = (data.nodes || []).find((n: any) => n.name === 'pve3');
+    const pve3State = pve3 ? (pve3.state || pve3.status || (pve3.cpu != null ? 'up' : 'offline')) : 'offline';
+    const awake = pve3State === 'up';
+
+    const byName: Record<string, any> = {};
+    for (const sv of data.services || []) byName[sv.name] = sv;
+
+    if (stateEl) {
+      stateEl.textContent = awake ? '◉ awake' : '◌ asleep';
+      stateEl.className = 'ondemand-state ' + (awake ? 'awake' : 'asleep');
+    }
+    if (noteEl) noteEl.textContent = awake
+      ? 'Node powered on right now — services reachable.'
+      : 'Node powered on when needed — sleeping is not down.';
+
+    grid.innerHTML = '';
+    for (const name of PVE3_SERVICES) {
+      const svc = byName[name];
+      // asleep → everything on-demand (sky); awake → real monitored state, tools assumed up.
+      let state: string;
+      if (!awake) state = 'on-demand';
+      else if (svc) state = svc.status === 'up' ? 'up' : 'down';
+      else state = 'up';
+
+      const card = el('div', 'service-card');
+      card.appendChild(el('span', 'svc-dot ' + state));
+      card.appendChild(el('span', 'svc-name', name));
+      if (state === 'on-demand') {
+        card.appendChild(el('span', 'svc-ondemand', 'WOL'));
+      } else {
+        card.appendChild(el('span', 'svc-latency', svc && svc.latency != null ? svc.latency + 'ms' : '--'));
+      }
+      grid.appendChild(card);
+    }
+    section.style.display = 'block';
+  }
+
   (async function loadStatus() {
     try {
       const res = await fetch('/api/status');
@@ -148,7 +211,9 @@ import Base from '../layouts/Base.astro';
         if (totalEl) totalEl.textContent = String(s.total);
         if (uptimeEl) uptimeEl.textContent = s.uptime_pct + '%';
         if (nodesEl) nodesEl.textContent = data.nodes ? String(data.nodes.length) : '--';
-        if (dot) dot.classList.add(s.down > 0 ? 'degraded' : 'healthy');
+        // Count only genuinely-down services — pve3 (WOL) services never degrade the dot.
+        const realDown = data.services.filter((sv: any) => sv.status === 'down' && !PVE3_SET.has(sv.name)).length;
+        if (dot) dot.classList.add(realDown > 0 ? 'degraded' : 'healthy');
       }
 
       // Timestamp + staleness banner
@@ -170,9 +235,10 @@ import Base from '../layouts/Base.astro';
         }
       }
 
-      // Services grouped by category
+      // Services grouped by category (pve3 WOL services handled in their own section)
       const grouped: Record<string, any[]> = {};
       for (const svc of data.services) {
+        if (PVE3_SET.has(svc.name)) continue;
         const cat = svc.category || 'apps';
         if (!grouped[cat]) grouped[cat] = [];
         grouped[cat].push(svc);
@@ -204,6 +270,9 @@ import Base from '../layouts/Base.astro';
 
       document.getElementById('services-loading')!.style.display = 'none';
       container.style.display = 'block';
+
+      // On-demand section (pve3 WOL) — derived from the node state
+      renderOnDemand(data);
 
       // Nodes
       if (data.nodes && data.nodes.length) {
@@ -390,7 +459,19 @@ import Base from '../layouts/Base.astro';
   .svc-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
   .svc-dot.up { background: #22c55e; }
   .svc-dot.down { background: #ef4444; box-shadow: 0 0 6px rgba(239, 68, 68, 0.5); }
+  /* on-demand (pve3 WOL) services — sky accent, not red: asleep by design, not broken */
+  .svc-dot.on-demand { background: #38bdf8; box-shadow: 0 0 6px rgba(56, 189, 248, 0.5); }
+  .svc-ondemand { font-family: var(--font-mono); font-size: 0.7rem; color: var(--color-accent); letter-spacing: 0.05em; }
   .svc-name { font-family: var(--font-mono); font-size: 0.85rem; color: var(--color-text); flex: 1; }
+
+  /* on-demand section (pve3 WOL) */
+  .ondemand-head { display: flex; align-items: baseline; justify-content: space-between; gap: 1rem; margin-bottom: 0.9rem; flex-wrap: wrap; }
+  .ondemand-title { font-family: var(--font-mono); font-size: 0.9rem; color: var(--color-accent); letter-spacing: 0.05em; margin: 0; }
+  .ondemand-tag { color: var(--color-text-muted); font-weight: 400; font-size: 0.78rem; }
+  .ondemand-state { font-family: var(--font-mono); font-size: 0.8rem; letter-spacing: 0.04em; }
+  .ondemand-state.awake { color: #22c55e; }
+  .ondemand-state.asleep { color: #38bdf8; }
+  .ondemand-note { font-family: var(--font-mono); font-size: 0.72rem; color: var(--color-text-muted); margin-top: 0.75rem; opacity: 0.8; }
   .svc-latency { font-family: var(--font-mono); font-size: 0.75rem; color: var(--color-text-muted); }
 
   .nodes-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 0.75rem; }
