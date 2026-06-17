@@ -207,12 +207,18 @@ import Base from '../layouts/Base.astro';
         const uptimeEl = document.getElementById('summary-uptime');
         const nodesEl = document.getElementById('summary-nodes');
         const dot = document.getElementById('global-dot');
-        if (upEl) upEl.textContent = String(s.up);
-        if (totalEl) totalEl.textContent = String(s.total);
-        if (uptimeEl) uptimeEl.textContent = s.uptime_pct + '%';
+        // Core fleet = always-on services. pve3 (WOL) services live in their own
+        // section and are excluded from up/total/uptime — an intentionally-sleeping
+        // node must not drag the headline below 100%.
+        const core = data.services.filter((sv: any) => !PVE3_SET.has(sv.name));
+        const coreUp = core.filter((sv: any) => sv.status === 'up').length;
+        const coreTotal = core.length;
+        const corePct = coreTotal ? Math.round((coreUp / coreTotal) * 1000) / 10 : 100;
+        if (upEl) upEl.textContent = String(coreUp);
+        if (totalEl) totalEl.textContent = String(coreTotal);
+        if (uptimeEl) uptimeEl.textContent = corePct + '%';
         if (nodesEl) nodesEl.textContent = data.nodes ? String(data.nodes.length) : '--';
-        // Count only genuinely-down services — pve3 (WOL) services never degrade the dot.
-        const realDown = data.services.filter((sv: any) => sv.status === 'down' && !PVE3_SET.has(sv.name)).length;
+        const realDown = coreTotal - coreUp;
         if (dot) dot.classList.add(realDown > 0 ? 'degraded' : 'healthy');
       }
 

@@ -47,8 +47,18 @@ export const POST: APIRoute = async ({ request }) => {
       });
     }
 
-    const { up, total, uptime_pct } = status.summary;
-    const downServices = (status.services || [])
+    // pve3 services are Wake-on-LAN (on-demand): exclude them so an intentionally
+    // sleeping node doesn't get recorded as downtime in the 30-day history. Mirrors
+    // PVE3_SERVICES in status.astro. Falls back to summary if no services array.
+    const PVE3_SERVICES = new Set(['PBS', 'netboot.xyz', 'CyberChef', 'Stirling-PDF', 'draw.io', 'Excalidraw']);
+    const core = (status.services || []).filter((s: any) => !PVE3_SERVICES.has(s.name));
+    const hasCore = core.length > 0;
+    const total = hasCore ? core.length : status.summary.total;
+    const up = hasCore ? core.filter((s: any) => s.status === 'up').length : status.summary.up;
+    const uptime_pct = hasCore
+      ? (total ? Math.round((up / total) * 1000) / 10 : 100)
+      : status.summary.uptime_pct;
+    const downServices = core
       .filter((s: any) => s.status === 'down')
       .map((s: any) => s.name);
 
