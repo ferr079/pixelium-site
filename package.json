@@ -14,9 +14,9 @@
     "astro": "astro"
   },
   "dependencies": {
-    "@astrojs/cloudflare": "^13.6.1",
+    "@astrojs/cloudflare": "^13.7.0",
     "@astrojs/sitemap": "^3.7.3",
-    "astro": "^6.4.4"
+    "astro": "^6.4.8"
   },
   "devDependencies": {
     "@resvg/resvg-js": "^2.6.2",
