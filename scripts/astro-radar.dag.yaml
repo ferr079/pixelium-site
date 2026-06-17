@@ -1,0 +1,43 @@
+# astro-radar — DAG Dagu (à installer sur CT 246). Couche de DÉCLENCHEMENT only :
+# le cerveau (diff de versions + scan des surfaces breaking) vit dans le repo du site
+# (scripts/astro-radar.mjs). Ici on se contente de pull, lancer, et router le brief.
+#
+# Prérequis déjà en place : Hermes/Dagu clonent pixelium-site (/root/pixelium-site),
+# les feeds Astro sont dans FreshRSS, Hermes a un cron veille-quotidienne.
+# → ce DAG ajoute le lane CIBLÉ "upgrade brief" par-dessus l'awareness passive.
+#
+# À finaliser en session homelab contre les conventions Dagu réelles de CT 246
+# (chemins, secret ntfy/Telegram, éventuelle ouverture d'issue Forgejo = Tier 2).
+
+schedule: "30 8 * * *"   # 08h30, après release-watch (8h) ; heures creuses
+
+env:
+  - SITE_DIR: /root/pixelium-site
+
+steps:
+  - name: pull-site
+    command: bash -c "cd $SITE_DIR && git pull --quiet --ff-only"
+
+  - name: radar
+    command: bash -c "cd $SITE_DIR && node scripts/astro-radar.mjs --json"
+    output: RADAR_JSON
+    continueOn:
+      exitCode: [0, 10]   # 10 = il y a du neuf, ce n'est pas une erreur
+
+  - name: route-brief
+    depends:
+      - radar
+    # Ne notifier QUE s'il y a quelque chose à faire (shouldAlert).
+    preconditions:
+      - condition: "echo '${RADAR_JSON}' | jq -r .shouldAlert"
+        expected: "true"
+    command: bash -c '
+      cd $SITE_DIR;
+      BRIEF=$(node scripts/astro-radar.mjs);
+      # 1) ping humain (Telegram via Hermes, ou ntfy)
+      printf "%s" "$BRIEF" | ntfy publish --title "Astro radar" pixelium-veille;
+      # 2) dépôt pour la prochaine session Claude (inbox veille globale)
+      printf "\n## Astro radar (%s)\n%s\n" "$(date +%F)" "$BRIEF" >> ~/.claude/veille-inbox.md;
+      # 3) Tier 2 (optionnel) : ouvrir une issue Forgejo sur pixelium-site avec le brief
+      #    → à câbler avec FORGEJO_TOKEN quand on veut fermer la boucle.
+    '
