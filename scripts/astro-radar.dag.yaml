@@ -31,13 +31,27 @@ steps:
     preconditions:
       - condition: "echo '${RADAR_JSON}' | jq -r .shouldAlert"
         expected: "true"
+    # Le --json du step radar porte déjà tout : .brief (markdown) et .issue
+    # (spec prête à ouvrir : title/labels/body). Pas besoin de relancer le script.
     command: bash -c '
-      cd $SITE_DIR;
-      BRIEF=$(node scripts/astro-radar.mjs);
-      # 1) ping humain (Telegram via Hermes, ou ntfy)
-      printf "%s" "$BRIEF" | ntfy publish --title "Astro radar" pixelium-veille;
-      # 2) dépôt pour la prochaine session Claude (inbox veille globale)
-      printf "\n## Astro radar (%s)\n%s\n" "$(date +%F)" "$BRIEF" >> ~/.claude/veille-inbox.md;
-      # 3) Tier 2 (optionnel) : ouvrir une issue Forgejo sur pixelium-site avec le brief
-      #    → à câbler avec FORGEJO_TOKEN quand on veut fermer la boucle.
+      JSON="${RADAR_JSON}";
+      # 1) ping humain (ntfy ; ou router vers Telegram via Hermes)
+      echo "$JSON" | jq -r .brief | ntfy publish --title "Astro radar" pixelium-veille;
+      # 2) Tier 2 — ouvrir l_issue Forgejo (canal fiable cross-host que la session
+      #    web relit via le label astro-upgrade). Idempotence : ne pas ré-ouvrir si une
+      #    issue ouverte avec le même titre existe déjà.
+      TITLE=$(echo "$JSON" | jq -r .issue.title);
+      BODY=$(echo "$JSON" | jq -r .issue.body);
+      EXISTS=$(curl -s -H "Authorization: token $FORGEJO_TOKEN" \
+        "$FORGEJO_URL/api/v1/repos/uzer/pixelium-site/issues?state=open&type=issues" \
+        | jq -r --arg t "$TITLE" "map(select(.title==\$t)) | length");
+      if [ "$EXISTS" = "0" ]; then
+        echo "$JSON" | jq "{title: .issue.title, body: .issue.body, labels: []}" \
+          | curl -s -X POST -H "Authorization: token $FORGEJO_TOKEN" \
+            -H "Content-Type: application/json" -d @- \
+            "$FORGEJO_URL/api/v1/repos/uzer/pixelium-site/issues" > /dev/null;
+      fi;
     '
+    # NB labels : l_API Forgejo veut des IDs de label, pas des noms — la session homelab
+    # résout astro-upgrade/dependencies en IDs (les créer une fois sur le repo) puis les
+    # passe dans le POST. Laissé vide ici volontairement.

@@ -108,34 +108,47 @@ const worst = upgrades.reduce((acc, r) => {
 const debt = worst === 0 ? '🟢 à jour' : worst === 1 ? '🟢 patch dispo' : worst === 2 ? '🟡 minor dispo' : '🔴 major dispo';
 const shouldAlert = upgrades.length > 0 || risky.length > 0;
 
+// --- brief markdown (toujours construit) ---
+const lines = [];
+lines.push(`# Astro radar — ${debt}`);
+lines.push('');
+lines.push('| paquet | installé | stable | beta | écart |');
+lines.push('|---|---|---|---|---|');
+for (const r of results) {
+  if (r.error) { lines.push(`| \`${r.name}\` | ${r.installed || '?'} | — | — | ⚠️ ${r.error} |`); continue; }
+  const flag = r.gap === 'none' ? '—' : r.gap === 'major' ? `🔴 ${r.gap}` : r.gap === 'minor' ? `🟡 ${r.gap}` : `🟢 ${r.gap}`;
+  lines.push(`| \`${r.name}\` | ${r.installed} | ${r.latest} | ${r.beta || '—'} | ${flag} |`);
+}
+lines.push('');
+lines.push('**Surfaces breaking** (leur absence garde les majors indolores) :');
+for (const s of surfaces) lines.push(`- ${s.risky ? '⚠️ PRÉSENTE' : '✅ absente'} — ${s.key}`);
+lines.push('');
+if (!shouldAlert) {
+  lines.push('> Rien à faire : tout est à jour et aucune surface à risque. La dette reste à zéro.');
+} else {
+  lines.push('**Recommandation :**');
+  if (upgrades.some((u) => u.gap === 'patch')) lines.push('- Patchs dispo → `npm update` (bugfix/sécurité, risque ~nul).');
+  if (upgrades.some((u) => u.gap === 'minor')) lines.push('- Minor dispo → lire le changelog, bumper le plancher, build + smoke.');
+  if (upgrades.some((u) => u.gap === 'major')) lines.push('- **Major dispo** → vérifier la compat de l\'adaptateur Cloudflare en premier (dépendance qui commande), worktree isolé, build + Playwright avant deploy.');
+  if (risky.length) lines.push(`- ⚠️ ${risky.length} surface(s) breaking désormais présente(s) → un futur major demandera plus de soin.`);
+}
+const brief = lines.join('\n');
+
+// --- spec d'issue Forgejo : le CONTRAT Tier 2, partagé par les deux domaines.
+//     La couche homelab n'a qu'à ouvrir l'issue avec ces champs ; une session web la
+//     retrouve sans ambiguïté via le label `astro-upgrade`. Vit dans l'artefact que
+//     les deux côtés lisent (ce script), pas dans une convention de mémoire privée. ---
+const issue = shouldAlert ? {
+  title: `[astro-radar] upgrade dispo — ${upgrades.map((u) => `${u.name} ${u.installed}→${u.latest}`).join(', ') || 'surfaces breaking'}`,
+  labels: ['astro-upgrade', 'dependencies'],
+  body: brief,
+} : null;
+
 // --- sortie ---
 if (process.argv.includes('--json')) {
-  console.log(JSON.stringify({ debt, shouldAlert, upgrades, results, riskySurfaces: risky.map((s) => s.key) }, null, 2));
+  console.log(JSON.stringify({ debt, shouldAlert, upgrades, results, riskySurfaces: risky.map((s) => s.key), brief, issue }, null, 2));
 } else {
-  const lines = [];
-  lines.push(`# Astro radar — ${debt}`);
-  lines.push('');
-  lines.push('| paquet | installé | stable | beta | écart |');
-  lines.push('|---|---|---|---|---|');
-  for (const r of results) {
-    if (r.error) { lines.push(`| \`${r.name}\` | ${r.installed || '?'} | — | — | ⚠️ ${r.error} |`); continue; }
-    const flag = r.gap === 'none' ? '—' : r.gap === 'major' ? `🔴 ${r.gap}` : r.gap === 'minor' ? `🟡 ${r.gap}` : `🟢 ${r.gap}`;
-    lines.push(`| \`${r.name}\` | ${r.installed} | ${r.latest} | ${r.beta || '—'} | ${flag} |`);
-  }
-  lines.push('');
-  lines.push('**Surfaces breaking** (leur absence garde les majors indolores) :');
-  for (const s of surfaces) lines.push(`- ${s.risky ? '⚠️ PRÉSENTE' : '✅ absente'} — ${s.key}`);
-  lines.push('');
-  if (!shouldAlert) {
-    lines.push('> Rien à faire : tout est à jour et aucune surface à risque. La dette reste à zéro.');
-  } else {
-    lines.push('**Recommandation :**');
-    if (upgrades.some((u) => u.gap === 'patch')) lines.push('- Patchs dispo → `npm update` (bugfix/sécurité, risque ~nul).');
-    if (upgrades.some((u) => u.gap === 'minor')) lines.push('- Minor dispo → lire le changelog, bumper le plancher, build + smoke.');
-    if (upgrades.some((u) => u.gap === 'major')) lines.push('- **Major dispo** → vérifier la compat de l\'adaptateur Cloudflare en premier (dépendance qui commande), worktree isolé, build + Playwright avant deploy.');
-    if (risky.length) lines.push(`- ⚠️ ${risky.length} surface(s) breaking désormais présente(s) → un futur major demandera plus de soin.`);
-  }
-  console.log(lines.join('\n'));
+  console.log(brief);
 }
 
 process.exit(shouldAlert ? 10 : 0);
