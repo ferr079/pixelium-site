@@ -27,6 +27,10 @@ export default defineConfig({
     provider: fontProviders.local(),
     name: 'JetBrains Mono',
     cssVariable: '--font-jetbrains-mono',
+    // Generic fallback MUST be monospace (default is sans-serif): box-drawing/block
+    // glyphs used in the ASCII art aren't in the latin subset, so they fall through
+    // to the fallback — which must stay fixed-width or the ASCII art misaligns.
+    fallbacks: ['monospace'],
     options: {
       variants: [
         { weight: 400, style: 'normal', src: ['./src/assets/fonts/jetbrains-mono-latin-400.woff2'] },
