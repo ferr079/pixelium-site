@@ -1,21 +1,28 @@
 ---
+import { getBuildStats } from '../lib/build-stats';
+
 interface Props {
   stats: Array<{ number: string; label: string; stat?: string; suffix?: string }>;
 }
 
 const { stats } = Astro.props;
+const live = await getBuildStats();
+// Bake the real value into the static HTML; the count-up animates straight to it
+// (no fallback → value flash). Falls back to the hardcoded number if KV had no key.
+const resolved = stats.map((s) => ({
+  label: s.label,
+  display: s.stat && live[s.stat] != null ? `${live[s.stat]}${s.suffix || ''}` : s.number,
+}));
 ---
 
 <section class="stats">
   <div class="stats-container">
     <div class="stats-grid">
-      {stats.map((s, i) => (
+      {resolved.map((s, i) => (
         <>
           {i > 0 && <div class="stat-sep"></div>}
           <div class="stat reveal">
-            <span class="stat-number" data-target={s.number}
-              {...(s.stat ? { 'data-stat': s.stat, 'data-stat-suffix': s.suffix || '' } : {})}
-            >{s.number}</span>
+            <span class="stat-number" data-target={s.display}>{s.display}</span>
             <span class="stat-label">{s.label}</span>
           </div>
         </>

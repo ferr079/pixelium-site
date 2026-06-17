@@ -14,6 +14,16 @@ interface Props {
 
 const { bricks, heading, no_data_label } = Astro.props;
 const lang = Astro.url.pathname.startsWith('/fr') ? 'fr' : 'en';
+
+// Bake real values at build so the grid never shows a stale fallback. The client
+// script below still runs to light the live dot + "X min ago" freshness badge and
+// confirm the current values per visit.
+const { getBuildStats } = await import('../lib/build-stats');
+const live = await getBuildStats();
+const baked = bricks.map((b) => ({
+  ...b,
+  value: live[b.key] != null ? `${live[b.key]}${b.suffix || ''}` : b.fallback,
+}));
 ---
 
 <section class="live-stats reveal" data-lang={lang}>
@@ -24,10 +34,10 @@ const lang = Astro.url.pathname.startsWith('/fr') ? 'fr' : 'en';
       <span class="live-timestamp" id="live-timestamp">{no_data_label}</span>
     </div>
     <div class="live-grid">
-      {bricks.map((brick, i) => (
+      {baked.map((brick, i) => (
         <div class="live-brick" style={`--delay: ${i * 80}ms`}>
-          <span class="brick-value" data-key={brick.key} data-suffix={brick.suffix || ''} data-fallback={brick.fallback}>
-            {brick.fallback}
+          <span class="brick-value" data-key={brick.key} data-suffix={brick.suffix || ''} data-fallback={brick.value}>
+            {brick.value}
           </span>
           <span class="brick-label">{brick.label}</span>
         </div>

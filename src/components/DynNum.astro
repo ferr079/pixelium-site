@@ -1,15 +1,17 @@
 ---
 /**
- * DynNum — inline dynamic number from /api/stats
+ * DynNum — inline number baked from the homelab stats at build time.
  *
- * Renders fallback in static HTML (SSG/SEO).
- * Client-side script in Base.astro fetches /api/stats once
- * and updates all [data-stat] elements.
+ * The real value is fetched once per build (see lib/build-stats) and rendered
+ * straight into the static HTML — no client fetch, no fallback "flash". CI rebuilds
+ * daily, so the number stays fresh. If the build couldn't reach /api/stats, the
+ * `fallback` prop is used.
  *
  * Usage:
- *   <DynNum stat="lxc_count" fallback="30+" suffix="+" />
- *   → static: "30+", dynamic: "35+"
+ *   <DynNum stat="lxc_count" fallback="53+" suffix="+" />
  */
+import { statValue } from '../lib/build-stats';
+
 interface Props {
   stat: string;
   fallback: string;
@@ -17,5 +19,6 @@ interface Props {
 }
 
 const { stat, fallback, suffix = '' } = Astro.props;
+const display = await statValue(stat, fallback, suffix);
 ---
-<span data-stat={stat} data-stat-suffix={suffix}>{fallback}</span>
+<span>{display}</span>
