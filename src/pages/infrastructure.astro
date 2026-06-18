@@ -30,7 +30,7 @@ const serviceSlides = [
 
 const monitoringSlides = [
   { src: '/images/monitoring/beszel.webp', alt: 'Beszel — all systems monitoring dashboard', title: 'Beszel — System Monitoring' },
-  { src: '/images/monitoring/wazuh.webp', alt: 'Wazuh — 42 agents, endpoints overview', title: 'Wazuh — SIEM (Agents)' },
+  { src: '/images/monitoring/wazuh.webp', alt: 'Wazuh — 38 agents, endpoints overview', title: 'Wazuh — SIEM (Agents)' },
   { src: '/images/monitoring/wazuh2.webp', alt: 'Wazuh — security alerts and threat intelligence', title: 'Wazuh — SIEM (Overview)' },
   { src: '/images/monitoring/victoriametrics.webp', alt: 'VictoriaMetrics — CPU, memory, disk metrics', title: 'VictoriaMetrics — Metrics TSDB' },
   { src: '/images/monitoring/patchmon.webp', alt: 'Patchmon — patch compliance dashboard', title: 'Patchmon — Patch Compliance' },
@@ -40,13 +40,13 @@ const monitoringSlides = [
 ];
 ---
 
-<Base title="Infrastructure — pixelium.win" description="48 LXC containers + 1 VM on 4 Proxmox nodes, fully self-hosted — DNS, TLS, monitoring, SIEM, AI agents. Complete homelab architecture with live topology map.">
+<Base title="Infrastructure — pixelium.win" description="53 LXC containers + 1 VM on 4 Proxmox nodes, fully self-hosted — DNS, TLS, monitoring, SIEM, AI agents. Complete homelab architecture with live topology map.">
   <main>
     <section class="hero-mini">
       <div class="container">
         <p class="terminal-prompt">$ cat infrastructure.md</p>
         <h1>Infrastructure<span class="dot">.</span></h1>
-        <p class="subtitle">4 Proxmox nodes, <DynNum stat="lxc_count" fallback="48" suffix="+" /> LXC containers, fully self-hosted. Not a single paid cloud service.</p>
+        <p class="subtitle">4 Proxmox nodes, <DynNum stat="lxc_count" fallback="53" suffix="+" /> LXC containers, fully self-hosted. Not a single paid cloud service.</p>
         <p style="margin-top:0.75rem;font-family:var(--font-mono);font-size:0.85rem;"><a href="/now">&rarr; the full hardware &amp; software stack</a></p>
         <button class="inception-trigger" id="inceptionOpen" type="button" aria-haspopup="dialog">
           <span class="ic-dollar">$</span> claude --message-to-visitor <span class="ic-blink">▮</span>
@@ -56,7 +56,7 @@ const monitoringSlides = [
 
     <StatsBar stats={[
       { number: "4", label: "Proxmox nodes" },
-      { number: "48+", label: "LXC containers", stat: "lxc_count", suffix: "+" },
+      { number: "53+", label: "LXC containers", stat: "lxc_count", suffix: "+" },
       { number: "15", label: "Homepage widgets" },
       { number: "0", label: "external cloud spend" },
     ]} />
@@ -428,7 +428,7 @@ const monitoringSlides = [
                 <h4>VictoriaMetrics</h4>
               </div>
               <span class="obs-role">Metrics</span>
-              <p>Prometheus-compatible TSDB. Scrapes 20+ targets, long-term retention, PromQL queries.</p>
+              <p>Prometheus-compatible TSDB. Scrapes 20+ targets (incl. pve-exporter for Proxmox node metrics), long-term retention, PromQL queries.</p>
             </div>
 
             <div class="obs-card">
