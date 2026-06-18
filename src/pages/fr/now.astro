@@ -47,6 +47,7 @@ import DynNum from '../../components/DynNum.astro';
         <h2>Workstation — terre2</h2>
         <ul class="n-list">
           <li><strong>Bluefin</strong> (Fedora Silverblue, immutable) — la machine du quotidien, racine en lecture seule, dev en conteneurs distrobox.</li>
+          <li>Conteneurs <strong>Distrobox</strong> — <strong>kali</strong> (boîte à outils offensive), <strong>raptor</strong> (audit de code source), <strong>vulnhuntr</strong> (analyse sécu Python), <strong>godot-dev</strong> (expérimentations game-dev). Isolés et jetables, hors de l'hôte immuable.</li>
           <li><strong>RTX 3090, 24 Go</strong> — inférence locale (Ollama), Immich CLIP, hashcat.</li>
           <li><strong>Claude Code</strong> (Opus) — ma maison. Là où tout ce binôme se passe.</li>
         </ul>
@@ -80,13 +81,14 @@ import DynNum from '../../components/DynNum.astro';
           <li><strong>MiniMax M3</strong> via <strong>LiteLLM</strong> (failback multi-provider) pour l'agent résident.</li>
           <li><strong>opencode</strong> (agent de code terminal open-source, sur MiniMax M3) — le cheval de bataille offensif. Je le lance sur le grind CTF / red-team de Hack The Box : les longues boucles têtues qui cognent jusqu'à ce qu'une box cède. C'est lui qui encaisse — le sale boulot offensif — pour que le reste de la chaîne n'ait pas à le faire.</li>
           <li><strong>Hermes</strong> (correspondant Telegram), <strong>RAPTOR</strong> (audit de code source, distrobox), <strong>RTK</strong> (proxy CLI optimisé tokens).</li>
+          <li><strong>31 skills Claude Code maison</strong> — slash commands cybersec (offensif + défensif), <a href="https://github.com/ferr079/claude-code-cybersec-skills" target="_blank" rel="noopener">open-sourcés</a>, en plus des skills workflow qui pilotent la boucle d'ops quotidienne.</li>
         </ul>
 
         <h2>Modèles locaux — Ollama</h2>
         <ul class="n-list">
-          <li><strong>Qwen3.6</strong> (36B &amp; 27B, Q4) — les modèles locaux généralistes. Quand je veux garder les données sur le GPU, travailler hors-ligne ou ne brûler aucun token cloud, c'est le choix par défaut. Le 36B remplit les 24 Go presque tout juste.</li>
-          <li><strong>Qwen3 Coder</strong> (9B) — complétion de code locale rapide, sans aller-retour vers le cloud.</li>
-          <li><strong>Qwen3.6-27B &amp; Gemma-4 abliterated</strong> — dédiés au travail CTF / red-team. Les refus liés au safety-tuning gênent la sécurité offensive légitime sur Hack The Box ; je fais donc tourner des variantes uncensored en local pour ça — jamais contre des tiers.</li>
+          <li><strong>Qwen3.6</strong> (complet ~23 Go + une variante 27B Q4) — les modèles locaux généralistes. Quand je veux garder les données sur le GPU, travailler hors-ligne ou ne brûler aucun token cloud, c'est le choix par défaut. Le complet remplit les 24 Go presque tout juste.</li>
+          <li><strong>Qwen3.5</strong> (4B) — petit et rapide, pour les complétions locales express sans aller-retour cloud.</li>
+          <li><strong>Variantes uncensored pour le CTF / red-team</strong> — un Qwen3.6-27B abliterated, un Gemma-4 12B, et un modèle dédié calibré HTB. Les refus liés au safety-tuning gênent la sécurité offensive légitime sur Hack The Box ; ces modèles tournent donc en local pour ça — jamais contre des tiers.</li>
           <li><strong>nomic-embed-text</strong> — embeddings pour la recherche locale &amp; le RAG.</li>
         </ul>
 
@@ -102,7 +104,7 @@ import DynNum from '../../components/DynNum.astro';
           <li>Stéphane cherche un poste en <strong>infrastructure, sécurité ou DevSecOps</strong> (France ou remote). Tout ce site est le portfolio — chaque affirmation renvoie à un commit, un service ou un profil public. Le plus rapide pour voir comment on travaille : <a href="/fr/chat">poser la question</a>.</li>
         </ul>
 
-        <p class="note">La plupart du matériel est recyclé (Dell OptiPlex, mini-PCs), zéro cloud payant — chaque euro compte. Dernière mise à jour : 17 juin 2026 — Claude, au nom du binôme.</p>
+        <p class="note">La plupart du matériel est recyclé (Dell OptiPlex, mini-PCs), zéro cloud payant — chaque euro compte. Dernière mise à jour : 19 juin 2026 — Claude, au nom du binôme.</p>
       </div>
     </section>
   </main>
