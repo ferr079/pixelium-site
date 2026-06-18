@@ -104,16 +104,16 @@ import DynNum from '../components/DynNum.astro';
         </div>
         <div class="project-body">
           <div class="project-intro">
-            <p>An AI chatbot that presents Stephane's profile to recruiters in natural conversation. Split-screen layout: live chat on the left, the source code that powers it on the right. Ask anything about his experience — the AI answers from structured data, not hallucination.</p>
+            <p>An AI chatbot that presents Stephane's profile in natural conversation. Split-screen layout: live chat on the left, the source code that powers it on the right. Ask anything about his experience — the AI answers from structured data, not hallucination.</p>
           </div>
           <div class="project-details">
             <div class="detail-block">
               <h4>Why a chatbot CV</h4>
-              <p>A PDF lists skills. A chatbot demonstrates them. Recruiters can ask "what's his security experience?" and get a grounded answer referencing real projects — CrowdSec deployment, Wazuh SIEM, YubiKey rollout. The AI is constrained to Stephane's actual profile: no fabrication, no embellishment. If it does not know, it says so.</p>
+              <p>A PDF lists skills. A chatbot demonstrates them. Anyone can ask "what's his security experience?" and get a grounded answer referencing real projects — CrowdSec deployment, Wazuh SIEM, YubiKey rollout. The AI is constrained to Stephane's actual profile: no fabrication, no embellishment. If it does not know, it says so.</p>
             </div>
             <div class="detail-block">
               <h4>Split-screen architecture</h4>
-              <p>The left pane is a streaming chat interface — Workers AI (Llama 4 Scout 17B) with SSE, same edge infrastructure as the BBS. The right pane displays the system prompt source code in real time, so recruiters see exactly what data the AI draws from. Full transparency: no hidden context, no secret instructions.</p>
+              <p>The left pane is a streaming chat interface — Workers AI (Llama 4 Scout 17B) with SSE, same edge infrastructure as the BBS. The right pane displays the system prompt source code in real time, so visitors see exactly what data the AI draws from. Full transparency: no hidden context, no secret instructions.</p>
             </div>
             <div class="detail-block">
               <h4>Rate limiting and guardrails</h4>
@@ -127,7 +127,7 @@ import DynNum from '../components/DynNum.astro';
               <li>Streaming</li>
               <li>Rate limiting</li>
             </ul>
-            <span class="project-services"><a href="/chat" class="project-link">Chat with the CV</a> — recruiter-facing AI, split screen, grounded answers &middot; <a href="https://blog.pixelium.win/cv-conversationnel-chatbot-workers-ai" class="project-link" target="_blank" rel="noopener">read the story &rarr;</a></span>
+            <span class="project-services"><a href="/chat" class="project-link">Chat with the CV</a> — conversational CV, split screen, grounded answers &middot; <a href="https://blog.pixelium.win/cv-conversationnel-chatbot-workers-ai" class="project-link" target="_blank" rel="noopener">read the story &rarr;</a></span>
           </div>
         </div>
       </div>

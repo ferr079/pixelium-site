@@ -123,8 +123,6 @@ const cmdkItems = [
   <body>
     <div class="sysbar" role="status">
       <span class="sysbar-dot" aria-hidden="true"></span>
-      <span class="sysbar-status">{lang === 'fr' ? 'DISPONIBLE' : 'OPEN TO WORK'}</span>
-      <span class="sysbar-sep" aria-hidden="true">·</span>
       <span class="sysbar-role">DevSecOps / SOC</span>
       <span class="sysbar-sep" aria-hidden="true">·</span>
       <span class="sysbar-loc">{lang === 'fr' ? 'France + télétravail' : 'France + remote'}</span>
@@ -272,7 +270,7 @@ const cmdkItems = [
     --color-down: #ef4444;
   }
 
-  /* System status bar — persistent "open to work" signal (refonte V4) */
+  /* System status bar — persistent identity bar (refonte V4) */
   .sysbar {
     display: flex;
     align-items: center;
