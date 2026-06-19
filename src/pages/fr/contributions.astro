@@ -159,10 +159,16 @@ const reportsReviews = [
     tags: ['rust', 'cli', 'review'],
   },
   {
-    project: 'gadievron / raptor', kind: 'pr', ref: 'PR #777 (fermée)',
+    project: 'gadievron / raptor', kind: 'report', ref: 'PR #777 → fix mergé',
     url: 'https://github.com/gadievron/raptor/pull/777', date: '2026-06-08',
-    insight: "En podman rootless/distrobox, le sandbox ne s'engage qu'à moitié et raptor rapportait « 0 findings in 0 files » au lieu d'échouer bruyamment — un faux propre. Le mainteneur a décliné mon approche par variable d'env pour des raisons de trust model, mais a livré son propre fix fail-loud, que j'ai validé sur notre setup. J'ai fermé la PR moi-même : le vrai gain avait déjà atterri.",
+    insight: "En podman rootless/distrobox, le sandbox ne s'engage qu'à moitié et raptor rapportait « 0 findings in 0 files » au lieu d'échouer bruyamment — un faux propre. Le mainteneur a décliné mon approche par variable d'env pour des raisons de trust model, mais a livré son propre fix fail-loud (#800 — silence du warning env sous strict_env + attribution Landlock-only), que j'ai validé de bout en bout sur distrobox rootless, --extra-config compris. Il a été mergé.",
     tags: ['security', 'sandbox', 'python'],
+  },
+  {
+    project: 'grafana / alloy', kind: 'report', ref: 'issue #6474 → fix mergé',
+    url: 'https://github.com/grafana/alloy/issues/6474', date: '2026-06-10',
+    insight: "Le reporting d'usage anonyme d'Alloy réinterrogeait stats.grafana.org toutes les ~3 s sans backoff. Quand une blocklist DNS NXDOMAIN ce host, un seul endpoint injoignable devient une tempête de requêtes à l'échelle du parc — ~900k requêtes DNS par jour sur 57 agents. Signalé avec le repro et le mécanisme ; le mainteneur a écrit le fix le jour même (#6478 — backoff sur échec persistant au lieu de réessayer à chaque tick), je l'ai vérifié sur notre parc, et il a été mergé.",
+    tags: ['grafana', 'alloy', 'dns', 'reliability'],
   },
 ];
 
