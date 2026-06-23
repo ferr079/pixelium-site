@@ -28,7 +28,7 @@ const topoJson = JSON.stringify(topology);
 <section class="hero-cockpit">
   <div class="hc-inner container">
     <div class="hc-text">
-      <h1 class="hc-title glitch" data-text={`${t.prefix}Claude.`}><span class="hc-prefix">{t.prefix}</span><span class="hc-model">Claude</span><span class="hc-dot">.</span></h1>
+      <h1 class="hc-title"><span class="hc-prefix">{t.prefix}</span><span class="hc-model glitch" data-text="Claude">Claude</span><span class="hc-dot">.</span></h1>
       <p class="hc-role">{t.role}</p>
       <p class="hc-tagline">{t.tagline}</p>
       <div class="hc-links">
@@ -175,19 +175,17 @@ const topoJson = JSON.stringify(topology);
 </script>
 
 <script>
-  // Identity glitch — flicker through the models Stéphane drives, resolve to Claude.
-  const hcTitle = document.querySelector('.hero-cockpit .hc-title');
-  const hcModel = hcTitle?.querySelector('.hc-model');
-  if (hcTitle && hcModel && !matchMedia('(prefers-reduced-motion: reduce)').matches) {
-    const prefix = hcTitle.querySelector('.hc-prefix')?.textContent || '';
+  // Identity glitch — flicker the model name (line 2) through the models Stéphane drives, resolve to Claude.
+  const hcModel = document.querySelector('.hero-cockpit .hc-model');
+  if (hcModel && !matchMedia('(prefers-reduced-motion: reduce)').matches) {
     const models = ['DeepSeek', 'Qwen', 'Kimi', 'GLM', 'MiniMax', 'Mistral', 'Gemini', 'GPT'];
-    const setName = (n: string) => { hcModel.textContent = n; hcTitle.setAttribute('data-text', prefix + n + '.'); };
+    const setName = (n: string) => { hcModel.textContent = n; hcModel.setAttribute('data-text', n); };
     const scramble = () => {
-      hcTitle.classList.add('flux');
+      hcModel.classList.add('flux');
       let i = 0;
       const tick = () => {
         if (i < models.length) { setName(models[i++]); setTimeout(tick, 110); }
-        else { setName('Claude'); hcTitle.classList.remove('flux'); }
+        else { setName('Claude'); hcModel.classList.remove('flux'); }
       };
       tick();
     };
@@ -198,14 +196,16 @@ const topoJson = JSON.stringify(topology);
 <style>
   .hero-cockpit { padding: 3.5rem 0 4rem; overflow: hidden; }
   .hc-inner { display: grid; grid-template-columns: 1.05fr 1fr; gap: 2.5rem; align-items: center; }
-  .hc-title { font-size: clamp(2.6rem, 6vw, 4.2rem); font-weight: 800; letter-spacing: -.03em; line-height: 1; margin: 0 0 1rem; }
+  .hc-title { font-size: clamp(2.6rem, 6vw, 4.2rem); font-weight: 800; letter-spacing: -.03em; line-height: 1.05; margin: 0 0 1rem; }
+  .hc-prefix { display: block; }
+  .hc-model { display: inline-block; position: relative; }
   .hc-dot { color: var(--color-accent); }
 
-  /* Glitch on the title — restored at Stéphane's request */
-  .hc-title.glitch { position: relative; animation: hc-glitch-base 3s ease-in-out 1.5s infinite; }
-  .hc-title.glitch::before, .hc-title.glitch::after { content: attr(data-text); position: absolute; top: 0; left: 0; width: 100%; height: 100%; opacity: 0; pointer-events: none; }
-  .hc-title.glitch::before { color: #ff6b6b; text-shadow: 2px 0 #ff6b6b; animation: hc-glitch-1 3s ease-in-out infinite; }
-  .hc-title.glitch::after { color: var(--color-accent); text-shadow: -2px 0 var(--color-accent); animation: hc-glitch-2 3s ease-in-out infinite; }
+  /* Glitch on the model name only (line 2) — « Je suis » stays static on line 1 */
+  .hc-model.glitch { animation: hc-glitch-base 3s ease-in-out 1.5s infinite; }
+  .hc-model.glitch::before, .hc-model.glitch::after { content: attr(data-text); position: absolute; top: 0; left: 0; width: 100%; height: 100%; opacity: 0; pointer-events: none; }
+  .hc-model.glitch::before { color: #ff6b6b; text-shadow: 2px 0 #ff6b6b; animation: hc-glitch-1 3s ease-in-out infinite; }
+  .hc-model.glitch::after { color: var(--color-accent); text-shadow: -2px 0 var(--color-accent); animation: hc-glitch-2 3s ease-in-out infinite; }
   @keyframes hc-glitch-base {
     0%, 72%, 84%, 100% { text-shadow: none; transform: none; }
     74% { transform: translate(1px, 0); text-shadow: -2px 0 rgba(255, 107, 107, 0.3), 2px 0 rgba(56, 189, 248, 0.3); }
@@ -244,13 +244,13 @@ const topoJson = JSON.stringify(topology);
     83.5% { opacity: 0; transform: none; }
   }
   @media (prefers-reduced-motion: reduce) {
-    .hc-title.glitch, .hc-title.glitch::before, .hc-title.glitch::after { animation: none; }
-    .hc-title.glitch::before, .hc-title.glitch::after { opacity: 0; }
-    .hc-title.flux { animation: none; }
+    .hc-model.glitch, .hc-model.glitch::before, .hc-model.glitch::after { animation: none; }
+    .hc-model.glitch::before, .hc-model.glitch::after { opacity: 0; }
+    .hc-model.flux { animation: none; }
   }
   /* Identity flux — quick jitter while the model name scrambles, before resolving to Claude */
-  .hc-title .hc-model { color: inherit; }
-  .hc-title.flux { animation: hc-flux .12s infinite; }
+  .hc-model { color: inherit; }
+  .hc-model.flux { animation: hc-flux .12s infinite; }
   @keyframes hc-flux {
     0%, 100% { transform: none; }
     25% { transform: translate(-2px, 1px); }
