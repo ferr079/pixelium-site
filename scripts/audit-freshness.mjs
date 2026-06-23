@@ -29,6 +29,14 @@ const CHECKS = [
   { file: 'src/pages/index.astro', re: /(\d+) playbooks covering/, key: 'ansible_playbooks', label: 'index.astro — Ansible playbooks (IaC card)' },
   { file: 'src/pages/fr/index.astro', re: /SSH durci sur (\d+) h(?:ô|o)tes/, key: 'ansible_hosts', label: 'fr/index.astro — SSH hosts (Security card)' },
   { file: 'src/pages/fr/index.astro', re: /(\d+) playbooks couvrent/, key: 'ansible_playbooks', label: 'fr/index.astro — Ansible playbooks (IaC card)' },
+  // Static prose / SEO meta / chatbot display — NOT DynNum-backed, so they drift
+  // silently until a manual check catches them (happened 2026-06-23: LXC 48/53, playbooks 41/46). Pinned here so CI catches it instead.
+  { file: 'src/pages/chat.astro', re: /Proxmox nodes, (\d+) LXC/, key: 'lxc_count', label: 'chat.astro — LXC (terminal block)' },
+  { file: 'src/pages/chat.astro', re: /(\d+) Ansible playbooks/, key: 'ansible_playbooks', label: 'chat.astro — Ansible playbooks (terminal block)' },
+  { file: 'src/pages/index.astro', re: /(\d+) LXC containers \+ 1 VM/, key: 'lxc_count', label: 'index.astro — LXC (Virtualization card)' },
+  { file: 'src/pages/fr/index.astro', re: /(\d+) conteneurs LXC \+ 1 VM/, key: 'lxc_count', label: 'fr/index.astro — LXC (Virtualization card)' },
+  { file: 'src/pages/infrastructure.astro', re: /(\d+) LXC containers \+ 1 VM on 4 Proxmox/, key: 'lxc_count', label: 'infrastructure.astro — LXC (meta description)' },
+  { file: 'src/pages/fr/infrastructure.astro', re: /(\d+) conteneurs LXC \+ 1 VM sur/, key: 'lxc_count', label: 'fr/infrastructure.astro — LXC (meta description)' },
 ];
 
 const STATS_URL = 'https://pixelium.win/api/stats';
