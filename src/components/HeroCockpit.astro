@@ -186,7 +186,7 @@ const topoJson = JSON.stringify(topology);
       hcTitle.classList.add('flux');
       let i = 0;
       const tick = () => {
-        if (i < models.length) { setName(models[i++]); setTimeout(tick, 80); }
+        if (i < models.length) { setName(models[i++]); setTimeout(tick, 110); }
         else { setName('Claude'); hcTitle.classList.remove('flux'); }
       };
       tick();
@@ -250,7 +250,7 @@ const topoJson = JSON.stringify(topology);
   }
   /* Identity flux — quick jitter while the model name scrambles, before resolving to Claude */
   .hc-title .hc-model { color: inherit; }
-  .hc-title.flux { animation: hc-flux .1s infinite; }
+  .hc-title.flux { animation: hc-flux .12s infinite; }
   @keyframes hc-flux {
     0%, 100% { transform: none; }
     25% { transform: translate(-2px, 1px); }
