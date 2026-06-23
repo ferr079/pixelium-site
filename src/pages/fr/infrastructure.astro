@@ -40,13 +40,13 @@ const monitoringSlides = [
 ];
 ---
 
-<Base title="Infrastructure — pixelium.win" description="53 conteneurs LXC + 1 VM sur 4 nœuds Proxmox, tout self-hosted — DNS, TLS, monitoring, SIEM, agents IA. Architecture complète du homelab pixelium avec carte topologique live.">
+<Base title="Infrastructure — pixelium.win" description="56 conteneurs LXC + 1 VM sur 4 nœuds Proxmox, tout self-hosted — DNS, TLS, monitoring, SIEM, agents IA. Architecture complète du homelab pixelium avec carte topologique live.">
   <main>
     <section class="hero-mini">
       <div class="container">
         <p class="terminal-prompt">$ cat infrastructure.md</p>
         <h1>Infrastructure<span class="dot">.</span></h1>
-        <p class="subtitle">4 nœuds Proxmox, <DynNum stat="lxc_count" fallback="53" suffix="+" /> conteneurs LXC, tout self-hosted. Pas un seul service cloud payant.</p>
+        <p class="subtitle">4 nœuds Proxmox, <DynNum stat="lxc_count" fallback="56" suffix="+" /> conteneurs LXC, tout self-hosted. Pas un seul service cloud payant.</p>
         <p style="margin-top:0.75rem;font-family:var(--font-mono);font-size:0.85rem;"><a href="/fr/now">&rarr; tout le matériel &amp; la stack logicielle</a></p>
         <button class="inception-trigger" id="inceptionOpen" type="button" aria-haspopup="dialog">
           <span class="ic-dollar">$</span> claude --message-au-visiteur <span class="ic-blink">▮</span>
@@ -56,7 +56,7 @@ const monitoringSlides = [
 
     <StatsBar stats={[
       { number: "4", label: "noeuds Proxmox" },
-      { number: "53+", label: "conteneurs LXC", stat: "lxc_count", suffix: "+" },
+      { number: "56+", label: "conteneurs LXC", stat: "lxc_count", suffix: "+" },
       { number: "15", label: "widgets Homepage" },
       { number: "0", label: "euro cloud externe" },
     ]} />
@@ -193,7 +193,7 @@ const monitoringSlides = [
               <div class="tech-card-body">
                 <p class="tech-why"><strong>Pourquoi :</strong> Hyperviseur libre avec LXC natif — les conteneurs démarrent en 2 secondes et consomment 50 Mo de RAM. PBS intégré pour les backups. API complète.</p>
                 <p class="tech-alt"><span class="alt-label">Écartés :</span> ESXi (payant depuis 2024), Hyper-V (Windows only), XCP-ng (moins de communauté)</p>
-                <p class="tech-result"><span class="result-label">Résultat :</span> 4 nœuds hétérogènes, <DynNum stat="lxc_count" fallback="53" suffix="+" /> CTs, backups incrémentaux via PBS</p>
+                <p class="tech-result"><span class="result-label">Résultat :</span> 4 nœuds hétérogènes, <DynNum stat="lxc_count" fallback="56" suffix="+" /> CTs, backups incrémentaux via PBS</p>
               </div>
             </div>
 
@@ -253,7 +253,7 @@ const monitoringSlides = [
               <div class="tech-card-body">
                 <p class="tech-why"><strong>Pourquoi :</strong> Agentless — SSH suffit, pas de daemon à installer sur 38+ CTs. Idempotent — je relance un playbook sans risque. Semaphore ajoute une UI web pour les lancements en 1 clic.</p>
                 <p class="tech-alt"><span class="alt-label">Écartés :</span> Puppet/Chef (agents sur chaque hôte), Terraform (provisioning, pas config management)</p>
-                <p class="tech-result"><span class="result-label">Résultat :</span> <DynNum stat="ansible_playbooks" fallback="46" /> playbooks opérationnels, déploiement d'agent Wazuh/Beszel en 1 commande</p>
+                <p class="tech-result"><span class="result-label">Résultat :</span> <DynNum stat="ansible_playbooks" fallback="49" /> playbooks opérationnels, déploiement d'agent Wazuh/Beszel en 1 commande</p>
               </div>
             </div>
 

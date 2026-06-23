@@ -106,12 +106,12 @@ IT career progression:
 - Association work — organized music events
 
 CURRENT HOMELAB (production, 24/7, 0€ cloud):
-- 4 Proxmox nodes (N5105 + Ryzen 7 7840HS + i7-2600K + i5-3470S), 49 LXC containers + 1 VM
+- 4 Proxmox nodes (N5105 + Ryzen 7 7840HS + i7-2600K + i5-3470S), 56 LXC containers + 1 VM
 - DNS: TechnitiumDNS primary+secondary, DoT 853, DNSSEC
 - HTTPS: Traefik + step-ca internal PKI (ACME, 90-day auto-renewal)
 - Security: Authentik SSO, CrowdSec IPS (57 scenarios), Wazuh SIEM, Headscale VPN mesh, Infisical secrets manager + KeePassXC, SSH hardened 34 hosts, YubiKey FIDO2
 - Observability: VictoriaMetrics, Grafana, Loki+Alloy, Beszel (30 agents), Uptime-Kuma, Patchmon
-- Automation: 46 Ansible playbooks, 34 hosts, Semaphore (manual runs) + Dagu (scheduled DAGs)
+- Automation: 49 Ansible playbooks, 34 hosts, Semaphore (manual runs) + Dagu (scheduled DAGs)
 - Git: Forgejo self-hosted + 133+ mirrors archived on a cold-storage node for offline resilience + CI/CD with Podman runners
 - Storage: OpenMediaVault NAS, PBS automated backups, Samba
 - Media: Jellyfin (8 CIFS mounts), Kavita, Immich

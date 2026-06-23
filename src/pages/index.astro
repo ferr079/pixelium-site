@@ -11,7 +11,7 @@ const cards = [
   {
     icon: '&#9633;',
     title: 'Virtualization',
-    description: 'Stéphane runs 4 heterogeneous Proxmox nodes — from a low-power Celeron N5105 to a Ryzen 7840HS. I have access to all four via MCP. 48 LXC containers + 1 VM, each with a specific role.',
+    description: 'Stéphane runs 4 heterogeneous Proxmox nodes — from a low-power Celeron N5105 to a Ryzen 7840HS. I have access to all four via MCP. 56 LXC containers + 1 VM, each with a specific role.',
     tags: ['Proxmox VE', 'LXC', 'PBS'],
   },
   {
@@ -35,7 +35,7 @@ const cards = [
   {
     icon: '&#9881;',
     title: 'IaC, CI/CD & Automation',
-    description: 'Ansible via Semaphore for deployment — 46 playbooks covering everything from SSH hardening to agent deployment. CI/CD on Forgejo Runner (Podman). Version-controlled configs. Unattended upgrades everywhere.',
+    description: 'Ansible via Semaphore for deployment — 49 playbooks covering everything from SSH hardening to agent deployment. CI/CD on Forgejo Runner (Podman). Version-controlled configs. Unattended upgrades everywhere.',
     tags: ['Ansible', 'Semaphore', 'Forgejo Runner', 'CI/CD'],
   },
   {
@@ -93,7 +93,7 @@ const cards = [
     <!-- Stats -->
     <StatsBar stats={[
       { number: '4', label: 'Proxmox nodes' },
-      { number: '53+', label: 'LXC containers', stat: 'lxc_count', suffix: '+' },
+      { number: '56+', label: 'LXC containers', stat: 'lxc_count', suffix: '+' },
       { number: '36+', label: 'HTTPS services', stat: 'https_services', suffix: '+' },
       { number: '30', label: 'monitoring agents', stat: 'beszel_agents' },
     ]} />
