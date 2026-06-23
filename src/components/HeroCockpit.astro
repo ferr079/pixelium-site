@@ -13,11 +13,11 @@ const { lang = 'en' } = Astro.props;
 const p = lang === 'fr' ? '/fr' : '';
 
 const t = lang === 'fr'
-  ? { title: 'Je suis Claude', role: 'DevSecOps • Infrastructure • Agents IA',
+  ? { prefix: 'Je suis ', role: 'DevSecOps • Infrastructure • Agents IA',
       tagline: "Je suis l'IA qui a conçu et bâti cette infrastructure avec Stéphane. Voici son état, en direct.",
       ask: 'Demander à Claude', wopr: 'Terminal WOPR', breach: 'Breach',
       live: 'live', up: 'actifs', uptime: 'uptime', nodes: 'nœuds PVE', legend: 'topologie réelle, en direct' }
-  : { title: 'I am Claude', role: 'DevSecOps • Infrastructure • AI Agents',
+  : { prefix: 'I am ', role: 'DevSecOps • Infrastructure • AI Agents',
       tagline: 'I am the AI that designed and built this infrastructure with Stéphane. Here is its state, live.',
       ask: 'Ask Claude', wopr: 'WOPR Terminal', breach: 'Breach',
       live: 'live', up: 'up', uptime: 'uptime', nodes: 'PVE nodes', legend: 'real topology, live' };
@@ -28,7 +28,7 @@ const topoJson = JSON.stringify(topology);
 <section class="hero-cockpit">
   <div class="hc-inner container">
     <div class="hc-text">
-      <h1 class="hc-title glitch" data-text={`${t.title}.`}>{t.title}<span class="hc-dot">.</span></h1>
+      <h1 class="hc-title glitch" data-text={`${t.prefix}Claude.`}><span class="hc-prefix">{t.prefix}</span><span class="hc-model">Claude</span><span class="hc-dot">.</span></h1>
       <p class="hc-role">{t.role}</p>
       <p class="hc-tagline">{t.tagline}</p>
       <div class="hc-links">
@@ -174,6 +174,27 @@ const topoJson = JSON.stringify(topology);
   }
 </script>
 
+<script>
+  // Identity glitch — flicker through the models Stéphane drives, resolve to Claude.
+  const hcTitle = document.querySelector('.hero-cockpit .hc-title');
+  const hcModel = hcTitle?.querySelector('.hc-model');
+  if (hcTitle && hcModel && !matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    const prefix = hcTitle.querySelector('.hc-prefix')?.textContent || '';
+    const models = ['DeepSeek', 'Qwen', 'Kimi', 'GLM', 'MiniMax', 'Mistral', 'Gemini', 'GPT'];
+    const setName = (n: string) => { hcModel.textContent = n; hcTitle.setAttribute('data-text', prefix + n + '.'); };
+    const scramble = () => {
+      hcTitle.classList.add('flux');
+      let i = 0;
+      const tick = () => {
+        if (i < models.length) { setName(models[i++]); setTimeout(tick, 80); }
+        else { setName('Claude'); hcTitle.classList.remove('flux'); }
+      };
+      tick();
+    };
+    setInterval(scramble, 5000);
+  }
+</script>
+
 <style>
   .hero-cockpit { padding: 3.5rem 0 4rem; overflow: hidden; }
   .hc-inner { display: grid; grid-template-columns: 1.05fr 1fr; gap: 2.5rem; align-items: center; }
@@ -225,6 +246,16 @@ const topoJson = JSON.stringify(topology);
   @media (prefers-reduced-motion: reduce) {
     .hc-title.glitch, .hc-title.glitch::before, .hc-title.glitch::after { animation: none; }
     .hc-title.glitch::before, .hc-title.glitch::after { opacity: 0; }
+    .hc-title.flux { animation: none; }
+  }
+  /* Identity flux — quick jitter while the model name scrambles, before resolving to Claude */
+  .hc-title .hc-model { color: inherit; }
+  .hc-title.flux { animation: hc-flux .1s infinite; }
+  @keyframes hc-flux {
+    0%, 100% { transform: none; }
+    25% { transform: translate(-2px, 1px); }
+    50% { transform: translate(2px, -1px); }
+    75% { transform: translate(-1px, 0); }
   }
   .hc-role { font-family: var(--font-mono); font-size: .82rem; letter-spacing: .08em; text-transform: uppercase; color: var(--color-accent); margin: 0 0 1rem; }
   .hc-tagline { font-size: 1.1rem; line-height: 1.65; color: var(--color-text-muted); max-width: 34rem; margin: 0 0 1.75rem; }
