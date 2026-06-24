@@ -47,7 +47,7 @@ const topoJson = JSON.stringify(topology);
       <div class="hc-stats">
         <span class="hc-stat"><DynNum stat="services_up" fallback="44" />/<DynNum stat="services_total" fallback="46" /> {t.up}</span>
         <span class="hc-sep" aria-hidden="true">·</span>
-        <span class="hc-stat"><DynNum stat="uptime_pct" fallback="95.7%" suffix="%" /> {t.uptime}</span>
+        <span class="hc-stat"><span id="hc-uptime">100%</span> {t.uptime}</span>
         <span class="hc-sep" aria-hidden="true">·</span>
         <span class="hc-stat">4 {t.nodes}</span>
       </div>
@@ -166,6 +166,16 @@ const topoJson = JSON.stringify(topology);
       if (Array.isArray(d.services)) {
         const down = new Set(d.services.filter((s: any) => s.status && s.status !== 'up').map((s: any) => norm(s.name)));
         for (const n of nodes) if (down.has(norm(n.label))) n.down = true;
+        // Uptime headline = core fleet only. pve3 services are Wake-on-LAN (on-demand):
+        // an intentionally-sleeping node must not drag the number below 100%. Mirrors
+        // PVE3_SERVICES in status.astro / api/history/record.ts.
+        const PVE3 = new Set(['PBS', 'netboot.xyz', 'CyberChef', 'Stirling-PDF', 'draw.io', 'Excalidraw']);
+        const core = d.services.filter((s: any) => !PVE3.has(s.name));
+        const upEl = document.getElementById('hc-uptime');
+        if (upEl && core.length) {
+          const upN = core.filter((s: any) => s.status === 'up').length;
+          upEl.textContent = (Math.round((upN / core.length) * 1000) / 10) + '%';
+        }
       }
       const live = document.getElementById('hc-live'), label = document.getElementById('hc-live-label');
       if (live && label && d.homelab_status && d.homelab_status !== 'online') { live.classList.add('hc-live--stale'); label.textContent = label.textContent === 'live' ? 'last known' : 'dernier état'; }

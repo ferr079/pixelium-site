@@ -22,7 +22,12 @@ const { getBuildStats } = await import('../lib/build-stats');
 const live = await getBuildStats();
 const baked = bricks.map((b) => ({
   ...b,
-  value: live[b.key] != null ? `${live[b.key]}${b.suffix || ''}` : b.fallback,
+  // uptime_pct is CORE-FLEET availability — computed client-side from /api/status
+  // (pve3 Wake-on-LAN excluded). The raw KV value counts all services, so don't bake it;
+  // use the fallback until the client script fills the real core value.
+  value: b.key === 'uptime_pct'
+    ? b.fallback
+    : (live[b.key] != null ? `${live[b.key]}${b.suffix || ''}` : b.fallback),
 }));
 ---
 
@@ -80,6 +85,7 @@ const baked = bricks.map((b) => ({
 
       bricks.forEach(el => {
         const key = (el as HTMLElement).dataset.key!;
+        if (key === 'uptime_pct') return; // core-fleet, recomputed below from /api/status
         const val = data.stats[key];
         if (val == null) return;
         const suffix = (el as HTMLElement).dataset.suffix || '';
@@ -90,6 +96,29 @@ const baked = bricks.map((b) => ({
           (el as HTMLElement).textContent = val + suffix;
         }
       });
+
+      // uptime_pct brick = CORE-FLEET availability. pve3 (Wake-on-LAN, on-demand) is
+      // excluded so a sleeping node doesn't drag it below 100%. Recompute from /api/status,
+      // mirroring PVE3_SERVICES in status.astro / api/history/record.ts.
+      const upBrick = document.querySelector('.brick-value[data-key="uptime_pct"]') as HTMLElement | null;
+      if (upBrick) {
+        try {
+          const sres = await fetch('/api/status');
+          if (sres.ok) {
+            const sdata = await sres.json();
+            if (Array.isArray(sdata.services)) {
+              const PVE3 = new Set(['PBS', 'netboot.xyz', 'CyberChef', 'Stirling-PDF', 'draw.io', 'Excalidraw']);
+              const core = sdata.services.filter((s: any) => !PVE3.has(s.name));
+              if (core.length) {
+                const upN = core.filter((s: any) => s.status === 'up').length;
+                const pct = Math.round((upN / core.length) * 1000) / 10;
+                if (!reducedMotion) animateValue(upBrick, pct, '%');
+                else upBrick.textContent = pct + '%';
+              }
+            }
+          }
+        } catch (_) { /* keep fallback */ }
+      }
 
       if (dot) dot.classList.add('live');
       if (ts && data.updated_at) {
