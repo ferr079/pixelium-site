@@ -45,11 +45,11 @@ const topoJson = JSON.stringify(topology);
       </div>
       <canvas id="hc-canvas" class="hc-canvas" aria-hidden="true"></canvas>
       <div class="hc-stats">
-        <span class="hc-stat"><DynNum stat="services_up" fallback="44" />/<DynNum stat="services_total" fallback="46" /> {t.up}</span>
+        <span class="hc-stat"><span class="hc-num"><DynNum stat="services_up" fallback="44" />/<DynNum stat="services_total" fallback="46" /></span> <span class="hc-lbl">{t.up}</span></span>
         <span class="hc-sep" aria-hidden="true">·</span>
-        <span class="hc-stat"><span id="hc-uptime">100%</span> {t.uptime}</span>
+        <span class="hc-stat"><span class="hc-num" id="hc-uptime">100%</span> <span class="hc-lbl">{t.uptime}</span></span>
         <span class="hc-sep" aria-hidden="true">·</span>
-        <span class="hc-stat">4 {t.nodes}</span>
+        <span class="hc-stat"><span class="hc-num">4</span> <span class="hc-lbl">{t.nodes}</span></span>
       </div>
     </div>
   </div>
@@ -204,11 +204,19 @@ const topoJson = JSON.stringify(topology);
 </script>
 
 <style>
-  .hero-cockpit { padding: 3.5rem 0 4rem; overflow: hidden; }
-  .hc-inner { display: grid; grid-template-columns: 1.05fr 1fr; gap: 2.5rem; align-items: center; }
+  .hero-cockpit { position: relative; padding: 3.5rem 0 4rem; overflow: hidden; }
+  /* Observatory depth: a faint accent glow upper-left + a low dot-grid behind the hero */
+  .hero-cockpit::before {
+    content: ''; position: absolute; inset: 0; z-index: 0; pointer-events: none;
+    background:
+      radial-gradient(640px 400px at 16% 28%, rgba(56, 189, 248, 0.07), transparent 70%),
+      radial-gradient(rgba(148, 163, 184, 0.05) 1px, transparent 1px);
+    background-size: 100% 100%, 22px 22px;
+  }
+  .hc-inner { position: relative; z-index: 1; display: grid; grid-template-columns: 1.05fr 1fr; gap: 2.5rem; align-items: center; }
   .hc-title { font-size: clamp(2.6rem, 6vw, 4.2rem); font-weight: 800; letter-spacing: -.03em; line-height: 1.05; margin: 0 0 1rem; }
   .hc-prefix { display: block; }
-  .hc-model { display: inline-block; position: relative; }
+  .hc-model { display: inline-block; position: relative; min-width: 4ch; }
   .hc-dot { color: var(--color-accent); }
 
   /* Glitch on the model name only (line 2) — « Je suis » stays static on line 1 */
@@ -267,6 +275,9 @@ const topoJson = JSON.stringify(topology);
     50% { transform: translate(2px, -1px); }
     75% { transform: translate(-1px, 0); }
   }
+  /* Cockpit-style stats: accent numerals, small-caps labels */
+  .hc-num { color: var(--color-accent); font-weight: 700; }
+  .hc-lbl { color: var(--color-text-muted); font-size: .72rem; letter-spacing: .07em; text-transform: uppercase; }
   .hc-role { font-family: var(--font-mono); font-size: .82rem; letter-spacing: .08em; text-transform: uppercase; color: var(--color-accent); margin: 0 0 1rem; }
   .hc-tagline { font-size: 1.1rem; line-height: 1.65; color: var(--color-text-muted); max-width: 34rem; margin: 0 0 1.75rem; }
   .hc-links { display: flex; flex-wrap: wrap; gap: .6rem; }
