@@ -79,8 +79,27 @@ public/images/
   services/           — 10 screenshots (Traefik, Authentik, Technitium, Semaphore, NetBox, Immich, ByteStash, Joplin, OMV, netboot)
   monitoring/         — 5 screenshots (Beszel, Wazuh×2, VictoriaMetrics, Patchmon)
 ```
-Images served from **Cloudflare R2 CDN** (`assets.pixelium.win`). Upload: `aws s3 sync public/images/ s3://pixelium-assets/images/ --endpoint-url "$R2_ENDPOINT" --region auto --exclude "*.png"`
+Images served from **Cloudflare R2 CDN** (`assets.pixelium.win`). `aws` (awscli, brew sur l'hôte terre2) — creds R2 mappés depuis `secrets.env`.
 Convert with: `magick input.png -resize '1200x>' -quality 80 output.webp`
+
+**Mettre à jour UNE image** (recommandé — `cp` ciblé, PAS `sync` du dossier) :
+```bash
+set -a; source ~/.claude/secrets.env; set +a
+AWS_ACCESS_KEY_ID="$R2_ACCESS_KEY_ID" AWS_SECRET_ACCESS_KEY="$R2_SECRET_ACCESS_KEY" \
+  aws s3 cp public/images/<f>.webp s3://pixelium-assets/images/<f>.webp \
+  --endpoint-url "$R2_ENDPOINT" --region auto
+# PUIS purge cache CDN (sinon le edge sert l'ancienne ~4h, même nom d'objet) :
+python3 - <<'PY'  # zone pixelium.win = 12961123076e01643b3df3aded6e7982 ; purge = Global API Key requise
+import os,json,urllib.request
+s={}
+[s.__setitem__(k.strip(),v.strip().strip('"').strip("'")) for k,v in (l.split('=',1) for l in open(os.path.expanduser('~/.claude/secrets.env')) if '=' in l and not l.startswith('#'))]
+req=urllib.request.Request('https://api.cloudflare.com/client/v4/zones/12961123076e01643b3df3aded6e7982/purge_cache',
+  data=json.dumps({"files":["https://assets.pixelium.win/images/<f>.webp"]}).encode(),method='POST')
+req.add_header('Content-Type','application/json'); req.add_header('X-Auth-Email',s['CLOUDFLARE_EMAIL']); req.add_header('X-Auth-Key',s['CLOUDFLARE_API_KEY'])
+print(json.load(urllib.request.urlopen(req)).get('success'))
+PY
+```
+⚠️ **Ne PAS faire `aws s3 sync public/images/` du dossier entier** : `sync` compare taille+mtime et re-pousse tout objet R2 dont l'état diverge du repo — écrase silencieusement d'éventuelles variantes R2 (2026-06-25 : a re-poussé 8 screenshots services/monitoring ; sans gravité ici, dimensions identiques, mais R2 n'a **pas** de versioning → irréversible). Cibler le fichier modifié.
 `src/config.ts` defines `ASSETS_BASE`. `Screenshot.astro` and `Carousel.astro` auto-prefix `/images/` paths to R2.
 
 ## API endpoints (hybrid mode — Cloudflare Workers)
