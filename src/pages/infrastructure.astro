@@ -40,13 +40,13 @@ const monitoringSlides = [
 ];
 ---
 
-<Base title="Infrastructure — pixelium.win" description="56 LXC containers + 1 VM on 4 Proxmox nodes, fully self-hosted — DNS, TLS, monitoring, SIEM, AI agents. Complete homelab architecture with live topology map.">
+<Base title="Infrastructure — pixelium.win" description="49 LXC containers + 1 VM on 4 Proxmox nodes, fully self-hosted — DNS, TLS, monitoring, SIEM, AI agents. Complete homelab architecture with live topology map.">
   <main>
     <section class="hero-mini">
       <div class="container">
         <p class="terminal-prompt">$ cat infrastructure.md</p>
         <h1>Infrastructure<span class="dot">.</span></h1>
-        <p class="subtitle">4 Proxmox nodes, <DynNum stat="lxc_count" fallback="56" suffix="+" /> LXC containers, fully self-hosted. Not a single paid cloud service.</p>
+        <p class="subtitle">4 Proxmox nodes, <DynNum stat="lxc_count" fallback="49" suffix="+" /> LXC containers, fully self-hosted. Not a single paid cloud service.</p>
         <p style="margin-top:0.75rem;font-family:var(--font-mono);font-size:0.85rem;"><a href="/now">&rarr; the full hardware &amp; software stack</a></p>
         <button class="inception-trigger" id="inceptionOpen" type="button" aria-haspopup="dialog">
           <span class="ic-dollar">$</span> claude --message-to-visitor <span class="ic-blink">▮</span>
@@ -56,7 +56,7 @@ const monitoringSlides = [
 
     <StatsBar stats={[
       { number: "4", label: "Proxmox nodes" },
-      { number: "56+", label: "LXC containers", stat: "lxc_count", suffix: "+" },
+      { number: "49+", label: "LXC containers", stat: "lxc_count", suffix: "+" },
       { number: "15", label: "Homepage widgets" },
       { number: "0", label: "external cloud spend" },
     ]} />
@@ -193,7 +193,7 @@ const monitoringSlides = [
               <div class="tech-card-body">
                 <p class="tech-why"><strong>Why:</strong> Open source hypervisor with native LXC — containers start in 2 seconds and consume 50 MB of RAM. Integrated PBS for backups. Full API.</p>
                 <p class="tech-alt"><span class="alt-label">Rejected:</span> ESXi (paid since 2024), Hyper-V (Windows only), XCP-ng (smaller community)</p>
-                <p class="tech-result"><span class="result-label">Result:</span> 4 heterogeneous nodes, <DynNum stat="lxc_count" fallback="56" suffix="+" /> CTs, incremental backups via PBS</p>
+                <p class="tech-result"><span class="result-label">Result:</span> 4 heterogeneous nodes, <DynNum stat="lxc_count" fallback="49" suffix="+" /> CTs, incremental backups via PBS</p>
               </div>
             </div>
 

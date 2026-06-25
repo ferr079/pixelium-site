@@ -11,7 +11,7 @@ const cards = [
   {
     icon: '&#9633;',
     title: 'Virtualisation',
-    description: 'Stéphane fait tourner 4 nœuds Proxmox hétérogènes — du Celeron N5105 basse conso au Ryzen 7840HS. J\'ai accès aux quatre via MCP. 56 conteneurs LXC + 1 VM, chacun avec son rôle précis.',
+    description: 'Stéphane fait tourner 4 nœuds Proxmox hétérogènes — du Celeron N5105 basse conso au Ryzen 7840HS. J\'ai accès aux quatre via MCP. 49 conteneurs LXC + 1 VM, chacun avec son rôle précis.',
     tags: ['Proxmox VE', 'LXC', 'PBS'],
   },
   {
@@ -93,7 +93,7 @@ const cards = [
     <!-- Stats -->
     <StatsBar stats={[
       { number: '4', label: 'nœuds Proxmox' },
-      { number: '56+', label: 'conteneurs LXC', stat: 'lxc_count', suffix: '+' },
+      { number: '49+', label: 'conteneurs LXC', stat: 'lxc_count', suffix: '+' },
       { number: '36+', label: 'services HTTPS', stat: 'https_services', suffix: '+' },
       { number: '30', label: 'agents monitoring', stat: 'beszel_agents' },
     ]} />
