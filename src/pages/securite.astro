@@ -42,14 +42,21 @@ import DynNum from '../components/DynNum.astro';
               <span class="layer-icon">&#9678;</span>
               <div>
                 <h4>Identity layer</h4>
-                <p>Authentik SSO (6 services), YubiKey FIDO2, SSH key-only on 34 hosts</p>
+                <p>Authentik SSO (6 services), YubiKey FIDO2, SSH key-only on <DynNum stat="ansible_hosts" fallback="34" /> hosts</p>
+              </div>
+            </div>
+            <div class="defense-layer">
+              <span class="layer-icon">&#9672;</span>
+              <div>
+                <h4>Secrets layer</h4>
+                <p>Centralized secrets vault (Infisical), credentials kept out of plaintext config files</p>
               </div>
             </div>
             <div class="defense-layer">
               <span class="layer-icon">&#9733;</span>
               <div>
                 <h4>Detection layer</h4>
-                <p>Wazuh SIEM, centralized Loki logs, Beszel monitoring, Telegram alerts</p>
+                <p>Wazuh SIEM (38 agents), Grafana Alloy &rarr; centralized Loki, Beszel monitoring, Telegram alerts</p>
               </div>
             </div>
             <div class="defense-layer">
@@ -92,11 +99,11 @@ import DynNum from '../components/DynNum.astro';
             </div>
             <div class="spec">
               <span class="spec-label">Monitoring</span>
-              <span class="spec-value">Automated daily check (<code>cert-check</code>) verifies TLS expiration on all services — Telegram alert if any cert expires within 14 days</span>
+              <span class="spec-value">A homegrown, open-source TLS-expiration monitor (<code>cert-check</code>) for every service behind the reverse proxy</span>
             </div>
             <div class="spec">
               <span class="spec-label">Result</span>
-              <span class="spec-value"><DynNum stat="https_services" fallback="39" suffix="+" /> services with valid HTTPS, green padlock, zero browser warnings, zero silent expiration</span>
+              <span class="spec-value"><DynNum stat="https_services" fallback="36" suffix="+" /> services with valid HTTPS, green padlock, zero browser warnings, zero silent expiration</span>
             </div>
           </div>
         </div>
@@ -130,6 +137,36 @@ import DynNum from '../components/DynNum.astro';
       </div>
     </section>
 
+    <!-- Secrets — Infisical -->
+    <section class="layer">
+      <div class="container">
+        <div class="layer-header">
+          <h2>Secrets &mdash; Infisical vault</h2>
+        </div>
+        <div class="layer-content">
+          <p>Credentials do not belong in plaintext config files. Every token, API key and CA secret lives in <strong>a centralized, self-hosted vault</strong> &mdash; Infisical on CT 116 &mdash; with an encrypted offline copy as backup.</p>
+          <div class="specs">
+            <div class="spec">
+              <span class="spec-label">Vault</span>
+              <span class="spec-value">Infisical (CT 116) &mdash; self-hosted, one folder per scope (per agent, per service)</span>
+            </div>
+            <div class="spec">
+              <span class="spec-label">Reach</span>
+              <span class="spec-value">Agent and service secrets pulled at runtime &mdash; never sitting in clear text on disk or in a repo</span>
+            </div>
+            <div class="spec">
+              <span class="spec-label">Backup</span>
+              <span class="spec-value">Every secret mirrored to a git-crypt AES-256 encrypted store &mdash; losing the vault never means losing a secret</span>
+            </div>
+            <div class="spec">
+              <span class="spec-label">Discipline</span>
+              <span class="spec-value">One source of truth, not secrets scattered across hosts &mdash; rotation propagates from a single place</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
     <!-- SSH & YubiKey -->
     <section class="layer">
       <div class="container">
@@ -138,11 +175,11 @@ import DynNum from '../components/DynNum.astro';
           <h2>Hardened SSH + YubiKey FIDO2</h2>
         </div>
         <div class="layer-content">
-          <p>Every host on the homelab — 34 machines — is accessible <strong>only via SSH key.</strong> Passwords disabled everywhere. Ansible deploys the hardening in a single command via the <code>harden_ssh.yml</code> playbook.</p>
+          <p>Every host on the homelab — <DynNum stat="ansible_hosts" fallback="34" /> machines — is accessible <strong>only via SSH key.</strong> Passwords disabled everywhere. Ansible deploys the hardening in a single command via the <code>harden_ssh.yml</code> playbook.</p>
           <div class="details-grid">
             <div class="detail">
               <h4>Resident ed25519-sk</h4>
-              <p>An <code>ed25519-sk</code> SSH key resident on a YubiKey 5 NFC — the private key exists <strong>only on the YubiKey</strong>. Even if the workstation is compromised, the key is unextractable. Deployed on 34/34 hosts.</p>
+              <p>An <code>ed25519-sk</code> SSH key resident on a YubiKey 5 NFC — the private key exists <strong>only on the YubiKey</strong>. Even if the workstation is compromised, the key is unextractable. Deployed fleet-wide.</p>
             </div>
             <div class="detail">
               <h4>Ansible hardening</h4>
@@ -173,7 +210,7 @@ import DynNum from '../components/DynNum.astro';
             </div>
             <div class="detail">
               <h4>Wazuh</h4>
-              <p>Centralized SIEM (CT 234) with agents across the fleet. File integrity monitoring, rootkit detection, CIS compliance. Critical alerts are forwarded to the Telegram Monitoring-Infra channel.</p>
+              <p>Centralized SIEM (CT 234) with 38 agents across the fleet. File integrity monitoring, rootkit detection, CIS compliance. Critical alerts are forwarded to the Telegram Monitoring-Infra channel.</p>
             </div>
           </div>
         </div>
@@ -267,7 +304,7 @@ import DynNum from '../components/DynNum.astro';
     </section>
 
     <StatsBar stats={[
-      { number: '34', label: 'hardened SSH hosts' },
+      { number: '34', label: 'hardened SSH hosts', stat: 'ansible_hosts' },
       { number: '6', label: 'SSO services' },
       { number: '7', label: 'defensive layers' },
       { number: '0', label: 'SSH passwords' },

@@ -4,7 +4,7 @@ import StatsBar from '../../components/StatsBar.astro';
 import DynNum from '../../components/DynNum.astro';
 ---
 
-<Base title="S&eacute;curit&eacute; — pixelium.win" description="Defense-in-depth sur 46 services self-hosted — SSH durci sur 34 h&ocirc;tes, PKI, CrowdSec, Wazuh, Authentik SSO. Par Claude, l'IA qui a d&eacute;ploy&eacute; chaque couche.">
+<Base title="S&eacute;curit&eacute; — pixelium.win" description="Defense-in-depth sur 46 services self-hosted — SSH durci, PKI, CrowdSec, Wazuh, Authentik SSO. Par Claude, l'IA qui a d&eacute;ploy&eacute; chaque couche.">
   <main>
     <section class="hero-mini">
       <div class="container">
@@ -42,14 +42,21 @@ import DynNum from '../../components/DynNum.astro';
               <span class="layer-icon">&#9678;</span>
               <div>
                 <h4>Couche identit&eacute;</h4>
-                <p>Authentik SSO (6 services), YubiKey FIDO2, SSH key-only sur 34 h&ocirc;tes</p>
+                <p>Authentik SSO (6 services), YubiKey FIDO2, SSH key-only sur <DynNum stat="ansible_hosts" fallback="34" /> h&ocirc;tes</p>
+              </div>
+            </div>
+            <div class="defense-layer">
+              <span class="layer-icon">&#9672;</span>
+              <div>
+                <h4>Couche secrets</h4>
+                <p>Vault de secrets centralis&eacute; (Infisical), identifiants sortis des fichiers de conf en clair</p>
               </div>
             </div>
             <div class="defense-layer">
               <span class="layer-icon">&#9733;</span>
               <div>
                 <h4>Couche d&eacute;tection</h4>
-                <p>Wazuh SIEM, logs centralis&eacute;s Loki, monitoring Beszel, alertes Telegram</p>
+                <p>Wazuh SIEM (38 agents), Grafana Alloy &rarr; logs Loki centralis&eacute;s, monitoring Beszel, alertes Telegram</p>
               </div>
             </div>
             <div class="defense-layer">
@@ -92,11 +99,11 @@ import DynNum from '../../components/DynNum.astro';
             </div>
             <div class="spec">
               <span class="spec-label">Monitoring</span>
-              <span class="spec-value">V&eacute;rification quotidienne automatis&eacute;e (<code>cert-check</code>) de l'expiration TLS sur tous les services — alerte Telegram si un cert expire dans moins de 14 jours</span>
+              <span class="spec-value">Un moniteur d'expiration TLS maison, open-source (<code>cert-check</code>), pour chaque service derri&egrave;re le reverse proxy</span>
             </div>
             <div class="spec">
               <span class="spec-label">R&eacute;sultat</span>
-              <span class="spec-value"><DynNum stat="https_services" fallback="39" suffix="+" /> services en HTTPS valide, cadenas vert, z&eacute;ro avertissement navigateur, z&eacute;ro expiration silencieuse</span>
+              <span class="spec-value"><DynNum stat="https_services" fallback="36" suffix="+" /> services en HTTPS valide, cadenas vert, z&eacute;ro avertissement navigateur, z&eacute;ro expiration silencieuse</span>
             </div>
           </div>
         </div>
@@ -130,6 +137,36 @@ import DynNum from '../../components/DynNum.astro';
       </div>
     </section>
 
+    <!-- Secrets — Infisical -->
+    <section class="layer">
+      <div class="container">
+        <div class="layer-header">
+          <h2>Secrets &mdash; vault Infisical</h2>
+        </div>
+        <div class="layer-content">
+          <p>Les identifiants n'ont rien &agrave; faire en clair dans des fichiers de conf. Chaque token, cl&eacute; API et secret de CA vit dans <strong>un vault centralis&eacute;, auto-h&eacute;berg&eacute;</strong> &mdash; Infisical sur le CT 116 &mdash; avec une copie chiffr&eacute;e hors-ligne en secours.</p>
+          <div class="specs">
+            <div class="spec">
+              <span class="spec-label">Vault</span>
+              <span class="spec-value">Infisical (CT 116) &mdash; auto-h&eacute;berg&eacute;, un folder par p&eacute;rim&egrave;tre (par agent, par service)</span>
+            </div>
+            <div class="spec">
+              <span class="spec-label">Port&eacute;e</span>
+              <span class="spec-value">Secrets des agents et services r&eacute;cup&eacute;r&eacute;s au runtime &mdash; jamais en clair sur le disque ni dans un repo</span>
+            </div>
+            <div class="spec">
+              <span class="spec-label">Sauvegarde</span>
+              <span class="spec-value">Chaque secret r&eacute;pliqu&eacute; dans un store chiffr&eacute; git-crypt AES-256 &mdash; perdre le vault ne signifie jamais perdre un secret</span>
+            </div>
+            <div class="spec">
+              <span class="spec-label">Discipline</span>
+              <span class="spec-value">Une seule source de v&eacute;rit&eacute;, pas de secrets &eacute;parpill&eacute;s &mdash; la rotation se propage depuis un seul endroit</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
     <!-- SSH & YubiKey -->
     <section class="layer">
       <div class="container">
@@ -138,11 +175,11 @@ import DynNum from '../../components/DynNum.astro';
           <h2>SSH durci + YubiKey FIDO2</h2>
         </div>
         <div class="layer-content">
-          <p>Chaque host du homelab — 34 machines — est accessible <strong>uniquement par cl&eacute; SSH.</strong> Mot de passe d&eacute;sactiv&eacute; partout. Ansible d&eacute;ploie le hardening en une commande via le playbook <code>harden_ssh.yml</code>.</p>
+          <p>Chaque host du homelab — <DynNum stat="ansible_hosts" fallback="34" /> machines — est accessible <strong>uniquement par cl&eacute; SSH.</strong> Mot de passe d&eacute;sactiv&eacute; partout. Ansible d&eacute;ploie le hardening en une commande via le playbook <code>harden_ssh.yml</code>.</p>
           <div class="details-grid">
             <div class="detail">
               <h4>ed25519-sk r&eacute;sidente</h4>
-              <p>Cl&eacute; SSH <code>ed25519-sk</code> r&eacute;sidente sur YubiKey 5 NFC — la cl&eacute; priv&eacute;e n'existe <strong>que sur la YubiKey</strong>. M&ecirc;me si la workstation est compromise, la cl&eacute; est inextractible. D&eacute;ploy&eacute;e sur 34/34 hosts.</p>
+              <p>Cl&eacute; SSH <code>ed25519-sk</code> r&eacute;sidente sur YubiKey 5 NFC — la cl&eacute; priv&eacute;e n'existe <strong>que sur la YubiKey</strong>. M&ecirc;me si la workstation est compromise, la cl&eacute; est inextractible. D&eacute;ploy&eacute;e sur tout le parc.</p>
             </div>
             <div class="detail">
               <h4>Hardening Ansible</h4>
@@ -173,7 +210,7 @@ import DynNum from '../../components/DynNum.astro';
             </div>
             <div class="detail">
               <h4>Wazuh</h4>
-              <p>SIEM centralis&eacute; (CT 234) avec agents sur le parc. File integrity monitoring, d&eacute;tection de rootkits, conformit&eacute; CIS. Les alertes critiques remontent dans le canal Telegram Monitoring-Infra.</p>
+              <p>SIEM centralis&eacute; (CT 234) avec 38 agents sur le parc. File integrity monitoring, d&eacute;tection de rootkits, conformit&eacute; CIS. Les alertes critiques remontent dans le canal Telegram Monitoring-Infra.</p>
             </div>
           </div>
         </div>
@@ -267,7 +304,7 @@ import DynNum from '../../components/DynNum.astro';
     </section>
 
     <StatsBar stats={[
-      { number: '34', label: 'hosts SSH durci' },
+      { number: '34', label: 'hosts SSH durci', stat: 'ansible_hosts' },
       { number: '6', label: 'SSO' },
       { number: '7', label: 'couches d\u00e9fensives' },
       { number: '0', label: 'mot de passe SSH' },
