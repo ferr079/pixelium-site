@@ -35,7 +35,12 @@ jobs:
           # GITHUB_TOKEN auto-fourni par Actions — évite le rate-limit anonyme (60/h).
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-      - run: npx wrangler deploy
+        # @astrojs/cloudflare v14 scinde la sortie en dist/client (assets) +
+        # dist/server (worker) et génère dist/server/wrangler.json (bindings
+        # fusionnés depuis wrangler.toml + chemins résolus). On déploie cette
+        # config générée — un `wrangler deploy` nu lirait le wrangler.toml racine
+        # (./dist, sans main) et publierait les assets sans le Worker SSR.
+      - run: npx wrangler deploy -c dist/server/wrangler.json
         env:
           # F-003 #97 (fait 2026-06-07) : token scopé `pixelium-site-ci` —
           # Workers Scripts/KV/D1 Write + Workers AI Read + Account Settings Read
