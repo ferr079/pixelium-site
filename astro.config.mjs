@@ -52,5 +52,13 @@ export default defineConfig({
       'import.meta.env.PUBLIC_COMMIT_SHA': JSON.stringify(commitSha),
       'import.meta.env.PUBLIC_BUILD_TIME': JSON.stringify(buildTime),
     },
+    build: {
+      // Astro 7 / Vite 8 default CSS minifier (esbuild) wrongly folds
+      // `animation-timeline: view()` into the `animation` shorthand →
+      // `animation: linear both reveal-in view()` (invalid) → scroll-reveal
+      // never runs → content stuck at opacity:0. Disable CSS minify to keep the
+      // source intact. TEST — verify the .reveal rule before keeping.
+      cssMinify: false,
+    },
   },
 });
