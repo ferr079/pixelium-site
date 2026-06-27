@@ -1,5 +1,9 @@
 ---
 import Base from '../layouts/Base.astro';
+import { getBuildStats } from '../lib/build-stats';
+
+// Same baked-at-build source as DynNum — the preview self-aligns on the daily rebuild
+const stats = await getBuildStats();
 
 const codePrompt = `<span class="c-cmt">// What powers this chatbot</span>
 <span class="c-cmt">// Model: Cloudflare Workers AI</span>
@@ -16,10 +20,10 @@ const codePrompt = `<span class="c-cmt">// What powers this chatbot</span>
   Every fact is verifiable — git history,
   ops journal, or public profiles.
 
-  46 services in production
-  4 Proxmox nodes, 49 LXC
-  HTB Hacker #858 global
-  49 Ansible playbooks, 34 hosts
+  ${stats.services_total} services in production
+  4 Proxmox nodes, ${stats.lxc_count} LXC
+  HTB Hacker #${stats.htb_ranking} global
+  ${stats.ansible_playbooks} Ansible playbooks, ${stats.ansible_hosts} hosts
   Internal PKI, SSO, IPS, SIEM, VPN
   ...
 \`</span>;
