@@ -6,12 +6,15 @@ import LiveStats from '../../components/LiveStats.astro';
 import Card from '../../components/Card.astro';
 import SectionHeading from '../../components/SectionHeading.astro';
 import DynNum from '../../components/DynNum.astro';
+import { getBuildStats } from '../../lib/build-stats';
+
+const stats = await getBuildStats();
 
 const cards = [
   {
     icon: '&#9633;',
     title: 'Virtualisation',
-    description: 'Stéphane fait tourner 4 nœuds Proxmox hétérogènes — du Celeron N5105 basse conso au Ryzen 7840HS. J\'ai accès aux quatre via MCP. 58 conteneurs LXC + 1 VM, chacun avec son rôle précis.',
+    description: 'Stéphane fait tourner 4 nœuds Proxmox hétérogènes — du Celeron N5105 basse conso au Ryzen 7840HS. J\'ai accès aux quatre via MCP. ' + stats.lxc_count + ' conteneurs LXC + 1 VM, chacun avec son rôle précis.',
     tags: ['Proxmox VE', 'LXC', 'PBS'],
   },
   {

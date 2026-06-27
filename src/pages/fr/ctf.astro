@@ -5,7 +5,7 @@ import DynNum from '../../components/DynNum.astro';
 import Screenshot from '../../components/Screenshot.astro';
 
 // HTB — fetch at build time
-let htb = { rank: 'Hacker', ranking: 881, system_owns: 33, user_owns: 36 };
+let htb = { rank: 'Hacker', ranking: 881, system_owns: 34, user_owns: 37 };
 try {
   const htbRes = await fetch('https://labs.hackthebox.com/api/v4/user/profile/basic/1161145', {
     headers: { 'Authorization': `Bearer ${import.meta.env.HTB_API_TOKEN}` },
@@ -58,9 +58,9 @@ try {
           </div>
           <Screenshot
             src="/images/htb-dashboard.webp"
-            alt="Tableau de bord Hack The Box Labs de Stéphane : rang Hacker, niveau Professional 50, tier Silver"
+            alt="Tableau de bord Hack The Box Labs de Stéphane : rang Hacker, niveau Professional 50, tier Ruby Saison 11"
             title="HTB Labs — Ferr079"
-            caption="Le tableau de bord derrière les chiffres — rang Hacker · Professional Niv. 50 · tier Silver Saison 11 · série de 6 semaines (aperçu, juin 2026)"
+            caption="Le tableau de bord derrière les chiffres — rang Hacker · Professional Niv. 50 · tier Ruby Saison 11 #381 · série de 6 semaines (aperçu, juin 2026)"
           />
         </div>
       </div>

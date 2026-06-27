@@ -18,7 +18,6 @@ const root = join(dirname(fileURLToPath(import.meta.url)), '..');
 // Each check: the captured group (1) is parsed as an int and compared to stats[key].
 const CHECKS = [
   { file: 'src/pages/api/chat.ts', re: /(\d+) Proxmox nodes/, key: 'proxmox_nodes', label: 'chat.ts — Proxmox nodes' },
-  { file: 'src/pages/api/chat.ts', re: /(\d+) LXC containers/, key: 'lxc_count', label: 'chat.ts — LXC containers' },
   { file: 'src/pages/api/chat.ts', re: /SSH hardened (\d+) hosts/, key: 'ansible_hosts', label: 'chat.ts — SSH hardened hosts' },
   { file: 'src/pages/api/chat.ts', re: /Beszel \((\d+) agents\)/, key: 'beszel_agents', label: 'chat.ts — Beszel agents' },
   { file: 'src/pages/api/chat.ts', re: /(\d+) Ansible playbooks/, key: 'ansible_playbooks', label: 'chat.ts — Ansible playbooks' },
@@ -29,13 +28,12 @@ const CHECKS = [
   { file: 'src/pages/index.astro', re: /(\d+) playbooks covering/, key: 'ansible_playbooks', label: 'index.astro — Ansible playbooks (IaC card)' },
   { file: 'src/pages/fr/index.astro', re: /SSH durci sur (\d+) h(?:ô|o)tes/, key: 'ansible_hosts', label: 'fr/index.astro — SSH hosts (Security card)' },
   { file: 'src/pages/fr/index.astro', re: /(\d+) playbooks couvrent/, key: 'ansible_playbooks', label: 'fr/index.astro — Ansible playbooks (IaC card)' },
-  // Static prose / SEO meta — NOT DynNum-backed, so they drift silently until a
-  // manual check catches them (happened 2026-06-23: LXC 48/53, playbooks 41/46). Pinned here so CI catches it instead.
-  // (chat.astro's terminal block is now baked from build-stats like DynNum — it self-aligns, no longer pinned here.)
-  { file: 'src/pages/index.astro', re: /(\d+) LXC containers \+ 1 VM/, key: 'lxc_count', label: 'index.astro — LXC (Virtualization card)' },
-  { file: 'src/pages/fr/index.astro', re: /(\d+) conteneurs LXC \+ 1 VM/, key: 'lxc_count', label: 'fr/index.astro — LXC (Virtualization card)' },
-  { file: 'src/pages/infrastructure.astro', re: /(\d+) LXC containers \+ 1 VM on 4 Proxmox/, key: 'lxc_count', label: 'infrastructure.astro — LXC (meta description)' },
-  { file: 'src/pages/fr/infrastructure.astro', re: /(\d+) conteneurs LXC \+ 1 VM sur/, key: 'lxc_count', label: 'fr/infrastructure.astro — LXC (meta description)' },
+  // Static prose / SEO meta — the ansible_hosts/playbooks literals above still need
+  // pinning (manual check 2026-06-23 caught LXC 48/53, playbooks 41/46).
+  // lxc_count was the worst offender (drifted 49→58→59 in days as the homelab grew):
+  // ALL its literals are now dynamic — `${stats.lxc_count}` from build-stats on the
+  // index cards + infra meta (EN/FR), and fuzzy "~60" in the chat.ts system prompt —
+  // so no lxc literal can lie anymore. Nothing left to pin for it.
 ];
 
 const STATS_URL = 'https://pixelium.win/api/stats';

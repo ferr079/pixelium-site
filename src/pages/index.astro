@@ -6,12 +6,15 @@ import LiveStats from '../components/LiveStats.astro';
 import Card from '../components/Card.astro';
 import SectionHeading from '../components/SectionHeading.astro';
 import DynNum from '../components/DynNum.astro';
+import { getBuildStats } from '../lib/build-stats';
+
+const stats = await getBuildStats();
 
 const cards = [
   {
     icon: '&#9633;',
     title: 'Virtualization',
-    description: 'Stéphane runs 4 heterogeneous Proxmox nodes — from a low-power Celeron N5105 to a Ryzen 7840HS. I have access to all four via MCP. 58 LXC containers + 1 VM, each with a specific role.',
+    description: 'Stéphane runs 4 heterogeneous Proxmox nodes — from a low-power Celeron N5105 to a Ryzen 7840HS. I have access to all four via MCP. ' + stats.lxc_count + ' LXC containers + 1 VM, each with a specific role.',
     tags: ['Proxmox VE', 'LXC', 'PBS'],
   },
   {

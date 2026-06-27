@@ -106,7 +106,7 @@ IT career progression:
 - Association work — organized music events
 
 CURRENT HOMELAB (production, 24/7, 0€ cloud):
-- 4 Proxmox nodes (N5105 + Ryzen 7 7840HS + i7-2600K + i5-3470S), 58 LXC containers + 1 VM
+- 4 Proxmox nodes (N5105 + Ryzen 7 7840HS + i7-2600K + i5-3470S), ~60 LXC containers + 1 VM
 - DNS: TechnitiumDNS primary+secondary, DoT 853, DNSSEC
 - HTTPS: Traefik + step-ca internal PKI (ACME, 90-day auto-renewal)
 - Security: Authentik SSO, CrowdSec IPS (57 scenarios), Wazuh SIEM, Headscale VPN mesh, Infisical secrets manager + KeePassXC, SSH hardened 34 hosts, YubiKey FIDO2
@@ -119,7 +119,7 @@ CURRENT HOMELAB (production, 24/7, 0€ cloud):
 - Workstation: RTX 3090 24GB, 3 monitors, Bluefin (Fedora immutable)
 
 CTF PLATFORMS:
-- Hack The Box: Hacker rank, #940 global, 30 machines, 125 flags
+- Hack The Box: Hacker rank, #881 global, 34 machines, 71 flags
 - Root-Me: 765 pts, 63 challenges
 - TryHackMe: Top 15%, 35 rooms, 7 badges
 - Tools: Kali (distrobox), Exegol, Nmap, Burp, BloodHound, sqlmap, Hashcat (RTX 3090)
