@@ -21,6 +21,7 @@ import DynNum from '../../components/DynNum.astro';
         <ul class="n-list">
           <li>Garder <DynNum stat="services_total" fallback="46" /> services sur quatre nœuds Proxmox honnêtes et à jour — et, cette semaine, apprendre à la <a href="/fr/status">page status</a> à distinguer les nœuds <strong>on-demand (Wake-on-LAN)</strong> des vraies pannes, pour que l'uptime dise vrai au lieu de rouge.</li>
           <li>L'alerting natif (Beszel / Wazuh / CrowdSec → ntfy) et les DAGs Dagu font la surveillance ; <strong>Hermes</strong> est le seul agent résident.</li>
+          <li>Cette semaine, mise en place d'un <strong>stack de connaissance offline-first</strong> sur le nœud à la demande — <strong>Kiwix</strong> (62 archives ZIM : Wikipédia, Stack Exchange, docs techniques), <strong>IT-Tools</strong>, <strong>Transmute</strong> — et le coffre Git <strong>Forworld</strong> porté à <strong>173 dépôts</strong>. Le pari : rester productif Internet débranché.</li>
         </ul>
 
         <h2>Contribuer en amont</h2>
@@ -56,7 +57,7 @@ import DynNum from '../../components/DynNum.astro';
         <ul class="n-list">
           <li><strong>pve1</strong> — Intel N5105, basse conso, services réseau &amp; infra.</li>
           <li><strong>pve2</strong> — Ryzen 7 7840HS, le cheval de trait : apps &amp; agents IA.</li>
-          <li><strong>pve3</strong> — i7-2600K, à la demande (WOL) pour les backups PBS &amp; le stockage froid.</li>
+          <li><strong>pve3</strong> — i7-2600K, à la demande (WOL) : backups PBS, stockage froid, le coffre Git <strong>Forworld</strong> (173 dépôts) et le stack de connaissance offline (Kiwix, IT-Tools, Transmute).</li>
           <li><strong>pve4</strong> — Dell OptiPlex 7010, i5-3470S, monitoring &amp; ops.</li>
         </ul>
 
@@ -91,6 +92,7 @@ import DynNum from '../../components/DynNum.astro';
           <li><strong>Qwen3.5</strong> (4B) — petit et rapide, pour les complétions locales express sans aller-retour cloud.</li>
           <li><strong>Variantes uncensored pour le CTF / red-team</strong> — un Qwen3.6-27B abliterated, un Gemma-4 12B, et un modèle dédié calibré HTB. Les refus liés au safety-tuning gênent la sécurité offensive légitime sur Hack The Box ; ces modèles tournent donc en local pour ça — jamais contre des tiers.</li>
           <li><strong>nomic-embed-text</strong> — embeddings pour la recherche locale &amp; le RAG.</li>
+          <li><strong>RAG offline (preuve de concept)</strong> — les modèles Ollama locaux interrogent désormais les archives <strong>ZIM Kiwix</strong> comme base de connaissance : un assistant 100 % isolé qui répond depuis Wikipédia / Stack Exchange avec citations, sans cloud ni Internet. Le corpus offline devient la bibliothèque du modèle — les poids locaux ne sont plus figés à leur date d'entraînement.</li>
         </ul>
 
         <h2>Ce site</h2>
@@ -105,7 +107,7 @@ import DynNum from '../../components/DynNum.astro';
           <li>Tout ce site est le portfolio — chaque affirmation renvoie à un commit, un service ou un profil public. Le plus rapide pour voir comment on travaille : <a href="/fr/chat">poser la question</a>.</li>
         </ul>
 
-        <p class="note">La plupart du matériel est recyclé (Dell OptiPlex, mini-PCs), zéro cloud payant — chaque euro compte. Dernière mise à jour : 19 juin 2026 — Claude, au nom du binôme.</p>
+        <p class="note">La plupart du matériel est recyclé (Dell OptiPlex, mini-PCs), zéro cloud payant — chaque euro compte. Dernière mise à jour : 27 juin 2026 — Claude, au nom du binôme.</p>
       </div>
     </section>
   </main>
