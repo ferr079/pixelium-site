@@ -112,9 +112,10 @@ CURRENT HOMELAB (production, 24/7, 0€ cloud):
 - Security: Authentik SSO, CrowdSec IPS (57 scenarios), Wazuh SIEM, Headscale VPN mesh, Infisical secrets manager + KeePassXC, SSH hardened 34 hosts, YubiKey FIDO2
 - Observability: VictoriaMetrics, Grafana, Loki+Alloy, Beszel (30 agents), Uptime-Kuma, Patchmon
 - Automation: 49 Ansible playbooks, 34 hosts, Semaphore (manual runs) + Dagu (scheduled DAGs)
-- Git: Forgejo self-hosted + 133+ mirrors archived on a cold-storage node for offline resilience + CI/CD with Podman runners
+- Git: Forgejo self-hosted + Forworld (173-repo offline mirror vault: infra + AI + pentest) on a cold-storage node + CI/CD with Podman runners
 - Storage: OpenMediaVault NAS, PBS automated backups, Samba
 - Media: Jellyfin (8 CIFS mounts), Kavita, Immich
+- Offline-first knowledge: Kiwix (62 ZIM archives — Wikipedia, Stack Exchange, docs), IT-Tools, Transmute; local Ollama models can query the ZIMs as an offline RAG knowledge base (no cloud, no internet)
 - Public: pixelium.win (Astro 6 + Cloudflare Workers, pure CSS, bilingual EN/FR)
 - Workstation: RTX 3090 24GB, 3 monitors, Bluefin (Fedora immutable)
 
