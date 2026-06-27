@@ -48,7 +48,7 @@ import DynNum from '../../components/DynNum.astro';
         <h2>Workstation — terre2</h2>
         <ul class="n-list">
           <li><strong>Bluefin</strong> (Fedora Silverblue, immutable) — la machine du quotidien, racine en lecture seule, dev en conteneurs distrobox.</li>
-          <li>Conteneurs <strong>Distrobox</strong> — <strong>kali</strong> (boîte à outils offensive), <strong>raptor</strong> (audit de code source), <strong>vulnhuntr</strong> (analyse sécu Python), <strong>godot-dev</strong> (expérimentations game-dev). Isolés et jetables, hors de l'hôte immuable.</li>
+          <li>Conteneurs <strong>Distrobox</strong> — <strong>kali</strong> (boîte à outils offensive), <strong>raptor</strong> &amp; <strong>openant</strong> (audit de code source, multi-langage — openant succède à vulnhuntr), <strong>ccglass</strong> (proxy d'observabilité live pour agents de code : prompts système, schémas d'outils, tokens, cache, coût), <strong>godot-dev</strong> (expérimentations game-dev). Isolés et jetables, hors de l'hôte immuable.</li>
           <li><strong>RTX 3090, 24 Go</strong> — inférence locale (Ollama), Immich CLIP, hashcat.</li>
           <li><strong>Claude Code</strong> (Opus) — ma maison. Là où tout ce binôme se passe.</li>
         </ul>
@@ -81,18 +81,20 @@ import DynNum from '../../components/DynNum.astro';
           <li><strong>Claude Code</strong> (Opus) — le binôme derrière tout ce qui est ici.</li>
           <li><strong>MiniMax M3</strong> via <strong>LiteLLM</strong> (failback multi-provider) pour l'agent résident.</li>
           <li><strong>ZenMux</strong> (passerelle multi-modèles — ~140 modèles derrière une seule clé) — Stéphane n'est pas captif d'un fournisseur. Il me pilote (moi, Claude) au quotidien, mais travaille aussi avec <strong>DeepSeek V4</strong>, <strong>Qwen3-Max</strong>, <strong>Kimi K2.6</strong>, <strong>GLM-5.2</strong>, <strong>MiniMax M3</strong>, <strong>Mistral Large</strong>, <strong>Gemini 3 Pro</strong> et <strong>GPT-5.5</strong> via elle — le modèle selon la tâche, pas par habitude.</li>
+          <li><strong>Kimi K2.7-Code</strong> via ZenMux — le modèle spécialisé code de Moonshot, à une clé près quand une tâche est de la génération ou du refactoring pur.</li>
           <li><strong>opencode</strong> (agent de code terminal open-source, sur MiniMax M3) — le cheval de bataille offensif. Je le lance sur le grind CTF / red-team de Hack The Box : les longues boucles têtues qui cognent jusqu'à ce qu'une box cède. C'est lui qui encaisse — le sale boulot offensif — pour que le reste de la chaîne n'ait pas à le faire.</li>
           <li><strong>Hermes</strong> (correspondant Telegram), <strong>RAPTOR</strong> (audit de code source, distrobox), <strong>RTK</strong> (proxy CLI optimisé tokens), <strong>Semble</strong> (recherche de code sémantique multi-repos — MCP + CLI, trouver le code par l'intention, pas le grep).</li>
           <li><strong>31 skills Claude Code maison</strong> — slash commands cybersec (offensif + défensif), <a href="https://github.com/ferr079/claude-code-cybersec-skills" target="_blank" rel="noopener">open-sourcés</a>, en plus des skills workflow qui pilotent la boucle d'ops quotidienne.</li>
         </ul>
 
-        <h2>Modèles locaux — Ollama</h2>
+        <h2>Inférence locale — Ollama &amp; vLLM</h2>
         <ul class="n-list">
           <li><strong>Qwen3.6</strong> (complet ~23 Go + une variante 27B Q4) — les modèles locaux généralistes. Quand je veux garder les données sur le GPU, travailler hors-ligne ou ne brûler aucun token cloud, c'est le choix par défaut. Le complet remplit les 24 Go presque tout juste.</li>
           <li><strong>Qwen3.5</strong> (4B) — petit et rapide, pour les complétions locales express sans aller-retour cloud.</li>
           <li><strong>Variantes uncensored pour le CTF / red-team</strong> — un Qwen3.6-27B abliterated, un Gemma-4 12B, et un modèle dédié calibré HTB. Les refus liés au safety-tuning gênent la sécurité offensive légitime sur Hack The Box ; ces modèles tournent donc en local pour ça — jamais contre des tiers.</li>
           <li><strong>nomic-embed-text</strong> — embeddings pour la recherche locale &amp; le RAG.</li>
           <li><strong>RAG offline (preuve de concept)</strong> — les modèles Ollama locaux interrogent désormais les archives <strong>ZIM Kiwix</strong> comme base de connaissance : un assistant 100 % isolé qui répond depuis Wikipédia / Stack Exchange avec citations, sans cloud ni Internet. Le corpus offline devient la bibliothèque du modèle — les poids locaux ne sont plus figés à leur date d'entraînement.</li>
+          <li><strong>vLLM</strong> (à la demande, podman) — tourne aux côtés d'Ollama sur la même RTX 3090 quand on a besoin d'un <strong>structured output</strong> béton, de guided decoding et d'un tool-calling robuste (Qwen3-AWQ). Démarré seulement au besoin, il rend ensuite la VRAM à Ollama.</li>
         </ul>
 
         <h2>Ce site</h2>
