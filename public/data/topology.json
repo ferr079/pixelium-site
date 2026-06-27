@@ -213,6 +213,12 @@
           "nodeType": "lxc",
           "hostname": null,
           "ipAddress": null
+        },
+        {
+          "label": "SilverBullet",
+          "nodeType": "lxc",
+          "hostname": null,
+          "ipAddress": null
         }
       ]
     },
@@ -266,6 +272,24 @@
         },
         {
           "label": "CyberChef",
+          "nodeType": "lxc",
+          "hostname": null,
+          "ipAddress": null
+        },
+        {
+          "label": "Kiwix",
+          "nodeType": "lxc",
+          "hostname": null,
+          "ipAddress": null
+        },
+        {
+          "label": "IT-Tools",
+          "nodeType": "lxc",
+          "hostname": null,
+          "ipAddress": null
+        },
+        {
+          "label": "Transmute",
           "nodeType": "lxc",
           "hostname": null,
           "ipAddress": null
@@ -397,7 +421,7 @@
       "linkType": "ethernet"
     }
   ],
-  "total": 64,
+  "total": 68,
   "switch": {
     "label": "Switch XikeStor",
     "nodeType": "switch",
