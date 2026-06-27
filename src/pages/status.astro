@@ -1,5 +1,8 @@
 ---
 import Base from '../layouts/Base.astro';
+import { SERVICE_INFO } from '../data/service-info';
+
+const svcInfoJson = JSON.stringify(SERVICE_INFO);
 ---
 
 <Base title="Status — pixelium.win" description="Live infrastructure status: 46 services, 4 Proxmox nodes, tri-state monitoring (up · on-demand · down). Data pushed from the homelab by Dagu every 5 minutes.">
@@ -116,6 +119,20 @@ import Base from '../layouts/Base.astro';
         </p>
       </div>
     </section>
+
+    <!-- Service info popover (click a service card) -->
+    <div id="svc-popover" class="svc-popover" style="display:none;" role="dialog" aria-modal="true" aria-labelledby="svc-pop-title">
+      <div class="svc-pop-box" role="document">
+        <button type="button" class="svc-pop-close" id="svc-pop-close" aria-label="Close">&times;</button>
+        <h3 class="svc-pop-title" id="svc-pop-title"></h3>
+        <p class="svc-pop-what" id="svc-pop-what"></p>
+        <div class="svc-pop-why">
+          <span class="svc-pop-why-label" id="svc-pop-why-label"></span>
+          <p class="svc-pop-why-text" id="svc-pop-why-text"></p>
+        </div>
+      </div>
+    </div>
+    <script type="application/json" id="svc-info" set:html={svcInfoJson}></script>
   </main>
 </Base>
 
@@ -140,6 +157,50 @@ import Base from '../layouts/Base.astro';
     if (text) e.textContent = text;
     return e;
   }
+
+  // ── Service info popover ──────────────────────────────────────
+  const SVC_INFO: Record<string, any> = (() => {
+    try { return JSON.parse(document.getElementById('svc-info')?.textContent || '{}'); }
+    catch { return {}; }
+  })();
+  const SVC_LANG = (document.documentElement.lang || 'en').toLowerCase().startsWith('fr') ? 'fr' : 'en';
+  const WHY_LABEL = SVC_LANG === 'fr' ? "Pourquoi c'est là" : "Why it's here";
+
+  function openServicePopover(name: string) {
+    const info = SVC_INFO[name];
+    if (!info) return;
+    const pop = document.getElementById('svc-popover');
+    const t = document.getElementById('svc-pop-title');
+    const w = document.getElementById('svc-pop-what');
+    const wl = document.getElementById('svc-pop-why-label');
+    const wt = document.getElementById('svc-pop-why-text');
+    if (!pop || !t || !w || !wl || !wt) return;
+    t.textContent = name;
+    w.textContent = info.what?.[SVC_LANG] || info.what?.en || '';
+    wl.textContent = WHY_LABEL;
+    wt.textContent = info.why?.[SVC_LANG] || info.why?.en || '';
+    pop.style.display = 'flex';
+  }
+  function closeServicePopover() {
+    const pop = document.getElementById('svc-popover');
+    if (pop) pop.style.display = 'none';
+  }
+  function wireServiceCard(card: HTMLElement, name: string) {
+    if (!SVC_INFO[name]) return;
+    card.classList.add('has-info');
+    card.setAttribute('tabindex', '0');
+    card.setAttribute('role', 'button');
+    card.addEventListener('click', () => openServicePopover(name));
+    card.addEventListener('keydown', (ev) => {
+      const k = (ev as KeyboardEvent).key;
+      if (k === 'Enter' || k === ' ') { ev.preventDefault(); openServicePopover(name); }
+    });
+  }
+  document.getElementById('svc-pop-close')?.addEventListener('click', closeServicePopover);
+  document.getElementById('svc-popover')?.addEventListener('click', (ev) => {
+    if (ev.target === document.getElementById('svc-popover')) closeServicePopover();
+  });
+  document.addEventListener('keydown', (ev) => { if (ev.key === 'Escape') closeServicePopover(); });
 
   // pve3 is a Wake-on-LAN node that sleeps by design. Its services get their own
   // section, with state derived from the node: awake → up (green), asleep → on-demand
@@ -187,6 +248,7 @@ import Base from '../layouts/Base.astro';
       } else {
         card.appendChild(el('span', 'svc-latency', svc && svc.latency != null ? svc.latency + 'ms' : '--'));
       }
+      wireServiceCard(card, name);
       grid.appendChild(card);
     }
     section.style.display = 'block';
@@ -267,6 +329,7 @@ import Base from '../layouts/Base.astro';
           card.appendChild(el('span', 'svc-dot ' + (isUp ? 'up' : 'down')));
           card.appendChild(el('span', 'svc-name', svc.name));
           card.appendChild(el('span', 'svc-latency', svc.latency != null ? svc.latency + 'ms' : '--'));
+          wireServiceCard(card, svc.name);
           grid.appendChild(card);
         }
 
@@ -521,4 +584,20 @@ import Base from '../layouts/Base.astro';
     .skeleton-card { animation: none; opacity: 0.6; }
     .bar-fill { transition: none; }
   }
+
+  /* Clickable service cards → info popover */
+  .service-card.has-info { cursor: pointer; }
+  .service-card.has-info:hover { border-color: var(--color-accent); box-shadow: 0 0 12px rgba(56,189,248,0.12); }
+  .service-card.has-info:focus-visible { outline: 2px solid var(--color-accent); outline-offset: 2px; }
+  .service-card.has-info .svc-name { text-decoration: underline dotted rgba(56,189,248,0.45); text-underline-offset: 3px; }
+
+  .svc-popover { position: fixed; inset: 0; z-index: 200; display: flex; align-items: center; justify-content: center; padding: 1.5rem; background: rgba(8,12,22,0.72); backdrop-filter: blur(3px); }
+  .svc-pop-box { position: relative; max-width: 30rem; width: 100%; background: var(--color-surface); border: 1px solid var(--color-accent); border-radius: 10px; padding: 1.75rem 1.75rem 1.5rem; box-shadow: 0 20px 60px rgba(0,0,0,0.5); }
+  .svc-pop-close { position: absolute; top: 0.5rem; right: 0.85rem; background: none; border: none; color: var(--color-text-muted); font-size: 1.7rem; line-height: 1; cursor: pointer; transition: color 0.2s; }
+  .svc-pop-close:hover { color: var(--color-accent); }
+  .svc-pop-title { font-family: var(--font-mono); font-size: 1.2rem; color: var(--color-accent); margin: 0 0 0.75rem; }
+  .svc-pop-what { color: var(--color-text); font-size: 0.95rem; line-height: 1.6; margin: 0 0 1rem; }
+  .svc-pop-why { border-top: 1px solid var(--color-border); padding-top: 0.85rem; }
+  .svc-pop-why-label { display: block; font-family: var(--font-mono); font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.06em; color: var(--color-accent); margin-bottom: 0.35rem; }
+  .svc-pop-why-text { color: var(--color-text-muted); font-size: 0.9rem; line-height: 1.6; margin: 0; }
 </style>
