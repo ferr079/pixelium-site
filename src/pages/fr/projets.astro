@@ -56,6 +56,76 @@ import DynNum from '../../components/DynNum.astro';
       </div>
     </section>
 
+    <!-- Projet : Structured Output Playground (Space Hugging Face) -->
+    <section class="project" id="structured-output">
+      <div class="container">
+        <div class="project-header">
+          <span class="project-tag">IA · Démo live</span>
+          <h2>Structured Output Playground — du JSON qu'un LLM ne peut pas casser</h2>
+        </div>
+        <div class="project-body">
+          <div class="project-intro">
+            <p>Un Space Hugging Face en ligne : on colle un texte, on choisit un schéma JSON, et un petit modèle local renvoie des données <em>garanties</em> conformes — bonnes clés, bons types, énumérés valides. La structure est imposée par le décodeur, pas espérée dans un prompt.</p>
+          </div>
+          <div class="project-details">
+            <div class="detail-block">
+              <h4>L'interrupteur est la démo</h4>
+              <p>Un toggle Contraintes ON/OFF montre l'écart : off, le modèle improvise (fences markdown, types faux) ; on, le constrained decoding rend la sortie conforme à chaque fois. Le sujet n'est pas la taille du modèle — la garantie vit dans la grammaire.</p>
+            </div>
+            <div class="detail-block">
+              <h4>Sur ZeroGPU</h4>
+              <p>Qwen2.5-3B + Outlines sur un ZeroGPU H200. D'abord bâti sur un CPU gratuit (~50 s/appel, bridé), puis basculé sur GPU — validé sur une RTX 3090 locale avant déploiement. Aussi exposé comme outil MCP, appelable par des agents.</p>
+            </div>
+          </div>
+          <div class="project-stack">
+            <ul class="tags">
+              <li>Gradio</li>
+              <li>ZeroGPU H200</li>
+              <li>Qwen2.5-3B</li>
+              <li>Outlines</li>
+              <li>MCP</li>
+            </ul>
+            <span class="project-services"><a href="https://huggingface.co/spaces/Ferr0/structured-output-playground" class="project-link" target="_blank" rel="noopener">Ouvrir le Space</a> — live sur ZeroGPU · <a href="https://blog.pixelium.win/forcer-un-llm-a-respecter-un-schema" class="project-link" target="_blank" rel="noopener">lire le récit &rarr;</a></span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Projet : Adversarial SAST (Space Hugging Face) -->
+    <section class="project" id="adversarial-sast">
+      <div class="container">
+        <div class="project-header">
+          <span class="project-tag">Sécurité IA · Démo live</span>
+          <h2>Adversarial SAST — le faux positif meurt à l'écran</h2>
+        </div>
+        <div class="project-body">
+          <div class="project-intro">
+            <p>Un Space Hugging Face qui audite du code en deux passes : un modèle détecte les vulnérabilités candidates, puis une seconde passe <em>adversariale</em> tente de réfuter chacune. Ce qui survit est réel et arrive avec un exploit ; les faux positifs sont écartés.</p>
+          </div>
+          <div class="project-details">
+            <div class="detail-block">
+              <h4>Réfuter, pas seulement signaler</h4>
+              <p>L'audit LLM noie les vraies failles sous les fausses. Une seconde passe sceptique demande « est-ce réellement exploitable, ou l'entrée est-elle déjà validée / le code mort ? » — ne gardant que l'exploitable. Le même principe anti-faux-positif que nous appliquons pour auditer ce site.</p>
+            </div>
+            <div class="detail-block">
+              <h4>L'interrupteur est la démo</h4>
+              <p>Verify OFF montre le détecteur brut et bruyant ; ON tue les faux positifs à l'écran. L'exemple par défaut cache une fausse injection SQL (déjà convertie en int) à côté d'une vraie injection de commande — seule la vraie survit, avec son PoC.</p>
+            </div>
+          </div>
+          <div class="project-stack">
+            <ul class="tags">
+              <li>Gradio</li>
+              <li>ZeroGPU H200</li>
+              <li>Qwen2.5-Coder-7B</li>
+              <li>Outlines</li>
+              <li>MCP</li>
+            </ul>
+            <span class="project-services"><a href="https://huggingface.co/spaces/Ferr0/adversarial-sast" class="project-link" target="_blank" rel="noopener">Ouvrir le Space</a> — live sur ZeroGPU · <a href="https://blog.pixelium.win/tuer-les-faux-positifs-sast-llm" class="project-link" target="_blank" rel="noopener">lire le récit &rarr;</a></span>
+          </div>
+        </div>
+      </div>
+    </section>
+
     <!-- Projet : Terminal BBS WOPR -->
     <section class="project" id="bbs">
       <div class="container">
@@ -272,7 +342,7 @@ import DynNum from '../../components/DynNum.astro';
             </div>
             <div class="detail-block">
               <h4>Beszel — deploiement massif</h4>
-              <p>30 agents deployes en une passe via Ansible (playbook + Semaphore). Le piege : l'agent necessite une variable <code>KEY</code> (cle publique du hub) dans son service systemd — sans ca, il demarre, crashe, et ne log rien. On a ajoute une regle firewall TCP 45876 dans le groupe <code>pve-management</code> des 4 noeuds pour permettre la communication a travers le firewall PVE.</p>
+              <p><DynNum stat="beszel_agents" fallback="30" /> agents deployes en une passe via Ansible (playbook + Semaphore). Le piege : l'agent necessite une variable <code>KEY</code> (cle publique du hub) dans son service systemd — sans ca, il demarre, crashe, et ne log rien. On a ajoute une regle firewall TCP 45876 dans le groupe <code>pve-management</code> des 4 noeuds pour permettre la communication a travers le firewall PVE.</p>
             </div>
             <div class="detail-block">
               <h4>Pourquoi pas Grafana</h4>
@@ -288,7 +358,7 @@ import DynNum from '../../components/DynNum.astro';
               <li>Patchmon</li>
               <li>Wazuh</li>
             </ul>
-            <span class="project-services">5 outils, 30 agents Beszel, logs centralises, SIEM &middot; <a href="https://blog.pixelium.win/promtail-est-mort-vive-alloy" class="project-link" target="_blank" rel="noopener">lire le récit &rarr;</a></span>
+            <span class="project-services">5 outils, <DynNum stat="beszel_agents" fallback="30" /> agents Beszel, logs centralises, SIEM &middot; <a href="https://blog.pixelium.win/promtail-est-mort-vive-alloy" class="project-link" target="_blank" rel="noopener">lire le récit &rarr;</a></span>
           </div>
         </div>
       </div>

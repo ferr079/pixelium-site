@@ -56,6 +56,76 @@ import DynNum from '../components/DynNum.astro';
       </div>
     </section>
 
+    <!-- Project: Structured Output Playground (Hugging Face Space) -->
+    <section class="project" id="structured-output">
+      <div class="container">
+        <div class="project-header">
+          <span class="project-tag">AI · Live demo</span>
+          <h2>Structured Output Playground — JSON an LLM can't break</h2>
+        </div>
+        <div class="project-body">
+          <div class="project-intro">
+            <p>A live Hugging Face Space: paste any text, pick a JSON schema, and a small local model returns data <em>guaranteed</em> to match it — right keys, right types, valid enums. Structure is enforced by the decoder, not hoped for in a prompt.</p>
+          </div>
+          <div class="project-details">
+            <div class="detail-block">
+              <h4>The toggle is the demo</h4>
+              <p>A Constraints ON/OFF switch shows the gap: off, the model free-styles (markdown fences, wrong types); on, constrained decoding makes the output schema-valid every time. The point isn't the model's size — the guarantee lives in the grammar.</p>
+            </div>
+            <div class="detail-block">
+              <h4>On ZeroGPU</h4>
+              <p>Qwen2.5-3B + Outlines on a ZeroGPU H200. First built on a free CPU (~50s/call, throttled), then moved to GPU — validated on a local RTX 3090 before deploying. Also exposed as an MCP tool, callable by agents.</p>
+            </div>
+          </div>
+          <div class="project-stack">
+            <ul class="tags">
+              <li>Gradio</li>
+              <li>ZeroGPU H200</li>
+              <li>Qwen2.5-3B</li>
+              <li>Outlines</li>
+              <li>MCP</li>
+            </ul>
+            <span class="project-services"><a href="https://huggingface.co/spaces/Ferr0/structured-output-playground" class="project-link" target="_blank" rel="noopener">Open the Space</a> — live on ZeroGPU · <a href="https://blog.pixelium.win/forcer-un-llm-a-respecter-un-schema" class="project-link" target="_blank" rel="noopener">read the story &rarr;</a></span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Project: Adversarial SAST (Hugging Face Space) -->
+    <section class="project" id="adversarial-sast">
+      <div class="container">
+        <div class="project-header">
+          <span class="project-tag">AI Security · Live demo</span>
+          <h2>Adversarial SAST — the false positive dies on screen</h2>
+        </div>
+        <div class="project-body">
+          <div class="project-intro">
+            <p>A live Hugging Face Space that audits code in two passes: a model detects candidate vulnerabilities, then a second <em>adversarial</em> pass tries to refute each one. What survives is real and comes with a proof-of-concept; false positives are dropped.</p>
+          </div>
+          <div class="project-details">
+            <div class="detail-block">
+              <h4>Refute, don't just report</h4>
+              <p>LLM code review drowns real bugs in false positives. A skeptical second stage asks "is this actually exploitable, or is the input already sanitized / the code dead?" — keeping only what it can exploit. The same anti-false-positive principle we use to audit this site.</p>
+            </div>
+            <div class="detail-block">
+              <h4>The toggle is the demo</h4>
+              <p>Verify OFF shows the raw, noisy detector; ON kills the false positives on screen. The default example hides a fake SQL injection (already cast to int) next to a real command injection — only the real one survives, with its PoC.</p>
+            </div>
+          </div>
+          <div class="project-stack">
+            <ul class="tags">
+              <li>Gradio</li>
+              <li>ZeroGPU H200</li>
+              <li>Qwen2.5-Coder-7B</li>
+              <li>Outlines</li>
+              <li>MCP</li>
+            </ul>
+            <span class="project-services"><a href="https://huggingface.co/spaces/Ferr0/adversarial-sast" class="project-link" target="_blank" rel="noopener">Open the Space</a> — live on ZeroGPU · <a href="https://blog.pixelium.win/tuer-les-faux-positifs-sast-llm" class="project-link" target="_blank" rel="noopener">read the story &rarr;</a></span>
+          </div>
+        </div>
+      </div>
+    </section>
+
     <!-- Project: WOPR BBS Terminal -->
     <section class="project" id="bbs">
       <div class="container">
@@ -272,7 +342,7 @@ import DynNum from '../components/DynNum.astro';
             </div>
             <div class="detail-block">
               <h4>Beszel — mass deployment</h4>
-              <p>30 agents deployed in a single pass via Ansible (playbook + Semaphore). The trap: the agent requires a <code>KEY</code> variable (hub's public key) in its systemd service — without it, it starts, crashes, and logs nothing. We added a TCP 45876 firewall rule in the <code>pve-management</code> group across all 4 nodes to allow communication through the PVE firewall.</p>
+              <p><DynNum stat="beszel_agents" fallback="30" /> agents deployed in a single pass via Ansible (playbook + Semaphore). The trap: the agent requires a <code>KEY</code> variable (hub's public key) in its systemd service — without it, it starts, crashes, and logs nothing. We added a TCP 45876 firewall rule in the <code>pve-management</code> group across all 4 nodes to allow communication through the PVE firewall.</p>
             </div>
             <div class="detail-block">
               <h4>Why not Grafana</h4>
@@ -288,7 +358,7 @@ import DynNum from '../components/DynNum.astro';
               <li>Patchmon</li>
               <li>Wazuh</li>
             </ul>
-            <span class="project-services">5 tools, 30 Beszel agents, centralized logs, SIEM &middot; <a href="https://blog.pixelium.win/promtail-est-mort-vive-alloy" class="project-link" target="_blank" rel="noopener">read the story &rarr;</a></span>
+            <span class="project-services">5 tools, <DynNum stat="beszel_agents" fallback="30" /> Beszel agents, centralized logs, SIEM &middot; <a href="https://blog.pixelium.win/promtail-est-mort-vive-alloy" class="project-link" target="_blank" rel="noopener">read the story &rarr;</a></span>
           </div>
         </div>
       </div>
