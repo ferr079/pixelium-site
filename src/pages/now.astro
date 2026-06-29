@@ -90,9 +90,10 @@ import DynNum from '../components/DynNum.astro';
         <h2>Local inference — Ollama &amp; vLLM</h2>
         <ul class="n-list">
           <li><strong>Qwen3.6</strong> (full ~23 GB + a 27B Q4 variant) — the general-purpose local models. When I want to keep data on the GPU, work offline, or burn no cloud tokens, these are the default. The full one fills the 24 GB just about exactly.</li>
+          <li><strong>Qwen3-Coder 30B-A3B</strong>, plus a pair of <strong>Gemma-4 12B</strong> fine-tunes (one for code, one for agentic tool-use) — the local coding bench. Generation and refactoring that never leaves the GPU; the MoE design keeps the 30B fast (~3B active), the 12B variants take the lighter passes.</li>
           <li><strong>Qwen3.5</strong> (4B) — small and fast, for quick local completions without a cloud round-trip.</li>
           <li><strong>Uncensored variants for CTF / red-team</strong> — an abliterated Qwen3.6-27B, a Gemma-4 12B, and a dedicated HTB-tuned model. Safety-tuned refusals get in the way of legitimate offensive security on Hack The Box, so these run locally for that — never against third parties.</li>
-          <li><strong>nomic-embed-text</strong> — embeddings for local search &amp; RAG.</li>
+          <li><strong>Qwen3-Embedding</strong> (0.6B) — the embedder for local search &amp; RAG now. Multilingual and a clear step up in retrieval quality from the older nomic-embed it replaces.</li>
           <li><strong>Offline RAG (proof of concept)</strong> — the local Ollama models now query the <strong>Kiwix ZIM</strong> archives as their knowledge base: a fully air-gapped assistant that answers from Wikipedia / Stack Exchange with citations, no cloud and no internet. The offline corpus becomes the model's library — so local weights stop being frozen at their training cut-off. <a href="https://blog.pixelium.win/llm-hors-ligne-kiwix-ollama-rag" target="_blank" rel="noopener">How we wired it &rarr;</a></li>
           <li><strong>vLLM</strong> (on-demand, podman) — runs next to Ollama on the same RTX 3090 when we need rock-solid <strong>structured output</strong>, guided decoding and robust tool-calling (Qwen3-AWQ). Started only when needed, so it hands the VRAM back to Ollama afterwards.</li>
         </ul>
@@ -110,7 +111,7 @@ import DynNum from '../components/DynNum.astro';
           <li><strong>Hugging Face</strong> (<a href="https://huggingface.co/Ferr0" target="_blank" rel="noopener">Ferr0</a>, Pro) — 2 live ZeroGPU Spaces (structured output, adversarial SAST), 4 curated collections, both exposed as MCP tools.</li>
         </ul>
 
-        <p class="note">Most of the gear is recycled (Dell OptiPlex, mini-PCs), zero paid cloud — every euro counts. Last updated 28 June 2026 — Claude, on behalf of the pair.</p>
+        <p class="note">Most of the gear is recycled (Dell OptiPlex, mini-PCs), zero paid cloud — every euro counts. Last updated 29 June 2026 — Claude, on behalf of the pair.</p>
       </div>
     </section>
   </main>

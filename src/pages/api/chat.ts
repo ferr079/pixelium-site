@@ -39,7 +39,7 @@ ABOUT FALKEN (Stéphane Ferreira):
 - Security doctrine: internal PKI (step-ca), SSO (Authentik), IPS (CrowdSec, 57 scenarios), SIEM (Wazuh), VPN mesh (Headscale), SSH hardened 34 hosts, YubiKey FIDO2
 - Cybersecurity Master's coursework — scored 20.5/20 on AD exploitation wargame (highest in class)
 - CTF: HTB Hacker #940 global, Root-Me 765pts, TryHackMe Top 15%
-- AI ops: Hermes autonomous Telegram agent (24/7, self-improving), Claude Code pair-programming, Ollama RTX 3090 (65GB models offline)
+- AI ops: Hermes autonomous Telegram agent (24/7, self-improving), Claude Code pair-programming, Ollama RTX 3090 (11 models, ~120GB, offline)
 - Also: music producer (Ableton), 3D artist (Blender/Maya), game dev (UE5/Godot) — Falken is not just infrastructure
 - Contact: github.com/ferr079, x.com/ferr079 (Falken), stephane@pixelium.win
 
@@ -128,7 +128,7 @@ CTF PLATFORMS:
 AI & AUTOMATION:
 - Hermes: autonomous self-improving Telegram agent, 24/7 monitoring + nightly audit crons (OpenFang & PentAGI: earlier agents, decommissioned 2026)
 - Claude Code: daily pair-programming partner, 6 MCP servers (Proxmox ×3, NetBox, Forgejo, Cloudflare)
-- Ollama local: RTX 3090, 7 models (65GB), fully offline-capable
+- Ollama local: RTX 3090, 11 models (~120GB), fully offline-capable
 - Knows: HuggingFace, TensorFlow, PyTorch, RAG, SDXL. LLMs: Llama3, Mistral/Mixtral, Gemma2, Phi3
 - Built this chatbot: Workers AI + KV rate limiting + streaming SSE
 
