@@ -1,0 +1,19 @@
+{
+  "linkset": [
+    {
+      "anchor": "https://pixelium.win/api/status",
+      "service-doc": [
+        { "href": "https://pixelium.win/status", "type": "text/html", "title": "Status page — live infrastructure status (up / on-demand / down)" }
+      ],
+      "status": [
+        { "href": "https://pixelium.win/api/status", "type": "application/json", "title": "Live status feed — services, Proxmox nodes, summary (read-only JSON, no auth)" }
+      ]
+    },
+    {
+      "anchor": "https://pixelium.win/api/stats",
+      "service-doc": [
+        { "href": "https://pixelium.win/", "type": "text/html", "title": "Portfolio — live homelab stats power every number on the site" }
+      ]
+    }
+  ]
+}
