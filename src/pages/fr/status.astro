@@ -205,9 +205,10 @@ const stats = await getBuildStats();
   document.addEventListener('keydown', (ev) => { if (ev.key === 'Escape') closeServicePopover(); });
 
   // pve3 est un nœud Wake-on-LAN qui dort par conception. Ses services ont leur propre
-  // section, avec un état dérivé du nœud : réveillé → up (vert), en veille → on-demand
-  // (ciel), jamais rouge. Les outils ci-dessous ne sont pas dans le payload de monitoring,
-  // ils sont déclarés ici ; PBS + netboot.xyz le sont, et gardent leur vrai état si le nœud est réveillé.
+  // section, avec un état dérivé du nœud : réveillé → état réel monitoré, en veille →
+  // on-demand (ciel), jamais rouge en veille. Tous les services pve3 sont désormais dans
+  // le payload de monitoring (kv-push), donc leur état réveillé est réel ; cette liste les
+  // exclut aussi de l'uptime core (PVE3_SET ci-dessous).
   const PVE3_SERVICES = ['PBS', 'netboot.xyz', 'Kiwix', 'IT-Tools', 'Transmute', 'CyberChef', 'Stirling-PDF', 'draw.io', 'Excalidraw', 'Forworld', 'web-check', 'share3 (Samba)'];
   const PVE3_SET = new Set(PVE3_SERVICES);
 
