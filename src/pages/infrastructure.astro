@@ -49,7 +49,7 @@ const monitoringSlides = [
       <div class="container">
         <p class="terminal-prompt">$ cat infrastructure.md</p>
         <h1>Infrastructure<span class="dot">.</span></h1>
-        <p class="subtitle">4 Proxmox nodes, <DynNum stat="lxc_count" fallback="49" suffix="+" /> LXC containers, fully self-hosted. Not a single paid cloud service.</p>
+        <p class="subtitle"><DynNum stat="proxmox_nodes" fallback="4" /> Proxmox nodes, <DynNum stat="lxc_count" fallback="49" suffix="+" /> LXC containers, fully self-hosted. Not a single paid cloud service.</p>
         <p style="margin-top:0.75rem;font-family:var(--font-mono);font-size:0.85rem;"><a href="/now">&rarr; the full hardware &amp; software stack</a></p>
         <button class="inception-trigger" id="inceptionOpen" type="button" aria-haspopup="dialog">
           <span class="ic-dollar">$</span> claude --message-to-visitor <span class="ic-blink">▮</span>
@@ -449,7 +449,7 @@ const monitoringSlides = [
                 <h4>Beszel</h4>
               </div>
               <span class="obs-role">System monitoring</span>
-              <p>30 agents. CPU/RAM/disk/network dashboard. Threshold alerts. Instant overview.</p>
+              <p><DynNum stat="beszel_agents" fallback="30" /> agents. CPU/RAM/disk/network dashboard. Threshold alerts. Instant overview.</p>
             </div>
 
             <div class="obs-card">

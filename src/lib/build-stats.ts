@@ -34,6 +34,9 @@ const FALLBACK: Record<string, string | number> = {
   https_services: 36,
   ansible_hosts: 34,
   beszel_agents: 30,
+  inv_skills: 151,
+  inv_kali: 42,
+  inv_forworld: 173,
 };
 
 let promise: Promise<Record<string, string | number>> | null = null;
