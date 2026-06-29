@@ -208,7 +208,7 @@ const stats = await getBuildStats();
   // section, with state derived from the node: awake → up (green), asleep → on-demand
   // (sky), never red. The tool CTs below aren't in the monitoring payload, so they're
   // declared here; PBS + netboot.xyz are, and keep their real state when the node is awake.
-  const PVE3_SERVICES = ['PBS', 'netboot.xyz', 'Kiwix', 'IT-Tools', 'Transmute', 'CyberChef', 'Stirling-PDF', 'draw.io', 'Excalidraw', 'Forworld', 'web-check'];
+  const PVE3_SERVICES = ['PBS', 'netboot.xyz', 'Kiwix', 'IT-Tools', 'Transmute', 'CyberChef', 'Stirling-PDF', 'draw.io', 'Excalidraw', 'Forworld', 'web-check', 'share3 (Samba)'];
   const PVE3_SET = new Set(PVE3_SERVICES);
 
   function renderOnDemand(data: any) {

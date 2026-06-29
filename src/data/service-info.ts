@@ -217,6 +217,10 @@ export const SERVICE_INFO: Record<string, ServiceBlurb> = {
     what: { en: 'Samba/CIFS network file share.', fr: 'Partage de fichiers réseau Samba/CIFS.' },
     why: { en: 'Shared storage reachable across the lab and the workstation.', fr: 'Stockage partagé accessible depuis le lab et la workstation.' },
   },
+  'share3 (Samba)': {
+    what: { en: 'Samba/CIFS share for cold storage on the on-demand node.', fr: 'Partage Samba/CIFS pour le stockage froid sur le nœud à la demande.' },
+    why: { en: 'Bulk/archival files parked on the WOL node, woken only when needed.', fr: 'Fichiers volumineux/archives parqués sur le nœud WOL, réveillé seulement au besoin.' },
+  },
   'APT Cache': {
     what: { en: 'Caching proxy for Debian/APT packages.', fr: 'Proxy de cache pour les paquets Debian/APT.' },
     why: { en: 'Downloads a package once, serves it to every CT — faster updates, less bandwidth.', fr: 'Télécharge un paquet une fois, le sert à chaque CT — updates plus rapides, moins de bande passante.' },
