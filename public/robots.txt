@@ -1,4 +1,8 @@
 User-agent: *
+Content-Signal: search=yes, ai-input=yes, ai-train=no
 Allow: /
 
 Sitemap: https://pixelium.win/sitemap-index.xml
+
+# Structured entry point for AI agents — https://llmstxt.org
+# LLM index: https://pixelium.win/llms.txt
