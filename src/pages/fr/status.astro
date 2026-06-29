@@ -208,7 +208,7 @@ const stats = await getBuildStats();
   // section, avec un état dérivé du nœud : réveillé → up (vert), en veille → on-demand
   // (ciel), jamais rouge. Les outils ci-dessous ne sont pas dans le payload de monitoring,
   // ils sont déclarés ici ; PBS + netboot.xyz le sont, et gardent leur vrai état si le nœud est réveillé.
-  const PVE3_SERVICES = ['PBS', 'netboot.xyz', 'Kiwix', 'IT-Tools', 'Transmute', 'CyberChef', 'Stirling-PDF', 'draw.io', 'Excalidraw'];
+  const PVE3_SERVICES = ['PBS', 'netboot.xyz', 'Kiwix', 'IT-Tools', 'Transmute', 'CyberChef', 'Stirling-PDF', 'draw.io', 'Excalidraw', 'Forworld', 'web-check'];
   const PVE3_SET = new Set(PVE3_SERVICES);
 
   function renderOnDemand(data: any) {

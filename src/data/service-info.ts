@@ -59,6 +59,14 @@ export const SERVICE_INFO: Record<string, ServiceBlurb> = {
     what: { en: 'Home automation hub.', fr: 'Hub de domotique.' },
     why: { en: 'Local-first control of IoT devices — automations stay in the lab, not in a vendor cloud.', fr: 'Contrôle local-first des objets connectés — les automatisations restent dans le lab, pas dans un cloud tiers.' },
   },
+  'Node-RED': {
+    what: { en: 'Flow-based automation — wire devices, APIs and services in a browser.', fr: 'Automatisation par flux — câbler appareils, API et services dans le navigateur.' },
+    why: { en: 'Ties MQTT, Zigbee and Home Assistant together into automations, no code.', fr: 'Relie MQTT, Zigbee et Home Assistant en automatisations, sans code.' },
+  },
+  'Zigbee2MQTT': {
+    what: { en: 'Bridge exposing Zigbee devices over MQTT, vendor-independent.', fr: 'Pont exposant les appareils Zigbee via MQTT, indépendant des marques.' },
+    why: { en: 'Frees sensors and bulbs from proprietary hubs and clouds — local control.', fr: 'Libère capteurs et ampoules des hubs et clouds propriétaires — contrôle local.' },
+  },
   'Infisical': {
     what: { en: 'Self-hosted secrets manager.', fr: 'Gestionnaire de secrets self-hosted.' },
     why: { en: 'Central vault for tokens and credentials — secrets live here, never in code or commits.', fr: 'Coffre central pour tokens et identifiants — les secrets vivent ici, jamais dans le code ou les commits.' },
@@ -105,6 +113,14 @@ export const SERVICE_INFO: Record<string, ServiceBlurb> = {
     what: { en: 'Sync server for Joplin notes (E2E-encrypted).', fr: 'Serveur de synchro pour les notes Joplin (chiffrées E2E).' },
     why: { en: 'Notes synced across devices through the lab, not a vendor backend.', fr: 'Notes synchronisées entre appareils via le lab, pas un backend tiers.' },
   },
+  'SilverBullet': {
+    what: { en: 'Self-hosted, end-user-programmable notes and knowledge base (markdown).', fr: 'Prise de notes et base de connaissances self-hosted, programmable (markdown).' },
+    why: { en: 'An extensible PKM with live queries and templates — local and hackable.', fr: 'Un PKM extensible avec requêtes et templates live — local et bidouillable.' },
+  },
+  'Hermes Agent': {
+    what: { en: 'Autonomous Telegram agent running the night shift over the homelab.', fr: 'Agent Telegram autonome qui assure le quart de nuit sur le homelab.' },
+    why: { en: 'Watches, reports and self-improves 24/7 — the resident agent after the AIops v2 trio.', fr: 'Surveille, rapporte et s\'améliore 24/7 — l\'agent résident depuis le trio AIops v2.' },
+  },
   'Semaphore': {
     what: { en: 'Web UI for running Ansible playbooks.', fr: 'UI web pour lancer des playbooks Ansible.' },
     why: { en: 'One-click, audited execution of the IaC that provisions the whole fleet.', fr: 'Exécution en un clic et auditée de l\'IaC qui provisionne toute la flotte.' },
@@ -150,6 +166,10 @@ export const SERVICE_INFO: Record<string, ServiceBlurb> = {
   'VictoriaMetrics': {
     what: { en: 'High-performance time-series metrics database.', fr: 'Base de métriques time-series haute performance.' },
     why: { en: 'Stores the lab\'s metrics efficiently — the backend Grafana queries.', fr: 'Stocke les métriques du lab efficacement — le backend que Grafana interroge.' },
+  },
+  'Prometheus-PVE-Exporter': {
+    what: { en: 'Exporter that turns the Proxmox VE API into Prometheus metrics.', fr: 'Exporter qui transforme l\'API Proxmox VE en métriques Prometheus.' },
+    why: { en: 'Feeds node/VM/CT metrics into VictoriaMetrics and Grafana.', fr: 'Alimente VictoriaMetrics et Grafana en métriques nœuds/VM/CT.' },
   },
   'Patchmon': {
     what: { en: 'Patch / update status tracker across hosts.', fr: 'Suivi de l\'état des patchs / mises à jour sur les hôtes.' },
@@ -222,5 +242,13 @@ export const SERVICE_INFO: Record<string, ServiceBlurb> = {
   'Stirling-PDF': {
     what: { en: 'Self-hosted PDF toolkit (merge, split, OCR, sign…).', fr: 'Boîte à outils PDF self-hosted (fusion, découpe, OCR, signature…).' },
     why: { en: 'Everything you\'d send to a sketchy "free PDF" site — done locally instead.', fr: 'Tout ce qu\'on enverrait à un site « PDF gratuit » douteux — fait en local à la place.' },
+  },
+  'Forworld': {
+    what: { en: 'Offline Git mirror vault — 170+ repos on a cold-storage node.', fr: 'Coffre de miroirs Git offline — 170+ dépôts sur un nœud de stockage froid.' },
+    why: { en: 'Survives upstream loss: infra, AI and pentest repos kept reachable offline.', fr: 'Survit à la perte de l\'upstream : dépôts infra, IA et pentest accessibles offline.' },
+  },
+  'web-check': {
+    what: { en: 'Self-hosted OSINT tool that X-rays any website (headers, DNS, TLS, stack…).', fr: 'Outil OSINT self-hosted qui radiographie n\'importe quel site (headers, DNS, TLS, stack…).' },
+    why: { en: 'Recon and posture checks on demand, without leaking the target to a SaaS.', fr: 'Recon et vérifs de posture à la demande, sans fuiter la cible vers un SaaS.' },
   },
 };
