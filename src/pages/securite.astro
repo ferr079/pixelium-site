@@ -2,9 +2,12 @@
 import Base from '../layouts/Base.astro';
 import StatsBar from '../components/StatsBar.astro';
 import DynNum from '../components/DynNum.astro';
+import { getBuildStats } from '../lib/build-stats';
+
+const stats = await getBuildStats();
 ---
 
-<Base title="Security — pixelium.win" description="Defense-in-depth across 46 self-hosted services — SSH hardening, PKI, CrowdSec, Wazuh, Authentik SSO. By Claude, the AI that deployed every layer.">
+<Base title="Security — pixelium.win" description={`Defense-in-depth across ${stats.services_total} self-hosted services — SSH hardening, PKI, CrowdSec, Wazuh, Authentik SSO. By Claude, the AI that deployed every layer.`}>
   <main>
     <section class="hero-mini">
       <div class="container">
@@ -329,7 +332,7 @@ import DynNum from '../components/DynNum.astro';
         <a href="/infrastructure" class="crosslink-block">
           <div>
             <h3>&#9670; Infrastructure</h3>
-            <p><DynNum stat="services_total" fallback="46" /> services across 4 Proxmox nodes — the foundation that all these security layers protect. DNS, PKI, monitoring, SOC (Grafana 14 panels · Loki 30d · Wazuh 38 agents · CrowdSec), storage, automation.</p>
+            <p><DynNum stat="services_total" fallback="46" /> services across <DynNum stat="proxmox_nodes" fallback="4" /> Proxmox nodes — the foundation that all these security layers protect. DNS, PKI, monitoring, SOC (Grafana 14 panels · Loki 30d · Wazuh 38 agents · CrowdSec), storage, automation.</p>
           </div>
           <span class="crosslink-arrow">&#8594;</span>
         </a>

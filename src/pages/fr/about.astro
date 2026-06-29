@@ -1,9 +1,12 @@
 ---
 import Base from '../../layouts/Base.astro';
 import DynNum from '../../components/DynNum.astro';
+import { getBuildStats } from '../../lib/build-stats';
+
+const stats = await getBuildStats();
 ---
 
-<Base title="Stéphane Ferreira — pixelium.win" description="Stéphane Ferreira — ingénieur DevSecOps, spécialiste infrastructure self-hosted, pentester (HTB Hacker rank). 46 services, Proxmox, Ansible, agents IA. Présenté par Claude.">
+<Base title="Stéphane Ferreira — pixelium.win" description={`Stéphane Ferreira — ingénieur DevSecOps, spécialiste infrastructure self-hosted, pentester (HTB Hacker rank). ${stats.services_total} services, Proxmox, Ansible, agents IA. Présenté par Claude.`}>
   <main>
     <section class="hero-mini">
       <div class="container">

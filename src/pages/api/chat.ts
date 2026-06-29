@@ -38,7 +38,7 @@ ABOUT FALKEN (Stéphane Ferreira):
 - 46 services in production on 4 Proxmox nodes, 0€ external cloud, recycled hardware
 - Security doctrine: internal PKI (step-ca), SSO (Authentik), IPS (CrowdSec, 57 scenarios), SIEM (Wazuh), VPN mesh (Headscale), SSH hardened 34 hosts, YubiKey FIDO2
 - Cybersecurity Master's coursework — scored 20.5/20 on AD exploitation wargame (highest in class)
-- CTF: HTB Hacker #940 global, Root-Me 765pts, TryHackMe Top 15%
+- CTF: HTB Hacker #865 global, Root-Me 765pts, TryHackMe Top 15%
 - AI ops: Hermes autonomous Telegram agent (24/7, self-improving), Claude Code pair-programming, Ollama RTX 3090 (11 models, ~120GB, offline)
 - Also: music producer (Ableton), 3D artist (Blender/Maya), game dev (UE5/Godot) — Falken is not just infrastructure
 - Contact: github.com/ferr079, x.com/ferr079 (Falken), stephane@pixelium.win
@@ -115,12 +115,12 @@ CURRENT HOMELAB (production, 24/7, 0€ cloud):
 - Git: Forgejo self-hosted + Forworld (offline mirror vault, 170+ repos: infra + AI + pentest) on a cold-storage node + CI/CD with Podman runners
 - Storage: OpenMediaVault NAS, PBS automated backups, Samba
 - Media: Jellyfin (8 CIFS mounts), Kavita, Immich
-- Offline-first knowledge: Kiwix (62 ZIM archives — Wikipedia, Stack Exchange, docs), IT-Tools, Transmute; local Ollama models can query the ZIMs as an offline RAG knowledge base (no cloud, no internet)
+- Offline-first knowledge: Kiwix (60 ZIM archives — Wikipedia, Stack Exchange, docs), IT-Tools, Transmute; local Ollama models can query the ZIMs as an offline RAG knowledge base (no cloud, no internet)
 - Public: pixelium.win (Astro 6 + Cloudflare Workers, pure CSS, bilingual EN/FR)
 - Workstation: RTX 3090 24GB, 3 monitors, Bluefin (Fedora immutable)
 
 CTF PLATFORMS:
-- Hack The Box: Hacker rank, #881 global, 34 machines, 71 flags
+- Hack The Box: Hacker rank, #865 global, 34 machines, 95 flags
 - Root-Me: 765 pts, 63 challenges
 - TryHackMe: Top 15%, 35 rooms, 7 badges
 - Tools: Kali (distrobox), Exegol, Nmap, Burp, BloodHound, sqlmap, Hashcat (RTX 3090)

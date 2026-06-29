@@ -21,11 +21,11 @@ JS: Vanilla only — DynNum hydration, scroll reveal, terminal recordings
 i18n: EN (default) + FR (22 pages total)
 
 /* INFRASTRUCTURE (what this site documents) */
-Virtualization: 3x Proxmox VE nodes, 36 LXC containers
+Virtualization: 4x Proxmox VE nodes, 60 LXC containers
 Network: TechnitiumDNS (DoT HA), Traefik, step-ca (internal PKI)
 Security: Wazuh SIEM, CrowdSec IPS, Authentik SSO, Headscale VPN, YubiKey FIDO2
 Observability: VictoriaMetrics, Loki, Beszel, Patchmon
-IaC: Ansible (13 playbooks) via Semaphore, Forgejo Runner CI/CD
+IaC: Ansible (49 playbooks) via Semaphore, Forgejo Runner CI/CD
 AI Agents: OpenFang Guardian (5 crons, 7 wrappers), veille-rss, PentAGI, IronClaw
 Backup: PBS automated (WOL, vzdump 33 CTs, prune, shutdown — 14 min cycle)
 

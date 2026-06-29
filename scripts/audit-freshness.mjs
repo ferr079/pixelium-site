@@ -34,6 +34,19 @@ const CHECKS = [
   // ALL its literals are now dynamic — `${stats.lxc_count}` from build-stats on the
   // index cards + infra meta (EN/FR), and fuzzy "~60" in the chat.ts system prompt —
   // so no lxc literal can lie anymore. Nothing left to pin for it.
+  //
+  // chat.ts is a runtime Worker (the chatbot system prompt) — it can't read build-stats,
+  // so its facts are pinned here. Caught 2026-06-29: HTB rank #940/#881 and "71 flags"
+  // had drifted (live #865 / 95). proxmox/hosts/playbooks/beszel are pinned above.
+  { file: 'src/pages/api/chat.ts', re: /HTB Hacker #(\d+) global/, key: 'htb_ranking', label: 'chat.ts — HTB ranking (bio)' },
+  { file: 'src/pages/api/chat.ts', re: /Hacker rank, #(\d+) global/, key: 'htb_ranking', label: 'chat.ts — HTB ranking (homelab block)' },
+  { file: 'src/pages/api/chat.ts', re: /machines, (\d+) flags/, key: 'htb_flags', label: 'chat.ts — HTB flags' },
+  { file: 'src/pages/api/chat.ts', re: /(\d+) services in production/, key: 'services_total', label: 'chat.ts — services' },
+  // proxmox_nodes narrative prose: the count is bound to the pve1–4 enumeration, so a
+  // 5th node needs a human rewrite (not just a number bump) — pin it so CI flags the drift.
+  { file: 'src/pages/infrastructure.astro', re: /(\d+) heterogeneous Proxmox VE nodes/, key: 'proxmox_nodes', label: 'infrastructure.astro — Proxmox nodes (prose)' },
+  { file: 'src/pages/fr/infrastructure.astro', re: /(\d+) n.uds Proxmox VE h/, key: 'proxmox_nodes', label: 'fr/infrastructure.astro — Proxmox nodes (prose)' },
+  { file: 'src/data/og-pages.json', re: /"(\d+) n.uds Proxmox/, key: 'proxmox_nodes', label: 'og-pages.json — Proxmox nodes (OG subtitle)' },
 ];
 
 const STATS_URL = 'https://pixelium.win/api/stats';

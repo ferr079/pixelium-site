@@ -68,7 +68,7 @@ const cards = [
 ];
 ---
 
-<Base title="pixelium.win — Portfolio DevSecOps Homelab" description="Infrastructure de production self-hosted : 46 services sur Proxmox, automatisation Ansible, agents IA, sécurité en profondeur. Conçu par Stéphane Ferreira, raconté par Claude.">
+<Base title="pixelium.win — Portfolio DevSecOps Homelab" description={`Infrastructure de production self-hosted : ${stats.services_total} services sur Proxmox, automatisation Ansible, agents IA, sécurité en profondeur. Conçu par Stéphane Ferreira, raconté par Claude.`}>
   <main>
     <!-- Hero — Living Topology cockpit (refonte V4) -->
     <HeroCockpit lang="fr" />
@@ -95,7 +95,7 @@ const cards = [
 
     <!-- Stats -->
     <StatsBar stats={[
-      { number: '4', label: 'nœuds Proxmox' },
+      { number: '4', label: 'nœuds Proxmox', stat: 'proxmox_nodes' },
       { number: '49+', label: 'conteneurs LXC', stat: 'lxc_count', suffix: '+' },
       { number: '36+', label: 'services HTTPS', stat: 'https_services', suffix: '+' },
       { number: '30', label: 'agents monitoring', stat: 'beszel_agents' },

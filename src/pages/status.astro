@@ -1,11 +1,13 @@
 ---
 import Base from '../layouts/Base.astro';
 import { SERVICE_INFO } from '../data/service-info';
+import { getBuildStats } from '../lib/build-stats';
 
 const svcInfoJson = JSON.stringify(SERVICE_INFO);
+const stats = await getBuildStats();
 ---
 
-<Base title="Status — pixelium.win" description="Live infrastructure status: 46 services, 4 Proxmox nodes, tri-state monitoring (up · on-demand · down). Data pushed from the homelab by Dagu every 5 minutes.">
+<Base title="Status — pixelium.win" description={`Live infrastructure status: ${stats.services_total} services, ${stats.proxmox_nodes} Proxmox nodes, tri-state monitoring (up · on-demand · down). Data pushed from the homelab by Dagu every 5 minutes.`}>
   <main>
     <section class="hero-mini">
       <div class="container">
