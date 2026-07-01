@@ -5,7 +5,7 @@ import DynNum from '../components/DynNum.astro';
 import Screenshot from '../components/Screenshot.astro';
 
 // HTB — fetch at build time
-let htb = { rank: 'Hacker', ranking: 881, system_owns: 34, user_owns: 37 };
+let htb = { rank: 'Hacker', ranking: 810, system_owns: 36, user_owns: 39 };
 try {
   const htbRes = await fetch('https://labs.hackthebox.com/api/v4/user/profile/basic/1161145', {
     headers: { 'Authorization': `Bearer ${import.meta.env.HTB_API_TOKEN}` },
@@ -20,14 +20,14 @@ try {
 const htbFlags = htb.user_owns + htb.system_owns;
 
 // Root-Me — fetch at build time
-let rootme = { score: 765, position: 21847, validations: 63 };
+let rootme = { score: 780, position: 21851, validations: 64 };
 try {
   const rmRes = await fetch(`https://api.www.root-me.org/auteurs/${import.meta.env.ROOTME_UID}`, {
     headers: { 'Cookie': `api_key=${import.meta.env.ROOTME_API_KEY}` },
   });
   if (rmRes.ok) {
     const data = await rmRes.json();
-    rootme = { score: parseInt(data.score) || 765, position: data.position ?? 21847, validations: (data.validations || []).length || 63 };
+    rootme = { score: parseInt(data.score) || 780, position: data.position ?? 21851, validations: (data.validations || []).length || 64 };
   } else console.warn(`[ctf] Root-Me HTTP ${rmRes.status} — keeping fallback`);
 } catch (e) { console.warn('[ctf] Root-Me fetch failed —', e); }
 ---
