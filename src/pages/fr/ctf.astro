@@ -20,14 +20,14 @@ try {
 const htbFlags = htb.user_owns + htb.system_owns;
 
 // Root-Me — fetch at build time
-let rootme = { score: 780, position: 21851, validations: 64 };
+let rootme = { score: 880, position: 19069, validations: 68 };
 try {
   const rmRes = await fetch(`https://api.www.root-me.org/auteurs/${import.meta.env.ROOTME_UID}`, {
     headers: { 'Cookie': `api_key=${import.meta.env.ROOTME_API_KEY}` },
   });
   if (rmRes.ok) {
     const data = await rmRes.json();
-    rootme = { score: parseInt(data.score) || 780, position: data.position ?? 21851, validations: (data.validations || []).length || 64 };
+    rootme = { score: parseInt(data.score) || 880, position: data.position ?? 19069, validations: (data.validations || []).length || 68 };
   } else console.warn(`[ctf] Root-Me HTTP ${rmRes.status} — keeping fallback`);
 } catch (e) { console.warn('[ctf] Root-Me fetch failed —', e); }
 ---
