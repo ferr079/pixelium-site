@@ -131,7 +131,7 @@ git push origin main && git push forgejo main   # remote SSH (forgejo-ssh), plus
 
 | Platform | Username | Current stats |
 |---|---|---|
-| Hack The Box | Ferr079 | Hacker rank, #881, 34 system + 37 user owns, 71 flags (fallback ctf.astro ; live au build via `/profile/basic`). Lvl 50 « Professional » · Season 11 Ruby tier #381 (screenshot `htb-dashboard.webp`, MAJ 2026-06-27). ⚠️ `/profile/activity` **supprimé par HTB 2026** (HTTP 400) → `flags = user_owns + system_owns`, ne PAS ré-ajouter d'appel activity. NB : `ranking` = rang **global** HTB (≠ `#381` = rang de saison du screenshot) |
+| Hack The Box | Ferr079 | Hacker rank, #881, 34 system + 37 user owns, 71 flags (fallback ctf.astro ; live au build via `/profile/basic`). Lvl 52 « Professional » · Season 11 Ruby tier #382 (screenshot `htb-dashboard.webp`, MAJ 2026-07-01). ⚠️ `/profile/activity` **supprimé par HTB 2026** (HTTP 400) → `flags = user_owns + system_owns`, ne PAS ré-ajouter d'appel activity. NB : `ranking` = rang **global** HTB (≠ `#382` = rang de saison du screenshot) |
 | TryHackMe | ferr0 | Top 15%, 35 rooms, 7 badges |
 | Root-Me | Ferr0 | 765 pts, 63 challenges |
 | GitHub | ferr079 | github.com/ferr079 |
