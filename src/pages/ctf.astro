@@ -8,7 +8,11 @@ import Screenshot from '../components/Screenshot.astro';
 let htb = { rank: 'Hacker', ranking: 810, system_owns: 36, user_owns: 39 };
 try {
   const htbRes = await fetch('https://labs.hackthebox.com/api/v4/user/profile/basic/1161145', {
-    headers: { 'Authorization': `Bearer ${import.meta.env.HTB_API_TOKEN}` },
+    headers: {
+      'Authorization': `Bearer ${import.meta.env.HTB_API_TOKEN}`,
+      'User-Agent': 'Mozilla/5.0 (compatible; pixelium-site-build)',
+      'Accept': 'application/json',
+    },
   });
   if (htbRes.ok) {
     const data = await htbRes.json();
@@ -23,7 +27,11 @@ const htbFlags = htb.user_owns + htb.system_owns;
 let rootme = { score: 880, position: 19069, validations: 68 };
 try {
   const rmRes = await fetch(`https://api.www.root-me.org/auteurs/${import.meta.env.ROOTME_UID}`, {
-    headers: { 'Cookie': `api_key=${import.meta.env.ROOTME_API_KEY}` },
+    headers: {
+      'Cookie': `api_key=${import.meta.env.ROOTME_API_KEY}`,
+      'User-Agent': 'Mozilla/5.0 (compatible; pixelium-site-build)',
+      'Accept': 'application/json',
+    },
   });
   if (rmRes.ok) {
     const data = await rmRes.json();
