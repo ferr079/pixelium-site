@@ -24,7 +24,7 @@ try {
 const htbFlags = htb.user_owns + htb.system_owns;
 
 // Root-Me — fetch at build time
-let rootme = { score: 915, position: 18224, validations: 69 };
+let rootme = { score: 955, position: 17367, validations: 71 };
 try {
   const rmRes = await fetch(`https://api.www.root-me.org/auteurs/${import.meta.env.ROOTME_UID}`, {
     headers: {
@@ -35,7 +35,7 @@ try {
   });
   if (rmRes.ok) {
     const data = await rmRes.json();
-    rootme = { score: parseInt(data.score) || 915, position: data.position ?? 18224, validations: (data.validations || []).length || 69 };
+    rootme = { score: parseInt(data.score) || 955, position: data.position ?? 17367, validations: (data.validations || []).length || 71 };
   } else console.warn(`[ctf] Root-Me HTTP ${rmRes.status} — keeping fallback`);
 } catch (e) { console.warn('[ctf] Root-Me fetch failed —', e); }
 ---
