@@ -3,41 +3,28 @@ import Base from '../../layouts/Base.astro';
 import StatsBar from '../../components/StatsBar.astro';
 import DynNum from '../../components/DynNum.astro';
 import Screenshot from '../../components/Screenshot.astro';
+import { getBuildStats } from '../../lib/build-stats';
 
-// HTB — fetch at build time
-let htb = { rank: 'Hacker', ranking: 810, system_owns: 36, user_owns: 39 };
-try {
-  const htbRes = await fetch('https://labs.hackthebox.com/api/v4/user/profile/basic/1161145', {
-    headers: {
-      'Authorization': `Bearer ${import.meta.env.HTB_API_TOKEN}`,
-      'User-Agent': 'Mozilla/5.0 (compatible; pixelium-site-build)',
-      'Accept': 'application/json',
-    },
-  });
-  if (htbRes.ok) {
-    const data = await htbRes.json();
-    htb = { ...htb, rank: data.profile.rank, ranking: data.profile.ranking, system_owns: data.profile.system_owns, user_owns: data.profile.user_owns };
-  } else console.warn(`[ctf] HTB basic profile HTTP ${htbRes.status} — keeping fallback`);
-} catch (e) { console.warn('[ctf] HTB fetch failed —', e); }
-// HTB removed /user/profile/activity in 2026 (returns 400 "endpoint has been removed").
-// Total flags = user + system owns, both live from /basic.
-const htbFlags = htb.user_owns + htb.system_owns;
+// HTB + Root-Me stats — single source of truth: the KV pipeline (homelab kv-push.sh,
+// refreshed ~every 5 min) that also feeds the homepage. Replaces the old per-page
+// build-time HTB/Root-Me API fetches, which 401'd on the CI runner IP and fell back to
+// stale hardcoded numbers. The inline defaults apply only if the KV is unreachable at build.
+const s = await getBuildStats();
+const n = (k: string, d: number): number => (Number.isFinite(Number(s[k])) ? Number(s[k]) : d);
 
-// Root-Me — fetch at build time
-let rootme = { score: 955, position: 17367, validations: 71 };
-try {
-  const rmRes = await fetch(`https://api.www.root-me.org/auteurs/${import.meta.env.ROOTME_UID}`, {
-    headers: {
-      'Cookie': `api_key=${import.meta.env.ROOTME_API_KEY}`,
-      'User-Agent': 'Mozilla/5.0 (compatible; pixelium-site-build)',
-      'Accept': 'application/json',
-    },
-  });
-  if (rmRes.ok) {
-    const data = await rmRes.json();
-    rootme = { score: parseInt(data.score) || 955, position: data.position ?? 17367, validations: (data.validations || []).length || 71 };
-  } else console.warn(`[ctf] Root-Me HTTP ${rmRes.status} — keeping fallback`);
-} catch (e) { console.warn('[ctf] Root-Me fetch failed —', e); }
+const htb = {
+  rank: String(s.htb_rank ?? 'Hacker'),
+  ranking: n('htb_ranking', 788),
+  system_owns: n('htb_system_owns', 37),
+  user_owns: n('htb_user_owns', 40),
+};
+const htbFlags = n('htb_flags', htb.user_owns + htb.system_owns);
+
+const rootme = {
+  score: n('rootme_score', 980),
+  position: n('rootme_position', 16889),
+  validations: n('rootme_validations', 72),
+};
 ---
 
 <Base title="CTF — pixelium.win" description={`Profils Capture The Flag — HTB (rang ${htb.rank}, #${htb.ranking}), TryHackMe (Top 15%), Root-Me (${rootme.score} pts). Entraînement offensif vérifié par Stéphane, documenté par Claude.`}>

@@ -59,15 +59,13 @@ URL slugs are shared between languages (same paths, just `/fr/` prefix).
 - **Components**: Nav, Footer, Terminal, StatsBar, Card, SectionHeading, Screenshot, Carousel in `src/components/`
 - **Icons**: Simple Icons CDN (`cdn.simpleicons.org`) — verify 200 OK before adding new ones (some brands missing: wazuh, openai)
 
-## CTF APIs (build-time fetch)
+## CTF APIs (stats from KV — unified 2026-07-05)
 
-Pages `ctf.astro` (EN + FR) fetch live stats at build time:
-- **HTB**: `labs.hackthebox.com/api/v4/user/profile/basic/1161145` — needs `HTB_API_TOKEN` env var
-- **Root-Me**: `api.www.root-me.org/auteurs/108492` — needs `ROOTME_API_KEY` + `ROOTME_UID` env vars
-- **THM**: no public API — stats hardcoded, update manually after sessions
-- Fallback values if API unreachable (last known stats hardcoded in `let` declarations)
-- GitHub secrets configured: `HTB_API_TOKEN`, `ROOTME_API_KEY`, `ROOTME_UID`
-- Local build: `source ~/.claude/secrets.env && HTB_API_TOKEN="$HTB_API_TOKEN" ROOTME_API_KEY="$ROOTME_API_KEY" ROOTME_UID="$ROOTME_UID" GITHUB_TOKEN="$GITHUB_TOKEN" npm run build`
+Pages `ctf.astro` (EN + FR) read HTB + Root-Me stats from **`getBuildStats()`** (the KV `/api/stats` blob) — the SAME source as the homepage, fed by the homelab pipeline `kv-push.sh` (Dagu CT 246, ~every 5 min, proper creds/UA/residential IP). Replaced the old per-page build-time API fetches, which 401'd on the CI runner IP and served stale hardcoded fallbacks.
+- KV keys consumed: `htb_rank`, `htb_ranking`, `htb_system_owns`, `htb_user_owns`, `htb_flags`, `rootme_score`, `rootme_validations`, `rootme_position`.
+- **THM**: no public API — stats hardcoded, update manually after sessions.
+- Fallbacks: `build-stats.ts` FALLBACK snapshot (if the KV is unreachable at build) + inline `n(key, default)` defaults in `ctf.astro`.
+- ⚠️ The site build **no longer needs** `HTB_API_TOKEN` / `ROOTME_API_KEY` / `ROOTME_UID` (they live only in the homelab pipeline now) — those CI secrets can be retired. Plain `npm run build` reads the live KV.
 
 **`contributions.astro` (EN+FR) — statut PR synchronisé au build** : le tableau `contributions` porte le contenu éditorial (insight/tags/blog) + un `status` *fallback* ; au build, `liveStatus()` fetch `api.github.com/repos/{o}/{r}/pulls/{n}` → `merged`/`open`/`closed` réel (override le fallback ; warning loggé `[contributions] …` si dérive ou échec). Résumé du hero (`statusBreakdown`) dérivé du live. Discussions exclues (pas d'état de merge). Token : `GITHUB_TOKEN` (CI = auto-Actions `secrets.GITHUB_TOKEN`, lecture publique). ⚠️ **Une NOUVELLE contribution s'ajoute toujours à la main** (l'éditorial n'est pas auto-généré) — seul le statut est auto-synchro. Vérifier les nouvelles PR mergées : `gh search prs --author ferr079 --merged`.
 
