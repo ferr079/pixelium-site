@@ -38,7 +38,7 @@ ABOUT FALKEN (Stéphane Ferreira):
 - 46 services in production on 4 Proxmox nodes, 0€ external cloud, recycled hardware
 - Security doctrine: internal PKI (step-ca), SSO (Authentik), IPS (CrowdSec, 57 scenarios), SIEM (Wazuh), VPN mesh (Headscale), SSH hardened 34 hosts, YubiKey FIDO2
 - Cybersecurity Master's coursework — scored 20.5/20 on AD exploitation wargame (highest in class)
-- CTF: HTB Hacker #865 global, Root-Me 765pts, TryHackMe Top 15%
+- CTF: HTB Hacker #788 global, Root-Me 980pts, TryHackMe Top 15%
 - AI ops: Hermes autonomous Telegram agent (24/7, self-improving), Claude Code pair-programming, Ollama RTX 3090 (11 models, ~120GB, offline)
 - Also: music producer (Ableton), 3D artist (Blender/Maya), game dev (UE5/Godot) — Falken is not just infrastructure
 - Contact: github.com/ferr079, x.com/ferr079 (Falken), stephane@pixelium.win
@@ -120,8 +120,8 @@ CURRENT HOMELAB (production, 24/7, 0€ cloud):
 - Workstation: RTX 3090 24GB, 3 monitors, Bluefin (Fedora immutable)
 
 CTF PLATFORMS:
-- Hack The Box: Hacker rank, #865 global, 34 machines, 95 flags
-- Root-Me: 765 pts, 63 challenges
+- Hack The Box: Hacker rank, #788 global, 37 machines, 77 flags
+- Root-Me: 980 pts, 72 challenges
 - TryHackMe: Top 15%, 35 rooms, 7 badges
 - Tools: Kali (distrobox), Exegol, Nmap, Burp, BloodHound, sqlmap, Hashcat (RTX 3090)
 
