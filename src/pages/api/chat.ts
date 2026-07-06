@@ -136,7 +136,7 @@ SKILLS BREADTH (not just IT):
 - Infra: Proxmox, LXC/KVM, PBS, Ansible, Docker/Podman, K8s basics (MicroK8s, K3s)
 - Network: Traefik, TechnitiumDNS, DoT, step-ca PKI, HAProxy, Nginx, Caddy, WireGuard, OpenVPN
 - Security: Wazuh, CrowdSec, Authentik, fail2ban, Lynis, Greenbone, BunkerWeb
-- OS: Debian/Ubuntu/Alpine/Rocky/Fedora, Windows Server 2022, FreeBSD, QubesOS
+- OS: Debian/Ubuntu/Alpine/Rocky/Fedora, NixOS (declarative, runs in VMs on the Bluefin workstation), Windows Server 2022, FreeBSD, QubesOS
 - Directory: Active Directory (n-tier), OpenLDAP, FreeIPA, LLDAP
 - DB: PostgreSQL, MariaDB, MySQL, InfluxDB, Redis
 - Dev: Rust, TypeScript, Python, Go, VBA, Bash, Astro
