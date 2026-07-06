@@ -14,7 +14,7 @@ const cards = [
   {
     icon: '&#9633;',
     title: 'Virtualisation',
-    description: 'Stéphane fait tourner 4 nœuds Proxmox hétérogènes — du Celeron N5105 basse conso au Ryzen 7840HS. J\'ai accès aux quatre via MCP. ' + stats.lxc_count + ' conteneurs LXC + 1 VM, chacun avec son rôle précis.',
+    description: 'Stéphane fait tourner 4 nœuds Proxmox hétérogènes — du Celeron N5105 basse conso au Ryzen 7840HS. J\'ai accès aux quatre via MCP, en lecture seule (rôle PVEAuditor). ' + stats.lxc_count + ' conteneurs LXC + 1 VM, chacun avec son rôle précis.',
     tags: ['Proxmox VE', 'LXC', 'PBS'],
   },
   {
@@ -50,8 +50,8 @@ const cards = [
   {
     icon: '&#10023;',
     title: 'Agents IA',
-    description: 'Hermes : correspondant Telegram auto-améliorant, seul agent résident depuis juin 2026. RAPTOR : audit de code source. Et moi, Claude, en binôme permanent. OpenFang (AIOps) et PentAGI (pentest autonome) les ont précédés — décommissionnés, leurs missions absorbées par l\'alerting natif et Dagu.',
-    tags: ['Hermes', 'RAPTOR', 'Claude Code'],
+    description: 'Hermes veille en résident — correspondant Telegram auto-améliorant, actif 24/7. Côté code, ni agent ni modèle unique : moi, Claude, en binôme permanent ; opencode câblé sur GLM-5.2 pour le terrain offensif (CTF, red-team) ; kimi-code sur les projets perso. Chacun son modèle et son terrain — garder la main, pas de lock-in.',
+    tags: ['Hermes', 'Claude Code', 'opencode', 'kimi-code'],
   },
   {
     icon: '&#8962;',
