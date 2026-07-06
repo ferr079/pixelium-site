@@ -45,7 +45,7 @@ const stats = await getBuildStats();
               <span class="layer-icon">&#9678;</span>
               <div>
                 <h4>Identity layer</h4>
-                <p>Authentik SSO (6 services), YubiKey FIDO2, SSH key-only on <DynNum stat="ansible_hosts" fallback="34" /> hosts</p>
+                <p>Authentik SSO (6 services), YubiKey FIDO2, SSH key-only on <DynNum stat="ansible_hosts" fallback="63" /> hosts</p>
               </div>
             </div>
             <div class="defense-layer">
@@ -178,7 +178,7 @@ const stats = await getBuildStats();
           <h2>Hardened SSH + YubiKey FIDO2</h2>
         </div>
         <div class="layer-content">
-          <p>Every host on the homelab — <DynNum stat="ansible_hosts" fallback="34" /> machines — is accessible <strong>only via SSH key.</strong> Passwords disabled everywhere. Ansible deploys the hardening in a single command via the <code>harden_ssh.yml</code> playbook.</p>
+          <p>Every host on the homelab — <DynNum stat="ansible_hosts" fallback="63" /> machines — is accessible <strong>only via SSH key.</strong> Passwords disabled everywhere. Ansible deploys the hardening in a single command via the <code>harden_ssh.yml</code> playbook.</p>
           <div class="details-grid">
             <div class="detail">
               <h4>Resident ed25519-sk</h4>
@@ -307,7 +307,7 @@ const stats = await getBuildStats();
     </section>
 
     <StatsBar stats={[
-      { number: '34', label: 'hardened SSH hosts', stat: 'ansible_hosts' },
+      { number: '63', label: 'hardened SSH hosts', stat: 'ansible_hosts' },
       { number: '6', label: 'SSO services' },
       { number: '7', label: 'defensive layers' },
       { number: '0', label: 'SSH passwords' },

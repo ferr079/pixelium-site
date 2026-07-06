@@ -36,7 +36,7 @@ const FALLBACK: Record<string, string | number> = {
   ansible_playbooks: 51,
   lxc_count: 60,
   https_services: 36,
-  ansible_hosts: 34,
+  ansible_hosts: 63,
   beszel_agents: 30,
   inv_skills: 151,
   inv_kali: 42,
