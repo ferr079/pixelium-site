@@ -43,6 +43,23 @@ const FALLBACK: Record<string, string | number> = {
   inv_forworld: 173,
 };
 
+// Metrics that only ever increase — CTF progress fetched from flaky external APIs
+// (Root-Me / HTB) by the homelab pipeline. Floor them at the last-known-good FALLBACK
+// so a transient upstream glitch can never render a LOWER number than already shown
+// (e.g. Root-Me 980 briefly reverting to a stale 765 in the KV). NOT applied to
+// rank/position (lower is better there) or infra counts (which can legitimately drop).
+const MONOTONIC_UP = ['rootme_score', 'htb_flags', 'htb_system_owns', 'htb_user_owns'];
+
+function withFloor(stats: Record<string, string | number>): Record<string, string | number> {
+  const out = { ...stats };
+  for (const k of MONOTONIC_UP) {
+    const live = Number(out[k]);
+    const floor = Number(FALLBACK[k]);
+    if (Number.isFinite(live) && Number.isFinite(floor)) out[k] = Math.max(live, floor);
+  }
+  return out;
+}
+
 let promise: Promise<Record<string, string | number>> | null = null;
 
 async function fetchOnce(): Promise<Record<string, string | number>> {
@@ -53,8 +70,9 @@ async function fetchOnce(): Promise<Record<string, string | number>> {
     if (res.ok) {
       const data = await res.json();
       if (data?.stats && typeof data.stats === 'object') {
-        // live values win, fallback fills any gap
-        return { ...FALLBACK, ...data.stats };
+        // live values win, fallback fills gaps — monotonic-up metrics are floored
+        // at the last-known-good value (withFloor) so a glitch can't lower them.
+        return withFloor({ ...FALLBACK, ...data.stats });
       }
     }
   } catch {
