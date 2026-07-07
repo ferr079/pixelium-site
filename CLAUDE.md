@@ -87,13 +87,13 @@ AWS_ACCESS_KEY_ID="$R2_ACCESS_KEY_ID" AWS_SECRET_ACCESS_KEY="$R2_SECRET_ACCESS_K
   aws s3 cp public/images/<f>.webp s3://pixelium-assets/images/<f>.webp \
   --endpoint-url "$R2_ENDPOINT" --region auto
 # PUIS purge cache CDN (sinon le edge sert l'ancienne ~4h, même nom d'objet) :
-python3 - <<'PY'  # zone pixelium.win = 12961123076e01643b3df3aded6e7982 ; purge = Global API Key requise
+python3 - <<'PY'  # zone pixelium.win = 12961123076e01643b3df3aded6e7982 ; purge = token scopé CLOUDFLARE_CACHE_PURGE_TOKEN (créer en dashboard : Zone pixelium.win > permission « Cache Purge » ; remplace la Global Key retirée 2026-07-07)
 import os,json,urllib.request
 s={}
 [s.__setitem__(k.strip(),v.strip().strip('"').strip("'")) for k,v in (l.split('=',1) for l in open(os.path.expanduser('~/.claude/secrets.env')) if '=' in l and not l.startswith('#'))]
 req=urllib.request.Request('https://api.cloudflare.com/client/v4/zones/12961123076e01643b3df3aded6e7982/purge_cache',
   data=json.dumps({"files":["https://assets.pixelium.win/images/<f>.webp"]}).encode(),method='POST')
-req.add_header('Content-Type','application/json'); req.add_header('X-Auth-Email',s['CLOUDFLARE_EMAIL']); req.add_header('X-Auth-Key',s['CLOUDFLARE_API_KEY'])
+req.add_header('Content-Type','application/json'); req.add_header('Authorization','Bearer '+s['CLOUDFLARE_CACHE_PURGE_TOKEN'])
 print(json.load(urllib.request.urlopen(req)).get('success'))
 PY
 ```
