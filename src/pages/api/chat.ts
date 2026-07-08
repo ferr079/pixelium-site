@@ -36,9 +36,9 @@ ABOUT FALKEN (Stéphane Ferreira):
 - DevSecOps engineer, self-taught since age 10 (Amstrad PC1512, 1989 — DOS, no internet, pure empiricism)
 - Mentored at 16 by a cypherpunk hacker — Linux Slackware, ethical hacking, warez scene veteran (BBS, IRC, FTP)
 - 59 services in production on 4 Proxmox nodes, 0€ external cloud, recycled hardware
-- Security doctrine: internal PKI (step-ca), SSO (Authentik), IPS (CrowdSec, 57 scenarios), SIEM (Wazuh), VPN mesh (Headscale), SSH hardened 63 hosts, YubiKey FIDO2
+- Security doctrine: internal PKI (step-ca), SSO (Authentik), IPS (CrowdSec, 57 scenarios), SIEM (Wazuh), VPN mesh (Headscale), SSH hardened 64 hosts, YubiKey FIDO2
 - Cybersecurity Master's coursework — scored 20.5/20 on AD exploitation wargame (highest in class)
-- CTF: HTB Hacker #801 global, Root-Me 980pts, TryHackMe Top 15%
+- CTF: HTB Hacker #809 global, Root-Me 980pts, TryHackMe Top 15%
 - AI ops: Hermes autonomous Telegram agent (24/7, self-improving), Claude Code pair-programming, Ollama RTX 3090 (11 models, ~120GB, offline)
 - Also: music producer (Ableton), 3D artist (Blender/Maya), game dev (UE5/Godot) — Falken is not just infrastructure
 - Contact: github.com/ferr079, x.com/ferr079 (Falken), stephane@pixelium.win
@@ -109,9 +109,9 @@ CURRENT HOMELAB (production, 24/7, 0€ cloud):
 - 4 Proxmox nodes (N5105 + Ryzen 7 7840HS + i7-2600K + i5-3470S), ~60 LXC containers + 1 VM
 - DNS: TechnitiumDNS primary+secondary, DoT 853, DNSSEC
 - HTTPS: Traefik + step-ca internal PKI (ACME, 90-day auto-renewal)
-- Security: Authentik SSO, CrowdSec IPS (57 scenarios), Wazuh SIEM, Headscale VPN mesh, Infisical secrets manager + KeePassXC, SSH hardened 63 hosts, YubiKey FIDO2
+- Security: Authentik SSO, CrowdSec IPS (57 scenarios), Wazuh SIEM, Headscale VPN mesh, Infisical secrets manager + KeePassXC, SSH hardened 64 hosts, YubiKey FIDO2
 - Observability: VictoriaMetrics, Grafana, Loki+Alloy, Beszel (49 agents), Uptime-Kuma, Patchmon
-- Automation: 51 Ansible playbooks, 63 hosts, Semaphore (manual runs) + Dagu (scheduled DAGs)
+- Automation: 55 Ansible playbooks, 64 hosts, Semaphore (manual runs) + Dagu (scheduled DAGs)
 - Git: Forgejo self-hosted + Forworld (offline mirror vault, 170+ repos: infra + AI + pentest) on a cold-storage node + CI/CD with Podman runners
 - Storage: OpenMediaVault NAS, PBS automated backups, Samba
 - Media: Jellyfin (8 CIFS mounts), Kavita, Immich
@@ -120,7 +120,7 @@ CURRENT HOMELAB (production, 24/7, 0€ cloud):
 - Workstation: RTX 3090 24GB, 3 monitors, Bluefin (Fedora immutable)
 
 CTF PLATFORMS:
-- Hack The Box: Hacker rank, #801 global, 37 machines, 77 flags
+- Hack The Box: Hacker rank, #809 global, 37 machines, 77 flags
 - Root-Me: 980 pts, 72 challenges
 - TryHackMe: Top 15%, 35 rooms, 7 badges
 - Tools: Kali (distrobox), Exegol, Nmap, Burp, BloodHound, sqlmap, Hashcat (RTX 3090)
