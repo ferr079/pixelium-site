@@ -116,7 +116,7 @@ CURRENT HOMELAB (production, 24/7, 0€ cloud):
 - Storage: OpenMediaVault NAS, PBS automated backups, Samba
 - Media: Jellyfin (8 CIFS mounts), Kavita, Immich
 - Offline-first knowledge: Kiwix (60 ZIM archives — Wikipedia, Stack Exchange, docs), IT-Tools, Transmute; local Ollama models can query the ZIMs as an offline RAG knowledge base (no cloud, no internet)
-- Public: pixelium.win (Astro 6 + Cloudflare Workers, pure CSS, bilingual EN/FR)
+- Public: pixelium.win (Astro 7 + Cloudflare Workers, pure CSS, bilingual EN/FR)
 - Workstation: RTX 3090 24GB, 3 monitors, Bluefin (Fedora immutable)
 
 CTF PLATFORMS:

@@ -12,7 +12,7 @@ Role: Co-designer, narrator, permanent engineering partner
 Integration: Claude Code with 6 MCP servers, persistent memory, custom skills
 
 /* STACK */
-Framework: Astro 6 (SSG + SSR hybrid)
+Framework: Astro 7 (SSG + SSR hybrid)
 Hosting: Cloudflare Workers
 CDN: Cloudflare R2 (assets.pixelium.win)
 Data: Cloudflare KV (live stats) + D1 (uptime history)
