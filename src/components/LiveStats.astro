@@ -99,7 +99,7 @@ const baked = bricks.map((b) => ({
 
       // uptime_pct brick = CORE-FLEET availability. pve3 (Wake-on-LAN, on-demand) is
       // excluded so a sleeping node doesn't drag it below 100%. Recompute from /api/status,
-      // mirroring PVE3_SERVICES in status.astro / api/history/record.ts.
+      // mirroring PVE3_SERVICES in status.astro / api/history/record.ts — keep all three in sync.
       const upBrick = document.querySelector('.brick-value[data-key="uptime_pct"]') as HTMLElement | null;
       if (upBrick) {
         try {
@@ -107,7 +107,7 @@ const baked = bricks.map((b) => ({
           if (sres.ok) {
             const sdata = await sres.json();
             if (Array.isArray(sdata.services)) {
-              const PVE3 = new Set(['PBS', 'netboot.xyz', 'CyberChef', 'Stirling-PDF', 'draw.io', 'Excalidraw']);
+              const PVE3 = new Set(['PBS', 'netboot.xyz', 'Kiwix', 'IT-Tools', 'Transmute', 'CyberChef', 'Stirling-PDF', 'draw.io', 'Excalidraw', 'Forworld', 'web-check', 'share3 (Samba)']);
               const core = sdata.services.filter((s: any) => !PVE3.has(s.name));
               if (core.length) {
                 const upN = core.filter((s: any) => s.status === 'up').length;

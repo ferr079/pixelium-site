@@ -168,8 +168,8 @@ const topoJson = JSON.stringify(topology);
         for (const n of nodes) if (down.has(norm(n.label))) n.down = true;
         // Uptime headline = core fleet only. pve3 services are Wake-on-LAN (on-demand):
         // an intentionally-sleeping node must not drag the number below 100%. Mirrors
-        // PVE3_SERVICES in status.astro / api/history/record.ts.
-        const PVE3 = new Set(['PBS', 'netboot.xyz', 'CyberChef', 'Stirling-PDF', 'draw.io', 'Excalidraw']);
+        // PVE3_SERVICES in status.astro / api/history/record.ts — keep all three in sync.
+        const PVE3 = new Set(['PBS', 'netboot.xyz', 'Kiwix', 'IT-Tools', 'Transmute', 'CyberChef', 'Stirling-PDF', 'draw.io', 'Excalidraw', 'Forworld', 'web-check', 'share3 (Samba)']);
         const core = d.services.filter((s: any) => !PVE3.has(s.name));
         const upEl = document.getElementById('hc-uptime');
         if (upEl && core.length) {
