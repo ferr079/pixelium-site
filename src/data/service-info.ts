@@ -71,6 +71,14 @@ export const SERVICE_INFO: Record<string, ServiceBlurb> = {
     what: { en: 'Self-hosted secrets manager.', fr: 'Gestionnaire de secrets self-hosted.' },
     why: { en: 'Central vault for tokens and credentials — secrets live here, never in code or commits.', fr: 'Coffre central pour tokens et identifiants — les secrets vivent ici, jamais dans le code ou les commits.' },
   },
+  'agent-vault': {
+    what: { en: 'Credential-injection proxy (Infisical Agent Vault) fronting the secrets vault.', fr: 'Proxy d\'injection de secrets (Infisical Agent Vault) qui précède le vault.' },
+    why: { en: 'Agents call APIs through placeholders — the real token is injected in transit, never held by the agent or left on the workstation.', fr: 'Les agents appellent les API via des placeholders — le vrai token est injecté en transit, jamais détenu par l\'agent ni laissé sur la workstation.' },
+  },
+  'Vaultwarden': {
+    what: { en: 'Self-hosted password manager, Bitwarden-compatible.', fr: 'Gestionnaire de mots de passe self-hosted, compatible Bitwarden.' },
+    why: { en: 'Passwords stay in the lab and sync to the Bitwarden apps — no vendor cloud ever holds the vault.', fr: 'Les mots de passe restent dans le lab et se synchronisent avec les apps Bitwarden — aucun cloud tiers ne détient le coffre.' },
+  },
 
   // ── Applications ────────────────────────────────────────────────
   'Homepage': {

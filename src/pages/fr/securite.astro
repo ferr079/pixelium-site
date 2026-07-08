@@ -45,14 +45,14 @@ const stats = await getBuildStats();
               <span class="layer-icon">&#9678;</span>
               <div>
                 <h4>Couche identit&eacute;</h4>
-                <p>Authentik SSO (6 services), YubiKey FIDO2, SSH key-only sur <DynNum stat="ansible_hosts" fallback="63" /> h&ocirc;tes</p>
+                <p>Authentik SSO (6 services), YubiKey FIDO2, certificats SSH &eacute;ph&eacute;m&egrave;res sur <DynNum stat="ansible_hosts" fallback="63" /> h&ocirc;tes</p>
               </div>
             </div>
             <div class="defense-layer">
               <span class="layer-icon">&#9672;</span>
               <div>
                 <h4>Couche secrets</h4>
-                <p>Vault de secrets centralis&eacute; (Infisical), identifiants sortis des fichiers de conf en clair</p>
+                <p>Vault de secrets centralis&eacute; (Infisical), pr&eacute;c&eacute;d&eacute; d'un proxy Agent Vault qui injecte les identifiants en transit &mdash; les agents ne d&eacute;tiennent jamais de secret en clair</p>
               </div>
             </div>
             <div class="defense-layer">
@@ -155,7 +155,7 @@ const stats = await getBuildStats();
             </div>
             <div class="spec">
               <span class="spec-label">Port&eacute;e</span>
-              <span class="spec-value">Secrets des agents et services r&eacute;cup&eacute;r&eacute;s au runtime &mdash; jamais en clair sur le disque ni dans un repo</span>
+              <span class="spec-value">Secrets r&eacute;cup&eacute;r&eacute;s au runtime, ou inject&eacute;s en transit par un proxy Agent Vault (CT 118) &mdash; les agents appellent les API via des placeholders, sans jamais d&eacute;tenir le vrai token</span>
             </div>
             <div class="spec">
               <span class="spec-label">Sauvegarde</span>
@@ -189,8 +189,8 @@ const stats = await getBuildStats();
               <p><code>PasswordAuthentication no</code>, <code>PermitRootLogin prohibit-password</code>, <code>MaxAuthTries 3</code>. Le playbook tourne depuis Semaphore (CT 202) et applique la config sur tout le parc en 30 secondes.</p>
             </div>
             <div class="detail">
-              <h4>Roadmap</h4>
-              <p>Phase 2 : PAM/sudo avec toucher physique YubiKey. Phase 3 : retirer la cl&eacute; fichier, YubiKey comme seule m&eacute;thode d'auth. Seconde YubiKey de secours &agrave; commander.</p>
+              <h4>Certificats SSH &eacute;ph&eacute;m&egrave;res</h4>
+              <p>La cl&eacute; d'automation statique a disparu de tout le parc &mdash; remplac&eacute;e par des certificats de 15 minutes &eacute;mis par un SSH CA Infisical. Les h&ocirc;tes font confiance au CA (<code>TrustedUserCAKeys</code>) ; le client g&eacute;n&egrave;re un cert court par connexion, donc la r&eacute;vocation se r&eacute;sume &agrave; l'expiration. <a href="https://blog.pixelium.win/ssh-ca-la-cle-sous-le-paillasson/" target="_blank" rel="noopener">Lire le r&eacute;cit &rarr;</a></p>
             </div>
           </div>
         </div>
@@ -483,6 +483,19 @@ const stats = await getBuildStats();
     font-size: 0.85rem;
     color: var(--color-text-muted);
     line-height: 1.5;
+  }
+
+  .detail p a,
+  .spec-value a {
+    color: var(--color-accent);
+    text-decoration: none;
+    border-bottom: 1px solid rgba(56, 189, 248, 0.4);
+    transition: border-color 0.2s;
+  }
+
+  .detail p a:hover,
+  .spec-value a:hover {
+    border-bottom-color: var(--color-accent);
   }
 
   /* Specs */

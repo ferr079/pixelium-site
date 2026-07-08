@@ -45,14 +45,14 @@ const stats = await getBuildStats();
               <span class="layer-icon">&#9678;</span>
               <div>
                 <h4>Identity layer</h4>
-                <p>Authentik SSO (6 services), YubiKey FIDO2, SSH key-only on <DynNum stat="ansible_hosts" fallback="63" /> hosts</p>
+                <p>Authentik SSO (6 services), YubiKey FIDO2, ephemeral SSH certificates on <DynNum stat="ansible_hosts" fallback="63" /> hosts</p>
               </div>
             </div>
             <div class="defense-layer">
               <span class="layer-icon">&#9672;</span>
               <div>
                 <h4>Secrets layer</h4>
-                <p>Centralized secrets vault (Infisical), credentials kept out of plaintext config files</p>
+                <p>Centralized secrets vault (Infisical), fronted by an Agent Vault proxy that injects credentials in transit &mdash; agents never hold a plaintext secret</p>
               </div>
             </div>
             <div class="defense-layer">
@@ -155,7 +155,7 @@ const stats = await getBuildStats();
             </div>
             <div class="spec">
               <span class="spec-label">Reach</span>
-              <span class="spec-value">Agent and service secrets pulled at runtime &mdash; never sitting in clear text on disk or in a repo</span>
+              <span class="spec-value">Secrets pulled at runtime, or injected on the wire by an Agent Vault proxy (CT 118) &mdash; agents call APIs through placeholders and never hold the real token</span>
             </div>
             <div class="spec">
               <span class="spec-label">Backup</span>
@@ -189,8 +189,8 @@ const stats = await getBuildStats();
               <p><code>PasswordAuthentication no</code>, <code>PermitRootLogin prohibit-password</code>, <code>MaxAuthTries 3</code>. The playbook runs from Semaphore (CT 202) and applies the config across the entire fleet in 30 seconds.</p>
             </div>
             <div class="detail">
-              <h4>Roadmap</h4>
-              <p>Phase 2: PAM/sudo with physical YubiKey touch. Phase 3: remove the file-based key, YubiKey as the sole auth method. A backup YubiKey to be ordered.</p>
+              <h4>Ephemeral SSH certificates</h4>
+              <p>The static automation key is gone fleet-wide &mdash; replaced by 15-minute certificates from an Infisical SSH CA. Hosts trust the CA (<code>TrustedUserCAKeys</code>); the client mints a short-lived cert per connection, so revocation is just expiration. <a href="https://blog.pixelium.win/ssh-ca-la-cle-sous-le-paillasson/" target="_blank" rel="noopener">Read the story &rarr;</a></p>
             </div>
           </div>
         </div>
@@ -483,6 +483,19 @@ const stats = await getBuildStats();
     font-size: 0.85rem;
     color: var(--color-text-muted);
     line-height: 1.5;
+  }
+
+  .detail p a,
+  .spec-value a {
+    color: var(--color-accent);
+    text-decoration: none;
+    border-bottom: 1px solid rgba(56, 189, 248, 0.4);
+    transition: border-color 0.2s;
+  }
+
+  .detail p a:hover,
+  .spec-value a:hover {
+    border-bottom-color: var(--color-accent);
   }
 
   /* Specs */
