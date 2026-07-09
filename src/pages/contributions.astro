@@ -7,6 +7,16 @@ import SectionHeading from '../components/SectionHeading.astro';
 // (tagged `pr-notes`) if the insight deserves it.
 const contributions = [
   {
+    project: 'adriannovegil / awesome-observability',
+    title: 'add Grafana Alloy to the Logging collectors',
+    pr: 'https://github.com/adriannovegil/awesome-observability/pull/94',
+    prNumber: 94,
+    shipped: '2026-06-18',
+    status: 'merged',
+    insight: "The list was missing Grafana Alloy entirely — Grafana's OpenTelemetry Collector distribution and the supported successor to both Promtail and Grafana Agent, now EOL. Loki was already listed, but the agent Grafana points everyone to for shipping into it was not. Added under Collect → Logging, alphabetically between Elastic Beats and mTAIL, matching the existing format (+1).",
+    tags: ['observability', 'grafana', 'alloy', 'awesome-list', 'docs'],
+  },
+  {
     project: 'community-scripts / ProxmoxVE',
     title: 'changedetection: migrate the Python install to a uv venv',
     pr: 'https://github.com/community-scripts/ProxmoxVE/pull/14995',
