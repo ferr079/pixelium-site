@@ -351,10 +351,22 @@ const stats = await getBuildStats();
         const nodesContainer = document.getElementById('nodes-grid');
         if (!nodesContainer) return;
 
+        // Probe guard: a permanent node (not pve3 WOL) reported "offline" while the homelab
+        // is reachable AND the core fleet is at 100% cannot really be down — it's the pipeline's
+        // Proxmox API node probe that failed (token, timeout). Render it "online · metrics
+        // unavailable" instead of a misleading red. If the node were truly down, its services
+        // would drop → core < 100% → this fallback won't fire and red returns. Source of truth
+        // remains the homelab pipeline.
+        const sm = data.summary || {};
+        const homelabHealthy = data.homelab_status === 'online'
+          && sm.total_core > 0 && sm.up_core === sm.total_core;
+
         for (const node of data.nodes) {
           const card = el('div', 'node-card');
           // derive normalized state — tolerate both 'state' (v2) and 'status' (legacy)
-          const nodeState = (node.state || node.status || (node.cpu != null ? 'up' : 'offline')) as string;
+          const rawState = (node.state || node.status || (node.cpu != null ? 'up' : 'offline')) as string;
+          const probeArtifact = rawState === 'offline' && node.name !== 'pve3' && homelabHealthy;
+          const nodeState = probeArtifact ? 'up' : rawState;
           card.classList.add('node-' + nodeState);
 
           card.appendChild(el('h4', 'node-name', node.name));
@@ -376,6 +388,9 @@ const stats = await getBuildStats();
           } else if (nodeState === 'on-demand') {
             card.appendChild(el('span', 'node-ondemand', 'on-demand · WOL'));
             card.appendChild(el('div', 'node-sub', 'powered on when needed'));
+          } else if (probeArtifact) {
+            card.appendChild(el('span', 'node-ondemand', 'online'));
+            card.appendChild(el('div', 'node-sub', 'metrics unavailable'));
           } else {
             card.appendChild(el('span', 'node-offline', 'offline'));
           }

@@ -351,9 +351,21 @@ const stats = await getBuildStats();
         const nodesContainer = document.getElementById('nodes-grid');
         if (!nodesContainer) return;
 
+        // Garde-fou sonde : un nœud permanent (hors pve3 WOL) remonté "offline" alors que
+        // le homelab est joignable ET que le cœur de flotte est à 100% ne peut pas être
+        // réellement hors ligne — c'est la sonde API Proxmox du pipeline kv-push qui a échoué
+        // (token, timeout). On l'affiche "en ligne · métriques indisponibles" plutôt qu'en
+        // rouge trompeur. Si le nœud tombait vraiment, ses services chuteraient → cœur < 100%
+        // → ce repli ne se déclenche pas et le rouge réapparaît. Source de vérité = pipeline homelab.
+        const sm = data.summary || {};
+        const homelabHealthy = data.homelab_status === 'online'
+          && sm.total_core > 0 && sm.up_core === sm.total_core;
+
         for (const node of data.nodes) {
           const card = el('div', 'node-card');
-          const nodeState = (node.state || node.status || (node.cpu != null ? 'up' : 'offline')) as string;
+          const rawState = (node.state || node.status || (node.cpu != null ? 'up' : 'offline')) as string;
+          const probeArtifact = rawState === 'offline' && node.name !== 'pve3' && homelabHealthy;
+          const nodeState = probeArtifact ? 'up' : rawState;
           card.classList.add('node-' + nodeState);
 
           card.appendChild(el('h4', 'node-name', node.name));
@@ -375,6 +387,9 @@ const stats = await getBuildStats();
           } else if (nodeState === 'on-demand') {
             card.appendChild(el('span', 'node-ondemand', 'on-demand · WOL'));
             card.appendChild(el('div', 'node-sub', 'allumé à la demande'));
+          } else if (probeArtifact) {
+            card.appendChild(el('span', 'node-ondemand', 'en ligne'));
+            card.appendChild(el('div', 'node-sub', 'métriques indisponibles'));
           } else {
             card.appendChild(el('span', 'node-offline', 'hors ligne'));
           }
