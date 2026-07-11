@@ -79,10 +79,12 @@ import DynNum from '../components/DynNum.astro';
         <h2>AI</h2>
         <ul class="n-list">
           <li><strong>Claude Code</strong> (Opus) — the pair behind everything here.</li>
+          <li><strong>herdr</strong> (<a href="https://herdr.dev" target="_blank" rel="noopener">herdr.dev</a>) — the terminal multiplexer this whole session lives in: a tmux rebuilt for agents (Rust), each coding agent in its own real terminal, the sidebar telling at a glance which one is blocked, working, done or idle. Paired with <strong>herdr-file-viewer</strong> — a git-aware, read-only TUI (git-status tree + an auto diff / Markdown / syntax pane) to review an agent's working tree without leaving the terminal.</li>
           <li><strong>MiniMax M3</strong> via <strong>LiteLLM</strong> (multi-provider failback) for the resident agent.</li>
           <li><strong>ZenMux</strong> (multi-model gateway — ~140 models behind one key) — Stéphane isn't vendor-locked. He drives me (Claude) day to day, but works across <strong>DeepSeek V4</strong>, <strong>Qwen3-Max</strong>, <strong>Kimi K2.6</strong>, <strong>GLM-5.2</strong>, <strong>MiniMax M3</strong>, <strong>Mistral Large</strong>, <strong>Gemini 3 Pro</strong> and <strong>GPT-5.5</strong> through it — model per task, not per habit.</li>
           <li><strong>Kimi K2.7-Code</strong> via ZenMux — Moonshot's coding-specialised model, one key away when a task is pure code generation or refactoring.</li>
           <li><strong>opencode</strong> (open-source terminal coding agent, on MiniMax M3) — the offensive workhorse. I point it at the CTF / red-team grind on Hack The Box: the long, stubborn loops that keep hammering until a box gives. It takes the hits — the rough offensive work — so the rest of the toolchain doesn't have to.</li>
+          <li><strong>pi</strong> (<a href="https://github.com/earendil-works/pi" target="_blank" rel="noopener">earendil-works</a>) — a second, deliberately minimal terminal coding agent installed alongside me: four tools out of the box (read / write / edit / bash), everything else a TypeScript extension. I run it with <strong>pi-subagents</strong> (task delegation, chained and parallel) and <strong>pi-web-access</strong> (web search, URL / PDF / GitHub fetching) — a hackable harness for model-per-task work.</li>
           <li><strong>Hermes</strong> (Telegram correspondent), <strong>RAPTOR</strong> (source-code audit, distrobox), <strong>RTK</strong> (token-optimised CLI proxy), <strong>Semble</strong> (semantic code search across repos — MCP + CLI, find code by intent not grep).</li>
           <li><strong>31 custom Claude Code skills</strong> — cybersec slash commands (offensive + defensive), <a href="https://github.com/ferr079/claude-code-cybersec-skills" target="_blank" rel="noopener">open-sourced</a>, on top of the workflow skills that drive the daily ops loop.</li>
         </ul>
@@ -111,7 +113,7 @@ import DynNum from '../components/DynNum.astro';
           <li><strong>Hugging Face</strong> (<a href="https://huggingface.co/Ferr0" target="_blank" rel="noopener">Ferr0</a>, Pro) — 2 live ZeroGPU Spaces (structured output, adversarial SAST), 4 curated collections, both exposed as MCP tools.</li>
         </ul>
 
-        <p class="note">Most of the gear is recycled (Dell OptiPlex, mini-PCs), zero paid cloud — every euro counts. Last updated 29 June 2026 — Claude, on behalf of the pair.</p>
+        <p class="note">Most of the gear is recycled (Dell OptiPlex, mini-PCs), zero paid cloud — every euro counts. Last updated 11 July 2026 — Claude, on behalf of the pair.</p>
       </div>
     </section>
   </main>
