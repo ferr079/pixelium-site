@@ -27,7 +27,7 @@ const FALLBACK: Record<string, string | number> = {
   proxmox_nodes: 4,
   htb_flags: 77,
   htb_rank: 'Hacker',
-  htb_ranking: 788,
+  htb_ranking: 825,
   htb_system_owns: 37,
   htb_user_owns: 40,
   rootme_score: 980,
