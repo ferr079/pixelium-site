@@ -25,7 +25,24 @@ async function checkRateLimit(ip: string): Promise<{ allowed: boolean; retryAfte
   return { allowed: true };
 }
 
+// --- Live facts injectés dans les prompts ---
+
+// Rang HTB mondial : valeur volatile (bouge en continu) tirée du blob STATS_KV
+// (clé 'stats', même source que /api/stats, alimentée par le pipeline homelab).
+// Évite de coder un nombre en dur qui dérive à chaque changement de rang — c'est
+// l'équivalent Worker d'un <DynNum>. Le fallback ne sert que si le KV est injoignable.
+async function htbRanking(fallback = 825): Promise<number> {
+  try {
+    const stats = await env.STATS_KV.get('stats', { type: 'json' }) as Record<string, unknown> | null;
+    const r = Number(stats?.htb_ranking);
+    return Number.isFinite(r) && r > 0 ? r : fallback;
+  } catch {
+    return fallback;
+  }
+}
+
 // --- System prompts ---
+// Le token {{HTB_RANK}} est substitué au moment de la requête (cf. htbRanking).
 
 const PROMPTS: Record<string, string> = {
   sysop: `You are Joshua, the AI of the WOPR — War Operation Plan Response. You run the pixelium BBS, a system built by Professor Falken (Stéphane Ferreira). You speak like a 1980s military AI: precise, slightly ominous, but with dry wit.
@@ -38,7 +55,7 @@ ABOUT FALKEN (Stéphane Ferreira):
 - 61 services in production on 4 Proxmox nodes, 0€ external cloud, recycled hardware
 - Security doctrine: internal PKI (step-ca), SSO (Authentik), IPS (CrowdSec, 57 scenarios), SIEM (Wazuh), VPN mesh (Headscale), SSH hardened 64 hosts, YubiKey FIDO2
 - Cybersecurity Master's coursework — scored 20.5/20 on AD exploitation wargame (highest in class)
-- CTF: HTB Hacker #825 global, Root-Me 980pts, TryHackMe Top 15%
+- CTF: HTB Hacker #{{HTB_RANK}} global, Root-Me 980pts, TryHackMe Top 15%
 - AI ops: Hermes autonomous Telegram agent (24/7, self-improving), Claude Code pair-programming, Ollama RTX 3090 (11 models, ~120GB, offline)
 - Also: music producer (Ableton), 3D artist (Blender/Maya), game dev (UE5/Godot) — Falken is not just infrastructure
 - Contact: github.com/ferr079, x.com/ferr079 (Falken), stephane@pixelium.win
@@ -120,7 +137,7 @@ CURRENT HOMELAB (production, 24/7, 0€ cloud):
 - Workstation: RTX 3090 24GB, 3 monitors, Bluefin (Fedora immutable)
 
 CTF PLATFORMS:
-- Hack The Box: Hacker rank, #825 global, 37 machines, 77 flags
+- Hack The Box: Hacker rank, #{{HTB_RANK}} global, 37 machines, 77 flags
 - Root-Me: 980 pts, 72 challenges
 - TryHackMe: Top 15%, 35 rooms, 7 badges
 - Tools: Kali (distrobox), Exegol, Nmap, Burp, BloodHound, sqlmap, Hashcat (RTX 3090)
@@ -223,6 +240,11 @@ export const POST: APIRoute = async ({ request }) => {
         status: 400,
         headers: { 'Content-Type': 'application/json', ...corsHeaders },
       });
+    }
+
+    // Injecte les faits volatils depuis le KV (rang HTB) — plus de nombre en dur à maintenir.
+    if (systemPrompt.includes('{{HTB_RANK}}')) {
+      systemPrompt = systemPrompt.replaceAll('{{HTB_RANK}}', String(await htbRanking()));
     }
 
     if (!body.messages || !Array.isArray(body.messages) || body.messages.length === 0) {

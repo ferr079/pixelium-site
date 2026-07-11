@@ -36,10 +36,10 @@ const CHECKS = [
   // so no lxc literal can lie anymore. Nothing left to pin for it.
   //
   // chat.ts is a runtime Worker (the chatbot system prompt) — it can't read build-stats,
-  // so its facts are pinned here. Caught 2026-06-29: HTB rank #940/#881 and "71 flags"
+  // so its (stable) facts are pinned here. Caught 2026-06-29: HTB rank #940/#881 and "71 flags"
   // had drifted (live #865 / 95). proxmox/hosts/playbooks/beszel are pinned above.
-  { file: 'src/pages/api/chat.ts', re: /HTB Hacker #(\d+) global/, key: 'htb_ranking', label: 'chat.ts — HTB ranking (bio)' },
-  { file: 'src/pages/api/chat.ts', re: /Hacker rank, #(\d+) global/, key: 'htb_ranking', label: 'chat.ts — HTB ranking (homelab block)' },
+  // NB: the HTB *ranking* is no longer pinned — it's volatile and now injected live from
+  // STATS_KV via the {{HTB_RANK}} token (htbRanking() in chat.ts), the Worker's <DynNum>.
   { file: 'src/pages/api/chat.ts', re: /machines, (\d+) flags/, key: 'htb_flags', label: 'chat.ts — HTB flags' },
   { file: 'src/pages/api/chat.ts', re: /(\d+) services in production/, key: 'services_total', label: 'chat.ts — services' },
   // proxmox_nodes narrative prose: the count is bound to the pve1–4 enumeration, so a
