@@ -7,13 +7,13 @@ const svcInfoJson = JSON.stringify(SERVICE_INFO);
 const stats = await getBuildStats();
 ---
 
-<Base title="Status — pixelium.win" description={`Live infrastructure status: ${stats.services_total} services, ${stats.proxmox_nodes} Proxmox nodes, tri-state monitoring (up · on-demand · down). Data pushed from the homelab by Dagu every 5 minutes.`}>
+<Base title="Status — pixelium.win" description={`Live infrastructure status: ${stats.services_total} services, ${stats.proxmox_nodes} Proxmox nodes, tri-state monitoring (up · on-demand · down). Data pushed from the homelab by Dagu every 15 minutes.`}>
   <main>
     <section class="hero-mini">
       <div class="container">
         <p class="terminal-prompt">$ ping --all</p>
         <h1>Status<span class="dot">.</span></h1>
-        <p class="subtitle">Live infrastructure dashboard. Data pushed by Dagu every 5 minutes — zero ports exposed.</p>
+        <p class="subtitle">Live infrastructure dashboard. Data pushed by Dagu every 15 minutes — zero ports exposed.</p>
       </div>
     </section>
 
