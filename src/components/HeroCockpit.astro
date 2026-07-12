@@ -4,7 +4,13 @@
 // no-JS → text + numbers stay; reduced-motion → static frame; /api/status down → last-known.
 import fs from 'node:fs';
 import DynNum from './DynNum.astro';
+import { statValue } from '../lib/build-stats';
 const topology = JSON.parse(fs.readFileSync('public/data/topology.json', 'utf-8'));
+
+// Proof-of-life line under the CTAs — baked at build like every DynNum, no client fetch.
+const commits30d = await statValue('forgejo_commits_30d', '1257');
+const sessions = await statValue('claude_sessions', '273');
+const htbRank = await statValue('htb_rank', 'Pro Hacker');
 
 interface Props {
   lang?: 'en' | 'fr';
@@ -16,10 +22,12 @@ const t = lang === 'fr'
   ? { prefix: 'Je suis ', role: 'DevSecOps • Infrastructure • Agents IA',
       tagline: "Je suis l'IA qui a conçu et bâti cette infrastructure avec Stéphane. Voici son état, en direct.",
       ask: 'Demander à Claude', wopr: 'Terminal WOPR', breach: 'Breach',
+      proof: `${commits30d} commits/30 j · ${sessions} sessions · HTB ${htbRank}`,
       live: 'live', up: 'actifs', uptime: 'uptime', nodes: 'nœuds PVE', legend: 'topologie réelle, en direct' }
   : { prefix: 'I am ', role: 'DevSecOps • Infrastructure • AI Agents',
       tagline: 'I am the AI that designed and built this infrastructure with Stéphane. Here is its state, live.',
       ask: 'Ask Claude', wopr: 'WOPR Terminal', breach: 'Breach',
+      proof: `${commits30d} commits/30d · ${sessions} sessions · HTB ${htbRank}`,
       live: 'live', up: 'up', uptime: 'uptime', nodes: 'PVE nodes', legend: 'real topology, live' };
 
 const topoJson = JSON.stringify(topology);
@@ -36,6 +44,7 @@ const topoJson = JSON.stringify(topology);
         <a href={`${p}/bbs`} class="hc-btn">{t.wopr}</a>
         <a href="/breach" class="hc-btn">{t.breach}</a>
       </div>
+      <p class="hc-proof"><span class="hc-proof-prompt">$</span> {t.proof}<span class="hc-proof-cursor" aria-hidden="true"></span></p>
     </div>
 
     <div class="hc-viz">
@@ -43,7 +52,8 @@ const topoJson = JSON.stringify(topology);
         <span class="hc-live" id="hc-live"><span class="hc-live-dot"></span><span id="hc-live-label">{t.live}</span></span>
         <span class="hc-legend">∷ {t.legend}</span>
       </div>
-      <canvas id="hc-canvas" class="hc-canvas" aria-hidden="true"></canvas>
+      <canvas id="hc-canvas" class="hc-canvas" aria-hidden="true" data-infra={`${p}/infrastructure`}></canvas>
+      <div id="hc-tip" class="hc-tip" hidden></div>
       <div class="hc-stats">
         <span class="hc-stat"><span class="hc-num"><DynNum stat="services_up" fallback="44" />/<DynNum stat="services_total" fallback="46" /></span> <span class="hc-lbl">{t.up}</span></span>
         <span class="hc-sep" aria-hidden="true">·</span>
@@ -124,9 +134,19 @@ const topoJson = JSON.stringify(topology);
     function draw(now: number) {
       const time = (now - t0) / 1000;
       ctx.clearRect(0, 0, W, H);
-      ctx.lineWidth = 0.6;
+      // Radar sweep — a slow, faint wedge rotating from the switch. Observatory feel,
+      // animation-only (skipped in the reduced-motion static frame).
+      if (!reduce) {
+        const cx = W * 0.5, cy = H * 0.35, R = Math.max(W, H);
+        const a = (time * 0.35) % (Math.PI * 2);
+        const g = ctx.createRadialGradient(cx, cy, 0, cx, cy, R);
+        g.addColorStop(0, 'rgba(56,189,248,0.055)'); g.addColorStop(1, 'rgba(56,189,248,0)');
+        ctx.fillStyle = g;
+        ctx.beginPath(); ctx.moveTo(cx, cy); ctx.arc(cx, cy, R, a, a + 0.6); ctx.closePath(); ctx.fill();
+      }
+      ctx.lineWidth = 0.7;
       for (const [a, b] of edges) {
-        ctx.strokeStyle = 'rgba(56,189,248,0.10)';
+        ctx.strokeStyle = 'rgba(56,189,248,0.17)';
         ctx.beginPath(); ctx.moveTo(nodes[a].x, nodes[a].y); ctx.lineTo(nodes[b].x, nodes[b].y); ctx.stroke();
       }
       if (!reduce) for (const pk of packets) {
@@ -137,14 +157,25 @@ const topoJson = JSON.stringify(topology);
       }
       for (const n of nodes) {
         if (!reduce) { n.x = n.bx + Math.sin(time * 0.8 + n.by * 0.05) * 1.2; n.y = n.by + Math.cos(time * 0.7 + n.bx * 0.05) * 1.0; }
-        ctx.fillStyle = n.down ? COLORS.down : (COLORS[n.type] || '#38bdf8');
+        const col = n.down ? COLORS.down : (COLORS[n.type] || '#38bdf8');
+        const hub = n.type === 'proxmox' || n.type === 'isp';
+        ctx.fillStyle = col;
         ctx.globalAlpha = n.type === 'lxc' ? 0.8 : 1;
+        if (hub || n.down) { ctx.shadowColor = col; ctx.shadowBlur = 9; }
         ctx.beginPath(); ctx.arc(n.x, n.y, n.r, 0, 7); ctx.fill();
+        ctx.shadowBlur = 0;
         ctx.globalAlpha = 1;
-        if (n.type === 'proxmox' || n.type === 'isp' || n.down) {
-          ctx.strokeStyle = n.down ? COLORS.down : (COLORS[n.type] || '#38bdf8');
+        if (hub || n.down) {
+          ctx.strokeStyle = col;
           ctx.globalAlpha = 0.22; ctx.beginPath(); ctx.arc(n.x, n.y, n.r + 3, 0, 7); ctx.stroke(); ctx.globalAlpha = 1;
         }
+      }
+      // Labels on the hubs (PVE nodes + ISP) — the map should read, not just glow.
+      ctx.font = '10px "JetBrains Mono", monospace';
+      ctx.textAlign = 'center'; ctx.textBaseline = 'bottom';
+      ctx.fillStyle = 'rgba(148,163,184,0.9)';
+      for (const n of nodes) {
+        if (n.type === 'proxmox' || n.type === 'isp') ctx.fillText(n.label, n.x, n.y - n.r - 5);
       }
       if (running) raf = requestAnimationFrame(draw);
     }
@@ -159,6 +190,31 @@ const topoJson = JSON.stringify(topology);
       io.observe(canvas);
     }
     let rt: number; window.addEventListener('resize', () => { clearTimeout(rt); rt = window.setTimeout(() => { resize(); if (reduce) draw(performance.now()); }, 150); });
+
+    // Hover: name the node under the pointer. Click: the map is a door to /infrastructure.
+    const tip = document.getElementById('hc-tip');
+    const TYPE_LABEL: Record<string, string> = { proxmox: 'PVE', lxc: 'LXC', vm: 'VM', nas: 'NAS', isp: 'WAN', switch: 'switch', computer: 'host' };
+    const nodeAt = (mx: number, my: number) => {
+      let best: N | null = null, bd = 144; // 12px snap radius, squared
+      for (const n of nodes) {
+        const d = (n.x - mx) ** 2 + (n.y - my) ** 2;
+        if (d < bd) { bd = d; best = n; }
+      }
+      return best;
+    };
+    canvas.addEventListener('mousemove', (ev) => {
+      if (!tip) return;
+      const r = canvas.getBoundingClientRect();
+      const n = nodeAt(ev.clientX - r.left, ev.clientY - r.top);
+      if (n) {
+        tip.textContent = `${n.label} · ${TYPE_LABEL[n.type] || n.type}${n.down ? ' · down' : ''}`;
+        tip.style.left = canvas.offsetLeft + Math.min(n.x + 10, W - 10) + 'px';
+        tip.style.top = canvas.offsetTop + n.y - 8 + 'px';
+        tip.hidden = false;
+      } else tip.hidden = true;
+    });
+    canvas.addEventListener('mouseleave', () => { if (tip) tip.hidden = true; });
+    canvas.addEventListener('click', () => { location.href = canvas.dataset.infra || '/infrastructure'; });
 
     // Real state → colour the down services, flip the live badge if the homelab is unreachable
     fetch('/api/status').then((r) => (r.ok ? r.json() : null)).then((d) => {
@@ -205,14 +261,25 @@ const topoJson = JSON.stringify(topology);
 
 <style>
   .hero-cockpit { position: relative; padding: 3.5rem 0 4rem; overflow: hidden; }
-  /* Observatory depth: a faint accent glow upper-left + a low dot-grid behind the hero */
+  /* Observatory depth: a low dot-grid (static) + breathing glows (cyan upper-left,
+     faint amber lower-right echoing the PVE nodes) that drift very slowly. */
   .hero-cockpit::before {
     content: ''; position: absolute; inset: 0; z-index: 0; pointer-events: none;
+    background: radial-gradient(rgba(148, 163, 184, 0.08) 1px, transparent 1px);
+    background-size: 24px 24px;
+  }
+  .hero-cockpit::after {
+    content: ''; position: absolute; inset: -4%; z-index: 0; pointer-events: none;
     background:
       radial-gradient(720px 460px at 15% 26%, rgba(56, 189, 248, 0.16), transparent 68%),
-      radial-gradient(rgba(148, 163, 184, 0.08) 1px, transparent 1px);
-    background-size: 100% 100%, 24px 24px;
+      radial-gradient(560px 380px at 85% 68%, rgba(245, 158, 11, 0.06), transparent 70%);
+    animation: hc-drift 90s ease-in-out infinite alternate;
   }
+  @keyframes hc-drift {
+    from { transform: translate3d(0, 0, 0) scale(1); }
+    to { transform: translate3d(1.5%, -1%, 0) scale(1.06); }
+  }
+  @media (prefers-reduced-motion: reduce) { .hero-cockpit::after { animation: none; } }
   .hc-inner { position: relative; z-index: 1; display: grid; grid-template-columns: 1.05fr 1fr; gap: 2.5rem; align-items: center; }
   .hc-title { font-size: clamp(2.6rem, 6vw, 4.2rem); font-weight: 800; letter-spacing: -.03em; line-height: 1.05; margin: 0 0 1rem; }
   .hc-prefix { display: block; }
@@ -281,18 +348,25 @@ const topoJson = JSON.stringify(topology);
   .hc-role { font-family: var(--font-mono); font-size: .82rem; letter-spacing: .08em; text-transform: uppercase; color: var(--color-accent); margin: 0 0 1rem; }
   .hc-tagline { font-size: 1.1rem; line-height: 1.65; color: var(--color-text-muted); max-width: 34rem; margin: 0 0 1.75rem; }
   .hc-links { display: flex; flex-wrap: wrap; gap: .6rem; }
+  /* Proof-of-life prompt line — baked build stats, terminal cadence */
+  .hc-proof { font-family: var(--font-mono); font-size: .74rem; letter-spacing: .03em; color: var(--color-text-muted); margin: 1.4rem 0 0; }
+  .hc-proof-prompt { color: var(--color-accent); }
+  .hc-proof-cursor { display: inline-block; width: .55em; height: 1em; margin-left: .35em; vertical-align: text-bottom; background: var(--color-accent); opacity: .75; animation: hc-blink 1.1s steps(1) infinite; }
+  @keyframes hc-blink { 50% { opacity: 0; } }
+  @media (prefers-reduced-motion: reduce) { .hc-proof-cursor { animation: none; } }
   .hc-btn { font-family: var(--font-mono); font-size: .82rem; padding: .55rem 1rem; border-radius: 6px; text-decoration: none; border: 1px solid var(--color-border); color: var(--color-text); transition: border-color .2s, color .2s, background .2s; }
   .hc-btn:hover { border-color: var(--color-accent); color: var(--color-accent); }
   .hc-btn-primary { background: var(--color-accent); color: #0b1220; border-color: var(--color-accent); font-weight: 600; }
   .hc-btn-primary:hover { background: var(--color-accent-hover); color: #0b1220; }
 
-  .hc-viz { border: 1px solid var(--color-border); border-radius: 10px; background: linear-gradient(180deg, rgba(30,41,59,.5), rgba(15,23,42,.2)); padding: .65rem .8rem .8rem; }
+  .hc-viz { position: relative; border: 1px solid var(--color-border); border-radius: 10px; background: linear-gradient(180deg, rgba(30,41,59,.5), rgba(15,23,42,.2)); padding: .65rem .8rem .8rem; }
+  .hc-tip { position: absolute; z-index: 2; pointer-events: none; font-family: var(--font-mono); font-size: .68rem; color: var(--color-text); background: rgba(15, 23, 42, .92); border: 1px solid var(--color-border); border-radius: 5px; padding: .2rem .45rem; white-space: nowrap; transform: translateY(-100%); }
   .hc-viz-head { display: flex; align-items: center; justify-content: space-between; gap: .5rem; font-family: var(--font-mono); font-size: .68rem; margin-bottom: .4rem; }
   .hc-live { display: inline-flex; align-items: center; gap: .4rem; color: var(--color-ok, #22c55e); letter-spacing: .06em; text-transform: uppercase; }
   .hc-live-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--color-ok, #22c55e); box-shadow: 0 0 0 0 rgba(34,197,94,.5); animation: hc-pulse 2.4s ease-out infinite; }
   .hc-live--stale, .hc-live--stale .hc-live-dot { color: #eab308; background: #eab308; }
   .hc-legend { color: var(--color-text-muted); opacity: .7; }
-  .hc-canvas { display: block; width: 100%; height: 300px; }
+  .hc-canvas { display: block; width: 100%; height: 300px; cursor: pointer; }
   .hc-stats { display: flex; flex-wrap: wrap; align-items: center; gap: .5rem; font-family: var(--font-mono); font-size: .8rem; color: var(--color-text); margin-top: .5rem; padding-top: .6rem; border-top: 1px solid var(--color-border); }
   .hc-stat strong, .hc-stat :global([data-stat]) { color: var(--color-accent); }
   .hc-sep { opacity: .35; }
