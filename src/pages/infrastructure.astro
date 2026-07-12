@@ -316,7 +316,7 @@ const monitoringSlides = [
               <div class="tech-card-body">
                 <p class="tech-why"><strong>Why:</strong> Lightweight system monitoring — 10 MB Go agents, elegant web dashboard, one-command install. No need to configure Grafana + node_exporter + JSON dashboards.</p>
                 <p class="tech-alt"><span class="alt-label">Rejected:</span> Grafana + node_exporter (powerful but complex to maintain for basic monitoring)</p>
-                <p class="tech-result"><span class="result-label">Result:</span> 30 deployed agents, instant CPU/RAM/disk overview across the entire homelab</p>
+                <p class="tech-result"><span class="result-label">Result:</span> <DynNum stat="beszel_agents" fallback="52" /> deployed agents, instant CPU/RAM/disk overview across the entire homelab</p>
               </div>
             </div>
 
@@ -449,7 +449,7 @@ const monitoringSlides = [
                 <h4>Beszel</h4>
               </div>
               <span class="obs-role">System monitoring</span>
-              <p><DynNum stat="beszel_agents" fallback="30" /> agents. CPU/RAM/disk/network dashboard. Threshold alerts. Instant overview.</p>
+              <p><DynNum stat="beszel_agents" fallback="52" /> agents. CPU/RAM/disk/network dashboard. Threshold alerts. Instant overview.</p>
             </div>
 
             <div class="obs-card">

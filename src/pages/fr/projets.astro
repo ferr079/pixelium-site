@@ -338,11 +338,11 @@ import DynNum from '../../components/DynNum.astro';
           <div class="project-details">
             <div class="detail-block">
               <h4>La stack</h4>
-              <p><strong>VictoriaMetrics</strong> (CT 238) pour les metriques Prometheus — CPU, RAM, disque, reseau de chaque noeud PVE. <strong>Loki</strong> (CT 240) + Promtail pour les logs centralises de tous les services. <strong>Beszel</strong> (CT 230) pour le monitoring agents — 30 systemes connectes. <strong>Patchmon</strong> (CT 236) pour le suivi des mises a jour. <strong>Wazuh</strong> (CT 234) comme SIEM — detection d'intrusion et compliance.</p>
+              <p><strong>VictoriaMetrics</strong> (CT 238) pour les metriques Prometheus — CPU, RAM, disque, reseau de chaque noeud PVE. <strong>Loki</strong> (CT 240) + Promtail pour les logs centralises de tous les services. <strong>Beszel</strong> (CT 230) pour le monitoring agents — <DynNum stat="beszel_agents" fallback="52" /> systemes connectes. <strong>Patchmon</strong> (CT 236) pour le suivi des mises a jour. <strong>Wazuh</strong> (CT 234) comme SIEM — detection d'intrusion et compliance.</p>
             </div>
             <div class="detail-block">
               <h4>Beszel — deploiement massif</h4>
-              <p><DynNum stat="beszel_agents" fallback="30" /> agents deployes en une passe via Ansible (playbook + Semaphore). Le piege : l'agent necessite une variable <code>KEY</code> (cle publique du hub) dans son service systemd — sans ca, il demarre, crashe, et ne log rien. On a ajoute une regle firewall TCP 45876 dans le groupe <code>pve-management</code> des 4 noeuds pour permettre la communication a travers le firewall PVE.</p>
+              <p><DynNum stat="beszel_agents" fallback="52" /> agents deployes en une passe via Ansible (playbook + Semaphore). Le piege : l'agent necessite une variable <code>KEY</code> (cle publique du hub) dans son service systemd — sans ca, il demarre, crashe, et ne log rien. On a ajoute une regle firewall TCP 45876 dans le groupe <code>pve-management</code> des 4 noeuds pour permettre la communication a travers le firewall PVE.</p>
             </div>
             <div class="detail-block">
               <h4>Pourquoi pas Grafana</h4>
@@ -358,7 +358,7 @@ import DynNum from '../../components/DynNum.astro';
               <li>Patchmon</li>
               <li>Wazuh</li>
             </ul>
-            <span class="project-services">5 outils, <DynNum stat="beszel_agents" fallback="30" /> agents Beszel, logs centralises, SIEM &middot; <a href="https://blog.pixelium.win/promtail-est-mort-vive-alloy" class="project-link" target="_blank" rel="noopener">lire le récit &rarr;</a></span>
+            <span class="project-services">5 outils, <DynNum stat="beszel_agents" fallback="52" /> agents Beszel, logs centralises, SIEM &middot; <a href="https://blog.pixelium.win/promtail-est-mort-vive-alloy" class="project-link" target="_blank" rel="noopener">lire le récit &rarr;</a></span>
           </div>
         </div>
       </div>

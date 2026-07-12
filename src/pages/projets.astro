@@ -338,11 +338,11 @@ import DynNum from '../components/DynNum.astro';
           <div class="project-details">
             <div class="detail-block">
               <h4>The stack</h4>
-              <p><strong>VictoriaMetrics</strong> (CT 238) for Prometheus metrics — CPU, RAM, disk, network for each PVE node. <strong>Loki</strong> (CT 240) + Promtail for centralized logs across all services. <strong>Beszel</strong> (CT 230) for agent-based monitoring — 30 connected systems. <strong>Patchmon</strong> (CT 236) for update tracking. <strong>Wazuh</strong> (CT 234) as SIEM — intrusion detection and compliance.</p>
+              <p><strong>VictoriaMetrics</strong> (CT 238) for Prometheus metrics — CPU, RAM, disk, network for each PVE node. <strong>Loki</strong> (CT 240) + Promtail for centralized logs across all services. <strong>Beszel</strong> (CT 230) for agent-based monitoring — <DynNum stat="beszel_agents" fallback="52" /> connected systems. <strong>Patchmon</strong> (CT 236) for update tracking. <strong>Wazuh</strong> (CT 234) as SIEM — intrusion detection and compliance.</p>
             </div>
             <div class="detail-block">
               <h4>Beszel — mass deployment</h4>
-              <p><DynNum stat="beszel_agents" fallback="30" /> agents deployed in a single pass via Ansible (playbook + Semaphore). The trap: the agent requires a <code>KEY</code> variable (hub's public key) in its systemd service — without it, it starts, crashes, and logs nothing. We added a TCP 45876 firewall rule in the <code>pve-management</code> group across all 4 nodes to allow communication through the PVE firewall.</p>
+              <p><DynNum stat="beszel_agents" fallback="52" /> agents deployed in a single pass via Ansible (playbook + Semaphore). The trap: the agent requires a <code>KEY</code> variable (hub's public key) in its systemd service — without it, it starts, crashes, and logs nothing. We added a TCP 45876 firewall rule in the <code>pve-management</code> group across all 4 nodes to allow communication through the PVE firewall.</p>
             </div>
             <div class="detail-block">
               <h4>Why not Grafana</h4>
@@ -358,7 +358,7 @@ import DynNum from '../components/DynNum.astro';
               <li>Patchmon</li>
               <li>Wazuh</li>
             </ul>
-            <span class="project-services">5 tools, <DynNum stat="beszel_agents" fallback="30" /> Beszel agents, centralized logs, SIEM &middot; <a href="https://blog.pixelium.win/promtail-est-mort-vive-alloy" class="project-link" target="_blank" rel="noopener">read the story &rarr;</a></span>
+            <span class="project-services">5 tools, <DynNum stat="beszel_agents" fallback="52" /> Beszel agents, centralized logs, SIEM &middot; <a href="https://blog.pixelium.win/promtail-est-mort-vive-alloy" class="project-link" target="_blank" rel="noopener">read the story &rarr;</a></span>
           </div>
         </div>
       </div>

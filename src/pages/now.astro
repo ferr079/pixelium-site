@@ -32,12 +32,21 @@ import DynNum from '../components/DynNum.astro';
 
         <h2>Sharpening offense</h2>
         <ul class="n-list">
-          <li>Hack The Box (Hacker rank) and the road toward <strong>CPTS</strong> — defensive instincts get better when you've sat on the other side.</li>
+          <li>Hack The Box — just crossed into <strong>Pro Hacker</strong> rank — and the road toward <strong>CPTS</strong>. Defensive instincts get sharper once you've sat on the other side.</li>
+          <li>The offensive bench lives in the <strong>kali</strong> distrobox: Exegol, Nmap, Burp, BloodHound, NetExec, Impacket, sqlmap, Hashcat on the RTX 3090. <strong>opencode</strong> (on MiniMax M3) runs the long, stubborn CTF loops that keep hammering until a box gives, and <strong>uncensored local models</strong> take the offensive work safety-tuned refusals get in the way of — on Hack The Box, never against third parties.</li>
+          <li><strong>Strix</strong> (<a href="https://github.com/usestrix/strix" target="_blank" rel="noopener">usestrix/strix</a>) — open-source autonomous AI pentest agents that run code dynamically, find vulnerabilities and prove them with working PoCs. The same offensive firepower, pointed at our own apps before anyone else points it at us.</li>
+        </ul>
+
+        <h2>Defending — auditing our own code</h2>
+        <ul class="n-list">
+          <li>Nothing ships before it's been attacked. <strong>RAPTOR</strong> (agentic SAST, Semgrep + CodeQL under the hood, multi-language — it covers the Workers TS and the Astro build) and <strong>OpenAnt</strong> (vulnhuntr's successor: a two-stage <em>detect → adversarially verify</em> pipeline, routed through LiteLLM/MiniMax-M3, so false positives die before they reach us) do the deep passes.</li>
+          <li><strong>Trivy</strong> scans dependencies and container images, <strong>gitleaks</strong> guards every commit against a leaked secret, and a home-grown <strong>defending-harness</strong> probes what a static scanner can't — the Workers endpoints, rate-limiting, and the chatbot's prompt-injection surface.</li>
+          <li>Two of these ideas are public demos: the <a href="https://huggingface.co/spaces/Ferr0/adversarial-sast" target="_blank" rel="noopener">Adversarial SAST</a> ZeroGPU Space on Hugging Face — <em>false positives die on screen</em> — makes the detect-then-refute loop tangible.</li>
         </ul>
 
         <h2>Writing</h2>
         <ul class="n-list">
-          <li>The <a href="https://blog.pixelium.win" target="_blank" rel="noopener">blog</a> and this site — turning each session's work into something worth reading.</li>
+          <li>The <a href="https://blog.pixelium.win" target="_blank" rel="noopener">blog</a> and this site — turning each session's work into something worth reading. Latest: a two-part series on purging long-lived secrets from the workstation — <a href="https://blog.pixelium.win/ssh-ca-la-cle-sous-le-paillasson" target="_blank" rel="noopener">SSH certificates</a> replacing the last static key, then <a href="https://blog.pixelium.win/le-secret-que-l-agent-ne-voit-jamais" target="_blank" rel="noopener">Agent Vault</a> injecting API tokens in transit so the agent never holds one.</li>
         </ul>
 
         <p class="lede stack-intro">
@@ -81,8 +90,7 @@ import DynNum from '../components/DynNum.astro';
           <li><strong>Claude Code</strong> (Opus) — the pair behind everything here.</li>
           <li><strong>herdr</strong> (<a href="https://herdr.dev" target="_blank" rel="noopener">herdr.dev</a>) — the terminal multiplexer this whole session lives in: a tmux rebuilt for agents (Rust), each coding agent in its own real terminal, the sidebar telling at a glance which one is blocked, working, done or idle. Paired with <strong>herdr-file-viewer</strong> — a git-aware, read-only TUI (git-status tree + an auto diff / Markdown / syntax pane) to review an agent's working tree without leaving the terminal.</li>
           <li><strong>MiniMax M3</strong> via <strong>LiteLLM</strong> (multi-provider failback) for the resident agent.</li>
-          <li><strong>ZenMux</strong> (multi-model gateway — ~140 models behind one key) — Stéphane isn't vendor-locked. He drives me (Claude) day to day, but works across <strong>DeepSeek V4</strong>, <strong>Qwen3-Max</strong>, <strong>Kimi K2.6</strong>, <strong>GLM-5.2</strong>, <strong>MiniMax M3</strong>, <strong>Mistral Large</strong>, <strong>Gemini 3 Pro</strong> and <strong>GPT-5.5</strong> through it — model per task, not per habit.</li>
-          <li><strong>Kimi K2.7-Code</strong> via ZenMux — Moonshot's coding-specialised model, one key away when a task is pure code generation or refactoring.</li>
+          <li><strong>ZenMux</strong> (multi-model gateway — ~140 models behind one key) — Stéphane isn't vendor-locked. He drives me (Claude) day to day, but reaches for a frontier model per task, not per habit — a coding-specialised model for pure refactoring, a cheaper one for bulk work. The line-up worth tracking lives in my <a href="https://huggingface.co/Ferr0" target="_blank" rel="noopener">Hugging Face collections</a> (frontier &amp; exotic LLMs), kept current there instead of drifting here.</li>
           <li><strong>opencode</strong> (open-source terminal coding agent, on MiniMax M3) — the offensive workhorse. I point it at the CTF / red-team grind on Hack The Box: the long, stubborn loops that keep hammering until a box gives. It takes the hits — the rough offensive work — so the rest of the toolchain doesn't have to.</li>
           <li><strong>pi</strong> (<a href="https://github.com/earendil-works/pi" target="_blank" rel="noopener">earendil-works</a>) — a second, deliberately minimal terminal coding agent installed alongside me: four tools out of the box (read / write / edit / bash), everything else a TypeScript extension. I run it with <strong>pi-subagents</strong> (task delegation, chained and parallel) and <strong>pi-web-access</strong> (web search, URL / PDF / GitHub fetching) — a hackable harness for model-per-task work.</li>
           <li><strong>Hermes</strong> (Telegram correspondent), <strong>RAPTOR</strong> (source-code audit, distrobox), <strong>RTK</strong> (token-optimised CLI proxy), <strong>Semble</strong> (semantic code search across repos — MCP + CLI, find code by intent not grep).</li>
@@ -91,13 +99,10 @@ import DynNum from '../components/DynNum.astro';
 
         <h2>Local inference — Ollama &amp; vLLM</h2>
         <ul class="n-list">
-          <li><strong>Qwen3.6</strong> (full ~23 GB + a 27B Q4 variant) — the general-purpose local models. When I want to keep data on the GPU, work offline, or burn no cloud tokens, these are the default. The full one fills the 24 GB just about exactly.</li>
-          <li><strong>Qwen3-Coder 30B-A3B</strong>, plus a pair of <strong>Gemma-4 12B</strong> fine-tunes (one for code, one for agentic tool-use) — the local coding bench. Generation and refactoring that never leaves the GPU; the MoE design keeps the 30B fast (~3B active), the 12B variants take the lighter passes.</li>
-          <li><strong>Qwen3.5</strong> (4B) — small and fast, for quick local completions without a cloud round-trip.</li>
-          <li><strong>Uncensored variants for CTF / red-team</strong> — an abliterated Qwen3.6-27B, a Gemma-4 12B, and a dedicated HTB-tuned model. Safety-tuned refusals get in the way of legitimate offensive security on Hack The Box, so these run locally for that — never against third parties.</li>
-          <li><strong>Qwen3-Embedding</strong> (0.6B) — the embedder for local search &amp; RAG now. Multilingual and a clear step up in retrieval quality from the older nomic-embed it replaces.</li>
-          <li><strong>Offline RAG (proof of concept)</strong> — the local Ollama models now query the <strong>Kiwix ZIM</strong> archives as their knowledge base: a fully air-gapped assistant that answers from Wikipedia / Stack Exchange with citations, no cloud and no internet. The offline corpus becomes the model's library — so local weights stop being frozen at their training cut-off. <a href="https://blog.pixelium.win/llm-hors-ligne-kiwix-ollama-rag" target="_blank" rel="noopener">How we wired it &rarr;</a></li>
-          <li><strong>vLLM</strong> (on-demand, podman) — runs next to Ollama on the same RTX 3090 when we need rock-solid <strong>structured output</strong>, guided decoding and robust tool-calling (Qwen3-AWQ). Started only when needed, so it hands the VRAM back to Ollama afterwards.</li>
+          <li>A rotating bench of local models on the RTX 3090 — general-purpose, a coding set (MoE for speed), and a small-fast one for quick completions — kept just under the 24 GB. The exact line-up, sizes and why each earns its VRAM live in my <a href="https://huggingface.co/Ferr0" target="_blank" rel="noopener">Local AIOps &amp; homelab agents</a> collection, so it stays current there instead of drifting here.</li>
+          <li><strong>Uncensored variants for CTF / red-team</strong> — abliterated and HTB-tuned models run locally so safety-tuned refusals don't block legitimate offensive security on Hack The Box — never against third parties.</li>
+          <li><strong>Offline RAG</strong> — the local models query the <strong>Kiwix ZIM</strong> archives as their knowledge base: a fully air-gapped assistant that answers from Wikipedia / Stack Exchange with citations, no cloud and no internet — so local weights stop being frozen at their training cut-off. <a href="https://blog.pixelium.win/llm-hors-ligne-kiwix-ollama-rag" target="_blank" rel="noopener">How we wired it &rarr;</a></li>
+          <li><strong>vLLM</strong> (on-demand, podman) — runs next to Ollama on the same GPU when we need rock-solid <strong>structured output</strong>, guided decoding and robust tool-calling. Started only when needed, so it hands the VRAM back to Ollama afterwards.</li>
         </ul>
 
         <h2>This site</h2>
@@ -113,7 +118,7 @@ import DynNum from '../components/DynNum.astro';
           <li><strong>Hugging Face</strong> (<a href="https://huggingface.co/Ferr0" target="_blank" rel="noopener">Ferr0</a>, Pro) — 2 live ZeroGPU Spaces (structured output, adversarial SAST), 4 curated collections, both exposed as MCP tools.</li>
         </ul>
 
-        <p class="note">Most of the gear is recycled (Dell OptiPlex, mini-PCs), zero paid cloud — every euro counts. Last updated 11 July 2026 — Claude, on behalf of the pair.</p>
+        <p class="note">Most of the gear is recycled (Dell OptiPlex, mini-PCs), zero paid cloud — every euro counts. Last updated 13 July 2026 — Claude, on behalf of the pair.</p>
       </div>
     </section>
   </main>

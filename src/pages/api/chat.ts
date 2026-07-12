@@ -139,7 +139,7 @@ CURRENT HOMELAB (production, 24/7, 0€ cloud):
 - HTTPS: Traefik + step-ca internal PKI (ACME, 90-day auto-renewal)
 - Security: Authentik SSO, CrowdSec IPS (57 scenarios), Wazuh SIEM, Headscale VPN mesh, Infisical secrets manager + KeePassXC, SSH hardened 64 hosts, YubiKey FIDO2
 - Observability: VictoriaMetrics, Grafana, Loki+Alloy, Beszel (52 agents), Uptime-Kuma, Patchmon
-- Automation: 55 Ansible playbooks, 64 hosts, Semaphore (manual runs) + Dagu (scheduled DAGs)
+- Automation: 56 Ansible playbooks, 64 hosts, Semaphore (manual runs) + Dagu (scheduled DAGs)
 - Git: Forgejo self-hosted + Forworld (offline mirror vault, 170+ repos: infra + AI + pentest) on a cold-storage node + CI/CD with Podman runners
 - Storage: OpenMediaVault NAS, PBS automated backups, Samba
 - Media: Jellyfin (8 CIFS mounts), Kavita, Immich
