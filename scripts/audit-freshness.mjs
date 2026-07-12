@@ -36,11 +36,11 @@ const CHECKS = [
   // so no lxc literal can lie anymore. Nothing left to pin for it.
   //
   // chat.ts is a runtime Worker (the chatbot system prompt) — it can't read build-stats,
-  // so its (stable) facts are pinned here. Caught 2026-06-29: HTB rank #940/#881 and "71 flags"
-  // had drifted (live #865 / 95). proxmox/hosts/playbooks/beszel are pinned above.
-  // NB: the HTB *ranking* is no longer pinned — it's volatile and now injected live from
-  // STATS_KV via the {{HTB_RANK}} token (htbRanking() in chat.ts), the Worker's <DynNum>.
-  { file: 'src/pages/api/chat.ts', re: /machines, (\d+) flags/, key: 'htb_flags', label: 'chat.ts — HTB flags' },
+  // so its (stable) facts are pinned here. proxmox/hosts/playbooks/beszel are pinned above.
+  // NB: the volatile CTF figures are no longer pinned — HTB ranking/flags/machines and the
+  // Root-Me score are injected live from STATS_KV via the {{HTB_RANK}}/{{HTB_FLAGS}}/
+  // {{HTB_MACHINES}}/{{ROOTME_SCORE}} tokens (liveCtfStats() in chat.ts), the Worker's <DynNum>.
+  // (2026-07-12: htb_flags drifted 77→79 as new boxes were pwned — made dynamic instead of re-pinned.)
   { file: 'src/pages/api/chat.ts', re: /(\d+) services in production/, key: 'services_total', label: 'chat.ts — services' },
   // proxmox_nodes narrative prose: the count is bound to the pve1–4 enumeration, so a
   // 5th node needs a human rewrite (not just a number bump) — pin it so CI flags the drift.
