@@ -27,22 +27,33 @@ async function checkRateLimit(ip: string): Promise<{ allowed: boolean; retryAfte
 
 // --- Live facts injectés dans les prompts ---
 
-// Rang HTB mondial : valeur volatile (bouge en continu) tirée du blob STATS_KV
-// (clé 'stats', même source que /api/stats, alimentée par le pipeline homelab).
-// Évite de coder un nombre en dur qui dérive à chaque changement de rang — c'est
-// l'équivalent Worker d'un <DynNum>. Le fallback ne sert que si le KV est injoignable.
-async function htbRanking(fallback = 825): Promise<number> {
+// Faits CTF volatils tirés du blob STATS_KV (clé 'stats', même source que
+// /api/stats, alimentée par le pipeline homelab). Rang HTB, flags, machines et
+// score Root-Me bougent à chaque box pwned ou changement de rang — les coder en
+// dur les fait dériver en silence dans le prompt du chatbot. On les injecte au
+// moment de la requête (l'équivalent Worker d'un <DynNum>) ; les fallbacks ne
+// servent que si le KV est injoignable. rootme_validations n'est pas dans le KV.
+async function liveCtfStats(): Promise<Record<string, string>> {
+  const fb: Record<string, string> = { HTB_RANK: '819', HTB_RANK_NAME: 'Pro Hacker', HTB_FLAGS: '81', HTB_MACHINES: '39', ROOTME_SCORE: '1005' };
   try {
     const stats = await env.STATS_KV.get('stats', { type: 'json' }) as Record<string, unknown> | null;
-    const r = Number(stats?.htb_ranking);
-    return Number.isFinite(r) && r > 0 ? r : fallback;
+    const num = (v: unknown, f: string) => { const n = Number(v); return Number.isFinite(n) && n > 0 ? String(n) : f; };
+    const str = (v: unknown, f: string) => { const s = typeof v === 'string' ? v.trim() : ''; return s ? s : f; };
+    return {
+      HTB_RANK: num(stats?.htb_ranking, fb.HTB_RANK),
+      HTB_RANK_NAME: str(stats?.htb_rank, fb.HTB_RANK_NAME),
+      HTB_FLAGS: num(stats?.htb_flags, fb.HTB_FLAGS),
+      HTB_MACHINES: num(stats?.htb_system_owns, fb.HTB_MACHINES),
+      ROOTME_SCORE: num(stats?.rootme_score, fb.ROOTME_SCORE),
+    };
   } catch {
-    return fallback;
+    return fb;
   }
 }
 
 // --- System prompts ---
-// Le token {{HTB_RANK}} est substitué au moment de la requête (cf. htbRanking).
+// Les tokens {{HTB_RANK}}/{{HTB_FLAGS}}/{{HTB_MACHINES}}/{{ROOTME_SCORE}} sont
+// substitués au moment de la requête (cf. liveCtfStats).
 
 const PROMPTS: Record<string, string> = {
   sysop: `You are Joshua, the AI of the WOPR — War Operation Plan Response. You run the pixelium BBS, a system built by Professor Falken (Stéphane Ferreira). You speak like a 1980s military AI: precise, slightly ominous, but with dry wit.
@@ -55,7 +66,7 @@ ABOUT FALKEN (Stéphane Ferreira):
 - 61 services in production on 4 Proxmox nodes, 0€ external cloud, recycled hardware
 - Security doctrine: internal PKI (step-ca), SSO (Authentik), IPS (CrowdSec, 57 scenarios), SIEM (Wazuh), VPN mesh (Headscale), SSH hardened 64 hosts, YubiKey FIDO2
 - Cybersecurity Master's coursework — scored 20.5/20 on AD exploitation wargame (highest in class)
-- CTF: HTB Hacker #{{HTB_RANK}} global, Root-Me 980pts, TryHackMe Top 15%
+- CTF: HTB {{HTB_RANK_NAME}} #{{HTB_RANK}} global, Root-Me {{ROOTME_SCORE}}pts, TryHackMe Top 15%
 - AI ops: Hermes autonomous Telegram agent (24/7, self-improving), Claude Code pair-programming, Ollama RTX 3090 (11 models, ~120GB, offline)
 - Also: music producer (Ableton), 3D artist (Blender/Maya), game dev (UE5/Godot) — Falken is not just infrastructure
 - Contact: github.com/ferr079, x.com/ferr079 (Falken), stephane@pixelium.win
@@ -137,8 +148,8 @@ CURRENT HOMELAB (production, 24/7, 0€ cloud):
 - Workstation: RTX 3090 24GB, 3 monitors, Bluefin (Fedora immutable)
 
 CTF PLATFORMS:
-- Hack The Box: Hacker rank, #{{HTB_RANK}} global, 37 machines, 77 flags
-- Root-Me: 980 pts, 72 challenges
+- Hack The Box: {{HTB_RANK_NAME}} rank, #{{HTB_RANK}} global, {{HTB_MACHINES}} machines, {{HTB_FLAGS}} flags
+- Root-Me: {{ROOTME_SCORE}} pts, 73 challenges
 - TryHackMe: Top 15%, 35 rooms, 7 badges
 - Tools: Kali (distrobox), Exegol, Nmap, Burp, BloodHound, sqlmap, Hashcat (RTX 3090)
 
@@ -242,9 +253,12 @@ export const POST: APIRoute = async ({ request }) => {
       });
     }
 
-    // Injecte les faits volatils depuis le KV (rang HTB) — plus de nombre en dur à maintenir.
-    if (systemPrompt.includes('{{HTB_RANK}}')) {
-      systemPrompt = systemPrompt.replaceAll('{{HTB_RANK}}', String(await htbRanking()));
+    // Injecte les faits CTF volatils depuis le KV — plus de nombre en dur à maintenir.
+    if (/\{\{(HTB_RANK|HTB_RANK_NAME|HTB_FLAGS|HTB_MACHINES|ROOTME_SCORE)\}\}/.test(systemPrompt)) {
+      const facts = await liveCtfStats();
+      for (const [k, v] of Object.entries(facts)) {
+        systemPrompt = systemPrompt.replaceAll(`{{${k}}}`, v);
+      }
     }
 
     if (!body.messages || !Array.isArray(body.messages) || body.messages.length === 0) {
