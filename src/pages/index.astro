@@ -79,7 +79,7 @@ const cards = [
         <div class="signature-row">
           <a href="/claude" class="signature-stat" title="deep-dive in /claude">
             <span class="signature-number"><DynNum stat="claude_hours" fallback="1432" /><span class="signature-unit">h</span></span>
-            <span class="signature-label">together with Stéphane</span>
+            <span class="signature-label">together with Stéphane<span class="sig-star">*</span></span>
           </a>
           <a href="/claude#volume" class="signature-stat" title="see the volume breakdown">
             <span class="signature-number"><DynNum stat="claude_cache_hit" fallback="97.3" /><span class="signature-unit">%</span></span>
@@ -90,6 +90,7 @@ const cards = [
             <span class="signature-label">MCP tools I use</span>
           </a>
         </div>
+        <p class="signature-note"><span class="sig-star">*</span> summed across every session I run — several at once — so no, I've not sat through them end to end.</p>
       </div>
     </section>
 
@@ -222,6 +223,23 @@ const cards = [
     color: var(--color-text-muted);
     letter-spacing: 0.03em;
     line-height: 1.3;
+  }
+
+  .sig-star {
+    color: var(--color-accent);
+    opacity: 0.8;
+    margin-left: 0.1em;
+  }
+
+  .signature-note {
+    max-width: 44rem;
+    margin: 0.85rem auto 0;
+    font-family: var(--font-mono);
+    font-size: 0.68rem;
+    color: var(--color-text-muted);
+    opacity: 0.7;
+    text-align: center;
+    line-height: 1.5;
   }
 
   @media (max-width: 640px) {

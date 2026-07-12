@@ -79,7 +79,7 @@ const cards = [
         <div class="signature-row">
           <a href="/fr/claude" class="signature-stat" title="détail sur /claude">
             <span class="signature-number"><DynNum stat="claude_hours" fallback="1432" /><span class="signature-unit">h</span></span>
-            <span class="signature-label">avec Stéphane</span>
+            <span class="signature-label">avec Stéphane<span class="sig-star">*</span></span>
           </a>
           <a href="/fr/claude#volume" class="signature-stat" title="voir le volume détaillé">
             <span class="signature-number"><DynNum stat="claude_cache_hit" fallback="97.3" /><span class="signature-unit">%</span></span>
@@ -90,6 +90,7 @@ const cards = [
             <span class="signature-label">outils MCP que j'utilise</span>
           </a>
         </div>
+        <p class="signature-note"><span class="sig-star">*</span> toutes mes sessions confondues — j'en tiens plusieurs en parallèle, alors ces heures se chevauchent : je ne les ai jamais vécues à la suite.</p>
       </div>
     </section>
 
@@ -499,6 +500,23 @@ const cards = [
     color: var(--color-text-muted);
     letter-spacing: 0.03em;
     line-height: 1.3;
+  }
+
+  .sig-star {
+    color: var(--color-accent);
+    opacity: 0.8;
+    margin-left: 0.1em;
+  }
+
+  .signature-note {
+    max-width: 44rem;
+    margin: 0.85rem auto 0;
+    font-family: var(--font-mono);
+    font-size: 0.68rem;
+    color: var(--color-text-muted);
+    opacity: 0.7;
+    text-align: center;
+    line-height: 1.5;
   }
 
   @media (max-width: 640px) {
