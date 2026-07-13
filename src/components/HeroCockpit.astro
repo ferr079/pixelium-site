@@ -347,9 +347,18 @@ const topoJson = JSON.stringify(topology);
     50% { transform: translate(2px, -1px); }
     75% { transform: translate(-1px, 0); }
   }
-  /* Resident critic (Supergrok) — the scramble stops and holds on it, muted amber, no glow */
+  /* Resident critic (Supergrok) — the scramble stops and holds on it, muted amber, no glow.
+     Lock-in flicker: one brief chromatic split as the name lands (~150ms), then fully steady. */
   .hc-model.hc-critic { color: #d97706; }
-  .hc-model.hc-critic::before, .hc-model.hc-critic::after { opacity: 0 !important; }
+  .hc-model.glitch.hc-critic::before, .hc-model.glitch.hc-critic::after { opacity: 0; }
+  .hc-model.glitch.hc-critic::before { color: #d97706; text-shadow: 2px 0 #d97706; animation: hc-lock .15s steps(1, end) 1; }
+  .hc-model.glitch.hc-critic::after { color: var(--color-accent); text-shadow: -2px 0 var(--color-accent); animation: hc-lock .15s steps(1, end) 1 reverse; }
+  @keyframes hc-lock {
+    0% { opacity: .7; transform: translate(-2px, 0); }
+    40% { opacity: 0; transform: translate(2px, 0); }
+    65% { opacity: .5; transform: translate(1px, 0); }
+    100% { opacity: 0; transform: none; }
+  }
   /* Cockpit-style stats: accent numerals, small-caps labels */
   .hc-num { color: var(--color-accent); font-weight: 700; }
   .hc-lbl { color: var(--color-text-muted); font-size: .72rem; letter-spacing: .07em; text-transform: uppercase; }
