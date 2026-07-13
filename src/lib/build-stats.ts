@@ -20,6 +20,7 @@ const FALLBACK: Record<string, string | number> = {
   claude_hours: 1432,
   claude_cache_hit: 97.3,
   claude_sessions: 273,
+  claude_tokens_billions: 23.6,
   services_up: 46,
   services_total: 46,
   uptime_pct: 100,

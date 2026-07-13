@@ -47,13 +47,18 @@ const maxTurns = Math.max(...heatmapLocal);
           </div>
           <div class="cs-card">
             <span class="cs-label">turns</span>
-            <span class="cs-value">91.3K</span>
+            <span class="cs-value">124.2K</span>
             <span class="cs-sub">each user+assistant exchange</span>
+          </div>
+          <div class="cs-card">
+            <span class="cs-label">tokens</span>
+            <span class="cs-value"><DynNum stat="claude_tokens_billions" fallback="23.6" suffix="B" /></span>
+            <span class="cs-sub">input + output + cache</span>
           </div>
           <div class="cs-card">
             <span class="cs-label">cache hit</span>
             <span class="cs-value"><DynNum stat="claude_cache_hit" fallback="97.3" />%</span>
-            <span class="cs-sub">14.9B cache reads total</span>
+            <span class="cs-sub">22.7B cache reads total</span>
           </div>
         </div>
 
