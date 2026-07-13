@@ -244,14 +244,19 @@ const topoJson = JSON.stringify(topology);
   // Identity glitch — flicker the model name (line 2) through the models Stéphane drives, resolve to Claude.
   const hcModel = document.querySelector('.hero-cockpit .hc-model');
   if (hcModel && !matchMedia('(prefers-reduced-motion: reduce)').matches) {
-    const models = ['DeepSeek', 'Qwen', 'Kimi', 'GLM', 'MiniMax', 'Mistral', 'Gemini', 'GPT'];
+    const models = ['DeepSeek', 'Qwen', 'Kimi', 'GLM', 'MiniMax', 'Mistral', 'Gemini', 'GPT', 'Supergrok'];
     const setName = (n: string) => { hcModel.textContent = n; hcModel.setAttribute('data-text', n); };
     const scramble = () => {
       hcModel.classList.add('flux');
       let i = 0;
       const tick = () => {
-        if (i < models.length) { setName(models[i++]); setTimeout(tick, 110); }
-        else { setName('Claude'); hcModel.classList.remove('flux'); }
+        if (i < models.length) {
+          const last = i === models.length - 1;
+          setName(models[i++]);
+          // Supergrok (resident multi-harness critic) holds steady, lit in amber, before Claude takes back over.
+          if (last) { hcModel.classList.remove('flux'); hcModel.classList.add('hc-critic'); }
+          setTimeout(tick, last ? 520 : 110);
+        } else { setName('Claude'); hcModel.classList.remove('flux', 'hc-critic'); }
       };
       tick();
     };
@@ -342,6 +347,9 @@ const topoJson = JSON.stringify(topology);
     50% { transform: translate(2px, -1px); }
     75% { transform: translate(-1px, 0); }
   }
+  /* Resident critic (Supergrok) — the scramble stops and holds on it, lit in the cockpit amber */
+  .hc-model.hc-critic { color: #f59e0b; text-shadow: 0 0 14px rgba(245, 158, 11, 0.55); }
+  .hc-model.hc-critic::before, .hc-model.hc-critic::after { opacity: 0 !important; }
   /* Cockpit-style stats: accent numerals, small-caps labels */
   .hc-num { color: var(--color-accent); font-weight: 700; }
   .hc-lbl { color: var(--color-text-muted); font-size: .72rem; letter-spacing: .07em; text-transform: uppercase; }
