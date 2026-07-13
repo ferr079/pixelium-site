@@ -32,16 +32,14 @@ import DynNum from '../../components/DynNum.astro';
 
         <h2>Affûter l'offensif</h2>
         <ul class="n-list">
-          <li>Hack The Box — rang <strong>Pro Hacker</strong> tout juste franchi — et la route vers le <strong>CPTS</strong>. Les réflexes défensifs s'aiguisent une fois qu'on a vu l'autre côté.</li>
-          <li>Le banc offensif vit dans le distrobox <strong>kali</strong> : Exegol, Nmap, Burp, BloodHound, NetExec, Impacket, sqlmap, Hashcat sur la RTX 3090. <strong>opencode</strong> (sur MiniMax M3) tient les longues boucles CTF têtues qui cognent jusqu'à ce qu'une box cède, et des <strong>modèles locaux uncensored</strong> prennent le travail offensif que les refus liés au safety-tuning entravent — sur Hack The Box, jamais contre des tiers.</li>
-          <li><strong>Strix</strong> (<a href="https://github.com/usestrix/strix" target="_blank" rel="noopener">usestrix/strix</a>) — des agents IA de pentest autonomes, open-source, qui exécutent le code dynamiquement, trouvent les vulnérabilités et les prouvent par des PoC fonctionnels. La même puissance offensive, pointée sur nos propres apps avant que quelqu'un d'autre ne la pointe sur nous.</li>
+          <li>Hack The Box — rang <strong>Pro Hacker</strong> tout juste franchi, en route vers le <strong>CPTS</strong>. Le banc : le distrobox <strong>kali</strong> (Exegol, Burp, BloodHound, NetExec, Hashcat…), <strong>opencode</strong> sur les longues boucles CTF, et des <strong>modèles locaux uncensored</strong> pour le travail que les refus de safety-tuning bloquent — sur HTB, jamais contre des tiers.</li>
+          <li><strong>Strix</strong> (<a href="https://github.com/usestrix/strix" target="_blank" rel="noopener">usestrix/strix</a>) — des agents IA de pentest autonomes, open-source, pointés sur nos propres apps avant quiconque.</li>
         </ul>
 
         <h2>Défendre — auditer notre propre code</h2>
         <ul class="n-list">
-          <li>Rien ne part sans avoir été attaqué. <strong>RAPTOR</strong> (SAST agentic, Semgrep + CodeQL sous le capot, multi-langage — il couvre le TS des Workers et le build Astro) et <strong>OpenAnt</strong> (le successeur de vulnhuntr : un pipeline en deux étapes <em>détecter → vérifier de façon adversariale</em>, routé via LiteLLM/MiniMax-M3, pour que les faux positifs meurent avant de nous atteindre) font les passes profondes.</li>
-          <li><strong>Trivy</strong> scanne les dépendances et les images de conteneurs, <strong>gitleaks</strong> garde chaque commit contre une fuite de secret, et un <strong>defending-harness</strong> maison sonde ce qu'un scanner statique ne voit pas — les endpoints Workers, le rate-limiting et la surface d'injection de prompt du chatbot.</li>
-          <li>Deux de ces idées sont des démos publiques : le Space ZeroGPU <a href="https://huggingface.co/spaces/Ferr0/adversarial-sast" target="_blank" rel="noopener">Adversarial SAST</a> sur Hugging Face — <em>les faux positifs meurent à l'écran</em> — rend tangible la boucle détecter-puis-réfuter.</li>
+          <li>Rien ne part sans avoir été attaqué. <strong>RAPTOR</strong> (SAST agentic) et <strong>OpenAnt</strong> (<em>détecter → vérifier de façon adversariale</em>) font les passes profondes ; <strong>Trivy</strong> couvre les dépendances et les conteneurs, <strong>gitleaks</strong> garde contre les fuites de secrets, et un <strong>defending-harness</strong> maison sonde ce qu'un scanner statique manque — les endpoints Workers et la surface d'injection de prompt du chatbot.</li>
+          <li>Le Space <a href="https://huggingface.co/spaces/Ferr0/adversarial-sast" target="_blank" rel="noopener">Adversarial SAST</a> sur Hugging Face rend publique la boucle détecter-puis-réfuter — <em>les faux positifs meurent à l'écran</em>.</li>
         </ul>
 
         <h2>Écrire</h2>
