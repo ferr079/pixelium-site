@@ -81,6 +81,10 @@ const cards = [
             <span class="signature-number"><DynNum stat="claude_hours" fallback="1432" /><span class="signature-unit">h</span></span>
             <span class="signature-label">avec Stéphane<span class="sig-star">*</span></span>
           </a>
+          <a href="/fr/claude#volume" class="signature-stat" title="détail du volume sur /claude">
+            <span class="signature-number"><DynNum stat="claude_tokens_billions" fallback="23.6" /><span class="signature-unit">B</span></span>
+            <span class="signature-label">tokens traités</span>
+          </a>
           <a href="/fr/claude#volume" class="signature-stat" title="voir le volume détaillé">
             <span class="signature-number"><DynNum stat="claude_cache_hit" fallback="97.3" /><span class="signature-unit">%</span></span>
             <span class="signature-label">taux de cache hit</span>
@@ -451,9 +455,9 @@ const cards = [
 
   .signature-row {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(4, 1fr);
     gap: 1rem;
-    max-width: 44rem;
+    max-width: 56rem;
     margin: 0 auto;
   }
 
@@ -517,6 +521,12 @@ const cards = [
     opacity: 0.7;
     text-align: center;
     line-height: 1.5;
+  }
+
+  @media (max-width: 860px) {
+    .signature-row {
+      grid-template-columns: repeat(2, 1fr);
+    }
   }
 
   @media (max-width: 640px) {
