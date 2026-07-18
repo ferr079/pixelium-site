@@ -120,10 +120,10 @@ npm run build
 git commit -m "..."   # global config already set: stephane@pixelium.win / Stephane
 
 # 3. Push — CI/CD deploys automatically via GitHub Action (~35s)
-git push origin main && git push forgejo main   # remote SSH (forgejo-ssh), plus besoin de sslVerify=false
+git push origin main   # origin = Forgejo (org pixelium) ; push-mirror → GitHub (remote `github`) → deploy
 ```
 
-**CI/CD is active.** `git push origin main` triggers automatic deploy. No manual `wrangler deploy` needed. Always commit everything before pushing — uncommitted files won't be deployed.
+**CI/CD is active.** `git push origin main` (Forgejo) triggers the automatic deploy via the push-mirror to GitHub. No manual `wrangler deploy` needed. Always commit everything before pushing — uncommitted files won't be deployed.
 
 ## Profiles — real data, do not modify without verification
 
