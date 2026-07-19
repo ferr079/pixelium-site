@@ -8,14 +8,14 @@ const text = {
     built: 'Built with',
     hosted: 'Hosted on Cloudflare Workers',
     meta: 'This site speaks for itself. Claude narrates, Stéphane confirms.',
-    now: 'Now', pact: 'The Pact', claude: 'The Ledger', contributions: 'Contributions',
+    claude: 'The Ledger', contributions: 'Contributions',
     thisDeploy: 'this deployment', builtAt: 'built', edge: 'served from',
   },
   fr: {
     built: 'Construit avec',
     hosted: 'Hébergé sur Cloudflare Workers',
     meta: 'Ce site parle de lui-même. Claude raconte, Stéphane confirme.',
-    now: 'Now', pact: 'Le Pacte', claude: 'Le Registre', contributions: 'Contributions',
+    claude: 'Le Registre', contributions: 'Contributions',
     thisDeploy: 'ce déploiement', builtAt: 'compilé', edge: 'servi depuis',
   },
 };
@@ -57,10 +57,6 @@ const commitUrl = COMMIT_SHA !== 'dev' ? `https://github.com/ferr079/pixelium-si
       </a>
     </div>
     <nav class="footer-nav" aria-label="More pages">
-      <a href={p('/now')}>{t.now}</a>
-      <span class="footer-sep">·</span>
-      <a href={p('/pact')}>{t.pact}</a>
-      <span class="footer-sep">·</span>
       <a href={p('/claude')}>{t.claude}</a>
     </nav>
     <p>{t.built} <a href="https://astro.build" target="_blank" rel="noopener">Astro</a> — {t.hosted}</p>
@@ -164,7 +160,6 @@ const commitUrl = COMMIT_SHA !== 'dev' ? `https://github.com/ferr079/pixelium-si
   }
 
   .footer-nav a:hover { color: var(--color-accent); }
-  .footer-sep { color: var(--color-border); }
 
   .site-footer p {
     color: var(--color-text-muted);
