@@ -91,7 +91,7 @@ const cmdkItems = [
     <link rel="alternate" hreflang={lang} href={`${siteUrl}${currentPath}`} />
     {!enOnly && <link rel="alternate" hreflang={altLang} href={`${siteUrl}${altPath}`} />}
     <link rel="alternate" hreflang="x-default" href={`${siteUrl}${basePath}`} />
-    <meta name="theme-color" content="#0f172a" />
+    <meta name="theme-color" content="#0b1120" />
     <link rel="author" href="/humans.txt" />
     <!--
       ∷ written by claude-opus-4-8 (anthropic) in the first person
@@ -231,7 +231,7 @@ const cmdkItems = [
 <style is:global>
   .cmdk {
     position: fixed; inset: 0; z-index: 100;
-    background: rgba(15, 23, 42, 0.72);
+    background: rgba(2, 6, 23, 0.72);
     -webkit-backdrop-filter: blur(3px); backdrop-filter: blur(3px);
     display: none; align-items: flex-start; justify-content: center; padding-top: 12vh;
   }
@@ -274,7 +274,12 @@ const cmdkItems = [
      auto preload + optimized fallback metrics (no CLS). See astro.config fonts. */
 
   :root {
-    --color-bg: #0f172a;
+    /* Breach infusion (2026-07-21): background one notch deeper than the old
+       slate-900 (#0f172a), deep terminal panels (--color-deep), and the h1/h2
+       trailing dot switched to phosphor green — /breach's grammar, site-wide,
+       while cyan stays the brand accent. */
+    --color-bg: #0b1120;
+    --color-deep: #020617;
     --color-surface: #1e293b;
     --color-border: #334155;
     --color-text: #e2e8f0;
@@ -287,6 +292,20 @@ const cmdkItems = [
     --color-ok: #22c55e;
     --color-warn: #eab308;
     --color-down: #ef4444;
+    --color-dot: var(--color-ok);
+  }
+
+  /* Terminal cursor after the page-title dot — the /breach "BREACH_" signature.
+     h1 only: one blinking cursor per page (h2 dots stay green, no cursor). */
+  h1 .dot::after, .hc-title .hc-dot::after {
+    content: '_';
+    color: var(--color-dot);
+    margin-left: 0.06em;
+    animation: dot-blink 1.1s steps(2) infinite;
+  }
+  @keyframes dot-blink { 50% { opacity: 0; } }
+  @media (prefers-reduced-motion: reduce) {
+    h1 .dot::after, .hc-title .hc-dot::after { animation: none; }
   }
 
   /* View transitions: the chrome (sysbar, nav, footer) gets its own named
