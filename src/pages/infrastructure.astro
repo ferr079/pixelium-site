@@ -487,6 +487,14 @@ const monitoringSlides = [
               <span class="obs-role">Health &amp; certs</span>
               <p>39 monitors — HTTP health and TLS certificate expiry on every service. Notifications via ntfy.</p>
             </div>
+
+            <div class="obs-card">
+              <div class="obs-header">
+                <h4>LiteLLM</h4>
+              </div>
+              <span class="obs-role">AI spend &amp; usage</span>
+              <p>Per-call token counts and cost across the 4-provider failback chain (MiniMax → Gemini → Groq → OpenRouter). Native Prometheus export feeds the same VictoriaMetrics + Grafana pipeline as the rest of the stack.</p>
+            </div>
           </div>
 
           <Carousel slides={monitoringSlides} id="monitoring-carousel" />
