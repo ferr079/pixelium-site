@@ -70,7 +70,10 @@ const cards = [
 
 <Base title="pixelium.win — DevSecOps Homelab Portfolio" description={`Self-hosted production infrastructure: ${stats.services_total} services on Proxmox, Ansible automation, AI agents, defense-in-depth security. Built by Stéphane Ferreira, narrated by Claude.`}>
   <main>
-    <!-- Hero — Living Topology cockpit (refonte V4) -->
+    <!-- Hero — Living Topology cockpit (refonte V4).
+         .hero-zone carries the dot-grid so it runs behind the signature tiles
+         and fades out just before the StatsBar band. -->
+    <div class="hero-zone">
     <HeroCockpit lang="en" />
 
     <!-- Signature stats — the 3 numbers I own -->
@@ -97,6 +100,7 @@ const cards = [
         <p class="signature-note"><span class="sig-star">*</span> summed across every session we run — several at once.</p>
       </div>
     </section>
+    </div>
 
     <!-- Stats -->
     <StatsBar stats={[
@@ -169,6 +173,21 @@ const cards = [
 
 
 <style>
+  /* ═══════════════════════════════════════════
+     Hero zone — shared dot-grid backdrop
+     ═══════════════════════════════════════════ */
+  /* One continuous grid behind hero + signature tiles (two per-section grids
+     would visibly jump at the seam unless heights align on the 24px cell).
+     Fades out before the StatsBar band, which stays the hard cut. */
+  .hero-zone { position: relative; }
+  .hero-zone::before {
+    content: '';
+    position: absolute; inset: 0; z-index: -1; pointer-events: none;
+    background: radial-gradient(rgba(148, 163, 184, 0.08) 1px, transparent 1px);
+    background-size: 24px 24px;
+    mask-image: linear-gradient(to bottom, black 55%, transparent 98%);
+  }
+
   /* ═══════════════════════════════════════════
      Signature stats — the 3 numbers
      ═══════════════════════════════════════════ */

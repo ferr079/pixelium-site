@@ -266,13 +266,10 @@ const topoJson = JSON.stringify(topology);
 
 <style>
   .hero-cockpit { position: relative; padding: 3.5rem 0 4rem; overflow: hidden; }
-  /* Observatory depth: a low dot-grid (static) + breathing glows (cyan upper-left,
-     faint amber lower-right echoing the PVE nodes) that drift very slowly. */
-  .hero-cockpit::before {
-    content: ''; position: absolute; inset: 0; z-index: 0; pointer-events: none;
-    background: radial-gradient(rgba(148, 163, 184, 0.08) 1px, transparent 1px);
-    background-size: 24px 24px;
-  }
+  /* Observatory depth: breathing glows (cyan upper-left, faint amber lower-right
+     echoing the PVE nodes) that drift very slowly. The companion dot-grid lives on
+     the page-level .hero-zone wrapper so it can run past this section and fade out
+     behind the signature tiles instead of dying at the hero's edge. */
   .hero-cockpit::after {
     content: ''; position: absolute; inset: -4%; z-index: 0; pointer-events: none;
     background:

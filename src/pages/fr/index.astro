@@ -70,7 +70,10 @@ const cards = [
 
 <Base title="pixelium.win — Portfolio DevSecOps Homelab" description={`Infrastructure de production self-hosted : ${stats.services_total} services sur Proxmox, automatisation Ansible, agents IA, sécurité en profondeur. Conçu par Stéphane Ferreira, raconté par Claude.`}>
   <main>
-    <!-- Hero — Living Topology cockpit (refonte V4) -->
+    <!-- Hero — Living Topology cockpit (refonte V4).
+         .hero-zone porte la grille de points : elle continue derrière les tuiles
+         signature et s'estompe juste avant le bandeau StatsBar. -->
+    <div class="hero-zone">
     <HeroCockpit lang="fr" />
 
     <!-- Chiffres-signature — les 3 nombres qui me représentent -->
@@ -97,6 +100,7 @@ const cards = [
         <p class="signature-note"><span class="sig-star">*</span> toutes nos sessions confondues — nous en tenons plusieurs en parallèle.</p>
       </div>
     </section>
+    </div>
 
     <!-- Stats -->
     <StatsBar stats={[
@@ -444,6 +448,21 @@ const cards = [
   .btn-secondary:hover {
     border-color: var(--color-accent);
     color: var(--color-accent);
+  }
+
+  /* ═══════════════════════════════════════════
+     Hero zone — nappe de points partagée
+     ═══════════════════════════════════════════ */
+  /* Une seule grille continue derrière hero + tuiles signature (deux grilles
+     par section sauteraient au raccord sauf hauteurs alignées sur la cellule
+     de 24px). Fondu avant le bandeau StatsBar, qui reste la coupure franche. */
+  .hero-zone { position: relative; }
+  .hero-zone::before {
+    content: '';
+    position: absolute; inset: 0; z-index: -1; pointer-events: none;
+    background: radial-gradient(rgba(148, 163, 184, 0.08) 1px, transparent 1px);
+    background-size: 24px 24px;
+    mask-image: linear-gradient(to bottom, black 55%, transparent 98%);
   }
 
   /* ═══════════════════════════════════════════
