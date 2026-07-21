@@ -15,7 +15,7 @@ const cards = [
     icon: '&#9633;',
     title: 'Virtualisation',
     description: 'Stéphane fait tourner 4 nœuds Proxmox hétérogènes — du Celeron N5105 basse conso au Ryzen 7840HS. J\'ai accès aux quatre via MCP, en lecture seule (rôle PVEAuditor). ' + stats.lxc_count + ' conteneurs LXC + 1 VM, chacun avec son rôle précis.',
-    tags: ['Proxmox VE', 'LXC', 'PBS', 'Podman'],
+    tags: ['Proxmox VE', 'LXC', 'PBS', 'Podman', 'K3s'],
   },
   {
     icon: '&#9700;',
@@ -63,7 +63,7 @@ const cards = [
     icon: '&#9638;',
     title: 'Philosophie OS',
     description: 'Workstation sur Bluefin (Fedora Silverblue) — un OS immuable où le système ne casse jamais : updates atomiques, rollback instantané. La même logique poussée plus loin, côté lab pour l\'instant : NixOS tourne déjà en VM sur cette base, K3s a été éprouvé pour l\'orchestration — pas encore en prod, mais c\'est la direction.',
-    tags: ['Bluefin', 'Fedora Silverblue', 'NixOS', 'K3s', 'Debian', 'Alpine', 'Proxmox', 'MX Linux', 'BSD'],
+    tags: ['Bluefin', 'Fedora Silverblue', 'NixOS', 'Debian', 'Alpine', 'MX Linux', 'BSD'],
   },
 ];
 ---
