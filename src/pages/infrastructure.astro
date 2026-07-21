@@ -570,8 +570,15 @@ const monitoringSlides = [
       const t = e.target as HTMLElement;
       if (t === overlay || t.classList.contains('inception-close')) close();
     });
-    document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && overlay.classList.contains('open')) close(); });
   }
+  // Escape-to-close bound once at document scope — query the live overlay each
+  // time so navigations (astro:page-load) don't re-add the listener and leak the
+  // previous one (which captured a now-detached overlay).
+  document.addEventListener('keydown', (e) => {
+    if (e.key !== 'Escape') return;
+    const ov = document.getElementById('inception');
+    if (ov?.classList.contains('open')) ov.classList.remove('open');
+  });
   initInception();
   document.addEventListener('astro:page-load', initInception);
 </script>

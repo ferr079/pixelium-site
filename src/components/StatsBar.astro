@@ -32,6 +32,8 @@ const resolved = stats.map((s) => ({
 </section>
 
 <script>
+  let statsObserver: IntersectionObserver | null = null;
+
   function animateCounters() {
     const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     if (prefersReducedMotion) return;
@@ -39,8 +41,12 @@ const resolved = stats.map((s) => ({
     // :not([data-armed]) — guard against double-arming (module load + the
     // initial astro:page-load both call this on first render).
     const counters = document.querySelectorAll('.stat-number[data-target]:not([data-armed])');
+    if (counters.length === 0) return; // nothing new to arm — keep the live observer intact
     counters.forEach((el) => el.setAttribute('data-armed', '1'));
 
+    // Drop any observer left from a previous page before creating a new one, so
+    // View Transitions navigations don't leak detached IntersectionObservers.
+    statsObserver?.disconnect();
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
@@ -76,13 +82,19 @@ const resolved = stats.map((s) => ({
       },
       { threshold: 0.5 }
     );
+    statsObserver = observer;
 
     counters.forEach((el) => observer.observe(el));
   }
 
   animateCounters();
-  // Re-arm on every client-side navigation (fresh DOM, stale observers are GC'd).
+  // Re-arm on every client-side navigation (fresh DOM).
   document.addEventListener('astro:page-load', animateCounters);
+  // Tear the observer down when leaving the page (StatsBar may be absent next).
+  document.addEventListener('astro:before-swap', () => {
+    statsObserver?.disconnect();
+    statsObserver = null;
+  });
 </script>
 
 <style>
