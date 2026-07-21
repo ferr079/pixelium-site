@@ -295,12 +295,40 @@ const cmdkItems = [
     --color-dot: var(--color-ok);
   }
 
+  /* Title dot as a SQUARE pixel — pixelium: a pixel is square, not the round
+     "." glyph. The glyph goes transparent (keeps its advance width and stays
+     in copy/paste) and a square is drawn over it, em-sized so it scales with
+     every h1/h2. */
+  h1 .dot, h2 .dot, .hc-title .hc-dot {
+    position: relative;
+    color: transparent;
+  }
+  /* Anchored to the LEFT edge of the span (where the "." ink sits) — the
+     cursor ::after lives inside the same inline box, so centering would pull
+     the square toward it and away from the last letter. */
+  h1 .dot::before, h2 .dot::before, .hc-title .hc-dot::before {
+    content: '';
+    position: absolute;
+    left: 0.04em;
+    bottom: 0.09em;
+    width: 0.15em;
+    height: 0.15em;
+    background: var(--color-dot);
+  }
+
+  /* Hero identity glitch: the square + cursor belong to “Claude” only — hidden
+     while the name cycles through the other models (.flux / .hc-critic). */
+  .hc-model.flux + .hc-dot::before, .hc-model.flux + .hc-dot::after,
+  .hc-model.hc-critic + .hc-dot::before, .hc-model.hc-critic + .hc-dot::after {
+    opacity: 0;
+  }
+
   /* Terminal cursor after the page-title dot — the /breach "BREACH_" signature.
      h1 only: one blinking cursor per page (h2 dots stay green, no cursor). */
   h1 .dot::after, .hc-title .hc-dot::after {
     content: '_';
     color: var(--color-dot);
-    margin-left: 0.06em;
+    margin-left: 0.24em;
     animation: dot-blink 1.1s steps(2) infinite;
   }
   @keyframes dot-blink { 50% { opacity: 0; } }

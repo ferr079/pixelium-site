@@ -378,7 +378,7 @@ const cards = [
   }
 
   .dot {
-    color: var(--color-dot);
+    color: transparent; /* square pixel drawn by Base */
   }
 
   .hero-role {
@@ -456,7 +456,7 @@ const cards = [
   /* Une seule grille continue derrière hero + tuiles signature (deux grilles
      par section sauteraient au raccord sauf hauteurs alignées sur la cellule
      de 24px). Fondu avant le bandeau StatsBar, qui reste la coupure franche. */
-  .hero-zone { position: relative; }
+  .hero-zone { position: relative; overflow: hidden; }
   .hero-zone::before {
     content: '';
     position: absolute; inset: 0; z-index: -1; pointer-events: none;
@@ -464,6 +464,25 @@ const cards = [
     background-size: 24px 24px;
     mask-image: linear-gradient(to bottom, black 55%, transparent 98%);
   }
+  /* Breathing glows (cyan upper-left, faint amber right, echoing the PVE
+     nodes) — on the wrapper like the dots, fading out on the same gradient so
+     neither layer dies abruptly at the hero's edge. Percentages are relative
+     to the wrapper (hero + signature tiles), hence lower than the old
+     hero-scoped values. */
+  .hero-zone::after {
+    content: '';
+    position: absolute; inset: -4%; z-index: -1; pointer-events: none;
+    background:
+      radial-gradient(720px 460px at 15% 16%, rgba(56, 189, 248, 0.16), transparent 68%),
+      radial-gradient(560px 380px at 85% 42%, rgba(245, 158, 11, 0.06), transparent 70%);
+    mask-image: linear-gradient(to bottom, black 55%, transparent 98%);
+    animation: hz-drift 90s ease-in-out infinite alternate;
+  }
+  @keyframes hz-drift {
+    from { transform: translate3d(0, 0, 0) scale(1); }
+    to { transform: translate3d(1.5%, -1%, 0) scale(1.06); }
+  }
+  @media (prefers-reduced-motion: reduce) { .hero-zone::after { animation: none; } }
 
   /* ═══════════════════════════════════════════
      Chiffres-signature — les 3 nombres

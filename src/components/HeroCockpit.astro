@@ -289,28 +289,15 @@ const topoJson = JSON.stringify(topology);
 </script>
 
 <style>
-  .hero-cockpit { position: relative; padding: 3.5rem 0 4rem; overflow: hidden; }
-  /* Observatory depth: breathing glows (cyan upper-left, faint amber lower-right
-     echoing the PVE nodes) that drift very slowly. The companion dot-grid lives on
-     the page-level .hero-zone wrapper so it can run past this section and fade out
-     behind the signature tiles instead of dying at the hero's edge. */
-  .hero-cockpit::after {
-    content: ''; position: absolute; inset: -4%; z-index: 0; pointer-events: none;
-    background:
-      radial-gradient(720px 460px at 15% 26%, rgba(56, 189, 248, 0.16), transparent 68%),
-      radial-gradient(560px 380px at 85% 68%, rgba(245, 158, 11, 0.06), transparent 70%);
-    animation: hc-drift 90s ease-in-out infinite alternate;
-  }
-  @keyframes hc-drift {
-    from { transform: translate3d(0, 0, 0) scale(1); }
-    to { transform: translate3d(1.5%, -1%, 0) scale(1.06); }
-  }
-  @media (prefers-reduced-motion: reduce) { .hero-cockpit::after { animation: none; } }
+  .hero-cockpit { position: relative; padding: 3.5rem 0 4rem; }
+  /* Observatory depth (dot-grid + breathing glows) lives entirely on the
+     page-level .hero-zone wrapper: both layers run past this section and fade
+     out behind the signature tiles instead of dying at the hero's edge. */
   .hc-inner { position: relative; z-index: 1; display: grid; grid-template-columns: 1.05fr 1fr; gap: 2.5rem; align-items: center; }
   .hc-title { font-size: clamp(2.6rem, 6vw, 4.2rem); font-weight: 800; letter-spacing: -.03em; line-height: 1.05; margin: 0 0 1rem; }
   .hc-prefix { display: block; }
   .hc-model { display: inline-block; position: relative; min-width: 4ch; }
-  .hc-dot { color: var(--color-dot); }
+  .hc-dot { color: transparent; } /* square pixel drawn by Base */
 
   /* Glitch on the model name only (line 2) — « Je suis » stays static on line 1 */
   .hc-model.glitch { animation: hc-glitch-base 3s ease-in-out 1.5s infinite; }

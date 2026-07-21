@@ -53,7 +53,7 @@ URL slugs are shared between languages (same paths, just `/fr/` prefix).
 
 - **Background**: `#0b1120` (deep slate — descendu de `#0f172a` le 2026-07-21, « infusion breach »)
 - **Accent**: `#38bdf8` (sky blue) — l'identité reste cyan
-- **Infusion breach (2026-07-21)** : `--color-deep #020617` (panneaux terminal : topo hero, tooltips, overlay ⌘K), point final des titres en **vert phosphore** (`--color-dot` = `--color-ok`) + curseur `_` clignotant sur les h1 (règle globale dans Base), labels uppercase mono (hero + tuiles signature). Inspiré de `/breach`, validé sur maquette — ne PAS revenir au point cyan ni au fond `#0f172a`.
+- **Infusion breach (2026-07-21)** : `--color-deep #020617` (panneaux terminal : topo hero, tooltips, overlay ⌘K), point final des titres = **pixel CARRÉ vert phosphore** (glyphe `.` transparent, carré dessiné par `::before` dans Base — pixelium : un pixel est carré, pas rond) + curseur `_` clignotant sur les h1, labels uppercase mono (hero + tuiles signature). Sur le hero, carré + curseur **masqués pendant le glitch** des noms de modèles (`.flux`/`.hc-critic`) — ils n'appartiennent qu'à « Claude ». Les glows du hero (cyan/ambre) vivent sur `.hero-zone` avec le même fondu que la grille de points (aucune couche ne se coupe au bord du hero). Validé sur maquette — ne PAS revenir au point cyan/rond ni au fond `#0f172a`.
 - **Font**: `JetBrains Mono` (monospace), `system-ui` (body)
 - **Zero JS framework** — pure CSS only, 0 Tailwind, 0 React
 - **Only JS**: < 50 lines vanilla JS — IntersectionObserver in `Base.astro` (scroll reveal) + Carousel navigation
