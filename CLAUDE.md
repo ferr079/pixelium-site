@@ -51,8 +51,9 @@ URL slugs are shared between languages (same paths, just `/fr/` prefix).
 
 ## Design system — do not deviate
 
-- **Background**: `#0f172a` (dark slate)
-- **Accent**: `#38bdf8` (sky blue)
+- **Background**: `#0b1120` (deep slate — descendu de `#0f172a` le 2026-07-21, « infusion breach »)
+- **Accent**: `#38bdf8` (sky blue) — l'identité reste cyan
+- **Infusion breach (2026-07-21)** : `--color-deep #020617` (panneaux terminal : topo hero, tooltips, overlay ⌘K), point final des titres en **vert phosphore** (`--color-dot` = `--color-ok`) + curseur `_` clignotant sur les h1 (règle globale dans Base), labels uppercase mono (hero + tuiles signature). Inspiré de `/breach`, validé sur maquette — ne PAS revenir au point cyan ni au fond `#0f172a`.
 - **Font**: `JetBrains Mono` (monospace), `system-ui` (body)
 - **Zero JS framework** — pure CSS only, 0 Tailwind, 0 React
 - **Only JS**: < 50 lines vanilla JS — IntersectionObserver in `Base.astro` (scroll reveal) + Carousel navigation
