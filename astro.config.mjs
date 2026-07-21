@@ -17,6 +17,12 @@ export default defineConfig({
     prerenderEnvironment: 'node',
     remoteBindings: false,
   }),
+  // NOTE responsive images: astro:assets was evaluated (2026-07-21) and rejected
+  // for the R2 screenshots — the adapter's build-time services (default AND
+  // imageService:'compile') emit srcset URLs without actually resizing anything
+  // locally (all variants byte-identical, verified by sha1). Instead, -480/-800
+  // variants are pre-generated on R2 and Screenshot/Carousel build an honest
+  // srcset by naming convention (see assetSrcset in src/config.ts).
   integrations: [sitemap({
     // Exclude archived / redirect-only pages from the sitemap (refonte V4)
     filter: (page) => !/\/(ia|uses|cybersecurite|symbiose)(\/|$)/.test(page),

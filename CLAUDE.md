@@ -80,6 +80,8 @@ public/images/
 Images served from **Cloudflare R2 CDN** (`assets.pixelium.win`). `aws` (awscli, brew sur l'hôte terre2) — creds R2 mappés depuis `secrets.env`.
 Convert with: `magick input.png -resize '1200x>' -quality 80 output.webp`
 
+**Variantes responsives (srcset)** : `Screenshot`/`Carousel` construisent un srcset par convention de nommage (`x.webp` → `x-480.webp`, `x-800.webp`, cf `assetSrcset` dans `src/config.ts`). Après ajout/MAJ d'une image dans `public/images/`, régénérer + pousser les variantes : `set -a; source ~/.claude/secrets.env; set +a; ./scripts/gen-image-variants.sh` (idempotent, `cp` ciblés, jamais `sync` ; `--dry-run` pour vérifier). ⚠️ Ne PAS utiliser `astro:assets`/`<Image>` pour ces images : les services build-time de l'adaptateur CF (défaut et `compile`) génèrent un srcset **sans redimensionner** (variantes byte-identiques, vérifié sha1 2026-07-21).
+
 **Mettre à jour UNE image** (recommandé — `cp` ciblé, PAS `sync` du dossier) :
 ```bash
 set -a; source ~/.claude/secrets.env; set +a

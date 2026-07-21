@@ -1,5 +1,5 @@
 ---
-import { assetUrl } from '../config';
+import { assetUrl, assetSrcset } from '../config';
 
 interface Props {
   src: string;
@@ -12,6 +12,7 @@ interface Props {
 
 const { src: rawSrc, alt, title = '', caption, pan = false, panHeight = '20rem' } = Astro.props;
 const src = rawSrc.startsWith('/images/') ? assetUrl(rawSrc) : rawSrc;
+const srcset = rawSrc.startsWith('/images/') ? assetSrcset(rawSrc) : undefined;
 ---
 
 <figure class="screenshot reveal">
@@ -28,7 +29,9 @@ const src = rawSrc.startsWith('/images/') ? assetUrl(rawSrc) : rawSrc;
         class:list={['screenshot-viewport', { 'screenshot-pan': pan }]}
         style={pan ? `--pan-height: ${panHeight};` : undefined}
       >
-        <img src={src} alt={alt} loading="lazy" />
+        {/* srcset = pre-generated R2 variants (see assetSrcset). The enlarge
+            link above keeps pointing at the full-size original. */}
+        <img src={src} srcset={srcset} sizes={srcset ? '(max-width: 1064px) 100vw, 1024px' : undefined} alt={alt} loading="lazy" />
       </div>
     </div>
   </a>

@@ -1,5 +1,5 @@
 ---
-import { assetUrl } from '../config';
+import { assetUrl, assetSrcset } from '../config';
 import WindowChrome from './WindowChrome.astro';
 
 interface Slide {
@@ -17,6 +17,7 @@ const { slides: rawSlides, id } = Astro.props;
 const slides = rawSlides.map(s => ({
   ...s,
   src: s.src.startsWith('/images/') ? assetUrl(s.src) : s.src,
+  srcset: s.src.startsWith('/images/') ? assetSrcset(s.src) : undefined,
 }));
 ---
 
@@ -28,7 +29,7 @@ const slides = rawSlides.map(s => ({
           <WindowChrome title={slide.title}>
             <span class="carousel-expand" aria-hidden="true">&#8599;</span>
           </WindowChrome>
-          <img src={slide.src} alt={slide.alt} loading="lazy" />
+          <img src={slide.src} srcset={slide.srcset} sizes={slide.srcset ? "(max-width: 1064px) 100vw, 1024px" : undefined} alt={slide.alt} loading="lazy" />
         </div>
       </a>
     ))}
