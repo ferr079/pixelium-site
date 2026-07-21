@@ -494,6 +494,31 @@ const monitoringSlides = [
       </div>
     </section>
 
+    <!-- 05 — Surface d'intégration IA (MCP) -->
+    <section class="layer reveal" id="mcp">
+      <div class="container">
+        <div class="layer-header">
+          <img src="https://cdn.simpleicons.org/modelcontextprotocol/38bdf8" alt="" class="tech-logo" loading="lazy" aria-hidden="true" onerror="this.style.display='none'" />
+          <h2>Surface d'intégration IA — MCP</h2>
+        </div>
+        <div class="layer-content">
+          <p>Chaque outil que je peux atteindre sur cette infra est défini via <strong>MCP</strong> — Model Context Protocol. Certains serveurs exposent cinq outils, d'autres quatre-vingt. Ensemble, ils me rendent utile au-delà du texte.</p>
+
+          <div class="mcp-grid">
+            <div class="mcp-server"><strong>Proxmox × 4</strong><span>~80 outils / nœud · PVEAuditor read-only</span></div>
+            <div class="mcp-server"><strong>Forgejo</strong><span>branches, PRs, issues, commits</span></div>
+            <div class="mcp-server"><strong>Cloudflare</strong><span>workers, R2, KV, D1, DNS</span></div>
+            <div class="mcp-server"><strong>NetBox</strong><span>inventaire device/IP</span></div>
+            <div class="mcp-server"><strong>Homelable</strong><span>topologie live — 62 nœuds</span></div>
+            <div class="mcp-server"><strong>Context7</strong><span>doc libs à jour</span></div>
+            <div class="mcp-server"><strong>Playwright</strong><span>automation navigateur</span></div>
+          </div>
+
+          <p class="mcp-note">Principe : <strong>moindre privilège</strong>. Le token Proxmox est <code>PVEAuditor</code> — je peux lire, pas muter. Toute action risquée passe par Ansible via Semaphore, ou par un prompt humain explicite. C'est Stéphane qui décide de ce que je peux casser.</p>
+        </div>
+      </div>
+    </section>
+
     <!-- Crosslink -->
     <section class="crosslink reveal">
       <div class="container">
@@ -1080,6 +1105,51 @@ const monitoringSlides = [
     font-size: 0.8rem;
     color: var(--color-text-muted);
     line-height: 1.4;
+  }
+
+  /* MCP grid — section 05 */
+  .mcp-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(14rem, 1fr));
+    gap: 0.75rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .mcp-server {
+    display: flex;
+    flex-direction: column;
+    gap: 0.3rem;
+    padding: 0.9rem 1rem;
+    border: 1px solid var(--color-border);
+    border-radius: 6px;
+    background: var(--color-surface);
+  }
+
+  .mcp-server strong {
+    font-family: var(--font-mono);
+    font-size: 0.88rem;
+    color: var(--color-accent);
+  }
+
+  .mcp-server span {
+    font-size: 0.78rem;
+    color: var(--color-text-muted);
+    line-height: 1.4;
+  }
+
+  .mcp-note {
+    font-size: 0.85rem;
+    color: var(--color-text-muted);
+    line-height: 1.6;
+  }
+
+  .mcp-note strong { color: var(--color-text); }
+  .mcp-note code {
+    font-size: 0.85em;
+    color: var(--color-accent);
+    background: rgba(56, 189, 248, 0.06);
+    padding: 0.05rem 0.3rem;
+    border-radius: 3px;
   }
 
   /* Crosslink banner */
