@@ -62,14 +62,20 @@ const blogUrl = 'https://blog.pixelium.win';
 </nav>
 
 <script>
-  const toggle = document.querySelector('.nav-toggle');
-  const links = document.querySelector('.nav-links');
-  if (toggle && links) {
-    toggle.addEventListener('click', () => {
-      const open = links.classList.toggle('open');
-      toggle.setAttribute('aria-expanded', String(open));
-    });
+  // Fresh nav elements arrive with every client-side navigation — rebind then.
+  function initNavToggle() {
+    const toggle = document.querySelector('.nav-toggle');
+    const links = document.querySelector('.nav-links');
+    if (toggle && links && !(toggle as HTMLElement).dataset.bound) {
+      (toggle as HTMLElement).dataset.bound = '1';
+      toggle.addEventListener('click', () => {
+        const open = links.classList.toggle('open');
+        toggle.setAttribute('aria-expanded', String(open));
+      });
+    }
   }
+  initNavToggle();
+  document.addEventListener('astro:page-load', initNavToggle);
 </script>
 
 <style>

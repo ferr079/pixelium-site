@@ -198,10 +198,8 @@ const stats = await getBuildStats();
       if (k === 'Enter' || k === ' ') { ev.preventDefault(); openServicePopover(name); }
     });
   }
-  document.getElementById('svc-pop-close')?.addEventListener('click', closeServicePopover);
-  document.getElementById('svc-popover')?.addEventListener('click', (ev) => {
-    if (ev.target === document.getElementById('svc-popover')) closeServicePopover();
-  });
+  // Document-level Escape stays module-scoped (unique); element bindings move
+  // into initStatusPage() — fresh elements arrive on every client-side visit.
   document.addEventListener('keydown', (ev) => { if (ev.key === 'Escape') closeServicePopover(); });
 
   // pve3 is a Wake-on-LAN node that sleeps by design. Its services get their own
@@ -257,7 +255,7 @@ const stats = await getBuildStats();
     section.style.display = 'block';
   }
 
-  (async function loadStatus() {
+  async function loadStatus() {
     try {
       const res = await fetch('/api/status');
       if (!res.ok) return;
@@ -402,12 +400,28 @@ const stats = await getBuildStats();
         nodesContainer.style.display = 'grid';
       }
     } catch (_) { /* keep skeletons */ }
-  })();
+  }
+
+  function initStatusPage() {
+    const grid = document.getElementById('services-grid');
+    if (!grid || grid.dataset.init) return; // guard: module load + initial astro:page-load
+    grid.dataset.init = '1';
+    document.getElementById('svc-pop-close')?.addEventListener('click', closeServicePopover);
+    document.getElementById('svc-popover')?.addEventListener('click', (ev) => {
+      if (ev.target === document.getElementById('svc-popover')) closeServicePopover();
+    });
+    loadStatus();
+  }
+  initStatusPage();
+  document.addEventListener('astro:page-load', initStatusPage);
 </script>
 
 <script>
   // Uptime 30-day timeline
-  (async function loadHistory() {
+  async function loadHistory() {
+    const barsHost = document.getElementById('uptime-bars');
+    if (!barsHost || barsHost.dataset.init) return; // guard: module load + initial astro:page-load
+    barsHost.dataset.init = '1';
     const section = document.querySelector('[data-lang]') as HTMLElement;
     const lang = section?.dataset.lang || 'en';
     const l = lang === 'fr'
@@ -459,7 +473,9 @@ const stats = await getBuildStats();
       document.getElementById('uptime-loading')!.style.display = 'none';
       document.getElementById('uptime-timeline')!.style.display = 'block';
     } catch (_) { /* keep loading state */ }
-  })();
+  }
+  loadHistory();
+  document.addEventListener('astro:page-load', loadHistory);
 </script>
 
 <style>

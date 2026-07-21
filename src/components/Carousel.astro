@@ -43,7 +43,9 @@ const slides = rawSlides.map(s => ({
 </div>
 
 <script>
-  document.querySelectorAll('[data-carousel]').forEach((carousel) => {
+  function initCarousels() {
+  document.querySelectorAll('[data-carousel]:not([data-init])').forEach((carousel) => {
+    (carousel as HTMLElement).dataset.init = '1';
     const track = carousel.querySelector('.carousel-track') as HTMLElement;
     const slides = carousel.querySelectorAll('.carousel-slide');
     const dots = carousel.querySelectorAll('.carousel-dot-nav');
@@ -68,6 +70,9 @@ const slides = rawSlides.map(s => ({
       if (Math.abs(dx) > 50) goTo(current + (dx < 0 ? 1 : -1));
     });
   });
+  }
+  initCarousels();
+  document.addEventListener('astro:page-load', initCarousels);
 </script>
 
 <style>

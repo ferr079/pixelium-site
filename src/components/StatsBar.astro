@@ -36,7 +36,10 @@ const resolved = stats.map((s) => ({
     const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     if (prefersReducedMotion) return;
 
-    const counters = document.querySelectorAll('.stat-number[data-target]');
+    // :not([data-armed]) — guard against double-arming (module load + the
+    // initial astro:page-load both call this on first render).
+    const counters = document.querySelectorAll('.stat-number[data-target]:not([data-armed])');
+    counters.forEach((el) => el.setAttribute('data-armed', '1'));
 
     const observer = new IntersectionObserver(
       (entries) => {
@@ -78,6 +81,8 @@ const resolved = stats.map((s) => ({
   }
 
   animateCounters();
+  // Re-arm on every client-side navigation (fresh DOM, stale observers are GC'd).
+  document.addEventListener('astro:page-load', animateCounters);
 </script>
 
 <style>

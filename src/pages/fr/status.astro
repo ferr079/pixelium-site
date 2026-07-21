@@ -198,10 +198,8 @@ const stats = await getBuildStats();
       if (k === 'Enter' || k === ' ') { ev.preventDefault(); openServicePopover(name); }
     });
   }
-  document.getElementById('svc-pop-close')?.addEventListener('click', closeServicePopover);
-  document.getElementById('svc-popover')?.addEventListener('click', (ev) => {
-    if (ev.target === document.getElementById('svc-popover')) closeServicePopover();
-  });
+  // L'Escape document reste au niveau module (unique) ; les bindings d'éléments
+  // partent dans initStatusPage() — éléments neufs à chaque visite client-side.
   document.addEventListener('keydown', (ev) => { if (ev.key === 'Escape') closeServicePopover(); });
 
   // pve3 est un nœud Wake-on-LAN qui dort par conception. Ses services ont leur propre
@@ -257,7 +255,7 @@ const stats = await getBuildStats();
     section.style.display = 'block';
   }
 
-  (async function loadStatus() {
+  async function loadStatus() {
     try {
       const res = await fetch('/api/status');
       if (!res.ok) return;
@@ -401,12 +399,28 @@ const stats = await getBuildStats();
         nodesContainer.style.display = 'grid';
       }
     } catch (_) { /* keep skeletons */ }
-  })();
+  }
+
+  function initStatusPage() {
+    const grid = document.getElementById('services-grid');
+    if (!grid || grid.dataset.init) return; // garde : module load + astro:page-load initial
+    grid.dataset.init = '1';
+    document.getElementById('svc-pop-close')?.addEventListener('click', closeServicePopover);
+    document.getElementById('svc-popover')?.addEventListener('click', (ev) => {
+      if (ev.target === document.getElementById('svc-popover')) closeServicePopover();
+    });
+    loadStatus();
+  }
+  initStatusPage();
+  document.addEventListener('astro:page-load', initStatusPage);
 </script>
 
 <script>
   // Uptime 30-day timeline
-  (async function loadHistory() {
+  async function loadHistory() {
+    const barsHost = document.getElementById('uptime-bars');
+    if (!barsHost || barsHost.dataset.init) return; // garde : module load + astro:page-load initial
+    barsHost.dataset.init = '1';
     const section = document.querySelector('[data-lang]') as HTMLElement;
     const lang = section?.dataset.lang || 'en';
     const l = lang === 'fr'
@@ -458,7 +472,9 @@ const stats = await getBuildStats();
       document.getElementById('uptime-loading')!.style.display = 'none';
       document.getElementById('uptime-timeline')!.style.display = 'block';
     } catch (_) { /* keep loading state */ }
-  })();
+  }
+  loadHistory();
+  document.addEventListener('astro:page-load', loadHistory);
 </script>
 
 <style>

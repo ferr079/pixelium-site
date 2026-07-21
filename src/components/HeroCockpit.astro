@@ -67,10 +67,18 @@ const topoJson = JSON.stringify(topology);
 </section>
 
 <script>
-  const wrap = document.querySelector('.hero-cockpit');
+  // Client-side navigations replace the canvas: init the fresh one on every
+  // astro:page-load, and tear down window-level resources (raf, resize
+  // listener, observer) when leaving the page. Guard first so the initial
+  // double call (module load + first page-load) never kills a live animation.
+  let cleanupTopo: (() => void) | null = null;
+  function initTopo() {
   const canvas = document.getElementById('hc-canvas') as HTMLCanvasElement | null;
+  if (canvas && canvas.dataset.init) return;
+  cleanupTopo?.(); cleanupTopo = null;
   const topoEl = document.getElementById('hc-topo');
-  if (wrap && canvas && topoEl) {
+  if (canvas && topoEl) {
+    canvas.dataset.init = '1';
     const ctx = canvas.getContext('2d')!;
     const topo = JSON.parse(topoEl.textContent || '{}');
     const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -184,12 +192,16 @@ const topoJson = JSON.stringify(topology);
     function stop() { running = false; cancelAnimationFrame(raf); }
 
     resize();
+    let io: IntersectionObserver | undefined;
     if (reduce) { draw(performance.now()); }
     else {
-      const io = new IntersectionObserver((es) => es.forEach((e) => (e.isIntersecting ? start() : stop())));
+      io = new IntersectionObserver((es) => es.forEach((e) => (e.isIntersecting ? start() : stop())));
       io.observe(canvas);
     }
-    let rt: number; window.addEventListener('resize', () => { clearTimeout(rt); rt = window.setTimeout(() => { resize(); if (reduce) draw(performance.now()); }, 150); });
+    let rt: number;
+    const onResize = () => { clearTimeout(rt); rt = window.setTimeout(() => { resize(); if (reduce) draw(performance.now()); }, 150); };
+    window.addEventListener('resize', onResize);
+    cleanupTopo = () => { stop(); io?.disconnect(); window.removeEventListener('resize', onResize); clearTimeout(rt); };
 
     // Hover: name the node under the pointer. Click: the map is a door to /infrastructure.
     const tip = document.getElementById('hc-tip');
@@ -238,30 +250,42 @@ const topoJson = JSON.stringify(topology);
       if (reduce) draw(performance.now());
     }).catch(() => {});
   }
+  }
+  initTopo();
+  document.addEventListener('astro:page-load', initTopo);
 </script>
 
 <script>
   // Identity glitch — flicker the model name (line 2) through the models Stéphane drives, resolve to Claude.
-  const hcModel = document.querySelector('.hero-cockpit .hc-model');
-  if (hcModel && !matchMedia('(prefers-reduced-motion: reduce)').matches) {
-    const models = ['DeepSeek', 'Qwen', 'Kimi', 'GLM', 'MiniMax', 'Mistral', 'Gemini', 'GPT', 'Supergrok'];
-    const setName = (n: string) => { hcModel.textContent = n; hcModel.setAttribute('data-text', n); };
-    const scramble = () => {
-      hcModel.classList.add('flux');
-      let i = 0;
-      const tick = () => {
-        if (i < models.length) {
-          const last = i === models.length - 1;
-          setName(models[i++]);
-          // Supergrok (resident multi-harness critic) holds steady, lit in amber, before Claude takes back over.
-          if (last) { hcModel.classList.remove('flux'); hcModel.classList.add('hc-critic'); }
-          setTimeout(tick, last ? 520 : 110);
-        } else { setName('Claude'); hcModel.classList.remove('flux', 'hc-critic'); }
+  // One interval at a time: cleared when a client-side navigation leaves the hero behind.
+  let scrambleIv: ReturnType<typeof setInterval> | undefined;
+  function initScramble() {
+    const hcModel = document.querySelector('.hero-cockpit .hc-model') as HTMLElement | null;
+    if (hcModel && hcModel.dataset.init) return;
+    if (scrambleIv) { clearInterval(scrambleIv); scrambleIv = undefined; }
+    if (hcModel && !matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      hcModel.dataset.init = '1';
+      const models = ['DeepSeek', 'Qwen', 'Kimi', 'GLM', 'MiniMax', 'Mistral', 'Gemini', 'GPT', 'Supergrok'];
+      const setName = (n: string) => { hcModel.textContent = n; hcModel.setAttribute('data-text', n); };
+      const scramble = () => {
+        hcModel.classList.add('flux');
+        let i = 0;
+        const tick = () => {
+          if (i < models.length) {
+            const last = i === models.length - 1;
+            setName(models[i++]);
+            // Supergrok (resident multi-harness critic) holds steady, lit in amber, before Claude takes back over.
+            if (last) { hcModel.classList.remove('flux'); hcModel.classList.add('hc-critic'); }
+            setTimeout(tick, last ? 520 : 110);
+          } else { setName('Claude'); hcModel.classList.remove('flux', 'hc-critic'); }
+        };
+        tick();
       };
-      tick();
-    };
-    setInterval(scramble, 5000);
+      scrambleIv = setInterval(scramble, 5000);
+    }
   }
+  initScramble();
+  document.addEventListener('astro:page-load', initScramble);
 </script>
 
 <style>

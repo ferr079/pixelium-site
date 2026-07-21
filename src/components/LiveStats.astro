@@ -63,11 +63,13 @@ const baked = bricks.map((b) => ({
     })(performance.now());
   }
 
-  (async function loadLiveStats() {
+  async function loadLiveStats() {
+    const section = document.querySelector('.live-stats') as HTMLElement | null;
+    if (!section || section.dataset.loaded) return; // guard: module load + initial astro:page-load
+    section.dataset.loaded = '1';
     const bricks = document.querySelectorAll('.brick-value[data-key]');
     const dot = document.getElementById('live-dot');
     const ts = document.getElementById('live-timestamp');
-    const section = document.querySelector('.live-stats');
     if (!bricks.length) return;
 
     const lang = section?.getAttribute('data-lang') || 'en';
@@ -126,7 +128,9 @@ const baked = bricks.map((b) => ({
         ts.textContent = mins < 1 ? labels.just : mins + labels.ago;
       }
     } catch (_) { /* graceful — keep fallbacks */ }
-  })();
+  }
+  loadLiveStats();
+  document.addEventListener('astro:page-load', loadLiveStats);
 </script>
 
 <style>

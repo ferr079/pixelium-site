@@ -78,26 +78,37 @@ const commitUrl = COMMIT_SHA !== 'dev' ? `https://github.com/ferr079/pixelium-si
 <button class="scroll-top" aria-label="Scroll to top" id="scrollTop">&#8593;</button>
 
 <script>
-  const btn = document.getElementById('scrollTop');
-  if (btn) {
-    window.addEventListener('scroll', () => {
-      btn.classList.toggle('visible', window.scrollY > 400);
-    });
-    btn.addEventListener('click', () => {
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-    });
-  }
+  // The footer is replaced on every client-side navigation; keep ONE window
+  // scroll listener at module scope pointing at the current button.
+  let btn: HTMLElement | null = null;
+  window.addEventListener('scroll', () => {
+    btn?.classList.toggle('visible', window.scrollY > 400);
+  });
 
-  // THIS DEPLOYMENT — fill the live edge colo serving this very page
-  const edgeEl = document.querySelector('[data-deploy-edge]');
-  if (edgeEl) {
-    fetch('/api/deployment').then((r) => r.json()).then((d) => {
-      const coloEl = edgeEl.querySelector('.fd-colo');
-      if (coloEl) coloEl.textContent = d.colo || '??';
-      const bits = [d.country && `loc ${d.country}`, d.ray && `ray ${d.ray}`].filter(Boolean);
-      if (bits.length) edgeEl.setAttribute('title', bits.join(' · '));
-    }).catch(() => {});
+  function initFooter() {
+    btn = document.getElementById('scrollTop');
+    if (btn && !btn.dataset.bound) {
+      btn.dataset.bound = '1';
+      btn.classList.toggle('visible', window.scrollY > 400);
+      btn.addEventListener('click', () => {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      });
+    }
+
+    // THIS DEPLOYMENT — fill the live edge colo serving this very page
+    const edgeEl = document.querySelector('[data-deploy-edge]');
+    if (edgeEl && !(edgeEl as HTMLElement).dataset.filled) {
+      (edgeEl as HTMLElement).dataset.filled = '1';
+      fetch('/api/deployment').then((r) => r.json()).then((d) => {
+        const coloEl = edgeEl.querySelector('.fd-colo');
+        if (coloEl) coloEl.textContent = d.colo || '??';
+        const bits = [d.country && `loc ${d.country}`, d.ray && `ray ${d.ray}`].filter(Boolean);
+        if (bits.length) edgeEl.setAttribute('title', bits.join(' · '));
+      }).catch(() => {});
+    }
   }
+  initFooter();
+  document.addEventListener('astro:page-load', initFooter);
 </script>
 
 <style>

@@ -525,10 +525,11 @@ const monitoringSlides = [
 </Base>
 
 <script>
-  (function inception() {
+  function initInception() {
     const overlay = document.getElementById('inception');
     const trigger = document.getElementById('inceptionOpen');
-    if (!overlay || !trigger) return;
+    if (!overlay || !trigger || overlay.dataset.init) return;
+    overlay.dataset.init = '1';
     const open = () => { overlay.classList.add('open'); (overlay.querySelector('.inception-close') as HTMLElement)?.focus(); };
     const close = () => overlay.classList.remove('open');
     trigger.addEventListener('click', open);
@@ -537,7 +538,9 @@ const monitoringSlides = [
       if (t === overlay || t.classList.contains('inception-close')) close();
     });
     document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && overlay.classList.contains('open')) close(); });
-  })();
+  }
+  initInception();
+  document.addEventListener('astro:page-load', initInception);
 </script>
 
 <style>
