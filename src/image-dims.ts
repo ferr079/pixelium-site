@@ -4,7 +4,7 @@
 // space, kill CLS). Regenerate after adding/replacing images: ./scripts/gen-image-variants.sh
 export const IMAGE_DIMS: Record<string, [number, number]> = {
   "/images/homepage-dashboard.webp": [2944, 2049],
-  "/images/htb-dashboard.webp": [1200, 646],
+  "/images/htb-dashboard.webp": [1200, 653],
   "/images/immich-gallery-1.webp": [1920, 2022],
   "/images/immich-gallery-2.webp": [1920, 2022],
   "/images/monitoring/beszel.webp": [1200, 703],
