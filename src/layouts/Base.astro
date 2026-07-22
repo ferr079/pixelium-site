@@ -128,13 +128,6 @@ const cmdkItems = [
     <title>{title}</title>
   </head>
   <body>
-    <div class="sysbar" role="status">
-      <span class="sysbar-dot" aria-hidden="true"></span>
-      <span class="sysbar-role">DevSecOps / SOC</span>
-      <span class="sysbar-sep" aria-hidden="true">·</span>
-      <span class="sysbar-loc">{lang === 'fr' ? 'France + télétravail' : 'France + remote'}</span>
-      <a class="sysbar-cta" href={`${cmdPrefix}/about`}>{lang === 'fr' ? 'me contacter →' : 'get in touch →'}</a>
-    </div>
     {!hideNav && <Nav currentPath={currentPath} />}
     <slot />
     <Footer />
@@ -337,59 +330,11 @@ const cmdkItems = [
     h1 .dot::after, .hc-title .hc-dot::after { animation: none; }
   }
 
-  /* View transitions: the chrome (sysbar, nav, footer) gets its own named
+  /* View transitions: the chrome (nav, footer) gets its own named
      transition group so it reads as stationary while the page content
      cross-fades. ClientRouter disables all animation under reduced motion. */
-  .sysbar { view-transition-name: site-sysbar; }
   .site-nav { view-transition-name: site-nav; }
   .site-footer { view-transition-name: site-footer; }
-
-  /* System status bar — persistent identity bar (refonte V4) */
-  .sysbar {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    padding: 0.3rem 1.1rem;
-    background: var(--color-surface);
-    border-bottom: 1px solid var(--color-border);
-    font-family: var(--font-mono);
-    font-size: 0.72rem;
-    letter-spacing: 0.02em;
-    color: var(--color-text-muted);
-  }
-  .sysbar-dot {
-    flex: none;
-    width: 7px;
-    height: 7px;
-    border-radius: 50%;
-    background: var(--color-ok);
-    box-shadow: 0 0 0 0 rgba(34, 197, 94, 0.55);
-    animation: sysbar-pulse 2.4s ease-out infinite;
-  }
-  .sysbar-status {
-    color: var(--color-ok);
-    font-weight: 600;
-    letter-spacing: 0.08em;
-  }
-  .sysbar-sep { opacity: 0.4; }
-  .sysbar-cta {
-    margin-left: auto;
-    color: var(--color-accent);
-    text-decoration: none;
-    white-space: nowrap;
-  }
-  .sysbar-cta:hover { color: var(--color-accent-hover); }
-  @keyframes sysbar-pulse {
-    0% { box-shadow: 0 0 0 0 rgba(34, 197, 94, 0.55); }
-    70% { box-shadow: 0 0 0 6px rgba(34, 197, 94, 0); }
-    100% { box-shadow: 0 0 0 0 rgba(34, 197, 94, 0); }
-  }
-  @media (prefers-reduced-motion: reduce) {
-    .sysbar-dot { animation: none; }
-  }
-  @media (max-width: 560px) {
-    .sysbar-role, .sysbar-loc, .sysbar-sep { display: none; }
-  }
 
   html {
     font-family: var(--font-sans);
