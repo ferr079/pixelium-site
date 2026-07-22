@@ -43,8 +43,8 @@ const ogImageUrl = ogImage
 // ⌘K command palette destinations (language-aware)
 const cmdPrefix = lang === 'fr' ? '/fr' : '';
 const L = lang === 'fr'
-  ? { home: 'Accueil', projets: 'Projets', securite: 'Sécurité', ctf: 'CTF', infra: 'Infrastructure', status: 'Status', contributions: 'Contributions', claude: 'Stats Claude', pact: 'Le pacte', uses: 'Uses', now: 'Now', about: 'À propos', chat: 'Chat' }
-  : { home: 'Home', projets: 'Projects', securite: 'Security', ctf: 'CTF', infra: 'Infrastructure', status: 'Status', contributions: 'Contributions', claude: 'Claude stats', pact: 'The Pact', uses: 'Uses', now: 'Now', about: 'About', chat: 'Chat' };
+  ? { home: 'Accueil', projets: 'Projets', securite: 'Sécurité', ctf: 'CTF', infra: 'Infrastructure', status: 'Status', contributions: 'Contributions', claude: 'Stats Claude', pact: 'Le pacte', uses: 'Uses', now: 'Now', chat: 'Chat' }
+  : { home: 'Home', projets: 'Projects', securite: 'Security', ctf: 'CTF', infra: 'Infrastructure', status: 'Status', contributions: 'Contributions', claude: 'Claude stats', pact: 'The Pact', uses: 'Uses', now: 'Now', chat: 'Chat' };
 const cmdkItems = [
   { label: L.home, href: `${cmdPrefix}/` },
   { label: L.projets, href: `${cmdPrefix}/projets` },
@@ -56,7 +56,6 @@ const cmdkItems = [
   { label: L.claude, href: `${cmdPrefix}/claude` },
   { label: L.pact, href: `${cmdPrefix}/pact` },
   { label: L.now, href: `${cmdPrefix}/now` },
-  { label: L.about, href: `${cmdPrefix}/about` },
   { label: L.chat, href: `${cmdPrefix}/chat` },
   { label: 'Blog ↗', href: 'https://blog.pixelium.win', ext: true },
   { label: 'GitHub ↗', href: 'https://github.com/ferr079', ext: true },

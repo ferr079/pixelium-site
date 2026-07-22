@@ -477,15 +477,14 @@ import Base from '../layouts/Base.astro';
     writeln();
     writeln('  Falken\'s infrastructure is documented at:', 'green');
     writeln();
-    writeln('  [1]  ABOUT FALKEN       pixelium.win/about', 'amber');
-    writeln('  [2]  INFRASTRUCTURE     pixelium.win/infrastructure', 'amber');
-    writeln('  [3]  SECURITY           pixelium.win/securite', 'amber');
-    writeln('  [4]  PROJECTS           pixelium.win/projets', 'amber');
-    writeln('  [5]  CTF & TROPHIES     pixelium.win/ctf', 'amber');
-    writeln('  [6]  CONTRIBUTIONS      pixelium.win/contributions', 'amber');
-    writeln('  [7]  LIVE STATUS        pixelium.win/status', 'amber');
-    writeln('  [8]  NOW              pixelium.win/now', 'amber');
-    writeln('  [9]  BREACH door game   pixelium.win/breach', 'green');
+    writeln('  [1]  INFRASTRUCTURE     pixelium.win/infrastructure', 'amber');
+    writeln('  [2]  SECURITY           pixelium.win/securite', 'amber');
+    writeln('  [3]  PROJECTS           pixelium.win/projets', 'amber');
+    writeln('  [4]  CTF & TROPHIES     pixelium.win/ctf', 'amber');
+    writeln('  [5]  CONTRIBUTIONS      pixelium.win/contributions', 'amber');
+    writeln('  [6]  LIVE STATUS        pixelium.win/status', 'amber');
+    writeln('  [7]  NOW              pixelium.win/now', 'amber');
+    writeln('  [8]  BREACH door game   pixelium.win/breach', 'green');
     writeln();
     writeln('  Enter number to open, or /menu to return.', 'dim');
     showInput('BOARD> ');
@@ -493,8 +492,8 @@ import Base from '../layouts/Base.astro';
 
   // Board navigation handler
   const boardUrls: Record<string, string> = {
-    '1': '/about', '2': '/infrastructure', '3': '/securite', '4': '/projets',
-    '5': '/ctf', '6': '/contributions', '7': '/status', '8': '/now', '9': '/breach',
+    '1': '/infrastructure', '2': '/securite', '3': '/projets',
+    '4': '/ctf', '5': '/contributions', '6': '/status', '7': '/now', '8': '/breach',
   };
 
   // Send chat message

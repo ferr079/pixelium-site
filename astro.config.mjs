@@ -25,7 +25,7 @@ export default defineConfig({
   // srcset by naming convention (see assetSrcset in src/config.ts).
   integrations: [sitemap({
     // Exclude archived / redirect-only pages from the sitemap (refonte V4)
-    filter: (page) => !/\/(ia|uses|cybersecurite|symbiose)(\/|$)/.test(page),
+    filter: (page) => !/\/(ia|uses|cybersecurite|symbiose|about)(\/|$)/.test(page),
   })],
   // Self-hosted JetBrains Mono via the official Fonts API — automatic preload +
   // optimized fallback metrics (no CLS) + subsetting. Same-origin, no third-party.

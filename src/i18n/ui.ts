@@ -14,7 +14,6 @@ export const ui = {
     'nav.infra': 'Infra',
     'nav.contributions': 'Contributions',
     'nav.status': 'Statut',
-    'nav.about': 'À propos',
 
     // Common
     'common.dot': '.',
@@ -27,7 +26,6 @@ export const ui = {
     'nav.infra': 'Infra',
     'nav.contributions': 'Contributions',
     'nav.status': 'Status',
-    'nav.about': 'About',
 
     // Common
     'common.dot': '.',
