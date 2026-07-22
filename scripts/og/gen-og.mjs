@@ -18,7 +18,7 @@ const fontRegular = readFileSync(join(here, 'fonts', 'JetBrainsMono-Regular.ttf'
 const fontBold = readFileSync(join(here, 'fonts', 'JetBrainsMono-ExtraBold.ttf'));
 const pages = JSON.parse(readFileSync(join(root, 'src', 'data', 'og-pages.json'), 'utf8'));
 
-const BG = '#0f172a';
+const BG = '#0b1120';
 const ACCENT = '#38bdf8';
 const TEXT = '#e2e8f0';
 const MUTED = '#94a3b8';
