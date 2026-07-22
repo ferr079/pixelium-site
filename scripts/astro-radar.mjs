@@ -80,7 +80,9 @@ function scanSurfaces() {
   return [
     { key: 'Markdown remark/rehype/MDX', risky: hasDep(/remark|rehype|@astrojs\/mdx/) },
     { key: '@astrojs/db', risky: hasDep(/@astrojs\/db/) },
-    { key: 'astro:transitions (helpers retirés en v7)', risky: grepSrc(/astro:transitions/) },
+    // Adoptée délibérément le 2026-07-21 (ClientRouter/View Transitions, src/layouts/Base.astro) :
+    // permanente pour ce site → ne doit plus rouvrir une issue à chaque run, seulement rester visible au brief.
+    { key: 'astro:transitions (helpers retirés en v7, adoptée 2026-07-21)', risky: grepSrc(/astro:transitions/), acknowledged: true },
     { key: 'src/fetch.ts (réservé par advanced routing v7)', risky: existsSync(join(root, 'src/fetch.ts')) },
     { key: 'flags experimental dans la config', risky: /experimental\s*:/.test(read('astro.config.mjs')) },
   ];
@@ -100,13 +102,17 @@ for (const name of TRACKED) {
 
 const surfaces = scanSurfaces();
 const risky = surfaces.filter((s) => s.risky);
+// Une surface "acknowledged" reste affichée (transparence) mais n'est plus un motif d'alerte :
+// elle a été adoptée sciemment et restera présente en permanence, sans quoi la clôture de
+// l'issue Tier 2 la rouvrirait au run suivant (boucle infinie sur un état qui ne changera jamais).
+const alertingRisky = risky.filter((s) => !s.acknowledged);
 const upgrades = results.filter((r) => r.gap && r.gap !== 'none');
 const worst = upgrades.reduce((acc, r) => {
   const rank = { patch: 1, minor: 2, major: 3 };
   return Math.max(acc, rank[r.gap] || 0);
 }, 0);
 const debt = worst === 0 ? '🟢 à jour' : worst === 1 ? '🟢 patch dispo' : worst === 2 ? '🟡 minor dispo' : '🔴 major dispo';
-const shouldAlert = upgrades.length > 0 || risky.length > 0;
+const shouldAlert = upgrades.length > 0 || alertingRisky.length > 0;
 
 // --- brief markdown (toujours construit) ---
 const lines = [];
@@ -121,16 +127,19 @@ for (const r of results) {
 }
 lines.push('');
 lines.push('**Surfaces breaking** (leur absence garde les majors indolores) :');
-for (const s of surfaces) lines.push(`- ${s.risky ? '⚠️ PRÉSENTE' : '✅ absente'} — ${s.key}`);
+for (const s of surfaces) {
+  const flag = !s.risky ? '✅ absente' : s.acknowledged ? '🔶 PRÉSENTE (acceptée)' : '⚠️ PRÉSENTE';
+  lines.push(`- ${flag} — ${s.key}`);
+}
 lines.push('');
 if (!shouldAlert) {
-  lines.push('> Rien à faire : tout est à jour et aucune surface à risque. La dette reste à zéro.');
+  lines.push('> Rien à faire : tout est à jour et aucune surface à risque non acceptée. La dette reste à zéro.');
 } else {
   lines.push('**Recommandation :**');
   if (upgrades.some((u) => u.gap === 'patch')) lines.push('- Patchs dispo → `npm update` (bugfix/sécurité, risque ~nul).');
   if (upgrades.some((u) => u.gap === 'minor')) lines.push('- Minor dispo → lire le changelog, bumper le plancher, build + smoke.');
   if (upgrades.some((u) => u.gap === 'major')) lines.push('- **Major dispo** → vérifier la compat de l\'adaptateur Cloudflare en premier (dépendance qui commande), worktree isolé, build + Playwright avant deploy.');
-  if (risky.length) lines.push(`- ⚠️ ${risky.length} surface(s) breaking désormais présente(s) → un futur major demandera plus de soin.`);
+  if (alertingRisky.length) lines.push(`- ⚠️ ${alertingRisky.length} surface(s) breaking désormais présente(s) → un futur major demandera plus de soin.`);
 }
 const brief = lines.join('\n');
 
