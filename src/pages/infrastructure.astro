@@ -595,6 +595,7 @@ const monitoringSlides = [
   .ic-dollar { color: var(--color-accent); }
   .ic-blink { animation: ic-blink 1.1s steps(1) infinite; color: var(--color-accent); }
   @keyframes ic-blink { 50% { opacity: 0; } }
+  @media (prefers-reduced-motion: reduce) { .ic-blink { animation: none; } }
 
   .inception {
     position: fixed; inset: 0; z-index: 110; display: none;
@@ -603,7 +604,7 @@ const monitoringSlides = [
   }
   .inception.open { display: flex; }
   .inception-win {
-    width: min(92vw, 40rem); background: #0b1120;
+    width: min(92vw, 40rem); background: var(--color-bg);
     border: 1px solid var(--color-border); border-radius: 10px; overflow: hidden;
     box-shadow: 0 24px 70px rgba(0, 0, 0, 0.6);
   }
