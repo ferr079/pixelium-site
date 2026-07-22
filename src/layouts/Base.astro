@@ -184,6 +184,7 @@ const cmdkItems = [
   let input: HTMLInputElement | null = null;
   let items: HTMLAnchorElement[] = [];
   let active = -1;
+  let lastFocused: HTMLElement | null = null;
   const isOpen = () => !!overlay && overlay.classList.contains('open');
   const visible = () => items.filter((i) => !i.hidden);
   function filter() {
@@ -202,8 +203,8 @@ const cmdkItems = [
     v[active].classList.add('active');
     v[active].scrollIntoView({ block: 'nearest' });
   }
-  const open = () => { if (!overlay || !input) return; overlay.classList.add('open'); input.value = ''; filter(); input.focus(); };
-  const close = () => { overlay?.classList.remove('open'); active = -1; };
+  const open = () => { if (!overlay || !input) return; lastFocused = document.activeElement as HTMLElement | null; overlay.classList.add('open'); input.value = ''; filter(); input.focus(); };
+  const close = () => { overlay?.classList.remove('open'); active = -1; lastFocused?.focus?.(); lastFocused = null; };
   document.addEventListener('keydown', (e) => {
     if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === 'k') { e.preventDefault(); isOpen() ? close() : open(); return; }
     if (!isOpen()) return;
