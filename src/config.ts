@@ -1,4 +1,4 @@
-import { IMAGE_WIDTHS } from './image-dims';
+import { IMAGE_DIMS } from './image-dims';
 
 /** Base URL for image assets hosted on Cloudflare R2 */
 export const ASSETS_BASE = 'https://assets.pixelium.win';
@@ -20,6 +20,15 @@ export function assetSrcset(path: string): string | undefined {
   // Real width of the original, from the generated map (widths vary 1200..2944px);
   // fall back to 1200 for an image added before the map was regenerated. The
   // -480/-800 variants are honest downscales — every original is ≥1200px wide.
-  const originalWidth = IMAGE_WIDTHS[path] ?? 1200;
+  const originalWidth = IMAGE_DIMS[path]?.[0] ?? 1200;
   return `${base}-480.webp 480w, ${base}-800.webp 800w, ${base}.webp ${originalWidth}w`;
+}
+
+/**
+ * Intrinsic [width, height] of a local /images asset, from the generated map.
+ * Set as width/height on <img> so the browser reserves space before load (no CLS).
+ * Returns undefined for unmapped or non-local paths (no attributes emitted).
+ */
+export function assetDims(path: string): [number, number] | undefined {
+  return IMAGE_DIMS[path];
 }
