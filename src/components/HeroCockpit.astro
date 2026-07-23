@@ -4,13 +4,25 @@
 // no-JS → text + numbers stay; reduced-motion → static frame; /api/status down → last-known.
 import fs from 'node:fs';
 import DynNum from './DynNum.astro';
-import { statValue } from '../lib/build-stats';
+import { statValue, getBuildStats } from '../lib/build-stats';
 const topology = JSON.parse(fs.readFileSync('public/data/topology.json', 'utf-8'));
 
 // Proof-of-life line under the CTAs — baked at build like every DynNum, no client fetch.
 const commits30d = await statValue('forgejo_commits_30d', '1257');
 const sessions = await statValue('claude_sessions', '273');
 const htbRank = await statValue('htb_rank', 'Pro Hacker');
+
+// Adaptive counter, baked at the state the KV had at build time: full fleet when
+// everything answers, core + on-demand split while pve3 (WOL) sleeps — the daily
+// 05:00 UTC rebuild catches it asleep, and "50/61 up" next to a live badge read
+// as an outage. The client fetch below re-derives the same shapes from live data.
+const stats = await getBuildStats();
+const svcUp = Number(stats.services_up ?? 0);
+const svcTotal = Number(stats.services_total ?? 0);
+const coreUp = Number(stats.services_up_core ?? svcUp);
+const coreTotal = Number(stats.services_total_core ?? svcTotal);
+const allUp = svcUp >= svcTotal;
+const odCount = Math.max(0, svcTotal - coreTotal);
 
 interface Props {
   lang?: 'en' | 'fr';
@@ -55,11 +67,13 @@ const topoJson = JSON.stringify(topology);
       <canvas id="hc-canvas" class="hc-canvas" aria-hidden="true" data-infra={`${p}/infrastructure`}></canvas>
       <div id="hc-tip" class="hc-tip" hidden></div>
       <div class="hc-stats">
-        <span class="hc-stat"><span class="hc-num"><DynNum stat="services_up" fallback="44" />/<DynNum stat="services_total" fallback="46" /></span> <span class="hc-lbl">{t.up}</span></span>
+        <span class="hc-stat"><span class="hc-num" id="hc-svc">{allUp ? `${svcUp}/${svcTotal}` : `${coreUp}/${coreTotal}`}</span> <span class="hc-lbl" id="hc-svc-lbl" data-up={t.up}>{allUp ? t.up : 'core'}</span></span>
+        <span class="hc-sep" id="hc-od-sep" aria-hidden="true" hidden={allUp}>·</span>
+        <span class="hc-stat" id="hc-od" hidden={allUp}><span class="hc-num" id="hc-od-num">{odCount}</span> <span class="hc-lbl">on-demand</span></span>
         <span class="hc-sep" aria-hidden="true">·</span>
         <span class="hc-stat"><span class="hc-num" id="hc-uptime">100%</span> <span class="hc-lbl">{t.uptime}</span></span>
         <span class="hc-sep" aria-hidden="true">·</span>
-        <span class="hc-stat"><span class="hc-num">4</span> <span class="hc-lbl">{t.nodes}</span></span>
+        <span class="hc-stat"><span class="hc-num"><DynNum stat="proxmox_nodes" fallback="4" /></span> <span class="hc-lbl">{t.nodes}</span></span>
       </div>
     </div>
   </div>
@@ -67,6 +81,8 @@ const topoJson = JSON.stringify(topology);
 </section>
 
 <script>
+  import { PVE3_SET } from '../lib/pve3-services';
+
   // Client-side navigations replace the canvas: init the fresh one on every
   // astro:page-load, and tear down window-level resources (raf, resize
   // listener, observer) when leaving the page. Guard first so the initial
@@ -85,18 +101,26 @@ const topoJson = JSON.stringify(topology);
     const COLORS: Record<string, string> = {
       isp: '#e2e8f0', switch: '#94a3b8', proxmox: '#f59e0b', lxc: '#38bdf8',
       vm: '#a78bfa', nas: '#4ade80', computer: '#7dd3fc', down: '#ef4444',
+      standby: '#eab308', // pve3 asleep (WOL) — same yellow as the stale badge, not an alert red
     };
     const norm = (s: string) => (s || '').toLowerCase().replace(/[^a-z0-9]/g, '');
 
-    type N = { label: string; type: string; x: number; y: number; bx: number; by: number; r: number; down: boolean };
+    type N = { label: string; type: string; x: number; y: number; bx: number; by: number; r: number; down: boolean; standby: boolean };
     let nodes: N[] = [], edges: number[][] = [], packets: { e: number[]; t: number; speed: number }[] = [];
     let W = 0, H = 0, dpr = 1, running = false, raf = 0, t0 = 0;
+
+    // Live state from /api/status — kept outside build() so a resize (which
+    // rebuilds every node) can't wash the fetched tints away.
+    let downSet = new Set<string>(), standbySet = new Set<string>();
+    function applyState() {
+      for (const n of nodes) { const k = norm(n.label); n.down = downSet.has(k); n.standby = standbySet.has(k); }
+    }
 
     function build() {
       nodes = []; edges = []; packets = [];
       const idx: Record<string, number> = {};
       const add = (label: string, type: string, x: number, y: number, r: number) => {
-        nodes.push({ label, type, x, y, bx: x, by: y, r, down: false }); idx[label] = nodes.length - 1; return nodes.length - 1;
+        nodes.push({ label, type, x, y, bx: x, by: y, r, down: false, standby: false }); idx[label] = nodes.length - 1; return nodes.length - 1;
       };
       const iIsp = add(topo.roots?.[0]?.label || 'ISP', 'isp', W * 0.5, H * 0.08, 4);
       const iSw = add(topo.switch?.label || 'switch', 'switch', W * 0.5, H * 0.22, 3.4);
@@ -128,6 +152,7 @@ const topoJson = JSON.stringify(topology);
         edges.push([iSw, ip]);
       });
       for (let i = 0; i < edges.length; i += 3) packets.push({ e: edges[i], t: Math.random(), speed: 0.0016 + Math.random() * 0.0022 });
+      applyState();
     }
 
     function resize() {
@@ -165,15 +190,17 @@ const topoJson = JSON.stringify(topology);
       }
       for (const n of nodes) {
         if (!reduce) { n.x = n.bx + Math.sin(time * 0.8 + n.by * 0.05) * 1.2; n.y = n.by + Math.cos(time * 0.7 + n.bx * 0.05) * 1.0; }
-        const col = n.down ? COLORS.down : (COLORS[n.type] || '#38bdf8');
+        const col = n.down ? COLORS.down : n.standby ? COLORS.standby : (COLORS[n.type] || '#38bdf8');
         const hub = n.type === 'proxmox' || n.type === 'isp';
         ctx.fillStyle = col;
         ctx.globalAlpha = n.type === 'lxc' ? 0.8 : 1;
+        // Glow stays an alert (hubs + real down) — a sleeping pve3 service only
+        // gets the quiet ring below: standby is a state, not an incident.
         if (hub || n.down) { ctx.shadowColor = col; ctx.shadowBlur = 9; }
         ctx.beginPath(); ctx.arc(n.x, n.y, n.r, 0, 7); ctx.fill();
         ctx.shadowBlur = 0;
         ctx.globalAlpha = 1;
-        if (hub || n.down) {
+        if (hub || n.down || n.standby) {
           ctx.strokeStyle = col;
           ctx.globalAlpha = 0.22; ctx.beginPath(); ctx.arc(n.x, n.y, n.r + 3, 0, 7); ctx.stroke(); ctx.globalAlpha = 1;
         }
@@ -219,7 +246,7 @@ const topoJson = JSON.stringify(topology);
       const r = canvas.getBoundingClientRect();
       const n = nodeAt(ev.clientX - r.left, ev.clientY - r.top);
       if (n) {
-        tip.textContent = `${n.label} · ${TYPE_LABEL[n.type] || n.type}${n.down ? ' · down' : ''}`;
+        tip.textContent = `${n.label} · ${TYPE_LABEL[n.type] || n.type}${n.down ? ' · down' : n.standby ? ' · on-demand' : ''}`;
         tip.style.left = canvas.offsetLeft + Math.min(n.x + 10, W - 10) + 'px';
         tip.style.top = canvas.offsetTop + n.y - 8 + 'px';
         tip.hidden = false;
@@ -228,22 +255,33 @@ const topoJson = JSON.stringify(topology);
     canvas.addEventListener('mouseleave', () => { if (tip) tip.hidden = true; });
     canvas.addEventListener('click', () => { location.href = canvas.dataset.infra || '/infrastructure'; });
 
-    // Real state → colour the down services, flip the live badge if the homelab is unreachable
+    // Real state → tint the map (red = real down, yellow = pve3 asleep, by design),
+    // re-derive the counter, flip the live badge if the homelab is unreachable.
     fetch('/api/status').then((r) => (r.ok ? r.json() : null)).then((d) => {
       if (!d) return;
-      if (Array.isArray(d.services)) {
-        const down = new Set(d.services.filter((s: any) => s.status && s.status !== 'up').map((s: any) => norm(s.name)));
-        for (const n of nodes) if (down.has(norm(n.label))) n.down = true;
-        // Uptime headline = core fleet only. pve3 services are Wake-on-LAN (on-demand):
-        // an intentionally-sleeping node must not drag the number below 100%. Mirrors
-        // PVE3_SERVICES in status.astro / api/history/record.ts — keep all three in sync.
-        const PVE3 = new Set(['PBS', 'netboot.xyz', 'Kiwix', 'IT-Tools', 'Transmute', 'CyberChef', 'Stirling-PDF', 'draw.io', 'Excalidraw', 'Forworld', 'web-check', 'share3 (Samba)']);
-        const core = d.services.filter((s: any) => !PVE3.has(s.name));
+      if (Array.isArray(d.services) && d.services.length) {
+        const notUp = d.services.filter((s: any) => s.status && s.status !== 'up');
+        downSet = new Set(notUp.filter((s: any) => !PVE3_SET.has(s.name)).map((s: any) => norm(s.name)));
+        standbySet = new Set(notUp.filter((s: any) => PVE3_SET.has(s.name)).map((s: any) => norm(s.name)));
+        applyState();
+        // Uptime headline = core fleet only: an intentionally-sleeping node must
+        // not drag the number below 100%.
+        const core = d.services.filter((s: any) => !PVE3_SET.has(s.name));
+        const coreUp = core.filter((s: any) => s.status === 'up').length;
         const upEl = document.getElementById('hc-uptime');
-        if (upEl && core.length) {
-          const upN = core.filter((s: any) => s.status === 'up').length;
-          upEl.textContent = (Math.round((upN / core.length) * 1000) / 10) + '%';
-        }
+        if (upEl && core.length) upEl.textContent = (Math.round((coreUp / core.length) * 1000) / 10) + '%';
+        // Counter: the baked value lags reality (the 05:00 UTC rebuild bakes pve3
+        // asleep) — re-derive the build-time shapes from live data: full fleet when
+        // everything answers, core + on-demand split while pve3 sleeps.
+        const upAll = d.services.length - notUp.length;
+        const allUp = upAll >= d.services.length;
+        const svcEl = document.getElementById('hc-svc'), svcLbl = document.getElementById('hc-svc-lbl');
+        const odSep = document.getElementById('hc-od-sep'), od = document.getElementById('hc-od'), odNum = document.getElementById('hc-od-num');
+        if (svcEl) svcEl.textContent = allUp ? `${upAll}/${d.services.length}` : `${coreUp}/${core.length}`;
+        if (svcLbl) svcLbl.textContent = allUp ? (svcLbl.dataset.up || 'up') : 'core';
+        if (odSep) odSep.hidden = allUp;
+        if (od) od.hidden = allUp;
+        if (odNum) odNum.textContent = String(d.services.length - core.length);
       }
       const live = document.getElementById('hc-live'), label = document.getElementById('hc-live-label');
       if (live && label && d.homelab_status && d.homelab_status !== 'online') { live.classList.add('hc-live--stale'); label.textContent = label.textContent === 'live' ? 'last known' : 'dernier état'; }

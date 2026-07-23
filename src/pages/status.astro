@@ -139,6 +139,8 @@ const stats = await getBuildStats();
 </Base>
 
 <script>
+  import { PVE3_SERVICES, PVE3_SET } from '../lib/pve3-services';
+
   // Category display order and labels — data is trusted (from our own KV, pushed by Dagu)
   const categoryLabels: Record<string, string> = {
     infra: 'INFRASTRUCTURE',
@@ -204,12 +206,8 @@ const stats = await getBuildStats();
 
   // pve3 is a Wake-on-LAN node that sleeps by design. Its services get their own
   // section, with state derived from the node: awake → real monitored state, asleep →
-  // on-demand (sky), never red while sleeping. All pve3 services are now in the kv-push
-  // monitoring payload, so their awake state is real; this list keeps them out of the
-  // core uptime (PVE3_SET below).
-  const PVE3_SERVICES = ['PBS', 'netboot.xyz', 'Kiwix', 'IT-Tools', 'Transmute', 'CyberChef', 'Stirling-PDF', 'draw.io', 'Excalidraw', 'Forworld', 'web-check', 'share3 (Samba)'];
-  const PVE3_SET = new Set(PVE3_SERVICES);
-
+  // on-demand (sky), never red while sleeping. The shared PVE3 list (lib/pve3-services)
+  // keeps them out of the core uptime.
   function renderOnDemand(data: any) {
     const section = document.getElementById('ondemand-section');
     const grid = document.getElementById('ondemand-grid');

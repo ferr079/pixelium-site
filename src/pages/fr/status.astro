@@ -139,6 +139,8 @@ const stats = await getBuildStats();
 </Base>
 
 <script>
+  import { PVE3_SERVICES, PVE3_SET } from '../../lib/pve3-services';
+
   // Category display order and labels — data is trusted (from our own KV, pushed by Dagu)
   const categoryLabels: Record<string, string> = {
     infra: 'INFRASTRUCTURE',
@@ -204,12 +206,8 @@ const stats = await getBuildStats();
 
   // pve3 est un nœud Wake-on-LAN qui dort par conception. Ses services ont leur propre
   // section, avec un état dérivé du nœud : réveillé → état réel monitoré, en veille →
-  // on-demand (ciel), jamais rouge en veille. Tous les services pve3 sont désormais dans
-  // le payload de monitoring (kv-push), donc leur état réveillé est réel ; cette liste les
-  // exclut aussi de l'uptime core (PVE3_SET ci-dessous).
-  const PVE3_SERVICES = ['PBS', 'netboot.xyz', 'Kiwix', 'IT-Tools', 'Transmute', 'CyberChef', 'Stirling-PDF', 'draw.io', 'Excalidraw', 'Forworld', 'web-check', 'share3 (Samba)'];
-  const PVE3_SET = new Set(PVE3_SERVICES);
-
+  // on-demand (ciel), jamais rouge en veille. La liste partagée PVE3 (lib/pve3-services)
+  // les exclut aussi de l'uptime core.
   function renderOnDemand(data: any) {
     const section = document.getElementById('ondemand-section');
     const grid = document.getElementById('ondemand-grid');
