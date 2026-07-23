@@ -132,7 +132,7 @@ git push origin main   # origin = Forgejo (org pixelium) ; push-mirror → GitHu
 
 | Platform | Username | Current stats |
 |---|---|---|
-| Hack The Box | Ferr079 | Pro Hacker rank, #735, 43 system + 46 user owns, 89 flags (fallback ctf.astro aligné sur le KV `/api/stats` — cf [[reference_ctf_htb_stats_freshness]], garder ce fallback à jour à la main). Lvl 58 « Professional » · Season 11 Platinum tier #658 · streak 10 sem. (screenshot `htb-dashboard.webp` MAJ 2026-07-23 = Pro Hacker/Lvl 58/Platinum #658/10-week ; `?v=20260723`). ⚠️ `/profile/activity` **supprimé par HTB 2026** (HTTP 400) → `flags = user_owns + system_owns`, ne PAS ré-ajouter d'appel activity. NB : `ranking` = rang **global** HTB (≠ `#658` = rang de saison du screenshot) |
+| Hack The Box | Ferr079 | Pro Hacker rank, #698, 44 system + 47 user owns, 91 flags (fallback ctf.astro + build-stats.ts + chat.ts + about.astro `DynNum` aligné sur le KV `/api/stats` — cf [[reference_ctf_htb_stats_freshness]], garder ce fallback à jour à la main). Lvl 58 « Professional » · Season 11 Platinum tier #658 · streak 10 sem. (screenshot `htb-dashboard.webp` MAJ 2026-07-23 = Pro Hacker/Lvl 58/Platinum #658/10-week ; `?v=20260723b`). ⚠️ `/profile/activity` **supprimé par HTB 2026** (HTTP 400) → `flags = user_owns + system_owns`, ne PAS ré-ajouter d'appel activity. NB : `ranking` = rang **global** HTB (≠ `#658` = rang de saison du screenshot) |
 | TryHackMe | ferr0 | Top 15%, 35 rooms, 7 badges |
 | Root-Me | Ferr0 | 1005 pts, 73 challenges (fallback ctf.astro ; live au build, même repli intermittent que HTB) |
 | GitHub | ferr079 | github.com/ferr079 |
