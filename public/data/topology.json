@@ -1,7 +1,7 @@
 {
   "roots": [
     {
-      "label": "Freebox Delta",
+      "label": "Router",
       "nodeType": "isp"
     }
   ],
@@ -429,7 +429,7 @@
     "ipAddress": "192.168.1.99"
   },
   "switch_uplink": {
-    "label": "Freebox Delta",
+    "label": "Router",
     "linkLabel": "10G SFP+",
     "linkType": "fibre"
   },

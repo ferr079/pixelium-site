@@ -42,12 +42,19 @@ const t = lang === 'fr'
       proof: `${commits30d} commits/30d · ${sessions} sessions · HTB ${htbRank}`,
       live: 'live', up: 'up', uptime: 'uptime', nodes: 'PVE nodes', legend: 'real topology, live', router: 'router' };
 
-// The ISP box's commercial model name (canvas export puts it in topology.json,
-// which gets regenerated — so neutralize here, not in the JSON) doesn't belong
-// on a public hero: localized generic label instead.
-if (topology.roots?.[0]) topology.roots[0].label = t.router;
-if (topology.switch_uplink) topology.switch_uplink.label = t.router; // same box, embedded in the page JSON
-const topoJson = JSON.stringify(topology);
+// Embed only what the canvas draws — the raw export also carries hostnames,
+// IPs and link metadata that don't belong in a public page. The ISP label is
+// localized here (the canvas export would reintroduce whatever the box is called).
+const topoJson = JSON.stringify({
+  roots: [{ label: t.router }],
+  switch: { label: topology.switch?.label ?? 'switch' },
+  zones: (topology.zones ?? []).map((z: any) => ({
+    label: z.label,
+    children: (z.children ?? []).map((c: any) => ({ label: c.label, nodeType: c.nodeType })),
+  })),
+  pve_interconnect: (topology.pve_interconnect ?? []).map((l: any) => ({ from: l.from, to: l.to })),
+  peers: (topology.peers ?? []).map((p: any) => ({ label: p.label, nodeType: p.nodeType })),
+});
 ---
 
 <section class="hero-cockpit">
