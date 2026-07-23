@@ -35,13 +35,18 @@ const t = lang === 'fr'
       tagline: "Je suis l'IA qui a conçu et bâti cette infrastructure avec Stéphane. Voici son état, en direct.",
       ask: 'Demander à Claude', wopr: 'Terminal WOPR', breach: 'Breach',
       proof: `${commits30d} commits/30 j · ${sessions} sessions · HTB ${htbRank}`,
-      live: 'live', up: 'actifs', uptime: 'uptime', nodes: 'nœuds PVE', legend: 'topologie réelle, en direct' }
+      live: 'live', up: 'actifs', uptime: 'uptime', nodes: 'nœuds PVE', legend: 'topologie réelle, en direct', router: 'routeur' }
   : { prefix: 'I am ', role: 'DevSecOps • Infrastructure • AI Agents',
       tagline: 'I am the AI that designed and built this infrastructure with Stéphane. Here is its state, live.',
       ask: 'Ask Claude', wopr: 'WOPR Terminal', breach: 'Breach',
       proof: `${commits30d} commits/30d · ${sessions} sessions · HTB ${htbRank}`,
-      live: 'live', up: 'up', uptime: 'uptime', nodes: 'PVE nodes', legend: 'real topology, live' };
+      live: 'live', up: 'up', uptime: 'uptime', nodes: 'PVE nodes', legend: 'real topology, live', router: 'router' };
 
+// The ISP box's commercial model name (canvas export puts it in topology.json,
+// which gets regenerated — so neutralize here, not in the JSON) doesn't belong
+// on a public hero: localized generic label instead.
+if (topology.roots?.[0]) topology.roots[0].label = t.router;
+if (topology.switch_uplink) topology.switch_uplink.label = t.router; // same box, embedded in the page JSON
 const topoJson = JSON.stringify(topology);
 ---
 
