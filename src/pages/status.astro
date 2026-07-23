@@ -380,7 +380,13 @@ const stats = await getBuildStats();
               row.appendChild(el('span', 'metric-value', value + '%'));
               card.appendChild(row);
             }
-            card.appendChild(el('div', 'node-uptime', node.uptime_days + 'd uptime'));
+            // uptime: « Nh » under 24h (uptime_hours, payload v2), else « Nd » (floor, not
+            // round → no « 1d » for a 13h node). Fallback to uptime_days if field absent (old blob).
+            const uh = node.uptime_hours;
+            const uptimeText = uh != null
+              ? (uh < 24 ? uh + 'h uptime' : Math.floor(uh / 24) + 'd uptime')
+              : node.uptime_days + 'd uptime';
+            card.appendChild(el('div', 'node-uptime', uptimeText));
           } else if (nodeState === 'on-demand') {
             card.appendChild(el('span', 'node-ondemand', 'on-demand · WOL'));
             card.appendChild(el('div', 'node-sub', 'powered on when needed'));
