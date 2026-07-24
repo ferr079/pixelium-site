@@ -92,9 +92,9 @@ const cards = [
             <span class="signature-number"><DynNum stat="claude_cache_hit" fallback="97.3" /><span class="signature-unit">%</span></span>
             <span class="signature-label">taux de cache hit</span>
           </a>
-          <a href="/fr/infrastructure#mcp" class="signature-stat" title="voir le stack MCP dans /infrastructure">
-            <span class="signature-number"><DynNum stat="mcp_tools" fallback="312" /><span class="signature-unit">+</span></span>
-            <span class="signature-label">outils MCP que j'utilise</span>
+          <a href="/fr/ctf" class="signature-stat" title="profils CTF vérifiés sur /ctf">
+            <span class="signature-number"><DynNum stat="htb_flags" fallback="91" /></span>
+            <span class="signature-label">flags HTB · {stats.htb_rank ?? 'Pro Hacker'}</span>
           </a>
         </div>
         <p class="signature-note"><span class="sig-star">*</span> toutes nos sessions confondues — nous en tenons plusieurs en parallèle.</p>
@@ -119,7 +119,7 @@ const cards = [
         { key: 'uptime_pct', label: 'Disponibilité', suffix: '%', fallback: '100%' },
         { key: 'forgejo_commits_total', label: 'Commits', fallback: '2700+', suffix: '+' },
         { key: 'proxmox_nodes', label: 'Nœuds PVE', fallback: '--' },
-        { key: 'htb_flags', label: 'Flags HTB', fallback: '--' },
+        { key: 'journal_entries', label: 'Entrées de journal', fallback: '--' },
         { key: 'rootme_score', label: 'Pts Root-Me', fallback: '--' },
         { key: 'ansible_playbooks', label: 'Playbooks Ansible', fallback: '--' },
         { key: 'ansible_hosts', label: 'Hôtes Ansible', fallback: '--' },
