@@ -1,4 +1,4 @@
-// F-007 (#97) — security headers sur les réponses rendues par le Worker.
+// F-007 (infra/homelab-infra#97) — security headers sur les réponses rendues par le Worker.
 // Les pages statiques sont couvertes par public/_headers (Workers Assets),
 // mais les routes on-demand (/api/*) sortaient sans aucun header de sécurité.
 import { defineMiddleware } from 'astro:middleware';

@@ -58,7 +58,7 @@ jobs:
         # (./dist, sans main) et publierait les assets sans le Worker SSR.
       - run: npx wrangler deploy -c dist/server/wrangler.json
         env:
-          # F-003 #97 (fait 2026-06-07) : token scopé `pixelium-site-ci` —
+          # F-003 (infra/homelab-infra#97, fait 2026-06-07) : token scopé `pixelium-site-ci` —
           # Workers Scripts/KV/D1 Write + Workers AI Read + Account Settings Read
           # + User Details/Memberships Read. Validé en dry-run avant bascule.
           # Rollback : remettre CLOUDFLARE_API_KEY + CLOUDFLARE_EMAIL (secrets conservés).

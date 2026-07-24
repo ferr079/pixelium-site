@@ -9,7 +9,7 @@ import { env } from 'cloudflare:workers';
 const RATE_LIMIT = { perHour: 30 };
 
 async function checkRateLimit(ip: string): Promise<{ allowed: boolean; retryAfter?: number }> {
-  // Fenêtre minute — limiteur atomique natif (fix F-001 : plus de race read-modify-write
+  // Fenêtre minute — limiteur atomique natif (fix F-001, infra/homelab-infra#97 : plus de race read-modify-write
   // sur KV, donc une rafale parallèle ne peut plus dépasser le plafond).
   const minute = await (env as any).CHAT_RL.limit({ key: `chat:${ip}` });
   if (!minute.success) return { allowed: false, retryAfter: 60 };
