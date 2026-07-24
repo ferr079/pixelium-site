@@ -9,15 +9,58 @@ on:
   workflow_dispatch: {}
   push:
     branches: [main]
+    # Tous les fichiers réellement lus par CHECKS dans audit-freshness.mjs
+    # (paths élargi — audit CI Grok pixelium/web#19, P2 : la liste précédente
+    # ne couvrait que 4 des 8 fichiers pinés, un push sur index.astro/
+    # infrastructure.astro/og-pages.json ne déclenchait le guard qu'au cron
+    # quotidien suivant, pas immédiatement).
     paths:
       - 'src/pages/api/chat.ts'
       - 'src/pages/securite.astro'
       - 'src/pages/fr/securite.astro'
+      - 'src/pages/index.astro'
+      - 'src/pages/fr/index.astro'
+      - 'src/pages/infrastructure.astro'
+      - 'src/pages/fr/infrastructure.astro'
+      - 'src/data/og-pages.json'
       - 'scripts/audit-freshness.mjs'
 
 jobs:
   freshness:
     runs-on: ubuntu-latest
+    timeout-minutes: 10
     steps:
       - uses: actions/checkout@v5
-      - run: node scripts/audit-freshness.mjs
+
+      - name: Run freshness check
+        run: |
+          set -o pipefail
+          node scripts/audit-freshness.mjs 2>&1 | tee freshness-output.txt
+
+      - name: Write step summary
+        if: always()
+        run: |
+          {
+            echo '### Freshness guard'
+            echo
+            echo '```'
+            cat freshness-output.txt
+            echo '```'
+          } >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Notify Telegram on real drift
+        # Uniquement sur DRIFT réel (le site affiche un chiffre faux en public) —
+        # pas sur un check cassé/périmé (regex/fichier/clé KV absent), qui a
+        # besoin d'un fix de code, pas d'une alerte de production.
+        if: failure()
+        run: |
+          if grep -q 'FRESHNESS DRIFT' freshness-output.txt; then
+            TEXT=$(printf '⚠️ *Freshness drift détecté sur pixelium.win*\n\nUn chiffre en dur a divergé du KV live.\nVoir le run : %s' \
+              "https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}")
+            curl -s -X POST "https://api.telegram.org/bot${{ secrets.TELEGRAM_BOT_TOKEN }}/sendMessage" \
+              -d chat_id="${{ secrets.TELEGRAM_CHAT_ID }}" \
+              -d parse_mode=Markdown \
+              --data-urlencode "text=${TEXT}"
+          else
+            echo "Échec sans marqueur FRESHNESS DRIFT (check cassé/périmé) — pas de notif, corriger audit-freshness.mjs."
+          fi

@@ -30,6 +30,12 @@ jobs:
 
       - run: npm ci
 
+      - name: Assert workers_dev disabled
+        # Régression possible : le sous-domaine *.workers.dev contourne les
+        # protections de la zone pixelium.win (audit sécu Grok #18, P1 —
+        # workers_dev était resté actif en prod malgré une config absente).
+        run: grep -qE '^workers_dev\s*=\s*false' wrangler.toml
+
       - run: npm run build
         env:
           # Lecture publique GitHub (statuts PR /contributions) — le token
