@@ -21,8 +21,8 @@
   },
   "devDependencies": {
     "@resvg/resvg-js": "^2.6.2",
-    "playwright": "^1.60.0",
-    "satori": "^0.26.0",
-    "wrangler": "^4.98.0"
+    "playwright": "^1.61.1",
+    "satori": "^0.29.0",
+    "wrangler": "^4.114.0"
   }
 }
