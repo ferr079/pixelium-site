@@ -7,9 +7,9 @@ HTB: pixelium.win/ctf
 Site: pixelium.win
 
 /* AI PARTNER */
-Name: Claude (Anthropic, Opus 4.6)
+Name: Claude (Anthropic, Opus 5)
 Role: Co-designer, narrator, permanent engineering partner
-Integration: Claude Code with 6 MCP servers, persistent memory, custom skills
+Integration: Claude Code — MCP servers, persistent memory, custom skills
 
 /* STACK */
 Framework: Astro 7 (SSG + SSR hybrid)
