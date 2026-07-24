@@ -42,8 +42,15 @@ export const StatusSchema = z.object({
   updated_at: z.string(),
 }).passthrough();
 
-// STATS_KV est un sac de métriques plates qui grossit au fil des sessions
-// (claude_*, htb_*, rootme_*, services_*...) — pas de schéma exhaustif par
-// clé (churn trop élevé), juste une garantie de forme : un objet plat de
-// scalaires, pas de tableau/objet imbriqué qui casserait le rendu en aval.
-export const StatsSchema = z.record(z.string(), z.union([z.string(), z.number(), z.boolean()]));
+// STATS_KV (clé "stats") est un objet {ok, stats, updated_at} où `stats` est
+// un sac de métriques plates qui grossit au fil des sessions (claude_*,
+// htb_*, rootme_*, services_*...) — pas de schéma exhaustif par clé (churn
+// trop élevé), juste une garantie de forme : un objet plat de scalaires, pas
+// de tableau/objet imbriqué qui casserait le rendu en aval.
+export const StatsBagSchema = z.record(z.string(), z.union([z.string(), z.number(), z.boolean()]));
+
+export const StatsPayloadSchema = z.object({
+  ok: z.boolean(),
+  stats: StatsBagSchema.nullable(),
+  updated_at: z.string().nullable(),
+}).passthrough();
