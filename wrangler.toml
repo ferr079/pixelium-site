@@ -1,11 +1,13 @@
 name = "pixelium-site"
 compatibility_date = "2025-01-01"
+# Pas de bloc `routes` ici : pixelium.win/www sont déjà attachés en Custom
+# Domains (Workers Domains API, indépendant de ce fichier — vérifié via API
+# Cloudflare). Un `routes` même en custom_domain:true fait passer wrangler
+# par un check de conflit zone (`GET /zones/{zone}/workers/routes`) qui exige
+# une permission Zone que le token CI (account-scoped) n'a pas → deploy
+# cassé (constaté 24/07). `workers_dev=false` seul ne touche que l'endpoint
+# account-level /subdomain, déjà couvert.
 workers_dev = false
-
-routes = [
-  { pattern = "pixelium.win", custom_domain = true },
-  { pattern = "www.pixelium.win", custom_domain = true }
-]
 
 [assets]
 directory = "./dist"
