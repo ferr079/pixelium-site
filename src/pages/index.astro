@@ -92,9 +92,9 @@ const cards = [
             <span class="signature-number"><DynNum stat="claude_cache_hit" fallback="97.3" /><span class="signature-unit">%</span></span>
             <span class="signature-label">cache hit rate</span>
           </a>
-          <a href="/infrastructure#mcp" class="signature-stat" title="see the MCP stack in /infrastructure">
-            <span class="signature-number"><DynNum stat="mcp_tools" fallback="312" /><span class="signature-unit">+</span></span>
-            <span class="signature-label">MCP tools I use</span>
+          <a href="/ctf" class="signature-stat" title="verified CTF profiles in /ctf">
+            <span class="signature-number"><DynNum stat="htb_flags" fallback="91" /></span>
+            <span class="signature-label">HTB flags · {stats.htb_rank ?? 'Pro Hacker'}</span>
           </a>
         </div>
         <p class="signature-note"><span class="sig-star">*</span> summed across every session we run — several at once.</p>
@@ -119,7 +119,7 @@ const cards = [
         { key: 'uptime_pct', label: 'Uptime', suffix: '%', fallback: '100%' },
         { key: 'forgejo_commits_total', label: 'Commits', fallback: '2700+', suffix: '+' },
         { key: 'proxmox_nodes', label: 'PVE nodes', fallback: '--' },
-        { key: 'htb_flags', label: 'HTB flags', fallback: '--' },
+        { key: 'journal_entries', label: 'Journal entries', fallback: '--' },
         { key: 'rootme_score', label: 'Root-Me pts', fallback: '--' },
         { key: 'ansible_playbooks', label: 'Ansible playbooks', fallback: '--' },
         { key: 'ansible_hosts', label: 'Ansible hosts', fallback: '--' },

@@ -9,7 +9,7 @@
 // exits 1, so CI catches it before a recruiter does.
 //
 // Run: npm run audit:freshness   (needs network to https://pixelium.win/api/stats)
-import { readFileSync } from 'node:fs';
+import { readFileSync, readdirSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import { dirname, join } from 'node:path';
 
@@ -47,6 +47,12 @@ const CHECKS = [
   { file: 'src/pages/infrastructure.astro', re: /(\d+) heterogeneous Proxmox VE nodes/, key: 'proxmox_nodes', label: 'infrastructure.astro — Proxmox nodes (prose)' },
   { file: 'src/pages/fr/infrastructure.astro', re: /(\d+) n.uds Proxmox VE h/, key: 'proxmox_nodes', label: 'fr/infrastructure.astro — Proxmox nodes (prose)' },
   { file: 'src/data/og-pages.json', re: /"(\d+) n.uds Proxmox/, key: 'proxmox_nodes', label: 'og-pages.json — Proxmox nodes (OG subtitle)' },
+  // humans.txt is a static file in public/ — Astro never processes it, so its numbers
+  // CAN'T be made dynamic like the lxc literals above. Pinning is the only option left,
+  // and it had already drifted badly (60 LXC vs 76 live, 49 playbooks vs 56) on a file
+  // that itself claims "Every number on this site is live from the homelab".
+  { file: 'public/humans.txt', re: /(\d+) LXC containers/, key: 'lxc_count', label: 'humans.txt — LXC containers' },
+  { file: 'public/humans.txt', re: /Ansible \((\d+) playbooks\)/, key: 'ansible_playbooks', label: 'humans.txt — Ansible playbooks' },
 ];
 
 const STATS_URL = 'https://pixelium.win/api/stats';
@@ -78,15 +84,48 @@ for (const c of CHECKS) {
   }
 }
 
+// --- Orphan stat keys -------------------------------------------------------
+// The CHECKS above only pin *hardcoded* literals. The dynamic side had its own
+// blind spot: a <DynNum stat="x"> (or a StatsBar `stat: 'x'`) whose key doesn't
+// exist in the KV silently serves its component fallback — forever, with the same
+// visual authority as a live number. mcp_tools sat at a frozen 312 on the homepage
+// this way, next to three genuinely live tiles. Nothing flagged it, because the
+// header comment above assumed "DynNum-backed ⇒ self-updating". It isn't, if the
+// key was never fed. Sweep every stat reference and require it to exist upstream.
+function astroSources(dir, out = []) {
+  for (const e of readdirSync(dir, { withFileTypes: true })) {
+    const p = join(dir, e.name);
+    if (e.isDirectory()) astroSources(p, out);
+    else if (/\.(astro|ts)$/.test(e.name)) out.push(p);
+  }
+  return out;
+}
+
+const orphans = new Set();
+for (const file of astroSources(join(root, 'src'))) {
+  const text = readFileSync(file, 'utf8');
+  // matches both <DynNum stat="key" /> and StatsBar's { stat: 'key' }
+  for (const [, key] of text.matchAll(/\bstat\s*[:=]\s*["']([a-z0-9_]+)["']/g)) {
+    if (stats[key] === undefined) {
+      orphans.add(`${file.replace(`${root}/`, '')}: stat '${key}' absent from /api/stats — serving its fallback`);
+    }
+  }
+}
+
 if (missing.length) {
   console.error('⚠ stale checks (regex/file/key no longer match — update audit-freshness.mjs):');
   for (const m of missing) console.error(`   - ${m}`);
+}
+if (orphans.size) {
+  console.error('\n✗ ORPHAN STATS — these keys are read by the site but not published by the KV:');
+  for (const o of orphans) console.error(`   - ${o}`);
+  console.error('\nFeed the key from the homelab pipeline (kv-push), or point the reference at a key that exists.');
 }
 if (drift.length) {
   console.error('\n✗ FRESHNESS DRIFT — hardcoded numbers diverged from live KV:');
   for (const d of drift) console.error(`   - ${d}`);
   console.error('\nFix the source (or convert to <DynNum>) so the site stops lying.');
-  process.exit(1);
 }
+if (drift.length || orphans.size) process.exit(1);
 if (missing.length) process.exit(1); // a broken check is itself a problem to fix
-console.log(`✓ freshness OK — ${CHECKS.length} hardcoded values match live KV`);
+console.log(`✓ freshness OK — ${CHECKS.length} hardcoded values match live KV, no orphan stat keys`);
