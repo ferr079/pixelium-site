@@ -70,8 +70,21 @@ jobs:
           set -euo pipefail
           curl -fsS -o /dev/null https://pixelium.win/
           curl -sI https://pixelium.win/ | grep -qi 'strict-transport-security'
-          curl -fsS https://pixelium.win/api/deployment | tee /tmp/dep.json
-          grep -q "${GITHUB_SHA:0:7}" /tmp/dep.json
+          # wrangler deploy "success" ne garantit pas que CHAQUE colo Cloudflare
+          # sert déjà la nouvelle version instantanément — constaté 24/07 :
+          # colo ORD répondait encore avec le sha du déploiement précédent
+          # juste après un deploy réussi, colo CDG avait déjà la bonne version
+          # quelques secondes plus tard. Retry court plutôt qu'un sleep fixe.
+          for i in 1 2 3 4 5; do
+            if curl -fsS https://pixelium.win/api/deployment | tee /tmp/dep.json | grep -q "${GITHUB_SHA:0:7}"; then
+              exit 0
+            fi
+            echo "tentative $i/5 : sha pas encore propagé sur ce colo, retry dans 5s"
+            sleep 5
+          done
+          echo "sha jamais confirmé après 5 tentatives (25s)" >&2
+          cat /tmp/dep.json >&2
+          exit 1
 
       - name: Notify Telegram on failure
         if: failure()
