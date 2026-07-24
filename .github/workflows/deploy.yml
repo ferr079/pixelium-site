@@ -19,24 +19,37 @@ permissions:
 jobs:
   deploy:
     runs-on: ubuntu-latest
+    timeout-minutes: 15
     steps:
       - uses: actions/checkout@v5
 
       - uses: actions/setup-node@v5
         with:
-          node-version: '22'
+          node-version: '22.12' # aligné sur engines >=22.12.0 (package.json)
+          cache: npm
 
       - run: npm ci
 
       - run: npm run build
         env:
-          HTB_API_TOKEN: ${{ secrets.HTB_API_TOKEN }}
-          ROOTME_API_KEY: ${{ secrets.ROOTME_API_KEY }}
-          ROOTME_UID: ${{ secrets.ROOTME_UID }}
-          FORGEJO_TOKEN: ${{ secrets.FORGEJO_TOKEN }}
           # /contributions : synchro statut des PR au build (lecture publique GitHub).
-          # GITHUB_TOKEN auto-fourni par Actions — évite le rate-limit anonyme (60/h).
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          # github.token (moindre privilège, auto-fourni) suffit — évite le
+          # rate-limit anonyme (60/h) sans exposer le secret repo plus large.
+          # HTB_API_TOKEN/ROOTME_API_KEY/ROOTME_UID/FORGEJO_TOKEN retirés : plus
+          # lus par le build depuis le passage à l'architecture KV (cf CLAUDE.md,
+          # confirmé par grep — aucune référence dans src/), moins de blast
+          # radius si ce step est compromis (audit CI Grok, pixelium/web#19, P2).
+          GITHUB_TOKEN: ${{ github.token }}
+
+      - name: Assert deploy artefact
+        run: test -f dist/server/wrangler.json && test -d dist/client
+
+      - name: No secrets in dist
+        run: |
+          if grep -rE 'ghp_[A-Za-z0-9]{20,}|github_pat_[A-Za-z0-9_]{20,}|sk-[A-Za-z0-9]{16,}|BEGIN [A-Z ]*PRIVATE' dist; then
+            echo "Possible secret material in dist" >&2
+            exit 1
+          fi
 
         # @astrojs/cloudflare v14 scinde la sortie en dist/client (assets) +
         # dist/server (worker) et génère dist/server/wrangler.json (bindings
@@ -51,6 +64,14 @@ jobs:
           # Rollback : remettre CLOUDFLARE_API_KEY + CLOUDFLARE_EMAIL (secrets conservés).
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+
+      - name: Smoke production
+        run: |
+          set -euo pipefail
+          curl -fsS -o /dev/null https://pixelium.win/
+          curl -sI https://pixelium.win/ | grep -qi 'strict-transport-security'
+          curl -fsS https://pixelium.win/api/deployment | tee /tmp/dep.json
+          grep -q "${GITHUB_SHA:0:7}" /tmp/dep.json
 
       - name: Notify Telegram on failure
         if: failure()
