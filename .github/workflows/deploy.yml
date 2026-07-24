@@ -61,11 +61,9 @@ jobs:
           # Markdown (legacy) échappés pour ne pas casser le parse_mode Telegram
           # ni le format de la requête (--data-urlencode plutôt que -d brut).
           SAFE_MSG=$(printf '%s' "$COMMIT_MSG" | cut -c1-300 | sed -e 's/[_*`[]/\\&/g')
+          TEXT=$(printf '⚠️ *Deploy pixelium.win FAILED*\n\nCommit: `%s`\nMessage: %s\nVoir le run: %s' \
+            "${GITHUB_SHA::7}" "$SAFE_MSG" "https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}")
           curl -s -X POST "https://api.telegram.org/bot${{ secrets.TELEGRAM_BOT_TOKEN }}/sendMessage" \
             -d chat_id="${{ secrets.TELEGRAM_CHAT_ID }}" \
             -d parse_mode=Markdown \
-            --data-urlencode "text=⚠️ *Deploy pixelium.win FAILED*
-
-Commit: \`${GITHUB_SHA::7}\`
-Message: ${SAFE_MSG}
-Voir le run: https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}"
+            --data-urlencode "text=${TEXT}"
