@@ -47,6 +47,12 @@ const CHECKS = [
   { file: 'src/pages/infrastructure.astro', re: /(\d+) heterogeneous Proxmox VE nodes/, key: 'proxmox_nodes', label: 'infrastructure.astro — Proxmox nodes (prose)' },
   { file: 'src/pages/fr/infrastructure.astro', re: /(\d+) n.uds Proxmox VE h/, key: 'proxmox_nodes', label: 'fr/infrastructure.astro — Proxmox nodes (prose)' },
   { file: 'src/data/og-pages.json', re: /"(\d+) n.uds Proxmox/, key: 'proxmox_nodes', label: 'og-pages.json — Proxmox nodes (OG subtitle)' },
+  // humans.txt is a static file in public/ — Astro never processes it, so its numbers
+  // CAN'T be made dynamic like the lxc literals above. Pinning is the only option left,
+  // and it had already drifted badly (60 LXC vs 76 live, 49 playbooks vs 56) on a file
+  // that itself claims "Every number on this site is live from the homelab".
+  { file: 'public/humans.txt', re: /(\d+) LXC containers/, key: 'lxc_count', label: 'humans.txt — LXC containers' },
+  { file: 'public/humans.txt', re: /Ansible \((\d+) playbooks\)/, key: 'ansible_playbooks', label: 'humans.txt — Ansible playbooks' },
 ];
 
 const STATS_URL = 'https://pixelium.win/api/stats';
