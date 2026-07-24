@@ -1,0 +1,52 @@
+name: CI
+
+# Build-only, jamais de deploy ici : filet sur PR/branches avant que main ne
+# passe par deploy.yml (qui, lui, build ET déploie). Sans ça, le premier
+# signal d'un build cassé était la prod elle-même — cf. incident du 24/07 sur
+# deploy.yml (audit CI Grok, pixelium/web#19).
+on:
+  pull_request:
+  push:
+    branches-ignore: [main] # main est déjà couvert par deploy.yml
+
+concurrency:
+  group: ci-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v5
+
+      - uses: actions/setup-node@v5
+        with:
+          node-version: '22'
+          cache: npm
+
+      - run: npm ci
+
+      - run: npm run build
+        env:
+          # Lecture publique GitHub (statuts PR /contributions) — le token
+          # auto-fourni suffit, pas besoin du secret plus large du repo.
+          # HTB_API_TOKEN/ROOTME_API_KEY/ROOTME_UID : plus lus par le build
+          # depuis le passage à l'archi KV (cf CLAUDE.md), pas nécessaires ici.
+          GITHUB_TOKEN: ${{ github.token }}
+
+      - name: Assert deploy artefact
+        run: test -f dist/server/wrangler.json && test -d dist/client
+
+      - name: No secrets in dist
+        run: |
+          # Motifs suffisamment longs pour ne pas matcher du texte légitime —
+          # `sk-[A-Za-z0-9]` court matchait "mask-image" dans tout le CSS du
+          # bundle (repéré en testant localement avant de committer, pas après).
+          if grep -rE 'ghp_[A-Za-z0-9]{20,}|github_pat_[A-Za-z0-9_]{20,}|sk-[A-Za-z0-9]{16,}|BEGIN [A-Z ]*PRIVATE' dist; then
+            echo "Possible secret material in dist" >&2
+            exit 1
+          fi
