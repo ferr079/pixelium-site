@@ -77,18 +77,45 @@ function getFlags(): string[] {
   return raw.split(',').map((s) => s.trim());
 }
 
-const corsHeaders = { 'Access-Control-Allow-Origin': '*', 'Cache-Control': 'no-store' };
-const json = (obj: unknown, status = 200) =>
-  new Response(JSON.stringify(obj), { status, headers: { 'Content-Type': 'application/json', ...corsHeaders } });
+// Même raison que chat.ts : endpoint IA coûteux, pas de raison de le laisser
+// ouvert en '*' à un fetch cross-site tiers.
+const ALLOWED_ORIGINS = new Set(['https://pixelium.win', 'https://www.pixelium.win']);
+function corsOrigin(request: Request): string {
+  const origin = request.headers.get('origin') || '';
+  return ALLOWED_ORIGINS.has(origin) ? origin : 'https://pixelium.win';
+}
+
+const jsonWithCors = (request: Request, obj: unknown, status = 200) =>
+  new Response(JSON.stringify(obj), {
+    status,
+    headers: { 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': corsOrigin(request), 'Cache-Control': 'no-store' },
+  });
+
+type BreachMessage = { role: 'user' | 'assistant'; content: string };
 
 interface BreachBody {
   action?: 'chat' | 'submit';
   level?: number;
-  messages?: { role: 'user' | 'assistant'; content: string }[];
+  messages?: BreachMessage[];
   guess?: string;
 }
 
+// Même raison que chat.ts : le body est du JSON arbitraire, le typage ne protège
+// pas à l'exécution. Sans filtre, un faux role:"system" glissé dans l'historique
+// contournerait le system prompt du niveau (confirmé en live, audit Grok #18).
+const ALLOWED_ROLES = new Set<BreachMessage['role']>(['user', 'assistant']);
+
+function sanitizeHistory(messages: unknown[], limit: number): BreachMessage[] {
+  return messages
+    .slice(-limit)
+    .filter((m): m is BreachMessage =>
+      !!m && typeof m === 'object' && ALLOWED_ROLES.has((m as BreachMessage).role) && typeof (m as BreachMessage).content === 'string'
+    )
+    .map((m) => ({ role: m.role, content: m.content.slice(0, 2000) }));
+}
+
 export const POST: APIRoute = async ({ request }) => {
+  const json = (obj: unknown, status = 200) => jsonWithCors(request, obj, status);
   try {
     const ip = request.headers.get('cf-connecting-ip') || request.headers.get('x-forwarded-for') || 'unknown';
     const rl = await checkRateLimit(ip);
@@ -122,7 +149,7 @@ export const POST: APIRoute = async ({ request }) => {
     await env.SESSION.put('breach:attempts', String(attempts + 1), { expirationTtl: 86400 * 365 });
 
     const systemPrompt = `${BASE}\n\n${LEVELS[level].defense.replace('{{FLAG}}', flag)}`;
-    const history = body.messages.slice(-8);
+    const history = sanitizeHistory(body.messages, 8);
 
     const res = await env.AI.run(MODEL, {
       messages: [{ role: 'system', content: systemPrompt }, ...history],
@@ -147,17 +174,17 @@ export const POST: APIRoute = async ({ request }) => {
 };
 
 // Public stats + level hints (educational, not secret)
-export const GET: APIRoute = async () => {
+export const GET: APIRoute = async ({ request }) => {
   const attempts = parseInt((await env.SESSION.get('breach:attempts')) || '0', 10);
   const solves = parseInt((await env.SESSION.get('breach:solves')) || '0', 10);
-  return json({ ok: true, attempts, solves, maxLevel: MAX_LEVEL, hints: LEVELS.map((l) => l.hint) });
+  return jsonWithCors(request, { ok: true, attempts, solves, maxLevel: MAX_LEVEL, hints: LEVELS.map((l) => l.hint) });
 };
 
-export const OPTIONS: APIRoute = async () =>
+export const OPTIONS: APIRoute = async ({ request }) =>
   new Response(null, {
     status: 204,
     headers: {
-      'Access-Control-Allow-Origin': '*',
+      'Access-Control-Allow-Origin': corsOrigin(request),
       'Access-Control-Allow-Methods': 'POST, OPTIONS',
       'Access-Control-Allow-Headers': 'Content-Type',
     },

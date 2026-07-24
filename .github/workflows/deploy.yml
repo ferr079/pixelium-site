@@ -13,6 +13,9 @@ concurrency:
   group: deploy
   cancel-in-progress: true
 
+permissions:
+  contents: read
+
 jobs:
   deploy:
     runs-on: ubuntu-latest
@@ -54,7 +57,15 @@ jobs:
         env:
           COMMIT_MSG: ${{ github.event.head_commit.message }}
         run: |
+          # Message de commit = texte libre non maîtrisé : tronqué + caractères
+          # Markdown (legacy) échappés pour ne pas casser le parse_mode Telegram
+          # ni le format de la requête (--data-urlencode plutôt que -d brut).
+          SAFE_MSG=$(printf '%s' "$COMMIT_MSG" | cut -c1-300 | sed -e 's/[_*`[]/\\&/g')
           curl -s -X POST "https://api.telegram.org/bot${{ secrets.TELEGRAM_BOT_TOKEN }}/sendMessage" \
             -d chat_id="${{ secrets.TELEGRAM_CHAT_ID }}" \
             -d parse_mode=Markdown \
-            -d text="⚠️ *Deploy pixelium.win FAILED*%0A%0ACommit: \`${GITHUB_SHA::7}\`%0AMessage: ${COMMIT_MSG}%0A[Voir le run](https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }})"
+            --data-urlencode "text=⚠️ *Deploy pixelium.win FAILED*
+
+Commit: \`${GITHUB_SHA::7}\`
+Message: ${SAFE_MSG}
+Voir le run: https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}"

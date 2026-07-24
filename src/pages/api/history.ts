@@ -12,7 +12,10 @@ export const GET: APIRoute = async ({ url }) => {
 
   try {
     const db = (env as any).HISTORY_DB;
-    const days = Math.min(parseInt(url.searchParams.get('days') || '30'), 90);
+    // ?days=abc (NaN) plantait new Date() plus bas → 500 générique. Borné 1-90,
+    // repli sur 30 si non numérique plutôt que de propager NaN.
+    const daysParam = parseInt(url.searchParams.get('days') || '30', 10);
+    const days = Number.isFinite(daysParam) ? Math.min(Math.max(daysParam, 1), 90) : 30;
     const since = new Date(Date.now() - days * 86_400_000).toISOString();
 
     // Get all snapshots within range

@@ -224,9 +224,34 @@ interface ChatBody {
   messages?: ChatMessage[];
 }
 
+// Le body est du JSON arbitraire côté client — le typage TS de ChatMessage ne
+// garantit rien à l'exécution. Sans ce filtre, un client peut glisser un faux
+// message role:"system" au milieu de l'historique et détourner le system prompt
+// (confirmé en live par l'audit Grok du 24/07, issue pixelium/web#18).
+const ALLOWED_ROLES = new Set<ChatMessage['role']>(['user', 'assistant']);
+
+function sanitizeHistory(messages: unknown[], limit: number): ChatMessage[] {
+  return messages
+    .slice(-limit)
+    .filter((m): m is ChatMessage =>
+      !!m && typeof m === 'object' && ALLOWED_ROLES.has((m as ChatMessage).role) && typeof (m as ChatMessage).content === 'string'
+    )
+    .map((m) => ({ role: m.role, content: m.content.slice(0, 2000) }));
+}
+
+// Restreint aux origines du site — un endpoint IA (coûteux, quota Workers AI)
+// ouvert en '*' laisse n'importe quel tiers consommer le quota via fetch cross-site
+// (le rate-limit par IP CF ne fait que mitiger, pas empêcher). Pas de credentials
+// envoyés ici donc pas de risque à réfléchir l'origine, mais autant la borner.
+const ALLOWED_ORIGINS = new Set(['https://pixelium.win', 'https://www.pixelium.win']);
+function corsOrigin(request: Request): string {
+  const origin = request.headers.get('origin') || '';
+  return ALLOWED_ORIGINS.has(origin) ? origin : 'https://pixelium.win';
+}
+
 export const POST: APIRoute = async ({ request }) => {
   const corsHeaders = {
-    'Access-Control-Allow-Origin': '*',
+    'Access-Control-Allow-Origin': corsOrigin(request),
     'Cache-Control': 'no-store',
   };
 
@@ -283,8 +308,8 @@ export const POST: APIRoute = async ({ request }) => {
       });
     }
 
-    // Keep last 10 messages for context
-    const history = body.messages.slice(-10);
+    // Keep last 10 messages for context — sanitized, cf. ALLOWED_ROLES above.
+    const history = sanitizeHistory(body.messages, 10);
 
     const stream = await env.AI.run(MODEL, {
       messages: [
@@ -310,11 +335,11 @@ export const POST: APIRoute = async ({ request }) => {
   }
 };
 
-export const OPTIONS: APIRoute = async () => {
+export const OPTIONS: APIRoute = async ({ request }) => {
   return new Response(null, {
     status: 204,
     headers: {
-      'Access-Control-Allow-Origin': '*',
+      'Access-Control-Allow-Origin': corsOrigin(request),
       'Access-Control-Allow-Methods': 'POST, OPTIONS',
       'Access-Control-Allow-Headers': 'Content-Type',
     },

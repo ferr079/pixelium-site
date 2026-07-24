@@ -13,10 +13,20 @@ export const POST: APIRoute = async ({ request }) => {
     'Access-Control-Allow-Origin': '*',
   };
 
-  // Auth check
+  // Auth check — comparaison timing-safe (extension Cloudflare Workers de
+  // SubtleCrypto) : une comparaison `!==` sur un secret fuit sa longueur/préfixe
+  // via le temps de réponse.
   const authKey = request.headers.get('X-History-Key');
   const expectedKey = (env as any).HISTORY_KEY;
-  if (!authKey || !expectedKey || authKey !== expectedKey) {
+  const keysMatch = (() => {
+    if (!authKey || !expectedKey) return false;
+    const enc = new TextEncoder();
+    const a = enc.encode(authKey);
+    const b = enc.encode(expectedKey);
+    // timingSafeEqual : extension runtime Cloudflare Workers, absente des types DOM standard.
+    return a.length === b.length && (crypto.subtle as any).timingSafeEqual(a, b);
+  })();
+  if (!keysMatch) {
     return new Response(JSON.stringify({ ok: false, error: 'unauthorized' }), {
       status: 401, headers,
     });

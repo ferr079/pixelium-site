@@ -1,5 +1,11 @@
 name = "pixelium-site"
 compatibility_date = "2025-01-01"
+workers_dev = false
+
+routes = [
+  { pattern = "pixelium.win", custom_domain = true },
+  { pattern = "www.pixelium.win", custom_domain = true }
+]
 
 [assets]
 directory = "./dist"
