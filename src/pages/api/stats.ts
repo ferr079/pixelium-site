@@ -2,6 +2,7 @@ export const prerender = false;
 
 import type { APIRoute } from 'astro';
 import { env } from 'cloudflare:workers';
+import { StatsSchema } from '../../lib/status-schema';
 
 const JSON_HEADERS = {
   'Content-Type': 'application/json',
@@ -39,10 +40,19 @@ export const GET: APIRoute = async () => {
     }), { status: 200, headers: JSON_HEADERS });
   }
 
+  let parsedStats: unknown;
   try {
-    JSON.parse(raw); // validate; the raw text is already the JSON payload we serve
+    parsedStats = JSON.parse(raw);
   } catch {
     return degraded('stats value is not valid JSON');
+  }
+
+  // Frontière de confiance (audit sécu Grok 24/07, pixelium/web#18, item P2) :
+  // s'assurer que c'est un sac plat de scalaires, pas un objet/tableau imbriqué
+  // qui casserait un consommateur en aval. Pas de schéma exhaustif par clé —
+  // STATS_KV grossit trop souvent (nouvelles métriques ajoutées à chaque session).
+  if (!StatsSchema.safeParse(parsedStats).success) {
+    return degraded('stats value failed schema validation');
   }
 
   return new Response(raw, { status: 200, headers: JSON_HEADERS });
