@@ -183,6 +183,12 @@ const reportsReviews = [
     insight: "Alloy's anonymous usage reporting retried stats.grafana.org every ~3s with no backoff. When a DNS blocklist NXDOMAINs that host, one unreachable endpoint becomes a fleet-wide query storm — ~900k DNS queries a day across 57 agents. Reported with the repro and the mechanism; the maintainer wrote the fix the same day (#6478 — back off on persistent failure instead of retrying every tick), I reviewed it against my fleet, and it merged.",
     tags: ['grafana', 'alloy', 'dns', 'reliability'],
   },
+  {
+    project: 'blader / humanizer', kind: 'report', ref: 'issue #163 → closed by consensus',
+    url: 'https://github.com/blader/humanizer/issues/163', date: '2026-07-22',
+    insight: "After forking humanizer-fr (33 French-specific AI-writing patterns, MIT, attribution preserved), opened the question of whether a localized SKILL variant belonged in-repo upstream. blader's answer: keep locales as separate community repositories so each language can evolve without adding duplicate runtime authorities upstream — humanizer-fr is the right shape. Closed with that validation.",
+    tags: ['i18n', 'skill', 'claude-code', 'community'],
+  },
 ];
 
 // Build-time completeness guard — warn if a merged PR by ferr079 isn't featured
