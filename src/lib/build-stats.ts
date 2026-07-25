@@ -42,7 +42,12 @@ const FALLBACK: Record<string, string | number> = {
   ansible_hosts: 64,
   beszel_agents: 52,
   inv_skills: 151,
-  inv_kali: 42,
+  // Provenance changée 2026-07-25 : plus le conteneur Podman Kali local (terre2),
+  // mais l'inventaire offensif de la VM dédiée/isolée strix (pve3). Clé renommée
+  // inv_kali → inv_offensive_tools. En attente du forwarding kv-push.sh côté
+  // homelab (clé "kali" → "offensive_tools") : jusque-là ce chiffre reste figé
+  // sur ce fallback (92, confirmé session /HTB du 2026-07-25).
+  inv_offensive_tools: 92,
   inv_forworld: 173,
 };
 
