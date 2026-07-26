@@ -26,7 +26,7 @@ const cards = [
   {
     icon: '&#9670;',
     title: 'Sécurité',
-    description: 'PKI interne, SSH durci sur 64 hôtes, Wazuh SIEM, CrowdSec IPS avec blocklists communautaires, SSO Authentik sur 6 services, VPN mesh Headscale. Chaque couche est défensive — la sécurité n\'est pas un add-on, c\'est la fondation.',
+    description: 'PKI interne, SSH durci sur 65 hôtes, Wazuh SIEM, CrowdSec IPS avec blocklists communautaires, SSO Authentik sur 6 services, VPN mesh Headscale. Chaque couche est défensive — la sécurité n\'est pas un add-on, c\'est la fondation.',
     tags: ['Wazuh', 'CrowdSec IPS', 'Authentik SSO', 'Headscale', 'Infisical', 'Agent Vault'],
   },
   {
@@ -174,23 +174,6 @@ const cards = [
 
 <style>
   /* ═══════════════════════════════════════════
-     Hero entrance animations
-     ═══════════════════════════════════════════ */
-  .animate-in {
-    opacity: 0;
-    transform: translateY(1rem);
-    animation: hero-enter 0.7s ease-out forwards;
-    animation-delay: calc(var(--delay) * 0.15s + 0.2s);
-  }
-
-  @keyframes hero-enter {
-    to {
-      opacity: 1;
-      transform: translateY(0);
-    }
-  }
-
-  /* ═══════════════════════════════════════════
      Hero tape — random terminal recording
      ═══════════════════════════════════════════ */
   .hero-tape {
@@ -250,71 +233,6 @@ const cards = [
 
   @media (max-width: 640px) {
     .hero-tape { max-width: 100%; }
-  }
-
-  h1 {
-    font-size: clamp(2.5rem, 6vw, 4.5rem);
-    font-weight: 800;
-    letter-spacing: -0.03em;
-    line-height: 1.1;
-    margin-bottom: 1rem;
-  }
-
-  .dot {
-    color: transparent; /* square pixel drawn by Base */
-  }
-
-  .tagline {
-    font-size: 1.25rem;
-    color: var(--color-text-muted);
-    max-width: 44rem;
-    margin-bottom: 2rem;
-  }
-
-  .btn {
-    display: inline-block;
-    padding: 0.75rem 1.5rem;
-    border-radius: 6px;
-    font-weight: 600;
-    font-size: 0.95rem;
-    transition: all 0.2s;
-  }
-
-  .btn-blog {
-    background: linear-gradient(135deg, var(--color-accent), #0ea5e9);
-    color: var(--color-bg);
-    font-family: var(--font-mono);
-    box-shadow: 0 0 20px rgba(56, 189, 248, 0.2);
-    transition: all 0.3s;
-  }
-
-  .btn-blog:hover {
-    color: var(--color-bg);
-    box-shadow: 0 0 30px rgba(56, 189, 248, 0.4);
-    transform: translateY(-1px);
-  }
-
-  .btn-primary {
-    background: var(--color-accent);
-    color: var(--color-bg);
-    box-shadow: 0 0 0 0 rgba(56, 189, 248, 0);
-    transition: all 0.3s;
-  }
-
-  .btn-primary:hover {
-    background: var(--color-accent-hover);
-    color: var(--color-bg);
-    box-shadow: 0 0 20px rgba(56, 189, 248, 0.3);
-  }
-
-  .btn-secondary {
-    border: 1px solid var(--color-border);
-    color: var(--color-text);
-  }
-
-  .btn-secondary:hover {
-    border-color: var(--color-accent);
-    color: var(--color-accent);
   }
 
   /* ═══════════════════════════════════════════
@@ -535,21 +453,7 @@ const cards = [
   .banner-cta { color: var(--color-accent); font-weight: 600; }
   .banner-link:hover .banner-cta { color: var(--color-accent-hover); }
 
-  /* ═══════════════════════════════════════════
-     Reduced motion
-     ═══════════════════════════════════════════ */
-  @media (prefers-reduced-motion: reduce) {
-    .animate-in {
-      opacity: 1;
-      transform: none;
-      animation: none;
-    }
-  }
-
   @media (max-width: 640px) {
-    h1 { font-size: clamp(1.75rem, 5vw, 2.5rem); }
-    .tagline { font-size: 1rem; }
-    .btn { padding: 0.6rem 1.2rem; font-size: 0.85rem; }
     .grid { grid-template-columns: 1fr; gap: 0.75rem; }
     .opensource-badge { padding: 1rem 1.25rem; }
     .opensource-badge p { font-size: 0.85rem; }
