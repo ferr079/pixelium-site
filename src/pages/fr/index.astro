@@ -26,7 +26,7 @@ const cards = [
   {
     icon: '&#9670;',
     title: 'Sécurité',
-    description: 'PKI interne, SSH durci sur 64 hôtes, Wazuh SIEM, CrowdSec IPS avec blocklists communautaires, SSO Authentik sur 6 services, VPN mesh Headscale. Chaque couche est défensive — la sécurité n\'est pas un add-on, c\'est la fondation.',
+    description: 'PKI interne, SSH durci sur 65 hôtes, Wazuh SIEM, CrowdSec IPS avec blocklists communautaires, SSO Authentik sur 6 services, VPN mesh Headscale. Chaque couche est défensive — la sécurité n\'est pas un add-on, c\'est la fondation.',
     tags: ['Wazuh', 'CrowdSec IPS', 'Authentik SSO', 'Headscale', 'Infisical', 'Agent Vault'],
   },
   {
@@ -174,23 +174,6 @@ const cards = [
 
 <style>
   /* ═══════════════════════════════════════════
-     Hero entrance animations
-     ═══════════════════════════════════════════ */
-  .animate-in {
-    opacity: 0;
-    transform: translateY(1rem);
-    animation: hero-enter 0.7s ease-out forwards;
-    animation-delay: calc(var(--delay) * 0.15s + 0.2s);
-  }
-
-  @keyframes hero-enter {
-    to {
-      opacity: 1;
-      transform: translateY(0);
-    }
-  }
-
-  /* ═══════════════════════════════════════════
      Hero tape — random terminal recording
      ═══════════════════════════════════════════ */
   .hero-tape {
@@ -250,204 +233,6 @@ const cards = [
 
   @media (max-width: 640px) {
     .hero-tape { max-width: 100%; }
-  }
-
-  /* ═══════════════════════════════════════════
-     Hero with grid background + glow + scanline
-     ═══════════════════════════════════════════ */
-  .hero {
-    min-height: 90vh;
-    display: flex;
-    align-items: center;
-    padding: 4rem 0;
-    position: relative;
-    overflow: hidden;
-    /* nav is now sticky — no negative margin needed */
-  }
-
-  .hero-grid {
-    position: absolute;
-    inset: 0;
-    background-image:
-      linear-gradient(rgba(56, 189, 248, 0.04) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(56, 189, 248, 0.04) 1px, transparent 1px);
-    background-size: 4rem 4rem;
-    mask-image: radial-gradient(ellipse 60% 60% at 50% 40%, black 20%, transparent 70%);
-    -webkit-mask-image: radial-gradient(ellipse 60% 60% at 50% 40%, black 20%, transparent 70%);
-  }
-
-  .hero-glow {
-    position: absolute;
-    top: 35%;
-    left: 15%;
-    width: 30rem;
-    height: 20rem;
-    background: radial-gradient(ellipse, rgba(56, 189, 248, 0.08), transparent 70%);
-    animation: glow-pulse 4s ease-in-out infinite alternate;
-    pointer-events: none;
-  }
-
-  @keyframes glow-pulse {
-    0% { opacity: 0.4; transform: scale(1); }
-    100% { opacity: 1; transform: scale(1.15); }
-  }
-
-  /* Glitch effect on title */
-  .glitch::before,
-  .glitch::after {
-    content: attr(data-text);
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    opacity: 0;
-    pointer-events: none;
-  }
-
-  .glitch {
-    position: relative;
-    text-shadow: none;
-    opacity: 0;
-    animation: hero-enter 0.7s ease-out 0.35s forwards, glitch-base 3s ease-in-out 1.5s infinite;
-  }
-
-  .glitch::before {
-    color: #ff6b6b;
-    text-shadow: 2px 0 #ff6b6b;
-    animation: glitch-1 3s ease-in-out infinite;
-  }
-
-  .glitch::after {
-    color: var(--color-accent);
-    text-shadow: -2px 0 var(--color-accent);
-    animation: glitch-2 3s ease-in-out infinite;
-  }
-
-  @keyframes glitch-base {
-    0%, 72%, 84%, 100% { text-shadow: none; transform: none; }
-    74% { transform: translate(1px, 0); text-shadow: -2px 0 rgba(255, 107, 107, 0.3), 2px 0 rgba(56, 189, 248, 0.3); }
-    76% { transform: translate(-1px, 0); text-shadow: 2px 0 rgba(255, 107, 107, 0.2), -2px 0 rgba(56, 189, 248, 0.2); }
-    78% { transform: none; text-shadow: none; }
-    80% { transform: translate(2px, -1px); text-shadow: -3px 0 rgba(255, 107, 107, 0.4), 3px 0 rgba(56, 189, 248, 0.4); }
-    81% { transform: translate(-1px, 1px); text-shadow: none; }
-    82% { transform: none; }
-  }
-
-  @keyframes glitch-1 {
-    0%, 72%, 84%, 100% { opacity: 0; transform: none; }
-    73% { opacity: 0.9; transform: translate(-5px, 2px); clip-path: inset(8% 0 72% 0); }
-    74% { opacity: 1; transform: translate(6px, -1px); clip-path: inset(42% 0 28% 0); }
-    75% { opacity: 0.8; transform: translate(-3px, 0); clip-path: inset(68% 0 8% 0); }
-    76% { opacity: 0; transform: none; }
-    77% { opacity: 0.9; transform: translate(4px, 2px); clip-path: inset(15% 0 55% 0); }
-    78% { opacity: 1; transform: translate(-6px, -2px); clip-path: inset(52% 0 18% 0); }
-    79% { opacity: 0.7; transform: translate(3px, 1px); clip-path: inset(78% 0 2% 0); }
-    80% { opacity: 0; transform: none; }
-    81% { opacity: 0.9; transform: translate(-4px, -1px); clip-path: inset(25% 0 45% 0); }
-    82% { opacity: 1; transform: translate(5px, 2px); clip-path: inset(60% 0 12% 0); }
-    83% { opacity: 0; transform: none; }
-  }
-
-  @keyframes glitch-2 {
-    0%, 72%, 84%, 100% { opacity: 0; transform: none; }
-    73.5% { opacity: 0.8; transform: translate(5px, -2px); clip-path: inset(22% 0 48% 0); }
-    74.5% { opacity: 1; transform: translate(-6px, 1px); clip-path: inset(55% 0 15% 0); }
-    75.5% { opacity: 0.7; transform: translate(3px, 2px); clip-path: inset(5% 0 78% 0); }
-    76.5% { opacity: 0; transform: none; }
-    77.5% { opacity: 0.8; transform: translate(-4px, -2px); clip-path: inset(35% 0 35% 0); }
-    78.5% { opacity: 1; transform: translate(6px, 0); clip-path: inset(70% 0 5% 0); }
-    79.5% { opacity: 0.9; transform: translate(-3px, 1px); clip-path: inset(12% 0 62% 0); }
-    80.5% { opacity: 0; transform: none; }
-    81.5% { opacity: 0.8; transform: translate(4px, -1px); clip-path: inset(48% 0 22% 0); }
-    82.5% { opacity: 1; transform: translate(-5px, 2px); clip-path: inset(75% 0 3% 0); }
-    83.5% { opacity: 0; transform: none; }
-  }
-
-  .hero-content {
-    position: relative;
-    z-index: 1;
-  }
-
-  h1 {
-    font-size: clamp(2.5rem, 6vw, 4.5rem);
-    font-weight: 800;
-    letter-spacing: -0.03em;
-    line-height: 1.1;
-    margin-bottom: 1rem;
-  }
-
-  .dot {
-    color: transparent; /* square pixel drawn by Base */
-  }
-
-  .hero-role {
-    font-family: var(--font-mono);
-    font-size: 0.85rem;
-    color: var(--color-accent);
-    letter-spacing: 0.15em;
-    text-transform: uppercase;
-    margin-bottom: 0.75rem;
-    opacity: 0.8;
-  }
-
-  .tagline {
-    font-size: 1.25rem;
-    color: var(--color-text-muted);
-    max-width: 44rem;
-    margin-bottom: 2rem;
-  }
-
-  .hero-links {
-    display: flex;
-    gap: 1rem;
-    flex-wrap: wrap;
-  }
-
-  .btn {
-    display: inline-block;
-    padding: 0.75rem 1.5rem;
-    border-radius: 6px;
-    font-weight: 600;
-    font-size: 0.95rem;
-    transition: all 0.2s;
-  }
-
-  .btn-blog {
-    background: linear-gradient(135deg, var(--color-accent), #0ea5e9);
-    color: var(--color-bg);
-    font-family: var(--font-mono);
-    box-shadow: 0 0 20px rgba(56, 189, 248, 0.2);
-    transition: all 0.3s;
-  }
-
-  .btn-blog:hover {
-    color: var(--color-bg);
-    box-shadow: 0 0 30px rgba(56, 189, 248, 0.4);
-    transform: translateY(-1px);
-  }
-
-  .btn-primary {
-    background: var(--color-accent);
-    color: var(--color-bg);
-    box-shadow: 0 0 0 0 rgba(56, 189, 248, 0);
-    transition: all 0.3s;
-  }
-
-  .btn-primary:hover {
-    background: var(--color-accent-hover);
-    color: var(--color-bg);
-    box-shadow: 0 0 20px rgba(56, 189, 248, 0.3);
-  }
-
-  .btn-secondary {
-    border: 1px solid var(--color-border);
-    color: var(--color-text);
-  }
-
-  .btn-secondary:hover {
-    border-color: var(--color-accent);
-    color: var(--color-accent);
   }
 
   /* ═══════════════════════════════════════════
@@ -668,32 +453,8 @@ const cards = [
   .banner-cta { color: var(--color-accent); font-weight: 600; }
   .banner-link:hover .banner-cta { color: var(--color-accent-hover); }
 
-  /* ═══════════════════════════════════════════
-     Reduced motion
-     ═══════════════════════════════════════════ */
-  @media (prefers-reduced-motion: reduce) {
-    .animate-in {
-      opacity: 1;
-      transform: none;
-      animation: none;
-    }
-    .hero-glow {
-      animation: none;
-      display: none;
-    }
-    .glitch::before,
-    .glitch::after {
-      display: none;
-    }
-  }
-
   @media (max-width: 640px) {
-    .hero { min-height: 60vh; padding: 2rem 0; }
-    h1 { font-size: clamp(1.75rem, 5vw, 2.5rem); }
-    .tagline { font-size: 1rem; }
-    .hero-links { gap: 0.5rem; }
-    .btn { padding: 0.6rem 1.2rem; font-size: 0.85rem; }
-    .grid, .hero-grid { grid-template-columns: 1fr; gap: 0.75rem; }
+    .grid { grid-template-columns: 1fr; gap: 0.75rem; }
     .opensource-badge { padding: 1rem 1.25rem; }
     .opensource-badge p { font-size: 0.85rem; }
     .banner-cta { flex-direction: column; gap: 0.5rem; align-items: flex-start; }
