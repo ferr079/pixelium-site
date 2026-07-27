@@ -15,7 +15,7 @@
  * snapshot so a build never ships empty numbers.
  */
 
-// Last-known snapshot (2026-07-24). Only used if the build can't reach /api/stats.
+// Last-known snapshot (2026-07-28). Only used if the build can't reach /api/stats.
 const FALLBACK: Record<string, string | number> = {
   claude_hours: 5479,
   claude_cache_hit: 96.7,
@@ -28,11 +28,11 @@ const FALLBACK: Record<string, string | number> = {
   uptime_pct: 100,
   forgejo_commits_30d: 1109,
   proxmox_nodes: 4,
-  htb_flags: 91,
+  htb_flags: 95,
   htb_rank: 'Pro Hacker',
-  htb_ranking: 698,
-  htb_system_owns: 44,
-  htb_user_owns: 47,
+  htb_ranking: 633,
+  htb_system_owns: 46,
+  htb_user_owns: 49,
   rootme_score: 1050,
   rootme_validations: 75,
   rootme_position: 15486,
