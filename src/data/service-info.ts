@@ -125,6 +125,10 @@ export const SERVICE_INFO: Record<string, ServiceBlurb> = {
     what: { en: 'Self-hosted, end-user-programmable notes and knowledge base (markdown).', fr: 'Prise de notes et base de connaissances self-hosted, programmable (markdown).' },
     why: { en: 'An extensible PKM with live queries and templates — local and hackable.', fr: 'Un PKM extensible avec requêtes et templates live — local et bidouillable.' },
   },
+  'NoteDiscovery': {
+    what: { en: 'Markdown knowledge-base indexer and search service.', fr: 'Service d\'indexation et de recherche pour une base de connaissance Markdown.' },
+    why: { en: 'Drives the infra tech-watch pipeline — the searchable memory the fleet\'s agents rely on.', fr: 'Pilote la veille infra — la mémoire cherchable sur laquelle s\'appuie la flotte d\'agents.' },
+  },
   'Hermes Agent': {
     what: { en: 'Autonomous Telegram agent running the night shift over the homelab.', fr: 'Agent Telegram autonome qui assure le quart de nuit sur le homelab.' },
     why: { en: 'Watches, reports and self-improves 24/7 — the resident agent after the AIops v2 trio.', fr: 'Surveille, rapporte et s\'améliore 24/7 — l\'agent résident depuis le trio AIops v2.' },
