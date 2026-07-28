@@ -23,6 +23,7 @@ on:
       - 'src/pages/infrastructure.astro'
       - 'src/pages/fr/infrastructure.astro'
       - 'src/data/og-pages.json'
+      - 'public/humans.txt'
       - 'scripts/audit-freshness.mjs'
 
 jobs:
