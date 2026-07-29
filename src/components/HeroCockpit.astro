@@ -169,6 +169,9 @@ const topoJson = JSON.stringify({
 
     function resize() {
       const rect = canvas.getBoundingClientRect();
+      // Largeur nulle = boîte pas encore établie ; dessiner ici produirait une
+      // topologie dégénérée. Le ResizeObserver rappellera dès qu'elle existe.
+      if (!rect.width) return;
       W = rect.width; H = rect.height || 320;
       dpr = Math.min(window.devicePixelRatio || 1, W < 700 ? 1.5 : 2);
       canvas.width = Math.round(W * dpr); canvas.height = Math.round(H * dpr);
@@ -240,7 +243,14 @@ const topoJson = JSON.stringify({
     let rt: number;
     const onResize = () => { clearTimeout(rt); rt = window.setTimeout(() => { resize(); if (reduce) draw(performance.now()); }, 150); };
     window.addEventListener('resize', onResize);
-    cleanupTopo = () => { stop(); io?.disconnect(); window.removeEventListener('resize', onResize); clearTimeout(rt); };
+    // The window 'resize' event does NOT cover internal reflows. Fonts land after
+    // init and widen the hero column (measured 300px -> 429px), but the canvas
+    // kept its old backing size and `width:100%` stretched the drawing x1.43 —
+    // blurry and oversized until a real window resize or a reload. A
+    // ResizeObserver watches the element's own box, whatever moves it.
+    const ro = new ResizeObserver(onResize);
+    ro.observe(canvas);
+    cleanupTopo = () => { stop(); io?.disconnect(); ro.disconnect(); window.removeEventListener('resize', onResize); clearTimeout(rt); };
 
     // Hover: name the node under the pointer. Click: the map is a door to /infrastructure.
     const tip = document.getElementById('hc-tip');
