@@ -49,7 +49,7 @@ const monitoringSlides = [
       <div class="container">
         <p class="terminal-prompt">$ cat infrastructure.md</p>
         <h1>Infrastructure<span class="dot">.</span></h1>
-        <p class="subtitle"><DynNum stat="proxmox_nodes" fallback="4" /> nœuds Proxmox, <DynNum stat="lxc_count" fallback="49" suffix="+" /> conteneurs LXC, tout self-hosted. Pas un seul service cloud payant.</p>
+        <p class="subtitle"><DynNum stat="proxmox_nodes" fallback="4" /> nœuds Proxmox, <DynNum stat="lxc_count" fallback="62" suffix="+" /> conteneurs LXC, tout self-hosted. Pas un seul service cloud payant.</p>
         <p style="margin-top:0.75rem;font-family:var(--font-mono);font-size:0.85rem;"><a href="/fr/now">&rarr; tout le matériel &amp; la stack logicielle</a></p>
         <button class="inception-trigger" id="inceptionOpen" type="button" aria-haspopup="dialog">
           <span class="ic-dollar">$</span> claude --message-au-visiteur <span class="ic-blink">▮</span>
@@ -59,7 +59,7 @@ const monitoringSlides = [
 
     <StatsBar stats={[
       { number: "4", label: "noeuds Proxmox" },
-      { number: "49+", label: "conteneurs LXC", stat: "lxc_count", suffix: "+" },
+      { number: "62+", label: "conteneurs LXC", stat: "lxc_count", suffix: "+" },
       { number: "15", label: "widgets Homepage" },
       { number: "0", label: "euro cloud externe" },
     ]} />
@@ -196,7 +196,7 @@ const monitoringSlides = [
               <div class="tech-card-body">
                 <p class="tech-why"><strong>Pourquoi :</strong> Hyperviseur libre avec LXC natif — les conteneurs démarrent en 2 secondes et consomment 50 Mo de RAM. PBS intégré pour les backups. API complète.</p>
                 <p class="tech-alt"><span class="alt-label">Écartés :</span> ESXi (payant depuis 2024), Hyper-V (Windows only), XCP-ng (moins de communauté)</p>
-                <p class="tech-result"><span class="result-label">Résultat :</span> 4 nœuds hétérogènes, <DynNum stat="lxc_count" fallback="49" suffix="+" /> CTs, backups incrémentaux via PBS</p>
+                <p class="tech-result"><span class="result-label">Résultat :</span> 4 nœuds hétérogènes, <DynNum stat="lxc_count" fallback="62" suffix="+" /> CTs, backups incrémentaux via PBS</p>
               </div>
             </div>
 

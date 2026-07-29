@@ -37,7 +37,7 @@ const FALLBACK: Record<string, string | number> = {
   rootme_validations: 75,
   rootme_position: 15486,
   ansible_playbooks: 56,
-  lxc_count: 61,
+  lxc_count: 62,
   https_services: 47,
   ansible_hosts: 64,
   beszel_agents: 52,
