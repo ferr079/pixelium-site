@@ -85,15 +85,25 @@ jobs:
           # sert déjà la nouvelle version instantanément — constaté 24/07 :
           # colo ORD répondait encore avec le sha du déploiement précédent
           # juste après un deploy réussi, colo CDG avait déjà la bonne version
-          # quelques secondes plus tard. Retry court plutôt qu'un sleep fixe.
-          for i in 1 2 3 4 5; do
+          # quelques secondes plus tard. Retry plutôt qu'un sleep fixe.
+          #
+          # ⚠️ Fenêtre portée de 25 s à 90 s le 2026-07-30 : DEUX runs consécutifs
+          # ont échoué ici alors que le déploiement était bon (colo IAD servait
+          # encore le sha précédent après 25 s ; la prod servait le bon sha peu
+          # après). Un garde-fou qui rougit à tort est pire qu'inutile — il
+          # entraîne à ignorer les rouges, et c'est précisément ce qui a failli
+          # laisser passer deux échecs ce jour-là. On garde le contrôle STRICT
+          # (le job casse si le sha n'arrive jamais : il a détecté un vrai cas le
+          # 24/07), on lui donne seulement le temps que la propagation demande.
+          for i in $(seq 1 18); do
             if curl -fsS https://pixelium.win/api/deployment | tee /tmp/dep.json | grep -q "${GITHUB_SHA:0:7}"; then
+              echo "sha confirmé en prod à la tentative $i"
               exit 0
             fi
-            echo "tentative $i/5 : sha pas encore propagé sur ce colo, retry dans 5s"
+            echo "tentative $i/18 : sha pas encore propagé sur ce colo, retry dans 5s"
             sleep 5
           done
-          echo "sha jamais confirmé après 5 tentatives (25s)" >&2
+          echo "sha jamais confirmé après 18 tentatives (90s)" >&2
           cat /tmp/dep.json >&2
           exit 1
 
