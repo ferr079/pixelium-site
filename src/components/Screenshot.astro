@@ -32,7 +32,11 @@ const dims = rawSrc.startsWith('/images/') ? assetDims(rawSrc) : undefined;
       >
         {/* srcset = pre-generated R2 variants (see assetSrcset). The enlarge
             link above keeps pointing at the full-size original. */}
-        <img src={src} srcset={srcset} sizes={srcset ? '(max-width: 1064px) 100vw, 1024px' : undefined} width={dims?.[0]} height={dims?.[1]} alt={alt} loading="lazy" />
+        {/* onerror: a blocked image (content blocker, CSP gap, R2 outage) would
+            otherwise leave the reserved frame empty with only the alt text —
+            width/height reserve the space, so the hole is full-size. Hide the
+            whole figure instead. Same pattern as the Simple Icons logos. */}
+        <img src={src} srcset={srcset} sizes={srcset ? '(max-width: 1064px) 100vw, 1024px' : undefined} width={dims?.[0]} height={dims?.[1]} alt={alt} loading="lazy" onerror="this.closest('.screenshot').style.display='none'" />
       </div>
     </div>
   </a>
