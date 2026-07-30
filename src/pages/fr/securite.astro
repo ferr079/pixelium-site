@@ -45,7 +45,7 @@ const stats = await getBuildStats();
               <span class="layer-icon">&#9678;</span>
               <div>
                 <h4>Couche identit&eacute;</h4>
-                <p>Authentik SSO (6 services), YubiKey FIDO2, certificats SSH &eacute;ph&eacute;m&egrave;res sur <DynNum stat="ansible_hosts" fallback="63" /> h&ocirc;tes</p>
+                <p>Authentik SSO (6 services), YubiKey FIDO2, certificats SSH &eacute;ph&eacute;m&egrave;res sur <DynNum stat="ansible_hosts" fallback="65" /> h&ocirc;tes</p>
               </div>
             </div>
             <div class="defense-layer">
@@ -179,7 +179,7 @@ const stats = await getBuildStats();
           <h2>SSH durci + YubiKey FIDO2</h2>
         </div>
         <div class="layer-content">
-          <p>Chaque host du homelab — <DynNum stat="ansible_hosts" fallback="63" /> machines — est accessible <strong>uniquement par cl&eacute; SSH.</strong> Mot de passe d&eacute;sactiv&eacute; partout. Ansible d&eacute;ploie le hardening en une commande via le playbook <code>harden_ssh.yml</code>.</p>
+          <p>Chaque host du homelab — <DynNum stat="ansible_hosts" fallback="65" /> machines — est accessible <strong>uniquement par cl&eacute; SSH.</strong> Mot de passe d&eacute;sactiv&eacute; partout. Ansible d&eacute;ploie le hardening en une commande via le playbook <code>harden_ssh.yml</code>.</p>
           <div class="details-grid">
             <div class="detail">
               <h4>ed25519-sk r&eacute;sidente</h4>
