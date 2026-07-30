@@ -52,10 +52,10 @@ const rootme = {
             </a>
           </div>
           <Screenshot
-            src="/images/htb-dashboard.webp?v=20260730"
+            src="/images/htb-dashboard.webp?v=20260730-2"
             alt="Tableau de bord Hack The Box Labs de Stéphane : rang Pro Hacker, niveau Master 61, tier Platinum Saison 11"
             title="HTB Labs — Ferr079"
-            caption="Le tableau de bord derrière les chiffres — rang Pro Hacker · Master Niv. 61 · tier Platinum Saison 11 #483 · série de 11 semaines (aperçu, juillet 2026)"
+            caption="Le tableau de bord derrière les chiffres — rang Pro Hacker · Master Niv. 61 · tier Platinum Saison 11 #484 · série de 11 semaines (aperçu, juillet 2026)"
           />
         </div>
       </div>
@@ -338,7 +338,10 @@ const rootme = {
   .layer-header { display: flex; align-items: center; gap: 1rem; margin-bottom: 1.5rem; }
   .tech-logo { width: 1.4rem; height: 1.4rem; flex-shrink: 0; }
   .badges-row { display: flex; gap: 2rem; flex-wrap: wrap; align-items: center; }
-  .ctf-badge { height: 80px; width: auto; border-radius: 6px; transition: transform 0.2s; }
+  /* 50px = hauteur NATIVE du badge HTB (220x50) ; le THM (249x58) est donc
+     légèrement réduit. Aucun des deux n'est agrandi : PNG bitmap servis par
+     les plateformes, les afficher à 80px les upscalait de 60 % (rendu flou). */
+  .ctf-badge { height: 50px; width: auto; border-radius: 6px; transition: transform 0.2s; }
   .ctf-badge:hover { transform: scale(1.05); }
   .feedback-loop { display: flex; flex-direction: column; gap: 0.5rem; }
   .loop-item { display: flex; align-items: center; gap: 0.75rem; padding: 0.75rem 1rem; background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 6px; }
@@ -381,7 +384,7 @@ const rootme = {
     h1 { font-size: clamp(1.5rem, 5vw, 2.5rem); }
     .subtitle { font-size: 0.95rem; }
     .badges-row { flex-direction: column; align-items: flex-start; }
-    .ctf-badge { height: 60px; }
+    .ctf-badge { height: 44px; }
     .loop-item > div { flex-direction: column; align-items: flex-start; }
     .loop-item { padding: 0.5rem 0.75rem; }
     .platforms-grid, .techniques-grid { grid-template-columns: 1fr; gap: 0.75rem; }
