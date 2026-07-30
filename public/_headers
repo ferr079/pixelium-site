@@ -7,7 +7,7 @@
   Cross-Origin-Opener-Policy: same-origin
   Cross-Origin-Resource-Policy: same-site
   Strict-Transport-Security: max-age=31536000; includeSubDomains; preload
-  Content-Security-Policy: default-src 'none'; script-src 'self' 'unsafe-inline' https://static.cloudflareinsights.com; style-src 'self' 'unsafe-inline'; img-src 'self' https://cdn.simpleicons.org https://assets.pixelium.win data:; media-src 'self' https://assets.pixelium.win; font-src 'self'; connect-src 'self' https://cloudflareinsights.com; frame-ancestors 'none'; base-uri 'self'; form-action 'self'
+  Content-Security-Policy: default-src 'none'; script-src 'self' 'unsafe-inline' https://static.cloudflareinsights.com; style-src 'self' 'unsafe-inline'; img-src 'self' https://cdn.simpleicons.org https://assets.pixelium.win https://www.hackthebox.com https://tryhackme-badges.s3.amazonaws.com data:; media-src 'self' https://assets.pixelium.win; font-src 'self'; connect-src 'self' https://cloudflareinsights.com; frame-ancestors 'none'; base-uri 'self'; form-action 'self'
   Link: </.well-known/api-catalog>; rel="api-catalog"
 
 # API discovery (RFC 9727) — serve the catalog as a linkset document
