@@ -23,6 +23,17 @@ jobs:
     steps:
       - uses: actions/checkout@v5
 
+      - name: Assert workers_dev disabled
+        # Déplacé depuis ci.yml (2026-07-30, infra/homelab#181) : c'était le SEUL
+        # contrôle de ci.yml absent de ce job. Or ci.yml et deploy.yml se déclenchent
+        # en PARALLÈLE sur push — le CI ne conditionnait donc rien, il constatait
+        # après coup. Un chaînage `workflow_run` aurait laissé le rebuild `schedule`
+        # (05:00 UTC) et `workflow_dispatch` hors contrôle : un step dans le job
+        # couvre TOUS les déclencheurs, et échoue avant `npm ci` (fail fast).
+        # Régression visée : *.workers.dev contourne les protections de la zone
+        # pixelium.win (audit sécu Grok #18, P1).
+        run: grep -qE '^workers_dev\s*=\s*false' wrangler.toml
+
       - uses: actions/setup-node@v5
         with:
           node-version: '22.12' # aligné sur engines >=22.12.0 (package.json)
