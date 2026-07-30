@@ -52,10 +52,10 @@ const rootme = {
             </a>
           </div>
           <Screenshot
-            src="/images/htb-dashboard.webp?v=20260730"
+            src="/images/htb-dashboard.webp?v=20260730-2"
             alt="Stéphane's Hack The Box Labs dashboard: Pro Hacker rank, Master level 61, Season 11 Platinum tier"
             title="HTB Labs — Ferr079"
-            caption="The dashboard behind the numbers — Pro Hacker rank · Master Lvl 61 · Season 11 Platinum tier #483 · 11-week streak (snapshot, July 2026)"
+            caption="The dashboard behind the numbers — Pro Hacker rank · Master Lvl 61 · Season 11 Platinum tier #484 · 11-week streak (snapshot, July 2026)"
           />
         </div>
       </div>
@@ -378,8 +378,13 @@ const rootme = {
     align-items: center;
   }
 
+  /* 50px = la hauteur NATIVE du badge HTB (220x50) ; le THM (249x58) est donc
+     légèrement réduit. Aucun des deux n'est agrandi : ce sont des PNG bitmap
+     servis par les plateformes, et les afficher à 80px les upscalait de 60 %,
+     d'où un rendu flou. Ne pas remonter cette valeur sans vérifier les tailles
+     natives — elles peuvent changer côté HTB/THM. */
   .ctf-badge {
-    height: 80px;
+    height: 50px;
     width: auto;
     border-radius: 6px;
     transition: transform 0.2s;
@@ -633,7 +638,7 @@ const rootme = {
     h1 { font-size: clamp(1.5rem, 5vw, 2.5rem); }
     .subtitle { font-size: 0.95rem; }
     .badges-row { flex-direction: column; align-items: flex-start; }
-    .ctf-badge { height: 60px; }
+    .ctf-badge { height: 44px; }
     .loop-item > div { flex-direction: column; align-items: flex-start; }
     .loop-item { padding: 0.5rem 0.75rem; }
     .platforms-grid, .techniques-grid { grid-template-columns: 1fr; gap: 0.75rem; }
