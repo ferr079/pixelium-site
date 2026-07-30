@@ -1,0 +1,59 @@
+/* page-chrome — styles de "chrome de page" partagés par les pages de contenu.
+ *
+ * Ces règles étaient recopiées à l'identique dans chaque page (EN comme FR) : un
+ * ajustement d'espacement ou de mobile appliqué à une seule copie produisait une
+ * dérive visuelle permanente, sans que rien ne le signale.
+ *
+ * ⚠️ Ne contient QUE les sélecteurs strictement identiques partout, vérifiés par
+ * comparaison des blocs. Volontairement ABSENTS, malgré la recommandation de
+ * l'audit : .hero-mini, .subtitle, .layer-header, .crosslink-block (+ h3, + p).
+ * Ceux-là ont des variantes légitimes — /about utilise gap 1.5rem et font-size
+ * 0.95rem là où les autres pages utilisent 2rem et 1rem. Les extraire aurait
+ * uniformisé /about en silence. Ils restent scoped dans chaque page.
+ *
+ * Les blocs sous @media restent également locaux : seules les règles de premier
+ * niveau sont ici.
+ */
+
+.terminal-prompt {
+    font-family: var(--font-mono);
+    color: var(--color-accent);
+    font-size: 0.95rem;
+    margin-bottom: 0.75rem;
+  }
+
+.layer {
+    padding: 3rem 0;
+    border-top: 1px solid var(--color-border);
+  }
+
+.layer-header h2 {
+    font-size: 1.4rem;
+    margin-bottom: 0;
+  }
+
+.layer-content > p {
+    color: var(--color-text-muted);
+    margin-bottom: 1.5rem;
+    line-height: 1.7;
+  }
+
+.layer-content > p strong {
+    color: var(--color-text);
+  }
+
+.layer-content > p a {
+    color: var(--color-accent);
+  }
+
+.crosslink-block:hover {
+    border-color: var(--color-accent);
+    box-shadow: 0 0 20px rgba(56, 189, 248, 0.1);
+    color: inherit;
+  }
+
+.crosslink-duo {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+  }

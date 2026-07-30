@@ -5,6 +5,10 @@ import Nav from '../components/Nav.astro';
 import Footer from '../components/Footer.astro';
 import { getLangFromUrl, getLocalizedPath } from '../i18n/utils';
 import ogPages from '../data/og-pages.json';
+// Chrome de page partagé (.layer, .terminal-prompt, .crosslink-duo…) : ces règles
+// étaient recopiées à l'identique dans chaque page de contenu. Voir l'en-tête du
+// fichier pour ce qui en est volontairement exclu.
+import '../styles/page-chrome.css';
 
 interface Props {
   title: string;
