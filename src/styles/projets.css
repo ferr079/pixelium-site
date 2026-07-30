@@ -1,0 +1,538 @@
+/* projets — styles de la page /projets, partagés par la version EN et la version FR.
+ *
+ * Le bloc <style> était recopié dans projets.astro et fr/projets.astro : 524 lignes
+ * identiques à 99,8 %. Un ajustement appliqué d'un seul côté faisait diverger les
+ * deux locales sans que rien ne le signale.
+ *
+ * ⚠️ POURQUOI TOUT EST PRÉFIXÉ PAR `.projets-page` : un `import` CSS en Astro est GLOBAL,
+ * or 13 de ces classes existent aussi ailleurs (.spec/.specs/.spec-label/.spec-value
+ * sur /infrastructure et /securite, .tags dans Card.astro et /contributions, .project
+ * sur /contributions, .tech-logo sur /ctf…). Sans préfixe, toute propriété déclarée
+ * ici et absente de leur définition scoped se serait appliquée à ces pages, en
+ * silence. Le préfixe restitue l'isolation que `<style>` scoped assurait.
+ *
+ * La classe est portée par le <main> des deux pages. Ne pas retirer l'une sans l'autre.
+ */
+
+/* Hero mini */
+  .projets-page .hero-mini {
+    padding: 4rem 0 3rem;
+  }
+
+  .projets-page h1 {
+    font-size: clamp(2rem, 5vw, 3rem);
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    line-height: 1.1;
+    margin-bottom: 1rem;
+  }
+
+  .projets-page .subtitle {
+    color: var(--color-text-muted);
+    font-size: 1.1rem;
+  }
+
+  /* Projects */
+  .projets-page .project {
+    padding: 3rem 0;
+    border-top: 1px solid var(--color-border);
+  }
+
+  .projets-page .project-header {
+    margin-bottom: 1.5rem;
+  }
+
+  .projets-page .project-tag {
+    display: inline-block;
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    color: var(--color-accent);
+    background: rgba(56, 189, 248, 0.1);
+    border: 1px solid rgba(56, 189, 248, 0.2);
+    padding: 0.15rem 0.6rem;
+    border-radius: 4px;
+    margin-bottom: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+
+  .projets-page .project-header h2 {
+    font-size: 1.4rem;
+    line-height: 1.3;
+  }
+
+  .projets-page .project-intro p {
+    color: var(--color-text-muted);
+    font-size: 1.05rem;
+    line-height: 1.7;
+    margin-bottom: 1.5rem;
+  }
+
+  .projets-page .project-intro p strong {
+    color: var(--color-text);
+  }
+
+  /* Details */
+  .projets-page .project-details {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(18rem, 1fr));
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .projets-page .detail-block {
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: 6px;
+    padding: 1.25rem;
+  }
+
+  .projets-page .detail-block h4 {
+    font-size: 0.9rem;
+    margin-bottom: 0.5rem;
+    color: var(--color-text);
+  }
+
+  .projets-page .detail-block p {
+    font-size: 0.85rem;
+    color: var(--color-text-muted);
+    line-height: 1.6;
+  }
+
+  .projets-page .detail-block p strong {
+    color: var(--color-text);
+  }
+
+  /* Stack + services */
+  .projets-page .project-stack {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    flex-wrap: wrap;
+  }
+
+  .projets-page .tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+    list-style: none;
+  }
+
+  .projets-page .tags li {
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    background: var(--color-bg);
+    color: var(--color-accent);
+    padding: 0.2rem 0.6rem;
+    border-radius: 4px;
+    border: 1px solid var(--color-border);
+  }
+
+  .projets-page .project-services {
+    font-size: 0.8rem;
+    color: var(--color-text-muted);
+    font-style: italic;
+  }
+
+  .projets-page .project-link {
+    color: var(--color-accent);
+    text-decoration: none;
+    font-style: normal;
+    font-weight: 600;
+  }
+
+  .projets-page .project-link:hover {
+    text-decoration: underline;
+  }
+
+  /* AI Divider */
+  .projets-page .ai-divider {
+    padding: 3rem 0 2rem;
+    border-top: 2px solid var(--color-accent);
+  }
+
+  .projets-page .ai-divider h2 {
+    font-size: clamp(1.5rem, 4vw, 2.2rem);
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    line-height: 1.1;
+    margin-bottom: 0.75rem;
+  }
+
+  .projets-page .ai-divider-sub {
+    color: var(--color-text-muted);
+    font-size: 1rem;
+    line-height: 1.6;
+  }
+
+  /* Layers (from ia.astro) */
+  .projets-page .layer-header {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .projets-page .tech-logo {
+    width: 1.4rem;
+    height: 1.4rem;
+    flex-shrink: 0;
+  }
+
+  .projets-page .api-logo-img {
+    width: 1.6rem;
+    height: 1.6rem;
+    flex-shrink: 0;
+  }
+
+  /* Specs */
+  .specs { margin-bottom: 1.5rem; }
+
+  .projets-page .spec {
+    display: flex;
+    gap: 1rem;
+    padding: 0.6rem 0;
+    border-bottom: 1px solid var(--color-border);
+    align-items: baseline;
+  }
+
+  .spec:last-child { border-bottom: none; }
+
+  .projets-page .spec-label {
+    font-family: var(--font-mono);
+    font-size: 0.8rem;
+    color: var(--color-accent);
+    min-width: 6rem;
+    flex-shrink: 0;
+  }
+
+  .projets-page .spec-value {
+    font-size: 0.9rem;
+    color: var(--color-text-muted);
+  }
+
+  /* Models grid */
+  .projets-page .models-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(14rem, 1fr));
+    gap: 1rem;
+  }
+
+  .projets-page .model-group {
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: 6px;
+    padding: 1.25rem;
+  }
+
+  .projets-page .model-group h4 {
+    font-size: 0.8rem;
+    color: var(--color-accent);
+    font-family: var(--font-mono);
+    margin-bottom: 0.75rem;
+  }
+
+  .projets-page .model-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+  }
+
+  .projets-page .model-tags span {
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    background: var(--color-bg);
+    color: var(--color-text-muted);
+    padding: 0.2rem 0.5rem;
+    border-radius: 4px;
+    border: 1px solid var(--color-border);
+  }
+
+  /* API cards */
+  .projets-page .api-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1rem;
+  }
+
+  .projets-page .api-card {
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: 8px;
+    padding: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+
+  .claude-card { border-top: 3px solid var(--color-accent); }
+  .minimax-card { border-top: 3px solid #a855f7; }
+  .groq-card { border-top: 3px solid #f59e0b; }
+
+  .projets-page .api-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .projets-page .api-name {
+    font-family: var(--font-mono);
+    font-weight: 700;
+    font-size: 1rem;
+  }
+
+  .projets-page .api-role {
+    font-size: 0.75rem;
+    color: var(--color-text-muted);
+    font-family: var(--font-mono);
+  }
+
+  .projets-page .api-desc {
+    font-size: 0.85rem;
+    color: var(--color-text-muted);
+    line-height: 1.5;
+  }
+
+  .projets-page .api-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.35rem;
+    margin-top: auto;
+  }
+
+  .projets-page .api-tags span {
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    background: var(--color-bg);
+    color: var(--color-text-muted);
+    padding: 0.15rem 0.4rem;
+    border-radius: 3px;
+    border: 1px solid var(--color-border);
+  }
+
+  /* Agents deployed */
+  .agents-deployed { margin-top: 2rem; padding-top: 1.5rem; border-top: 1px solid var(--color-border); }
+  .agents-deployed h4 { font-family: var(--font-mono); font-size: 0.9rem; color: var(--color-accent); margin-bottom: 1rem; letter-spacing: 0.05em; text-transform: uppercase; }
+  .agents-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1rem; }
+  .agent-card { background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 8px; padding: 1.25rem; transition: border-color 0.3s, transform 0.3s; }
+  .agent-card:hover { border-color: var(--color-accent); transform: translateY(-2px); }
+  .agent-card-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 0.5rem; }
+  .agent-badge { font-family: var(--font-mono); font-size: 0.65rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; padding: 0.2rem 0.5rem; border-radius: 4px; }
+  .agent-badge.running { background: rgba(34, 197, 94, 0.15); color: #22c55e; }
+  .agent-badge.observing { background: rgba(234, 179, 8, 0.15); color: #eab308; }
+  .agent-badge.decommissioned { background: rgba(148, 163, 184, 0.15); color: #94a3b8; }
+  .project-tag-decom { color: #f87171; background: rgba(248, 113, 113, 0.08); border-color: rgba(248, 113, 113, 0.25); }
+  .decom-note { font-family: var(--font-mono); font-size: 0.8rem; color: #94a3b8; border-left: 2px solid rgba(248, 113, 113, 0.4); padding-left: 0.75rem; }
+  .agent-ct { font-family: var(--font-mono); font-size: 0.7rem; color: var(--color-text-muted); }
+  .agent-card h5 { font-size: 1.05rem; margin: 0 0 0.15rem; color: var(--color-text); }
+  .agent-role { font-family: var(--font-mono); font-size: 0.75rem; color: var(--color-accent); margin-bottom: 0.6rem; }
+  .agent-desc { font-size: 0.85rem; color: var(--color-text-muted); line-height: 1.5; margin-bottom: 0.75rem; }
+  .agent-tags { display: flex; flex-wrap: wrap; gap: 0.35rem; }
+  .agent-tags span { font-family: var(--font-mono); font-size: 0.7rem; background: var(--color-bg); color: var(--color-accent); padding: 0.15rem 0.5rem; border-radius: 4px; border: 1px solid var(--color-border); }
+
+  /* Roadmap */
+  .projets-page .roadmap {
+    padding: 3rem 0;
+    border-top: 1px solid var(--color-border);
+  }
+
+  .projets-page .roadmap .layer-header {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 1rem;
+  }
+
+  .projets-page .roadmap .layer-header h2 {
+    font-size: 1.4rem;
+    margin-bottom: 0;
+  }
+
+  .projets-page .roadmap-intro {
+    color: var(--color-text-muted);
+    font-size: 0.95rem;
+    margin-bottom: 1.5rem;
+    line-height: 1.6;
+  }
+
+  .projets-page .roadmap-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(16rem, 1fr));
+    gap: 1rem;
+  }
+
+  .projets-page .roadmap-item {
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: 6px;
+    padding: 1.25rem;
+    border-left: 3px solid var(--color-border);
+    transition: border-left-color 0.2s;
+  }
+
+  .projets-page .roadmap-item:hover {
+    border-left-color: var(--color-accent);
+  }
+
+  .projets-page .roadmap-status {
+    font-family: var(--font-mono);
+    font-size: 0.65rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    padding: 0.15rem 0.5rem;
+    border-radius: 3px;
+    display: inline-block;
+    margin-bottom: 0.6rem;
+  }
+
+  .projets-page .status-planned {
+    color: var(--color-text-muted);
+    background: rgba(148, 163, 184, 0.1);
+    border: 1px solid rgba(148, 163, 184, 0.3);
+  }
+
+  .projets-page .status-wip {
+    color: var(--color-accent);
+    background: rgba(56, 189, 248, 0.1);
+    border: 1px solid rgba(56, 189, 248, 0.3);
+  }
+
+  .projets-page .status-done {
+    color: #22c55e;
+    background: rgba(34, 197, 94, 0.1);
+    border: 1px solid rgba(34, 197, 94, 0.3);
+  }
+
+  .projets-page .roadmap-item h4 {
+    font-size: 0.9rem;
+    margin-bottom: 0.4rem;
+    color: var(--color-text);
+  }
+
+  .projets-page .roadmap-item p {
+    font-size: 0.82rem;
+    color: var(--color-text-muted);
+    line-height: 1.5;
+  }
+
+  /* Crosslink */
+  .projets-page .crosslink {
+    padding: 2rem 0 3rem;
+  }
+
+  .projets-page .crosslink-block {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 2rem;
+    padding: 1.5rem 2rem;
+    border: 1px solid rgba(56, 189, 248, 0.2);
+    border-radius: 8px;
+    background: linear-gradient(135deg, rgba(56, 189, 248, 0.05), rgba(56, 189, 248, 0.02));
+    text-decoration: none;
+    color: inherit;
+    transition: border-color 0.3s, box-shadow 0.3s;
+  }
+
+  .projets-page .crosslink-block h3 {
+    font-size: 1rem;
+    color: var(--color-accent);
+    margin-bottom: 0.5rem;
+  }
+
+  .projets-page .crosslink-block p {
+    font-size: 0.85rem;
+    color: var(--color-text-muted);
+    line-height: 1.5;
+  }
+
+  .projets-page .crosslink-arrow {
+    font-size: 1.5rem;
+    color: var(--color-accent);
+    flex-shrink: 0;
+  }
+
+  /* Mobile responsive */
+  @media (max-width: 640px) {
+    .projets-page .hero-mini {
+      padding: 2rem 0 1.5rem;
+    }
+
+    .projets-page h1 {
+      font-size: clamp(1.5rem, 5vw, 2.5rem);
+    }
+
+    .projets-page .subtitle {
+      font-size: 0.95rem;
+    }
+
+    .projets-page .project {
+      padding: 2rem 0;
+    }
+
+    .projets-page .project-header h2 {
+      font-size: 1.15rem;
+    }
+
+    .projets-page .project-intro p {
+      font-size: 0.95rem;
+    }
+
+    .projets-page .project-details {
+      grid-template-columns: 1fr;
+      gap: 0.75rem;
+    }
+
+    .projets-page .detail-block {
+      padding: 1rem;
+    }
+
+    .projets-page .detail-block h4 {
+      font-size: 0.85rem;
+    }
+
+    .projets-page .detail-block p {
+      font-size: 0.82rem;
+    }
+
+    .projets-page .project-stack {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 0.5rem;
+    }
+
+    .projets-page .ai-divider h2 {
+      font-size: clamp(1.3rem, 4vw, 1.8rem);
+    }
+
+    .spec { flex-direction: column; gap: 0.25rem; }
+    .spec-label { min-width: unset; }
+    .models-grid, .api-grid { grid-template-columns: 1fr; gap: 0.75rem; }
+    .model-group, .api-card { padding: 0.75rem 1rem; }
+    .agents-grid { grid-template-columns: 1fr; }
+
+    .projets-page .roadmap-grid {
+      grid-template-columns: 1fr;
+      gap: 0.75rem;
+    }
+
+    .projets-page .roadmap-item {
+      padding: 1rem;
+    }
+
+    .projets-page .roadmap-intro {
+      font-size: 0.9rem;
+    }
+
+    .projets-page .crosslink-block {
+      flex-direction: column;
+      gap: 1rem;
+      padding: 1.25rem;
+    }
+
+    .projets-page .crosslink-block p {
+      font-size: 0.82rem;
+    }
+
+    .layer-header { flex-wrap: wrap; gap: 0.5rem; }
+  }
