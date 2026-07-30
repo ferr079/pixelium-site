@@ -1,15 +1,33 @@
-# astro-radar — DAG Dagu (à installer sur CT 246). Couche de DÉCLENCHEMENT only :
-# le cerveau (diff de versions + scan des surfaces breaking) vit dans le repo du site
-# (scripts/astro-radar.mjs). Ici on se contente de pull, lancer, et router les briefs.
+# astro-radar — TEMPLATE Dagu, JAMAIS DÉPLOYÉ. Ce fichier ne décrit aucun état en place.
 #
-# Prérequis déjà en place : Hermes/Dagu clonent pixelium-site (/root/pixelium-site),
-# les feeds Astro sont dans FreshRSS, Hermes a un cron veille-quotidienne.
-# → ce DAG ajoute le lane CIBLÉ "upgrade brief" par-dessus l'awareness passive.
+# ⚠️ NE PAS LIRE CET EN-TÊTE COMME UN INVENTAIRE. L'ancienne version annonçait
+# « à installer sur CT 246 » et « prérequis déjà en place » : les deux étaient
+# faux, et ça a produit une issue entière (`infra/homelab#154`) écrite contre un
+# déploiement inexistant — elle demandait de « comparer avant d'écraser » un
+# fichier qui n'a jamais existé. Vérifié sur CT 246 le 2026-07-30 : aucun DAG
+# `astro-radar` parmi les 26 de /opt/dagu/data/dags/, et surtout AUCUN node —
+# le step `radar` ci-dessous (`node scripts/astro-radar.mjs`) ne pourrait pas
+# s'y exécuter même si le DAG y était posé.
+#
+# ✅ L'EXÉCUTION RÉELLE vit sur CT 190 (Hermes), par cron root (vérifié 2026-07-30) :
+#       30 8 * * * /usr/local/bin/hermes-astro-radar
+#   avec /root/pixelium-site + /root/blog-pixelium clonés et node v22. Le wrapper
+#   a sa source dans `configs/hermes/astro-radar/` (repo infra/homelab).
+#   → Pour changer le comportement du radar, c'est LÀ qu'on intervient, pas ici.
+#
+# Ce fichier n'est conservé que comme piste si on migre un jour cron → Dagu. Cette
+# migration est un chantier d'architecture (installer node sur CT 246, y déplacer
+# les secrets Infisical, `hermes send`, le dead-man switch Healthchecks), pas une
+# copie de fichier — cf la clôture de `infra/homelab#154`.
+#
+# Couche de DÉCLENCHEMENT only : le cerveau (diff de versions + scan des surfaces
+# breaking) vit dans scripts/astro-radar.mjs, à côté. Ici on pull, on lance, on
+# route les briefs.
 #
 # MULTI-REPO depuis le 2026-07-29 (`pixelium-site#71`) : le radar scanne le site ET
-# le blog. Le blog doit donc être cloné À CÔTÉ du site sur l'hôte du DAG — sinon le
-# radar le signale comme "cible injoignable" (bruyant par conception : une cible
-# muette est exactement le bug qu'on corrige).
+# le blog. Le blog doit donc être cloné À CÔTÉ du site sur l'hôte qui exécute —
+# sinon le radar le signale comme "cible injoignable" (bruyant par conception :
+# une cible muette est exactement le bug qu'on corrige).
 #
 # ⚠️ YAML : les étapes shell utilisent `command: bash` + `script: |` (scalaire
 # LITTÉRAL). L'ancienne forme `command: bash -c '…'` étalée sur plusieurs lignes
@@ -17,10 +35,11 @@
 # du bloc devient une clé inattendue. Le fichier était invalide depuis l'origine
 # (constaté 2026-07-29 en le passant à un parseur, pas en le relisant).
 #
-# ⚠️ À valider en session homelab contre les conventions Dagu RÉELLES de CT 246
-# (chemins, secret ntfy/Telegram, et surtout les clés `continueOn`/`script` : cf
-# `infra/homelab#143`, où un `continueOn` avait passé le reload puis cassé au
-# dispatch — un parse propre ne prouve pas qu.un DAG s.exécute).
+# ⚠️ Jamais éprouvé à l'exécution. Si migration : valider contre les conventions
+# Dagu RÉELLES de CT 246 (chemins, secret ntfy/Telegram, et surtout les clés
+# `continueOn`/`script` : cf `infra/homelab#143`, où un `continueOn` avait passé
+# le reload puis cassé au dispatch — un parse propre ne prouve pas qu'un DAG
+# s'exécute).
 
 schedule: "30 8 * * *"   # 08h30, après release-watch (8h) ; heures creuses
 
