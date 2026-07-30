@@ -103,6 +103,8 @@ PY
 ⚠️ **Ne PAS faire `aws s3 sync public/images/` du dossier entier** : `sync` compare taille+mtime et re-pousse tout objet R2 dont l'état diverge du repo — écrase silencieusement d'éventuelles variantes R2 (2026-06-25 : a re-poussé 8 screenshots services/monitoring ; sans gravité ici, dimensions identiques, mais R2 n'a **pas** de versioning → irréversible). Cibler le fichier modifié.
 `src/config.ts` defines `ASSETS_BASE`. `Screenshot.astro` and `Carousel.astro` auto-prefix `/images/` paths to R2.
 
+⚠️ **Image d'une origine TIERCE (hors R2) = étendre `img-src` dans `public/_headers` DANS LE MÊME COMMIT.** La CSP est `default-src 'none'` : une origine non déclarée est **bloquée en silence** par le navigateur — seul l'`alt` s'affiche, alors que `npm run build` passe et que l'URL distante répond `200`. Rien ne le signale (ni le CI, ni le freshness guard). Les 2 badges de `/ctf` sont restés invisibles **3 mois et demi** pour cette raison (fix `#74`, 2026-07-30 ; détail → mémoire web `reference_csp_img_src_tiers`). Même piège sur `media-src`. Vérifier après deploy : `curl -sS -D - -o /dev/null <url> | grep -i img-src` — **EN et FR séparément**, le edge cache aussi les en-têtes.
+
 ## API endpoints (hybrid mode — Cloudflare Workers)
 
 | Endpoint | KV namespace | Description |
@@ -132,7 +134,7 @@ git push origin main   # origin = Forgejo (org pixelium) ; push-mirror → GitHu
 
 | Platform | Username | Current stats |
 |---|---|---|
-| Hack The Box | Ferr079 | Pro Hacker rank, #582, 48 system + 50 user owns, 98 flags (fallback ctf.astro + build-stats.ts + chat.ts + about.astro `DynNum` aligné sur le KV `/api/stats` — cf [[reference_ctf_htb_stats_freshness]], garder ce fallback à jour à la main). Lvl 61 « Master » · Season 11 Platinum tier #483 · streak 11 sem. (screenshot `htb-dashboard.webp` MAJ 2026-07-30 = Pro Hacker/Lvl 61/Platinum #483/11-week, 1200x708 ; `?v=20260730`). ⚠️ `/profile/activity` **supprimé par HTB 2026** (HTTP 400) → `flags = user_owns + system_owns`, ne PAS ré-ajouter d'appel activity. NB : `ranking` = rang **global** HTB (≠ `#483` = rang de saison du screenshot) ; le « HTB Rank » du dashboard (Professional → **Master** au Lvl 61) est une **2ᵉ échelle**, distincte du `rank` de l'API (`Pro Hacker`) — les deux coexistent dans la caption |
+| Hack The Box | Ferr079 | Pro Hacker rank, #592, 48 system + 50 user owns, 98 flags (fallback ctf.astro + build-stats.ts + chat.ts + about.astro `DynNum` aligné sur le KV `/api/stats` — cf [[reference_ctf_htb_stats_freshness]], garder ce fallback à jour à la main). Lvl 61 « Master » · Season 11 Platinum tier #483 · streak 11 sem. (screenshot `htb-dashboard.webp` MAJ 2026-07-30 = Pro Hacker/Lvl 61/Platinum #483/11-week, 1200x708 ; `?v=20260730`). ⚠️ `/profile/activity` **supprimé par HTB 2026** (HTTP 400) → `flags = user_owns + system_owns`, ne PAS ré-ajouter d'appel activity. NB : `ranking` = rang **global** HTB (≠ `#483` = rang de saison du screenshot) ; le « HTB Rank » du dashboard (Professional → **Master** au Lvl 61) est une **2ᵉ échelle**, distincte du `rank` de l'API (`Pro Hacker`) — les deux coexistent dans la caption |
 | TryHackMe | ferr0 | Top 15%, 35 rooms, 7 badges |
 | Root-Me | Ferr0 | 1050 pts, 75 challenges, #15486 (fallback ctf.astro + build-stats.ts ; score live au build, `rootme_validations`/`rootme_position` absents du KV live — homelab `infra/homelab#117`, gardés en fallback à jour à la main) |
 | GitHub | ferr079 | github.com/ferr079 |
