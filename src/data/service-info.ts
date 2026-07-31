@@ -141,6 +141,10 @@ export const SERVICE_INFO: Record<string, ServiceBlurb> = {
     what: { en: 'Self-hosted documentation wiki.', fr: 'Wiki de documentation self-hosted.' },
     why: { en: 'The lab\'s long-form knowledge base — runbooks, service docs, decisions.', fr: 'La base de connaissance long format du lab — runbooks, docs de services, décisions.' },
   },
+  'LeafWiki': {
+    what: { en: 'Lightweight self-hosted markdown wiki.', fr: 'Wiki markdown self-hosted, léger.' },
+    why: { en: 'On trial as the successor to Wiki.js — the same knowledge base with far less machinery underneath.', fr: 'À l\'essai comme successeur de Wiki.js — la même base de connaissance avec beaucoup moins de machinerie dessous.' },
+  },
   'Termix': {
     what: { en: 'Web-based SSH terminal and connection manager.', fr: 'Terminal SSH et gestionnaire de connexions web.' },
     why: { en: 'Reach any host\'s shell from a browser, through SSO, no local client.', fr: 'Atteindre le shell de n\'importe quel hôte depuis un navigateur, via SSO, sans client local.' },
