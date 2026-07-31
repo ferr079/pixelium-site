@@ -219,6 +219,24 @@
           "nodeType": "lxc",
           "hostname": null,
           "ipAddress": null
+        },
+        {
+          "label": "Vaultwarden",
+          "nodeType": "lxc",
+          "hostname": null,
+          "ipAddress": null
+        },
+        {
+          "label": "NoteDiscovery",
+          "nodeType": "lxc",
+          "hostname": null,
+          "ipAddress": null
+        },
+        {
+          "label": "LeafWiki",
+          "nodeType": "lxc",
+          "hostname": null,
+          "ipAddress": null
         }
       ]
     },
@@ -290,6 +308,12 @@
         },
         {
           "label": "Transmute",
+          "nodeType": "lxc",
+          "hostname": null,
+          "ipAddress": null
+        },
+        {
+          "label": "web-check",
           "nodeType": "lxc",
           "hostname": null,
           "ipAddress": null
@@ -409,6 +433,12 @@
           "nodeType": "lxc",
           "hostname": null,
           "ipAddress": null
+        },
+        {
+          "label": "agent-vault",
+          "nodeType": "lxc",
+          "hostname": null,
+          "ipAddress": null
         }
       ]
     }
@@ -421,7 +451,7 @@
       "linkType": "ethernet"
     }
   ],
-  "total": 68,
+  "total": 73,
   "switch": {
     "label": "Switch XikeStor",
     "nodeType": "switch",
