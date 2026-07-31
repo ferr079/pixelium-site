@@ -99,12 +99,6 @@
           "ipAddress": null
         },
         {
-          "label": "NetBox",
-          "nodeType": "lxc",
-          "hostname": null,
-          "ipAddress": null
-        },
-        {
           "label": "Home Assistant",
           "nodeType": "vm",
           "hostname": null,
@@ -331,12 +325,6 @@
           "nodeType": "lxc",
           "hostname": "loki.pixelium.internal",
           "ipAddress": "192.168.1.240"
-        },
-        {
-          "label": "Termix",
-          "nodeType": "lxc",
-          "hostname": null,
-          "ipAddress": null
         },
         {
           "label": "Homepage",
