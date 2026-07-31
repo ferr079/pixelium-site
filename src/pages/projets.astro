@@ -347,7 +347,7 @@ import '../styles/projets.css';
             </div>
             <div class="detail-block">
               <h4>Why not Grafana</h4>
-              <p>Grafana was deployed then removed. The OpenFang agent queries VictoriaMetrics and Loki directly via APIs — no need for visual dashboards when AI reads metrics and alerts in natural language on Telegram. Less maintenance, same result.</p>
+              <p>Grafana was deployed then removed. The resident agent queries VictoriaMetrics and Loki directly via APIs — no need for visual dashboards when AI reads metrics and alerts in natural language on Telegram. OpenFang held that role until its June 2026 decommission; Hermes carries it now. Less maintenance, same result.</p>
             </div>
           </div>
           <div class="project-stack">
@@ -395,7 +395,7 @@ import '../styles/projets.css';
               <li>PBS</li>
               <li>WOL</li>
               <li>vzdump</li>
-              <li>OpenFang</li>
+              <li>Dagu</li>
               <li>zstd</li>
               <li>Proxmox API</li>
             </ul>
@@ -709,7 +709,7 @@ import '../styles/projets.css';
             </div>
             <div class="spec">
               <span class="spec-label">Usage</span>
-              <span class="spec-value">PentAGI autonomous pentest, Immich CLIP multilingual search (XLM-Roberta ViT-H-14) + OCR, model exploration</span>
+              <span class="spec-value">Immich CLIP multilingual search (XLM-Roberta ViT-H-14) + OCR, local LLM inference, model exploration</span>
             </div>
           </div>
           <div class="models-grid">
@@ -752,7 +752,7 @@ import '../styles/projets.css';
           <h2>Production APIs</h2>
         </div>
         <div class="layer-content">
-          <p>For agents that run 24/7 — OpenFang (v0.5.9, 7 Guardian crons, headless), Hermes (Telegram h24, 4 crons), PentAGI — we use external APIs or local inference. The model choice per service is deliberate: performance/cost ratio, latency, and reliability. <strong>Total AI production cost: ~&euro;11/month.</strong> Stephane does not throw money at AI — he optimizes it like any other infrastructure component.</p>
+          <p>For the agent that runs 24/7 — Hermes (Telegram h24, 4 crons), sole resident since the AIops v2 trio was decommissioned in June 2026 — we use external APIs or local inference. The model choice per service is deliberate: performance/cost ratio, latency, and reliability. <strong>Total AI production cost: ~&euro;11/month.</strong> Stephane does not throw money at AI — he optimizes it like any other infrastructure component.</p>
           <div class="api-grid">
 
             <div class="api-card claude-card">
@@ -793,7 +793,7 @@ import '../styles/projets.css';
                 </div>
                 <span class="api-role">Raw speed</span>
               </div>
-              <p class="api-desc">OpenFang fallback for tasks where latency matters most. LPU (Language Processing Unit) — inference in milliseconds. Useful for real-time alerts.</p>
+              <p class="api-desc">Fallback for tasks where latency matters most. LPU (Language Processing Unit) — inference in milliseconds. Useful for real-time alerts.</p>
               <div class="api-tags">
                 <span>LPU</span>
                 <span>Fallback</span>
