@@ -58,9 +58,15 @@ const ALIASES = new Map([
 // Guests that exist on PVE but must never reach the public map. Without this
 // list every future --write would silently re-add them: an exclusion decided
 // once has to survive the next resync, or it is not an exclusion.
-// - strix: the offensive HTB/Root-Me harness. /ctf already says the work
-//   happens, the map does not need to name the node it happens on.
-const EXCLUDE = new Set(['strix']);
+//
+// Keyed by PVE **vmid**, not by name, and that distinction is the whole point:
+// this list first excluded "strix", and hours later the VM was renamed to
+// "backtrack19" (same vmid 194). A name-based exclusion is defeated by a rename
+// — silently, and in the direction that publishes rather than hides. The vmid
+// is the identity Proxmox actually keeps stable.
+// - 194: the offensive HTB/Root-Me harness. /ctf already says the work happens,
+//   the map does not need to name the node it happens on.
+const EXCLUDE_VMID = new Set([194]);
 
 const normalize = (s) => {
   const base = s
@@ -122,7 +128,10 @@ async function guestsOf(node) {
       pveGet(node, `/nodes/${node}/lxc`),
       pveGet(node, `/nodes/${node}/qemu`),
     ]);
-    return [...lxc, ...qemu].map((g) => ({ name: g.name, type: g.type === 'qemu' ? 'vm' : 'lxc' }));
+    return [
+      ...lxc.map((g) => ({ name: g.name, vmid: Number(g.vmid), type: 'lxc' })),
+      ...qemu.map((g) => ({ name: g.name, vmid: Number(g.vmid), type: 'vm' })),
+    ];
   } catch (e) {
     console.warn(`  ${node}: unreachable (${e.message}) — zone preserved as committed`);
     return null;
@@ -154,8 +163,8 @@ for (const node of NODES) {
 
   for (const guest of live) {
     if (seen.has(normalize(guest.name))) continue;
-    if (EXCLUDE.has(normalize(guest.name))) {
-      console.log(`  ${node}: ~ ${guest.name} — excluded from the public map`);
+    if (EXCLUDE_VMID.has(guest.vmid)) {
+      console.log(`  ${node}: ~ ${guest.name} (vmid ${guest.vmid}) — excluded from the public map`);
       continue;
     }
     // A brand-new container arrives under its hostname; rename it by hand
