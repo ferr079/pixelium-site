@@ -280,7 +280,7 @@ import '../styles/projets.css';
               <li>Ansible</li>
               <li>Wazuh</li>
             </ul>
-            <span class="project-services">4 nodes FW, 57 IPS scenarios, 34 hardened SSH hosts &middot; <a href="https://blog.pixelium.win/crowdsec-traefik-premiers-pas" class="project-link" target="_blank" rel="noopener">read the story &rarr;</a></span>
+            <span class="project-services">4 nodes FW, <DynNum stat="inv_crowdsec_scenarios" fallback="57" /> IPS scenarios, <DynNum stat="ansible_hosts" fallback="65" /> hardened SSH hosts &middot; <a href="https://blog.pixelium.win/crowdsec-traefik-premiers-pas" class="project-link" target="_blank" rel="noopener">read the story &rarr;</a></span>
           </div>
         </div>
       </div>

@@ -41,6 +41,16 @@ const FALLBACK: Record<string, string | number> = {
   https_services: 48,
   ansible_hosts: 65,
   beszel_agents: 52,
+  // Couverture défensive — publiées par kv-push depuis le 2026-08-01 (infra/homelab#129,
+  // PR #246/#249). Jusque-là ces 4 nombres vivaient en dur dans la prose de /securite et
+  // dans les CV, invisibles au freshness guard. wazuh_agents vaut 37 et non 38 : les 38
+  // entrées d'`agent_control -l` incluent le manager `000`, qui n'est pas un agent.
+  // inv_crowdsec_scenarios porte le préfixe inv_ (inventaire quotidien CT 110), pas une
+  // collecte live — ne pas chercher `crowdsec_scenarios` sans préfixe.
+  wazuh_agents: 37,
+  alloy_hosts: 57,
+  authentik_services: 6,
+  inv_crowdsec_scenarios: 57,
   inv_skills: 151,
   // Provenance changée 2026-07-25 : plus le conteneur Podman Kali local (terre2),
   // mais l'inventaire offensif de la VM dédiée/isolée strix (pve3). Clé renommée

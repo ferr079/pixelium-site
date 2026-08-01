@@ -53,6 +53,17 @@ const CHECKS = [
   // that itself claims "Every number on this site is live from the homelab".
   { file: 'public/humans.txt', re: /(\d+) LXC containers/, key: 'lxc_count', label: 'humans.txt — LXC containers' },
   { file: 'public/humans.txt', re: /Ansible \((\d+) playbooks\)/, key: 'ansible_playbooks', label: 'humans.txt — Ansible playbooks' },
+  // Couverture défensive (2026-08-01) — les 4 clés alloy_hosts / authentik_services /
+  // inv_crowdsec_scenarios / wazuh_agents sont enfin publiées au KV (infra/homelab#129),
+  // donc /securite, /infrastructure et /projets sont passés en <DynNum> : le sweep
+  // "orphan stats" plus bas les couvre déjà, rien à pinner pour ces pages. Restent les
+  // deux surfaces qui ne PEUVENT pas lire build-stats :
+  //   - chat.ts, Worker runtime (même raison que les facts pinnés plus haut) ;
+  //   - les meta SEO des cartes d'accueil, chaînes statiques dans le frontmatter.
+  { file: 'src/pages/api/chat.ts', re: /CrowdSec, (\d+) scenarios/, key: 'inv_crowdsec_scenarios', label: 'chat.ts — CrowdSec scenarios (doctrine)' },
+  { file: 'src/pages/api/chat.ts', re: /CrowdSec IPS \((\d+) scenarios\)/, key: 'inv_crowdsec_scenarios', label: 'chat.ts — CrowdSec scenarios (stack)' },
+  { file: 'src/pages/index.astro', re: /Authentik SSO on (\d+) services/, key: 'authentik_services', label: 'index.astro — Authentik services (Security card meta)' },
+  { file: 'src/pages/fr/index.astro', re: /SSO Authentik sur (\d+) services/, key: 'authentik_services', label: 'fr/index.astro — Authentik services (Security card meta)' },
 ];
 
 const STATS_URL = 'https://pixelium.win/api/stats';

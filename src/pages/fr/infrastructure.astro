@@ -33,7 +33,7 @@ const serviceSlides = [
 
 const monitoringSlides = [
   { src: '/images/monitoring/beszel.webp', alt: 'Beszel — dashboard monitoring tous systèmes', title: 'Beszel — Monitoring système' },
-  { src: '/images/monitoring/wazuh.webp', alt: 'Wazuh — 38 agents, vue endpoints', title: 'Wazuh — SIEM (Agents)' },
+  { src: '/images/monitoring/wazuh.webp', alt: 'Wazuh — vue endpoints', title: 'Wazuh — SIEM (Agents)' },
   { src: '/images/monitoring/wazuh2.webp', alt: 'Wazuh — alertes sécurité et threat intelligence', title: 'Wazuh — SIEM (Vue globale)' },
   { src: '/images/monitoring/victoriametrics.webp', alt: 'VictoriaMetrics — métriques CPU, mémoire, disque', title: 'VictoriaMetrics — TSDB Métriques' },
   { src: '/images/monitoring/patchmon.webp', alt: 'Patchmon — dashboard conformité patchs', title: 'Patchmon — Conformité patchs' },
@@ -440,7 +440,7 @@ const monitoringSlides = [
                 <h4>Loki + Alloy</h4>
               </div>
               <span class="obs-role">Logs</span>
-              <p>Agrégation de logs centralisée. Grafana Alloy sur chacun des 57 hôtes pousse vers Loki (CT 240). Requêtes LogQL.</p>
+              <p>Agrégation de logs centralisée. Grafana Alloy sur chacun des <DynNum stat="alloy_hosts" fallback="57" /> hôtes pousse vers Loki (CT 240). Requêtes LogQL.</p>
             </div>
 
             <div class="obs-card">
