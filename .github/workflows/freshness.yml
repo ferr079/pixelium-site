@@ -9,20 +9,17 @@ on:
   workflow_dispatch: {}
   push:
     branches: [main]
-    # Tous les fichiers réellement lus par CHECKS dans audit-freshness.mjs
-    # (paths élargi — audit CI Grok pixelium/web#19, P2 : la liste précédente
-    # ne couvrait que 4 des 8 fichiers pinés, un push sur index.astro/
-    # infrastructure.astro/og-pages.json ne déclenchait le guard qu'au cron
-    # quotidien suivant, pas immédiatement).
+    # Le guard fait DEUX passes, et `paths` doit couvrir les deux :
+    #   1. CHECKS — des littéraux épinglés dans une poignée de fichiers ;
+    #   2. le sweep « orphan stats » — qui lit TOUT `src/**` (.astro/.ts) pour
+    #      vérifier que chaque <DynNum stat="x"> / StatsBar { stat: 'x' } existe
+    #      bien dans le KV.
+    # Lister les fichiers de CHECKS un par un couvrait la passe 1 mais laissait la
+    # passe 2 aveugle : ajouter un <DynNum> sur une page non listée (projets.astro,
+    # par ex.) pouvait introduire une stat orpheline sans rien déclencher avant le
+    # cron du lendemain. D'où `src/**`, qui suit la passe la plus large.
     paths:
-      - 'src/pages/api/chat.ts'
-      - 'src/pages/securite.astro'
-      - 'src/pages/fr/securite.astro'
-      - 'src/pages/index.astro'
-      - 'src/pages/fr/index.astro'
-      - 'src/pages/infrastructure.astro'
-      - 'src/pages/fr/infrastructure.astro'
-      - 'src/data/og-pages.json'
+      - 'src/**'
       - 'public/humans.txt'
       - 'scripts/audit-freshness.mjs'
 

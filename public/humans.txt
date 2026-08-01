@@ -21,7 +21,7 @@ JS: Vanilla only — DynNum hydration, scroll reveal, terminal recordings
 i18n: EN (default) + FR (27 pages total)
 
 /* INFRASTRUCTURE (what this site documents) */
-Virtualization: 4x Proxmox VE nodes, 62 LXC containers
+Virtualization: 4x Proxmox VE nodes, 61 LXC containers
 Network: TechnitiumDNS (DoT HA), Traefik, step-ca (internal PKI)
 Security: Wazuh SIEM, CrowdSec IPS, Authentik SSO, Headscale VPN, YubiKey FIDO2
 Observability: VictoriaMetrics, Loki, Beszel, Patchmon

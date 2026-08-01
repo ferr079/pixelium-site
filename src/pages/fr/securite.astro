@@ -45,7 +45,7 @@ const stats = await getBuildStats();
               <span class="layer-icon">&#9678;</span>
               <div>
                 <h4>Couche identit&eacute;</h4>
-                <p>Authentik SSO (6 services), YubiKey FIDO2, certificats SSH &eacute;ph&eacute;m&egrave;res sur <DynNum stat="ansible_hosts" fallback="65" /> h&ocirc;tes</p>
+                <p>Authentik SSO (<DynNum stat="authentik_services" fallback="6" /> services), YubiKey FIDO2, certificats SSH &eacute;ph&eacute;m&egrave;res sur <DynNum stat="ansible_hosts" fallback="65" /> h&ocirc;tes</p>
               </div>
             </div>
             <div class="defense-layer">
@@ -59,7 +59,7 @@ const stats = await getBuildStats();
               <span class="layer-icon">&#9733;</span>
               <div>
                 <h4>Couche d&eacute;tection</h4>
-                <p>Wazuh SIEM (38 agents), Grafana Alloy &rarr; logs Loki centralis&eacute;s, monitoring Beszel, alertes Telegram</p>
+                <p>Wazuh SIEM (<DynNum stat="wazuh_agents" fallback="37" /> agents), Grafana Alloy sur <DynNum stat="alloy_hosts" fallback="57" /> h&ocirc;tes &rarr; logs Loki centralis&eacute;s, monitoring Beszel, alertes Telegram</p>
               </div>
             </div>
             <div class="defense-layer">
@@ -121,7 +121,7 @@ const stats = await getBuildStats();
           <h2>SSO Authentik — un login pour tout</h2>
         </div>
         <div class="layer-content">
-          <p>Authentik centralise l'authentification sur <strong>6 services</strong> via OAuth2/OIDC. Un seul couple identifiant/mot de passe, un seul point de contr&ocirc;le, un seul endroit o&ugrave; r&eacute;voquer un acc&egrave;s. La phase 2 supprimera les logins locaux — SSO-only + YubiKey WebAuthn.</p>
+          <p>Authentik centralise l'authentification sur <strong><DynNum stat="authentik_services" fallback="6" /> services</strong> via OAuth2/OIDC. Un seul couple identifiant/mot de passe, un seul point de contr&ocirc;le, un seul endroit o&ugrave; r&eacute;voquer un acc&egrave;s. La phase 2 supprimera les logins locaux — SSO-only + YubiKey WebAuthn.</p>
           <div class="details-grid">
             <div class="detail">
               <h4>Services int&eacute;gr&eacute;s</h4>
@@ -210,11 +210,11 @@ const stats = await getBuildStats();
           <div class="details-grid">
             <div class="detail">
               <h4>CrowdSec</h4>
-              <p>Add-on sur CT 110 (Traefik). Parse les access logs, d&eacute;tecte les scans et brute-force, bloque au niveau iptables — <strong>avant que la requ&ecirc;te n'atteigne le service.</strong> Connect&eacute; &agrave; la Central API pour les blocklists communautaires.</p>
+              <p>Add-on sur CT 110 (Traefik). <DynNum stat="inv_crowdsec_scenarios" fallback="57" /> sc&eacute;narios communautaires parsent les access logs, d&eacute;tectent les scans et brute-force, bloquent au niveau iptables — <strong>avant que la requ&ecirc;te n'atteigne le service.</strong> Connect&eacute; &agrave; la Central API pour les blocklists communautaires.</p>
             </div>
             <div class="detail">
               <h4>Wazuh</h4>
-              <p>SIEM centralis&eacute; (CT 234) avec 38 agents sur le parc. File integrity monitoring, d&eacute;tection de rootkits, conformit&eacute; CIS. Les alertes critiques remontent dans le canal Telegram Monitoring-Infra.</p>
+              <p>SIEM centralis&eacute; (CT 234) avec <DynNum stat="wazuh_agents" fallback="37" /> agents sur le parc. File integrity monitoring, d&eacute;tection de rootkits, conformit&eacute; CIS. Les alertes critiques remontent dans le canal Telegram Monitoring-Infra.</p>
             </div>
           </div>
         </div>
@@ -308,8 +308,8 @@ const stats = await getBuildStats();
     </section>
 
     <StatsBar stats={[
-      { number: '65', label: 'hosts SSH durci', stat: 'ansible_hosts' },
-      { number: '6', label: 'SSO' },
+      { number: '63', label: 'hosts SSH durci', stat: 'ansible_hosts' },
+      { number: '6', label: 'SSO', stat: 'authentik_services' },
       { number: '7', label: 'couches d\u00e9fensives' },
       { number: '0', label: 'mot de passe SSH' },
     ]} />
@@ -333,7 +333,7 @@ const stats = await getBuildStats();
         <a href="/fr/infrastructure" class="crosslink-block">
           <div>
             <h3>&#9670; Infrastructure</h3>
-            <p><DynNum stat="services_total" fallback="46" /> services self-hosted sur <DynNum stat="proxmox_nodes" fallback="4" /> n&oelig;uds Proxmox — la fondation que toutes ces couches de s&eacute;curit&eacute; prot&egrave;gent. DNS, PKI, monitoring, SOC (Grafana 14 panneaux · Loki 30j · Wazuh 38 agents · CrowdSec), stockage, automatisation.</p>
+            <p><DynNum stat="services_total" fallback="46" /> services self-hosted sur <DynNum stat="proxmox_nodes" fallback="4" /> n&oelig;uds Proxmox — la fondation que toutes ces couches de s&eacute;curit&eacute; prot&egrave;gent. DNS, PKI, monitoring, SOC (Grafana 14 panneaux · Loki 30j · Wazuh <DynNum stat="wazuh_agents" fallback="37" /> agents · CrowdSec), stockage, automatisation.</p>
           </div>
           <span class="crosslink-arrow">&#8594;</span>
         </a>
