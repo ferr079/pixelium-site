@@ -15,32 +15,32 @@
  * snapshot so a build never ships empty numbers.
  */
 
-// Last-known snapshot (2026-07-28). Only used if the build can't reach /api/stats.
+// Last-known snapshot (2026-08-01). Only used if the build can't reach /api/stats.
 const FALLBACK: Record<string, string | number> = {
-  claude_hours: 5479,
-  claude_cache_hit: 96.7,
-  claude_sessions: 719,
-  claude_tokens_billions: 25.0,
+  claude_hours: 6018,
+  claude_cache_hit: 96.8,
+  claude_sessions: 907,
+  claude_tokens_billions: 27.0,
   services_up: 61,
   services_total: 61,
   services_up_core: 49,
   services_total_core: 49,
-  uptime_pct: 100,
-  forgejo_commits_30d: 1109,
+  uptime_pct: 100.0,
+  forgejo_commits_30d: 1473,
   proxmox_nodes: 4,
   htb_flags: 98,
   htb_rank: 'Pro Hacker',
-  htb_ranking: 592,
+  htb_ranking: 585,
   htb_system_owns: 48,
   htb_user_owns: 50,
   rootme_score: 1050,
   rootme_validations: 75,
   rootme_position: 15486,
   ansible_playbooks: 56,
-  lxc_count: 62,
-  https_services: 48,
-  ansible_hosts: 65,
-  beszel_agents: 52,
+  lxc_count: 61,
+  https_services: 46,
+  ansible_hosts: 63,
+  beszel_agents: 51,
   // Couverture défensive — publiées par kv-push depuis le 2026-08-01 (infra/homelab#129,
   // PR #246/#249). Jusque-là ces 4 nombres vivaient en dur dans la prose de /securite et
   // dans les CV, invisibles au freshness guard. wazuh_agents vaut 37 et non 38 : les 38
@@ -51,14 +51,14 @@ const FALLBACK: Record<string, string | number> = {
   alloy_hosts: 57,
   authentik_services: 6,
   inv_crowdsec_scenarios: 57,
-  inv_skills: 151,
+  inv_skills: 153,
   // Provenance changée 2026-07-25 : plus le conteneur Podman Kali local (terre2),
   // mais l'inventaire offensif de la VM dédiée/isolée strix (pve3). Clé renommée
-  // inv_kali → inv_offensive_tools. En attente du forwarding kv-push.sh côté
-  // homelab (clé "kali" → "offensive_tools") : jusque-là ce chiffre reste figé
-  // sur ce fallback (92, confirmé session /HTB du 2026-07-25).
-  inv_offensive_tools: 92,
-  inv_forworld: 173,
+  // inv_kali → inv_offensive_tools. Le forwarding kv-push.sh ("kali" →
+  // "offensive_tools") est en place : la clé est servie live (105 au 2026-08-01),
+  // ce fallback n'est plus le seul à la porter. Le chiffre n'est donc plus figé.
+  inv_offensive_tools: 105,
+  inv_forworld: 171,
 };
 
 // Metrics that only ever increase — CTF progress fetched from flaky external APIs
