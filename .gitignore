@@ -27,3 +27,9 @@ pnpm-debug.log*
 
 # Generated Open Graph cards (rebuilt by scripts/og/gen-og.mjs at build)
 public/og/
+
+# Local terminal recordings (demo gif/webm) — deliberately kept out of the repo.
+# A recording freezes a point-in-time state and then goes stale in silence: every
+# other figure on this site is live from the KV, and the freshness guard only
+# checks text, never pixels. Archive them outside the repo instead.
+recordings/
