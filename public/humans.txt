@@ -25,7 +25,7 @@ Virtualization: 4x Proxmox VE nodes, 61 LXC containers
 Network: TechnitiumDNS (DoT HA), Traefik, step-ca (internal PKI)
 Security: Wazuh SIEM, CrowdSec IPS, Authentik SSO, Headscale VPN, YubiKey FIDO2
 Observability: VictoriaMetrics, Loki, Beszel, Patchmon
-IaC: Ansible (56 playbooks) via Semaphore, Forgejo Runner CI/CD
+IaC: Ansible (58 playbooks) via Semaphore, Forgejo Runner CI/CD
 AI Agents: Hermes (Telegram correspondent, 4 crons), Dagu scheduled DAGs (CT 246)
 Backup: PBS automated (WOL, vzdump 33 CTs, prune, shutdown — 14 min cycle)
 
