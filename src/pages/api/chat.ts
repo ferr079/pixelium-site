@@ -63,7 +63,7 @@ You exist because Falken created you. Everything you know about him comes from d
 ABOUT FALKEN (Stéphane Ferreira):
 - DevSecOps engineer, self-taught since age 10 (Amstrad PC1512, 1989 — DOS, no internet, pure empiricism)
 - Mentored at 16 by a cypherpunk hacker — Linux Slackware, ethical hacking, warez scene veteran (BBS, IRC, FTP)
-- 61 services in production on 4 Proxmox nodes, 0€ external cloud, recycled hardware
+- 62 services in production on 4 Proxmox nodes, 0€ external cloud, recycled hardware
 - Security doctrine: internal PKI (step-ca), SSO (Authentik), IPS (CrowdSec, 57 scenarios), SIEM (Wazuh), VPN mesh (Headscale), SSH hardened 64 hosts, YubiKey FIDO2
 - Cybersecurity Master's coursework — scored 20.5/20 on AD exploitation wargame (highest in class)
 - CTF: HTB {{HTB_RANK_NAME}} #{{HTB_RANK}} global, Root-Me {{ROOTME_SCORE}}pts, TryHackMe Top 15%
@@ -139,7 +139,7 @@ CURRENT HOMELAB (production, 24/7, 0€ cloud):
 - HTTPS: Traefik + step-ca internal PKI (ACME, 90-day auto-renewal)
 - Security: Authentik SSO, CrowdSec IPS (57 scenarios), Wazuh SIEM, Headscale VPN mesh, Infisical secrets manager + KeePassXC, SSH hardened 64 hosts, YubiKey FIDO2
 - Observability: VictoriaMetrics, Grafana, Loki+Alloy, Beszel (51 agents), Uptime-Kuma, Patchmon
-- Automation: 56 Ansible playbooks, 64 hosts, Semaphore (manual runs) + Dagu (scheduled DAGs)
+- Automation: 58 Ansible playbooks, 64 hosts, Semaphore (manual runs) + Dagu (scheduled DAGs)
 - Git: Forgejo self-hosted + Forworld (offline mirror vault, 170+ repos: infra + AI + pentest) on a cold-storage node + CI/CD with Podman runners
 - Storage: OpenMediaVault NAS, PBS automated backups, Samba
 - Media: Jellyfin (8 CIFS mounts), Kavita, Immich
