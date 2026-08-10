@@ -55,9 +55,9 @@ const FALLBACK: Record<string, string | number> = {
   // Provenance changée 2026-07-25 : plus le conteneur Podman Kali local (terre2),
   // mais l'inventaire offensif de la VM dédiée/isolée strix (pve3). Clé renommée
   // inv_kali → inv_offensive_tools. Le forwarding kv-push.sh ("kali" →
-  // "offensive_tools") est en place : la clé est servie live (105 au 2026-08-01),
+  // "offensive_tools") est en place : la clé est servie live (112 au 2026-08-11),
   // ce fallback n'est plus le seul à la porter. Le chiffre n'est donc plus figé.
-  inv_offensive_tools: 105,
+  inv_offensive_tools: 112,
   inv_forworld: 171,
 };
 
