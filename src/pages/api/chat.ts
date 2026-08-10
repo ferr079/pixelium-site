@@ -34,7 +34,7 @@ async function checkRateLimit(ip: string): Promise<{ allowed: boolean; retryAfte
 // moment de la requête (l'équivalent Worker d'un <DynNum>) ; les fallbacks ne
 // servent que si le KV est injoignable. rootme_validations n'est pas dans le KV.
 async function liveCtfStats(): Promise<Record<string, string>> {
-  const fb: Record<string, string> = { HTB_RANK: '501', HTB_RANK_NAME: 'Pro Hacker', HTB_FLAGS: '107', HTB_MACHINES: '53', ROOTME_SCORE: '1050' };
+  const fb: Record<string, string> = { HTB_RANK: '524', HTB_RANK_NAME: 'Pro Hacker', HTB_FLAGS: '109', HTB_MACHINES: '54', ROOTME_SCORE: '1050' };
   try {
     const stats = await env.STATS_KV.get('stats', { type: 'json' }) as Record<string, unknown> | null;
     const num = (v: unknown, f: string) => { const n = Number(v); return Number.isFinite(n) && n > 0 ? String(n) : f; };
