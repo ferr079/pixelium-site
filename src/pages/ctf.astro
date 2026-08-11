@@ -14,11 +14,16 @@ const n = (k: string, d: number): number => (Number.isFinite(Number(s[k])) ? Num
 
 const htb = {
   rank: String(s.htb_rank ?? 'Pro Hacker'),
-  ranking: n('htb_ranking', 524),
+  ranking: n('htb_ranking', 458),
   system_owns: n('htb_system_owns', 54),
   user_owns: n('htb_user_owns', 55),
 };
 const htbFlags = n('htb_flags', htb.user_owns + htb.system_owns);
+// htb_flags counts MACHINES only (user_owns + system_owns) — the HTB profile endpoint carries no
+// fortress field. kv-push publishes `htb_fortress_flags` alongside (= 2, Fortress AWS 2/10): the
+// key is live in the KV but deliberately NOT surfaced yet — held back for the v5 visual redesign
+// (Stéphane, 2026-08-11). When it ships: a NEIGHBOURING tile, never added to the machine flags —
+// a Fortress holds 7-11 flags for a single target, a machine 2, the sum would mean nothing.
 
 const rootme = {
   score: n('rootme_score', 1050),
@@ -92,7 +97,7 @@ const rootme = {
                 </div>
                 <div class="platform-stat">
                   <span class="stat-number" data-htb="flags">{htbFlags}</span>
-                  <span class="stat-label">Flags</span>
+                  <span class="stat-label">Machine flags</span>
                 </div>
                 <div class="platform-stat">
                   <span class="stat-number" data-htb="ranking">#{htb.ranking}</span>
@@ -303,7 +308,7 @@ const rootme = {
       { number: `#${htb.ranking}`, label: 'HTB global rank', stat: 'htb_ranking', suffix: '' },
       { number: String(rootme.validations), label: 'Root-Me challenges' },
       { number: '35', label: 'THM rooms' },
-      { number: String(htbFlags), label: 'total flags' },
+      { number: String(htbFlags), label: 'machine flags' },
       { number: String(rootme.score), label: 'Root-Me points' },
     ]} />
 
