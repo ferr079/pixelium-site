@@ -15,31 +15,38 @@
  * snapshot so a build never ships empty numbers.
  */
 
-// Last-known snapshot (2026-08-02). Only used if the build can't reach /api/stats.
+// Last-known snapshot (2026-08-11). Only used if the build can't reach /api/stats.
 const FALLBACK: Record<string, string | number> = {
-  claude_hours: 6018,
-  claude_cache_hit: 96.8,
-  claude_sessions: 907,
-  claude_tokens_billions: 27.0,
-  services_up: 61,
+  claude_hours: 6447,
+  claude_cache_hit: 96.9,
+  claude_sessions: 1117,
+  claude_tokens_billions: 29.1,
+  services_up: 62,
   services_total: 62,
-  services_up_core: 49,
-  services_total_core: 49,
+  services_up_core: 50,
+  services_total_core: 50,
   uptime_pct: 100.0,
-  forgejo_commits_30d: 1473,
+  forgejo_commits_30d: 1545,
   proxmox_nodes: 4,
   htb_flags: 109,
   htb_rank: 'Pro Hacker',
-  htb_ranking: 524,
+  htb_ranking: 458,
   htb_system_owns: 54,
   htb_user_owns: 55,
+  // htb_flags ci-dessus = user_owns + system_owns, donc MACHINES uniquement — le profil HTB
+  // (/user/profile/basic) ne porte aucun champ fortress. Les flags de Fortress vivent sur
+  // /profile/progress/fortress/{uid} et n'étaient comptés nulle part (2 sur la Fortress AWS
+  // au 2026-08-11). kv-push publie la clé ci-dessous SANS toucher htb_flags, et /ctf les
+  // affiche comme DEUX statistiques distinctes : pas de clé « total » qui les additionnerait,
+  // les deux comptes n'ont pas la même échelle (7 à 11 flags par Fortress, 2 par machine).
+  htb_fortress_flags: 2,
   rootme_score: 1050,
   rootme_validations: 75,
   rootme_position: 15486,
   ansible_playbooks: 58,
   lxc_count: 61,
-  https_services: 46,
-  ansible_hosts: 63,
+  https_services: 47,
+  ansible_hosts: 64,
   beszel_agents: 51,
   // Couverture défensive — publiées par kv-push depuis le 2026-08-01 (infra/homelab#129,
   // PR #246/#249). Jusque-là ces 4 nombres vivaient en dur dans la prose de /securite et
@@ -48,16 +55,16 @@ const FALLBACK: Record<string, string | number> = {
   // inv_crowdsec_scenarios porte le préfixe inv_ (inventaire quotidien CT 110), pas une
   // collecte live — ne pas chercher `crowdsec_scenarios` sans préfixe.
   wazuh_agents: 37,
-  alloy_hosts: 57,
+  alloy_hosts: 58,
   authentik_services: 6,
   inv_crowdsec_scenarios: 57,
   inv_skills: 153,
   // Provenance changée 2026-07-25 : plus le conteneur Podman Kali local (terre2),
   // mais l'inventaire offensif de la VM dédiée/isolée strix (pve3). Clé renommée
   // inv_kali → inv_offensive_tools. Le forwarding kv-push.sh ("kali" →
-  // "offensive_tools") est en place : la clé est servie live (112 au 2026-08-11),
+  // "offensive_tools") est en place : la clé est servie live (116 au 2026-08-11),
   // ce fallback n'est plus le seul à la porter. Le chiffre n'est donc plus figé.
-  inv_offensive_tools: 112,
+  inv_offensive_tools: 116,
   inv_forworld: 171,
 };
 
@@ -66,7 +73,8 @@ const FALLBACK: Record<string, string | number> = {
 // so a transient upstream glitch can never render a LOWER number than already shown
 // (e.g. Root-Me 980 briefly reverting to a stale 765 in the KV). NOT applied to
 // rank/position (lower is better there) or infra counts (which can legitimately drop).
-const MONOTONIC_UP = ['rootme_score', 'htb_flags', 'htb_system_owns', 'htb_user_owns'];
+const MONOTONIC_UP = ['rootme_score', 'htb_flags', 'htb_system_owns', 'htb_user_owns',
+  'htb_fortress_flags'];
 
 function withFloor(stats: Record<string, string | number>): Record<string, string | number> {
   const out = { ...stats };
