@@ -156,3 +156,18 @@ Verify the build passes before pushing:
 ```bash
 npm run build  # must finish with "Complete!" and no errors
 ```
+
+## Dependency bumps — read what the lockfile actually pulled
+
+`scripts/astro-radar.mjs` runs **before** a bump and only compares version numbers against the npm registry — it structurally cannot see what an install will *pull in*. After every `npm install`, run:
+
+```bash
+node scripts/lock-diff.mjs                  # this repo, vs HEAD
+node scripts/lock-diff.mjs ../blog-pixelium # another root
+node scripts/lock-diff.mjs --base main~1    # what an already-made commit pulled
+node scripts/lock-diff.mjs --json           # machine output
+```
+
+Added / removed / version-changed packages, as markdown you can paste straight into a PR body. Exit 0 if unchanged, 10 if it moved (same convention as the radar).
+
+Why it exists: `astro 7.2.1→7.2.2` (2026-08-14) was a one-digit change in the manifest that pulled **8 new transitive packages** (`find-process`, `chalk`, `loglevel`… — stale build-lock cleanup after a Docker restart), 9 on the blog. Read six months later, that looks like someone added a dependency by hand. Don't improvise a `git diff | grep` instead: the first grep that day returned nothing on the wrangler bump because it looked for *added keys* where only *versions* had changed.
