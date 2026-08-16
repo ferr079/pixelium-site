@@ -44,3 +44,12 @@ namespace_id = "1001"
   [ratelimits.simple]
   limit = 4
   period = 60
+
+# Workers Logs. Sans ce bloc, `observability` reste à null côté API et les
+# `console.error` des endpoints (history/record, history, chat) ne sont
+# persistés NULLE PART : le snapshot horaire pouvait échouer en silence, la
+# seule trace visible étant un trou dans /api/history des jours plus tard.
+# Vérifié absent sur les deux Workers le 2026-08-16 (settings API + requête
+# Workers Logs sur 24 h, toutes deux vides).
+[observability]
+enabled = true

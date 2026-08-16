@@ -18,6 +18,11 @@ pnpm-debug.log*
 # environment variables
 .env
 .env.production
+# Secrets locaux de `wrangler dev` — ce fichier n'existe pas aujourd'hui, et
+# c'est précisément quand il apparaîtra (premier test local d'un endpoint) que
+# rien ne l'aurait retenu : ce dépôt est mirroré en public sur GitHub.
+.dev.vars
+.dev.vars.*
 
 # macOS-specific files
 .DS_Store
