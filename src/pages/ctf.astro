@@ -4,7 +4,9 @@ import StatsBar from '../components/StatsBar.astro';
 import DynNum from '../components/DynNum.astro';
 import Screenshot from '../components/Screenshot.astro';
 import { getBuildStats } from '../lib/build-stats';
+import { getLangFromUrl, formatNumber } from '../i18n/utils';
 
+const lang = getLangFromUrl(Astro.url);
 // HTB + Root-Me stats — single source of truth: the KV pipeline (homelab kv-push.sh,
 // refreshed ~every 5 min) that also feeds the homepage. Replaces the old per-page
 // build-time HTB/Root-Me API fetches, which 401'd on the CI runner IP and fell back to
@@ -150,7 +152,7 @@ const rootme = {
                   <span class="stat-label">Challenges</span>
                 </div>
                 <div class="platform-stat">
-                  <span class="stat-number">#{rootme.position.toLocaleString()}</span>
+                  <span class="stat-number">#{formatNumber(rootme.position, lang)}</span>
                   <span class="stat-label">Global</span>
                 </div>
                 <div class="platform-stat">

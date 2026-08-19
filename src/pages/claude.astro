@@ -2,7 +2,9 @@
 import Base from '../layouts/Base.astro';
 import DynNum from '../components/DynNum.astro';
 import SectionHeading from '../components/SectionHeading.astro';
+import { getLangFromUrl, formatNumber } from '../i18n/utils';
 
+const lang = getLangFromUrl(Astro.url);
 // Hourly activity distribution (turns per hour, local CEST = UTC+2).
 // Snapshot from ~/.claude/usage.db on 2026-06-15. The shape is stable — updated on rebuild.
 const heatmapLocal = [
@@ -104,7 +106,7 @@ const maxTurns = Math.max(...heatmapLocal);
             const pct = Math.round((v / maxTurns) * 100);
             const hour = String(h).padStart(2, '0');
             return (
-              <div class="heatmap-col" title={`${hour}h — ${v.toLocaleString()} turns`}>
+              <div class="heatmap-col" title={`${hour}h — ${formatNumber(v, lang)} turns`}>
                 <div class="heatmap-bar-wrap">
                   <div class="heatmap-bar" style={`height:${pct}%`}></div>
                 </div>
