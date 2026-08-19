@@ -9,6 +9,7 @@
     "dev": "astro dev",
     "og": "node scripts/og/gen-og.mjs",
     "audit:freshness": "node scripts/audit-freshness.mjs",
+    "headers:check": "node scripts/headers-check.mjs",
     "topology:export": "node scripts/export-topology.mjs",
     "build": "node scripts/og/gen-og.mjs && astro build",
     "preview": "astro preview",
