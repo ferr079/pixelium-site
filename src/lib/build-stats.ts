@@ -61,7 +61,7 @@ const FALLBACK: Record<string, string | number> = {
   // inv_services (SoT inventory/services.yaml) : ce que le site appelle « le nombre de
   // services du homelab » dans ses textes. NE PAS confondre avec services_total, qui
   // compte les cibles MONITORÉES (Uptime-Kuma) et reste réservé aux pages status/bbs.
-  inv_services: 67,
+  inv_services: 63,
   inv_skills: 153,
   // Provenance changée 2026-07-25 : plus le conteneur Podman Kali local (terre2),
   // mais l'inventaire offensif de la VM dédiée/isolée strix (pve3). Clé renommée

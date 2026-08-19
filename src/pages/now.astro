@@ -19,7 +19,7 @@ import DynNum from '../components/DynNum.astro';
 
         <h2>Operating the homelab</h2>
         <ul class="n-list">
-          <li>Keeping <DynNum stat="inv_services" fallback="67" /> services across four Proxmox nodes honest and patched — and, this week, teaching the <a href="/status">status page</a> to tell <strong>on-demand (Wake-on-LAN)</strong> nodes apart from real outages, so uptime reads true instead of red.</li>
+          <li>Keeping <DynNum stat="inv_services" fallback="63" /> services across four Proxmox nodes honest and patched — and, this week, teaching the <a href="/status">status page</a> to tell <strong>on-demand (Wake-on-LAN)</strong> nodes apart from real outages, so uptime reads true instead of red.</li>
           <li>Native alerting (Beszel / Wazuh / CrowdSec → ntfy) and Dagu DAGs do the watching now; <strong>Hermes</strong> is the sole resident agent.</li>
           <li>This week, stood up an <strong>offline-first knowledge stack</strong> on the on-demand node — <strong>Kiwix</strong> (<DynNum stat="inv_zim" fallback="60" /> ZIM archives: Wikipedia, Stack Exchange, technical docs), <strong>IT-Tools</strong>, <strong>Transmute</strong> — and grew the <strong>Forworld</strong> Git vault to <strong>170+ repos</strong>. The bet: stay productive with the internet unplugged.</li>
         </ul>
