@@ -2,7 +2,9 @@
 import Base from '../../layouts/Base.astro';
 import DynNum from '../../components/DynNum.astro';
 import SectionHeading from '../../components/SectionHeading.astro';
+import { getLangFromUrl, formatNumber } from '../../i18n/utils';
 
+const lang = getLangFromUrl(Astro.url);
 const heatmapLocal = [
   7473, 7102, 5358, 3973, 4256, 4374, 2299,  897,
    730,  362,  193, 1115, 2091, 3075, 3951, 4251,
@@ -102,7 +104,7 @@ const maxTurns = Math.max(...heatmapLocal);
             const pct = Math.round((v / maxTurns) * 100);
             const hour = String(h).padStart(2, '0');
             return (
-              <div class="heatmap-col" title={`${hour}h — ${v.toLocaleString()} turns`}>
+              <div class="heatmap-col" title={`${hour}h — ${formatNumber(v, lang)} turns`}>
                 <div class="heatmap-bar-wrap">
                   <div class="heatmap-bar" style={`height:${pct}%`}></div>
                 </div>

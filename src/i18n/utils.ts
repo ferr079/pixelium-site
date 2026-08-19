@@ -1,4 +1,4 @@
-import { ui, defaultLang, languages } from './ui';
+import { ui, defaultLang, languages, locales } from './ui';
 
 export type Lang = keyof typeof ui;
 
@@ -12,6 +12,11 @@ export function useTranslations(lang: Lang) {
   return function t(key: keyof (typeof ui)[typeof defaultLang]): string {
     return ui[lang][key] || ui[defaultLang][key];
   };
+}
+
+/** Formate un nombre selon la langue de la PAGE, jamais celle de la machine. */
+export function formatNumber(value: number, lang: Lang): string {
+  return value.toLocaleString(locales[lang]);
 }
 
 export function getLocalizedPath(lang: Lang, path: string): string {
