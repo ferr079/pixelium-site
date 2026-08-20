@@ -28,18 +28,19 @@ const FALLBACK: Record<string, string | number> = {
   uptime_pct: 100.0,
   forgejo_commits_30d: 1545,
   proxmox_nodes: 4,
-  htb_flags: 109,
+  htb_flags: 111,
   htb_rank: 'Pro Hacker',
-  htb_ranking: 381,
-  htb_system_owns: 54,
-  htb_user_owns: 55,
+  htb_ranking: 346,
+  htb_system_owns: 55,
+  htb_user_owns: 56,
   // htb_flags ci-dessus = user_owns + system_owns, donc MACHINES uniquement — le profil HTB
   // (/user/profile/basic) ne porte aucun champ fortress. Les flags de Fortress vivent sur
-  // /profile/progress/fortress/{uid} et n'étaient comptés nulle part (2 sur la Fortress AWS
-  // au 2026-08-11). kv-push publie la clé ci-dessous SANS toucher htb_flags, et /ctf les
-  // affiche comme DEUX statistiques distinctes : pas de clé « total » qui les additionnerait,
+  // /profile/progress/fortress/{uid} et n'étaient comptés nulle part (21 au 2026-08-21 :
+  // Jet 11/11 + AWS 10/10). kv-push publie la clé ci-dessous SANS toucher htb_flags ; elle
+  // n'est PAS encore affichée (réserve v5). Le jour où elle sortira, ce sera comme DEUX
+  // statistiques distinctes : pas de clé « total » qui les additionnerait,
   // les deux comptes n'ont pas la même échelle (7 à 11 flags par Fortress, 2 par machine).
-  htb_fortress_flags: 19,
+  htb_fortress_flags: 21,
   rootme_score: 1050,
   rootme_validations: 75,
   rootme_position: 15486,

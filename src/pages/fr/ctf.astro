@@ -16,17 +16,17 @@ const n = (k: string, d: number): number => (Number.isFinite(Number(s[k])) ? Num
 
 const htb = {
   rank: String(s.htb_rank ?? 'Pro Hacker'),
-  ranking: n('htb_ranking', 458),
-  system_owns: n('htb_system_owns', 54),
-  user_owns: n('htb_user_owns', 55),
+  ranking: n('htb_ranking', 346),
+  system_owns: n('htb_system_owns', 55),
+  user_owns: n('htb_user_owns', 56),
 };
 const htbFlags = n('htb_flags', htb.user_owns + htb.system_owns);
 // htb_flags ne compte que les MACHINES (user_owns + system_owns) — le profil HTB ne porte aucun
-// champ fortress. kv-push publie `htb_fortress_flags` à côté (= 2, Fortress AWS 2/10), clé bien
-// vivante dans le KV mais VOLONTAIREMENT pas affichée : elle est mise en réserve pour la refonte
-// visuelle v5 (décision Stéphane 2026-08-11). Quand elle sortira : une tuile VOISINE, jamais
-// additionnée aux flags de machines — une Fortress porte 7 à 11 flags pour une seule cible, une
-// machine 2, le total ne voudrait rien dire.
+// champ fortress. kv-push publie `htb_fortress_flags` à côté (= 21 au 2026-08-21, Jet 11/11
+// + AWS 10/10), clé bien vivante dans le KV mais VOLONTAIREMENT pas affichée : elle est mise
+// en réserve pour la refonte visuelle v5 (décision Stéphane 2026-08-11). Quand elle sortira :
+// une tuile VOISINE, jamais additionnée aux flags de machines — une Fortress porte 7 à 11
+// flags pour une seule cible, une machine 2, le total ne voudrait rien dire.
 
 const rootme = {
   score: n('rootme_score', 1050),

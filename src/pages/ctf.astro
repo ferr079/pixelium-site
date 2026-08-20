@@ -16,16 +16,17 @@ const n = (k: string, d: number): number => (Number.isFinite(Number(s[k])) ? Num
 
 const htb = {
   rank: String(s.htb_rank ?? 'Pro Hacker'),
-  ranking: n('htb_ranking', 458),
-  system_owns: n('htb_system_owns', 54),
-  user_owns: n('htb_user_owns', 55),
+  ranking: n('htb_ranking', 346),
+  system_owns: n('htb_system_owns', 55),
+  user_owns: n('htb_user_owns', 56),
 };
 const htbFlags = n('htb_flags', htb.user_owns + htb.system_owns);
 // htb_flags counts MACHINES only (user_owns + system_owns) — the HTB profile endpoint carries no
-// fortress field. kv-push publishes `htb_fortress_flags` alongside (= 2, Fortress AWS 2/10): the
-// key is live in the KV but deliberately NOT surfaced yet — held back for the v5 visual redesign
-// (Stéphane, 2026-08-11). When it ships: a NEIGHBOURING tile, never added to the machine flags —
-// a Fortress holds 7-11 flags for a single target, a machine 2, the sum would mean nothing.
+// fortress field. kv-push publishes `htb_fortress_flags` alongside (= 21 on 2026-08-21, Jet 11/11
+// + AWS 10/10): the key is live in the KV but deliberately NOT surfaced yet — held back for
+// the v5 visual redesign (Stéphane, 2026-08-11). When it ships: a NEIGHBOURING tile, never
+// added to the machine flags — a Fortress holds 7-11 flags for a single target, a machine 2,
+// the sum would mean nothing.
 
 const rootme = {
   score: n('rootme_score', 1050),
