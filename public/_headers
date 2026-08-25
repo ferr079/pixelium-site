@@ -27,3 +27,15 @@
 /og/*
   ! Cross-Origin-Resource-Policy
   Cross-Origin-Resource-Policy: cross-origin
+
+# Versions Markdown des pages (issue #107), générées après le build par
+# scripts/gen-md.mjs. Elles existent pour les agents : ~80 % de moins à lire que
+# le HTML équivalent, chrome exclu.
+#   - Content-Type explicite : servies en text/plain, elles seraient traitées
+#     comme du texte brut par les clients qui négocient le type.
+#   - noindex : ce sont les MÊMES contenus que les pages HTML. Indexées, elles
+#     doubleraient les URLs du site en contenu dupliqué. Elles ne sont pas dans
+#     le sitemap non plus — Astro ne les connaît pas, elles naissent après lui.
+/*index.md
+  Content-Type: text/markdown; charset=utf-8
+  X-Robots-Tag: noindex

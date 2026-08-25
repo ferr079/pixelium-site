@@ -54,6 +54,14 @@ const BASE = {
  */
 const OG_HEADERS = { ...BASE, 'cross-origin-resource-policy': 'cross-origin' };
 
+/**
+ * Versions Markdown (issue #107) : mêmes en-têtes de base, plus un Content-Type
+ * explicite et un noindex. Le noindex est la partie qui doit être surveillée —
+ * s'il disparaît, le site double ses URLs en contenu dupliqué sans que rien ne
+ * casse visiblement.
+ */
+const MD_HEADERS = { ...BASE, 'x-robots-tag': 'noindex' };
+
 const SITE_CSP = {
   'default-src': ["'none'"],
   'script-src': ["'self'", "'unsafe-inline'", 'https://static.cloudflareinsights.com'],
@@ -107,6 +115,10 @@ const TARGETS = {
         contentType: /^image\/png/ },
       { path: '/og/default.png', status: 200, csp: SITE_CSP, headers: OG_HEADERS,
         contentType: /^image\/png/ },
+      { path: '/index.md', status: 200, csp: SITE_CSP, headers: MD_HEADERS,
+        contentType: /^text\/markdown/ },
+      { path: '/fr/agents/index.md', status: 200, csp: SITE_CSP, headers: MD_HEADERS,
+        contentType: /^text\/markdown/ },
       // Routes Worker : couvertes par le middleware, pas par _headers.
       { path: '/api/stats', status: 200, csp: API_CSP, headers: BASE,
         contentType: /^application\/json/ },
