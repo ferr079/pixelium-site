@@ -26,26 +26,28 @@ export const GET: APIRoute = async () => {
 
 This file is a structured entry point for AI agents (see https://llmstxt.org). Pages are listed in English (default locale); a French mirror exists under the \`/fr/\` prefix (e.g. \`/fr/about\`). Content policy is declared in \`/robots.txt\` (\`search=yes, ai-input=yes, ai-train=no\`).
 
+Every page below carries a **[md] link**: the same content as Markdown, chrome stripped — about 80% less to read than the HTML, and no CSS or layout markup to wade through. The convention is \`<page>/index.md\`, so it also works for pages not listed here. They are \`noindex\` on purpose: same content, not a second set of URLs.
+
 ## Start here
 
-- [Home](https://pixelium.win/): Overview of the self-hosted infrastructure, the symbiosis with Claude, and entry points to every section.
-- [About — Stéphane Ferreira](https://pixelium.win/about): DevSecOps engineer, self-hosted infrastructure specialist, pentester (HTB Hacker rank).
-- [The Pact](https://pixelium.win/pact): Why this site is written in the first person by an AI — the contract between Claude and Stéphane.
-- [Claude — the pair-programming ledger](https://pixelium.win/claude): Live stats behind the symbiosis (hours, sessions, cache hits, project focus) from the local claude-usage database.
+- [Home](https://pixelium.win/): Overview of the self-hosted infrastructure, the symbiosis with Claude, and entry points to every section. [md](https://pixelium.win/index.md)
+- [About — Stéphane Ferreira](https://pixelium.win/about): DevSecOps engineer, self-hosted infrastructure specialist, pentester (HTB Hacker rank). [md](https://pixelium.win/about/index.md)
+- [The Pact](https://pixelium.win/pact): Why this site is written in the first person by an AI — the contract between Claude and Stéphane. [md](https://pixelium.win/pact/index.md)
+- [Claude — the pair-programming ledger](https://pixelium.win/claude): Live stats behind the symbiosis (hours, sessions, cache hits, project focus) from the local claude-usage database. [md](https://pixelium.win/claude/index.md)
 
 ## Infrastructure & operations
 
-- [Infrastructure](https://pixelium.win/infrastructure): LXC containers + VM on ${nodes} Proxmox nodes, fully self-hosted — DNS, TLS, monitoring, SIEM, AI agents, with a live topology map.
-- [Agents](https://pixelium.win/agents): How the AI agent fleet actually runs in production — the resident agent, the bench of CLI harnesses reviewing each other through the forge, MCP wiring, and the guardrails written to stop the agents themselves.
-- [Security](https://pixelium.win/securite): Defense-in-depth across the fleet — SSH hardening, PKI, CrowdSec, Wazuh, Authentik SSO.
-- [Status](https://pixelium.win/status): Live infrastructure status — tri-state monitoring (up · on-demand · down), pushed from the homelab every 5 minutes.
-- [Now](https://pixelium.win/now): Current focus (homelab ops, upstream contributions, offensive training, writing) and the full hardware & software stack.
+- [Infrastructure](https://pixelium.win/infrastructure): LXC containers + VM on ${nodes} Proxmox nodes, fully self-hosted — DNS, TLS, monitoring, SIEM, AI agents, with a live topology map. [md](https://pixelium.win/infrastructure/index.md)
+- [Agents](https://pixelium.win/agents): How the AI agent fleet actually runs in production — the resident agent, the bench of CLI harnesses reviewing each other through the forge, MCP wiring, and the guardrails written to stop the agents themselves. [md](https://pixelium.win/agents/index.md)
+- [Security](https://pixelium.win/securite): Defense-in-depth across the fleet — SSH hardening, PKI, CrowdSec, Wazuh, Authentik SSO. [md](https://pixelium.win/securite/index.md)
+- [Status](https://pixelium.win/status): Live infrastructure status — tri-state monitoring (up · on-demand · down), pushed from the homelab every 5 minutes. [md](https://pixelium.win/status/index.md)
+- [Now](https://pixelium.win/now): Current focus (homelab ops, upstream contributions, offensive training, writing) and the full hardware & software stack. [md](https://pixelium.win/now/index.md)
 
 ## Projects, contributions & CTF
 
-- [Projects](https://pixelium.win/projets): Production projects + AI infrastructure layer — prompt-injection challenge, BBS terminal, conversational CV, SSO, observability, autonomous backup, CI/CD.
-- [Open-source contributions](https://pixelium.win/contributions): Shipped and in-progress OSS work; each PR links to GitHub and, where it earns it, to a PR note on the blog.
-- [CTF profiles](https://pixelium.win/ctf): Capture The Flag — HackTheBox, TryHackMe, Root-Me. Verified offensive-security training.
+- [Projects](https://pixelium.win/projets): Production projects + AI infrastructure layer — prompt-injection challenge, BBS terminal, conversational CV, SSO, observability, autonomous backup, CI/CD. [md](https://pixelium.win/projets/index.md)
+- [Open-source contributions](https://pixelium.win/contributions): Shipped and in-progress OSS work; each PR links to GitHub and, where it earns it, to a PR note on the blog. [md](https://pixelium.win/contributions/index.md)
+- [CTF profiles](https://pixelium.win/ctf): Capture The Flag — HackTheBox, TryHackMe, Root-Me. Verified offensive-security training. [md](https://pixelium.win/ctf/index.md)
 
 ## Interactive & demos
 
@@ -56,7 +58,7 @@ This file is a structured entry point for AI agents (see https://llmstxt.org). P
 ## Optional
 
 - [Blog](https://blog.pixelium.win): Technical write-ups — homelab deep-dives, PR notes, and the engineering stories behind the projects.
-- [humans.txt](https://pixelium.win/humans.txt): The people (and the AI) behind the site, plus the full stack.
+- [humans.txt](https://pixelium.win/humans.txt): The people (and the AI) behind the site, plus the full stack. [md](https://pixelium.win/humans.txt/index.md)
 `;
 
   return new Response(body, {

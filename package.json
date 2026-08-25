@@ -11,9 +11,10 @@
     "audit:freshness": "node scripts/audit-freshness.mjs",
     "headers:check": "node scripts/headers-check.mjs",
     "topology:export": "node scripts/export-topology.mjs",
-    "build": "node scripts/og/gen-og.mjs && astro build",
+    "build": "node scripts/og/gen-og.mjs && astro build && node scripts/gen-md.mjs",
     "preview": "astro preview",
-    "astro": "astro"
+    "astro": "astro",
+    "md": "node scripts/gen-md.mjs --report"
   },
   "dependencies": {
     "@astrojs/cloudflare": "^14.2.4",
