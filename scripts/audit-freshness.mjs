@@ -18,10 +18,6 @@ const root = join(dirname(fileURLToPath(import.meta.url)), '..');
 // Each check: the captured group (1) is parsed as an int and compared to stats[key].
 const CHECKS = [
   { file: 'src/pages/api/chat.ts', re: /(\d+) Proxmox nodes/, key: 'proxmox_nodes', label: 'chat.ts — Proxmox nodes' },
-  { file: 'src/pages/api/chat.ts', re: /SSH hardened (\d+) hosts/, key: 'ansible_hosts', label: 'chat.ts — SSH hardened hosts' },
-  { file: 'src/pages/api/chat.ts', re: /Beszel \((\d+) agents\)/, key: 'beszel_agents', label: 'chat.ts — Beszel agents' },
-  { file: 'src/pages/api/chat.ts', re: /(\d+) Ansible playbooks/, key: 'ansible_playbooks', label: 'chat.ts — Ansible playbooks' },
-  { file: 'src/pages/api/chat.ts', re: /Ansible playbooks, (\d+) hosts/, key: 'ansible_hosts', label: 'chat.ts — Ansible hosts' },
   { file: 'src/pages/securite.astro', re: /number: '(\d+)', label: 'hardened SSH hosts'/, key: 'ansible_hosts', label: 'securite.astro — SSH hosts StatsBar' },
   { file: 'src/pages/fr/securite.astro', re: /number: '(\d+)', label: 'hosts SSH durci'/, key: 'ansible_hosts', label: 'fr/securite.astro — SSH hosts StatsBar' },
   { file: 'src/pages/index.astro', re: /hardened SSH on (\d+) hosts/, key: 'ansible_hosts', label: 'index.astro — SSH hosts (Security card)' },
@@ -37,24 +33,29 @@ const CHECKS = [
   // index cards + infra meta (EN/FR), and fuzzy "~60" in the chat.ts system prompt —
   // so no lxc literal can lie anymore. Nothing left to pin for it.
   //
-  // chat.ts is a runtime Worker (the chatbot system prompt) — it can't read build-stats,
-  // so its (stable) facts are pinned here. proxmox/hosts/playbooks/beszel are pinned above.
+  // chat.ts est un Worker runtime : il ne peut pas lire build-stats (évalué au build).
+  // Il lit le KV LUI-MÊME, à la requête — c'est son équivalent de <DynNum>. Depuis le
+  // 2026-08-25 les compteurs d'infra y passent par les jetons {{SERVICES}} / {{LXC}} /
+  // {{BESZEL}} / {{PLAYBOOKS}} / {{HOSTS}} / {{CROWDSEC}} (liveStats()), donc ils ne
+  // sont plus épinglés ici : cinq d'entre eux avaient dérivé sans que rien ne le voie
+  // côté visiteur, le site affichant les bons chiffres pendant que le chat en récitait
+  // d'autres. Seul reste épinglé le nombre de nœuds Proxmox, volontairement en dur :
+  // il est lié à l'énumération pve1–4 en prose, un 5e nœud demande une réécriture.
   // NB: the volatile CTF figures are no longer pinned — HTB ranking/flags/machines and the
   // Root-Me score are injected live from STATS_KV via the {{HTB_RANK}}/{{HTB_FLAGS}}/
-  // {{HTB_MACHINES}}/{{ROOTME_SCORE}} tokens (liveCtfStats() in chat.ts), the Worker's <DynNum>.
+  // {{HTB_MACHINES}}/{{ROOTME_SCORE}} tokens (liveStats() in chat.ts), the Worker's <DynNum>.
   // (2026-07-12: htb_flags drifted 77→79 as new boxes were pwned — made dynamic instead of re-pinned.)
-  { file: 'src/pages/api/chat.ts', re: /(\d+) services in production/, key: 'services_total', label: 'chat.ts — services' },
   // proxmox_nodes narrative prose: the count is bound to the pve1–4 enumeration, so a
   // 5th node needs a human rewrite (not just a number bump) — pin it so CI flags the drift.
   { file: 'src/pages/infrastructure.astro', re: /(\d+) heterogeneous Proxmox VE nodes/, key: 'proxmox_nodes', label: 'infrastructure.astro — Proxmox nodes (prose)' },
   { file: 'src/pages/fr/infrastructure.astro', re: /(\d+) n.uds Proxmox VE h/, key: 'proxmox_nodes', label: 'fr/infrastructure.astro — Proxmox nodes (prose)' },
   { file: 'src/data/og-pages.json', re: /"(\d+) n.uds Proxmox/, key: 'proxmox_nodes', label: 'og-pages.json — Proxmox nodes (OG subtitle)' },
-  // humans.txt is a static file in public/ — Astro never processes it, so its numbers
-  // CAN'T be made dynamic like the lxc literals above. Pinning is the only option left,
-  // and it had already drifted badly (60 LXC vs 76 live, 49 playbooks vs 56) on a file
-  // that itself claims "Every number on this site is live from the homelab".
-  { file: 'public/humans.txt', re: /(\d+) LXC containers/, key: 'lxc_count', label: 'humans.txt — LXC containers' },
-  { file: 'public/humans.txt', re: /Ansible \((\d+) playbooks\)/, key: 'ansible_playbooks', label: 'humans.txt — Ansible playbooks' },
+  // humans.txt n'est plus épinglé : il n'est plus un fichier statique. Le commentaire
+  // qui vivait ici posait qu'un fichier de public/ « ne PEUT PAS » être rendu dynamique —
+  // c'était vrai de public/, pas de humans.txt. Depuis le 2026-08-25 il est servi par
+  // src/pages/humans.txt.ts (prerender), qui lit build-stats comme le reste du site.
+  // Il avait dérivé deux fois (60 LXC vs 76 live, puis 61 vs 59) sur un fichier qui
+  // affirme lui-même « Every number on this site is live from the homelab ».
   // Couverture défensive (2026-08-01) — les 4 clés alloy_hosts / authentik_services /
   // inv_crowdsec_scenarios / wazuh_agents sont enfin publiées au KV (infra/homelab#129),
   // donc /securite, /infrastructure et /projets sont passés en <DynNum> : le sweep
@@ -62,8 +63,6 @@ const CHECKS = [
   // deux surfaces qui ne PEUVENT pas lire build-stats :
   //   - chat.ts, Worker runtime (même raison que les facts pinnés plus haut) ;
   //   - les meta SEO des cartes d'accueil, chaînes statiques dans le frontmatter.
-  { file: 'src/pages/api/chat.ts', re: /CrowdSec, (\d+) scenarios/, key: 'inv_crowdsec_scenarios', label: 'chat.ts — CrowdSec scenarios (doctrine)' },
-  { file: 'src/pages/api/chat.ts', re: /CrowdSec IPS \((\d+) scenarios\)/, key: 'inv_crowdsec_scenarios', label: 'chat.ts — CrowdSec scenarios (stack)' },
   { file: 'src/pages/index.astro', re: /Authentik SSO on (\d+) services/, key: 'authentik_services', label: 'index.astro — Authentik services (Security card meta)' },
   { file: 'src/pages/fr/index.astro', re: /SSO Authentik sur (\d+) services/, key: 'authentik_services', label: 'fr/index.astro — Authentik services (Security card meta)' },
 ];

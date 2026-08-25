@@ -22,11 +22,15 @@ const { getBuildStats } = await import('../lib/build-stats');
 const live = await getBuildStats();
 const baked = bricks.map((b) => ({
   ...b,
-  // uptime_pct is CORE-FLEET availability — computed client-side from /api/status
-  // (pve3 Wake-on-LAN excluded). The raw KV value counts all services, so don't bake it;
-  // use the fallback until the client script fills the real core value.
+  // uptime_pct = disponibilite de la flotte CORE (pve3 Wake-on-LAN exclu). La valeur
+  // brute du KV compte TOUS les services : quand pve3 dort elle tombe a ~82% sans
+  // qu'aucun service ne soit en panne. On bake donc uptime_pct_core, publie par le
+  // pipeline — auparavant cette brique bakait un fallback fige en dur ('100%') que
+  // rien ne sourcait, corrige seulement apres hydratation : un crawler, un lecteur
+  // sans JS ou une capture voyaient une valeur que personne ne verifiait.
+  // Le script client la recalcule toujours depuis /api/status, comme confirmation.
   value: b.key === 'uptime_pct'
-    ? b.fallback
+    ? (live.uptime_pct_core != null ? `${live.uptime_pct_core}${b.suffix || ''}` : b.fallback)
     : (live[b.key] != null ? `${live[b.key]}${b.suffix || ''}` : b.fallback),
 }));
 ---
