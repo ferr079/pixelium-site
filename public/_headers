@@ -13,3 +13,17 @@
 # API discovery (RFC 9727) — serve the catalog as a linkset document
 /.well-known/api-catalog
   Content-Type: application/linkset+json
+
+# Cartes Open Graph : elles n'existent QUE pour être affichées ailleurs.
+# Le Cross-Origin-Resource-Policy: same-site posé sur /* les faisait refuser par
+# le navigateur dès qu'un autre origin les affichait — aperçu gris dans le
+# composeur X, sur Slack, Discord, Signal. Le crawler, lui, les récupérait très
+# bien (fetch serveur, CORP ne s'y applique pas) : titre et description
+# s'affichaient, l'image seule manquait. Mesuré le 2026-08-25, Chromium headless
+# depuis un autre origin : image témoin OK, /og/home.png BLOQUE.
+# Le « ! » RETIRE d'abord l'en-tête hérité de /* : sans lui Cloudflare ne
+# surcharge pas, il CUMULE — la réponse sort avec deux Cross-Origin-Resource-Policy
+# contradictoires (mesuré en local, wrangler dev). Un seul en-tête, une seule valeur.
+/og/*
+  ! Cross-Origin-Resource-Policy
+  Cross-Origin-Resource-Policy: cross-origin
