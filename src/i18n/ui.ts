@@ -23,6 +23,7 @@ export const ui = {
     'nav.securite': 'Sécurité',
     'nav.ctf': 'CTF',
     'nav.infra': 'Infra',
+    'nav.agents': 'Agents',
     'nav.contributions': 'Contributions',
     'nav.status': 'Statut',
 
@@ -35,6 +36,7 @@ export const ui = {
     'nav.securite': 'Security',
     'nav.ctf': 'CTF',
     'nav.infra': 'Infra',
+    'nav.agents': 'Agents',
     'nav.contributions': 'Contributions',
     'nav.status': 'Status',
 

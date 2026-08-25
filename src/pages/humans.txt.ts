@@ -42,7 +42,7 @@ CDN: Cloudflare R2 (assets.pixelium.win)
 Data: Cloudflare KV (live stats) + D1 (uptime history)
 CSS: Pure CSS (zero framework)
 JS: Vanilla only — DynNum hydration, scroll reveal, terminal recordings
-i18n: EN (default) + FR (27 pages total)
+i18n: EN (default) + FR (every page mirrored)
 
 /* INFRASTRUCTURE (what this site documents) */
 Virtualization: ${n('proxmox_nodes', 4)}x Proxmox VE nodes, ${n('lxc_count', 59)} LXC containers
@@ -50,7 +50,7 @@ Network: TechnitiumDNS (DoT HA), Traefik, step-ca (internal PKI)
 Security: Wazuh SIEM, CrowdSec IPS, Authentik SSO, Headscale VPN, YubiKey FIDO2
 Observability: VictoriaMetrics, Loki, Beszel (${n('beszel_agents', 52)} agents), Patchmon
 IaC: Ansible (${n('ansible_playbooks', 63)} playbooks, ${n('ansible_hosts', 64)} hosts) via Semaphore, Forgejo Runner CI/CD
-AI Agents: Hermes (Telegram correspondent, 4 crons), Dagu scheduled DAGs (CT 246)
+AI Agents: Hermes (Telegram correspondent, ${n('inv_hermes', 3)} crons), Dagu (${n('inv_dagu', 20)} scheduled DAGs)
 Backup: PBS automated (WOL, vzdump 33 CTs, prune, shutdown — 14 min cycle)
 
 /* PHILOSOPHY */
