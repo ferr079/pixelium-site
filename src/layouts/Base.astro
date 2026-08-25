@@ -43,6 +43,15 @@ const siteUrl = 'https://pixelium.win';
 const ogSlug = basePath === '/' ? 'home' : basePath.replace(/^\/+|\/+$/g, '');
 const ogImageUrl = ogImage
   ?? (ogSlug in ogPages ? `${siteUrl}/og/${ogSlug}.png` : `${siteUrl}/og/default.png`);
+// Texte alternatif de la carte : décrit ce qu'elle montre vraiment (elle porte le
+// titre, le sous-titre et la ligne de stats), pas « image de la page ».
+const ogCard = ogPages[ogSlug as keyof typeof ogPages];
+// Sur l'accueil, titre de carte et nom de site sont le même mot : le répéter
+// donnerait « Carte pixelium.win — pixelium.win : … » dans un lecteur d'écran.
+const ogCardLabel = ogCard
+  ? (ogCard.title === 'pixelium.win' ? ogCard.subtitle : `${ogCard.title} : ${ogCard.subtitle}`)
+  : title;
+const ogImageAlt = ogImage ? title : `Carte pixelium.win — ${ogCardLabel}`;
 
 // ⌘K command palette destinations (language-aware)
 const cmdPrefix = lang === 'fr' ? '/fr' : '';
@@ -86,8 +95,13 @@ const cmdkItems = [
     <meta property="og:image" content={ogImageUrl} />
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
+    <meta property="og:image:type" content="image/png" />
+    <meta property="og:image:alt" content={ogImageAlt} />
     <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:site" content="@ferr079" />
+    <meta name="twitter:creator" content="@ferr079" />
     <meta name="twitter:image" content={ogImageUrl} />
+    <meta name="twitter:image:alt" content={ogImageAlt} />
     <meta name="twitter:title" content={title} />
     <meta name="twitter:description" content={description} />
     <link rel="canonical" href={Astro.url.href} />

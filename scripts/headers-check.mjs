@@ -44,6 +44,16 @@ const BASE = {
   'strict-transport-security': 'max-age=31536000; includeSubDomains; preload',
 };
 
+/**
+ * Cartes Open Graph : exception assumée au CORP de BASE. Une carte n'existe que
+ * pour être affichée sur un AUTRE site ; `same-site` la faisait refuser par le
+ * navigateur (aperçu gris dans le composeur X, sur Slack, Discord, Signal) alors
+ * que le crawler, lui, la récupérait sans problème — d'où une carte à titre et
+ * description corrects, mais sans image. Si cette valeur redevient `same-site`,
+ * rien ne casse visiblement : c'est exactement pour ce silence-là qu'elle est ici.
+ */
+const OG_HEADERS = { ...BASE, 'cross-origin-resource-policy': 'cross-origin' };
+
 const SITE_CSP = {
   'default-src': ["'none'"],
   'script-src': ["'self'", "'unsafe-inline'", 'https://static.cloudflareinsights.com'],
@@ -93,6 +103,10 @@ const TARGETS = {
         contentType: /^application\/linkset\+json/ },
       { path: '/page-inexistante-headers-check', status: 404, csp: SITE_CSP, headers: BASE,
         contentType: /^text\/html/ },
+      { path: '/og/home.png', status: 200, csp: SITE_CSP, headers: OG_HEADERS,
+        contentType: /^image\/png/ },
+      { path: '/og/default.png', status: 200, csp: SITE_CSP, headers: OG_HEADERS,
+        contentType: /^image\/png/ },
       // Routes Worker : couvertes par le middleware, pas par _headers.
       { path: '/api/stats', status: 200, csp: API_CSP, headers: BASE,
         contentType: /^application\/json/ },
@@ -111,6 +125,10 @@ const TARGETS = {
       { path: '/robots.txt', status: 200, csp: BLOG_CSP, headers: BASE, contentType: /^text\/plain/ },
       { path: '/rss.xml', status: 200, csp: BLOG_CSP, headers: BASE, contentType: /^application\/xml/ },
       { path: '/page-inexistante-headers-check', status: 404, csp: BLOG_CSP, headers: BASE },
+      { path: '/og/home.png', status: 200, csp: BLOG_CSP, headers: OG_HEADERS,
+        contentType: /^image\/png/ },
+      { path: '/og/default.png', status: 200, csp: BLOG_CSP, headers: OG_HEADERS,
+        contentType: /^image\/png/ },
     ],
     asset: { cacheControl: /immutable/ },
   },
