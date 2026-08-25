@@ -17,6 +17,10 @@ const n = (k: string, d: number): number => (Number.isFinite(Number(s[k])) ? Num
 const htb = {
   rank: String(s.htb_rank ?? 'Pro Hacker'),
   ranking: n('htb_ranking', 346),
+  // Rang NATIONAL — publié par kv-push depuis le 2026-08-24 et lu par personne
+  // jusqu'ici. C'est pourtant le plus lisible des deux pour un lecteur français :
+  // #18 sur 3719 se situe tout de suite, #253 mondial beaucoup moins.
+  country_rank: n('htb_country_rank', 18),
   system_owns: n('htb_system_owns', 55),
   user_owns: n('htb_user_owns', 56),
 };
@@ -309,6 +313,7 @@ const rootme = {
     <StatsBar stats={[
       { number: String(htb.system_owns), label: 'HTB machines', stat: 'htb_system_owns' },
       { number: `#${htb.ranking}`, label: 'HTB global rank', stat: 'htb_ranking', suffix: '' },
+      { number: `#${htb.country_rank}`, label: 'HTB France rank', stat: 'htb_country_rank', suffix: '' },
       { number: String(rootme.validations), label: 'Root-Me challenges' },
       { number: '35', label: 'THM rooms' },
       { number: String(htbFlags), label: 'machine flags' },
