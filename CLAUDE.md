@@ -26,7 +26,7 @@ This site is written in **first person by Claude**. I am the narrator. Stéphane
 
 **When editing a page**: always edit BOTH the root (EN) and `/fr/` (FR) versions.
 
-## Site structure (9 pages + 2 interactive)
+## Site structure (10 pages + 2 interactive)
 
 | Page | EN (root) | FR (`/fr/`) | Notes |
 |---|---|---|---|
@@ -34,6 +34,7 @@ This site is written in **first person by Claude**. I am the narrator. Stéphane
 | Projects | `src/pages/projets.astro` | `src/pages/fr/projets.astro` | Merged with ia.astro |
 | Security | `src/pages/securite.astro` | `src/pages/fr/securite.astro` | Merged with cybersecurite.astro |
 | Infrastructure | `src/pages/infrastructure.astro` | `src/pages/fr/infrastructure.astro` | |
+| Agents | `src/pages/agents.astro` | `src/pages/fr/agents.astro` | **Ajoutée 2026-08-25** — la flotte (Hermes, banc de harnesses, Dagu), le Conclave, MCP, et les garde-fous. Le site parlait d'infra partout et n'avait aucune page sur le dispositif agents, alors que c'est le différenciateur. Chiffres en `DynNum` (`inv_hermes`, `inv_dagu`, `inv_mcp`, `inv_services`, `journal_entries`) — ⚠️ pas de numéros de version de modèles (doctrine Stéphane 17/07) |
 | Status | `src/pages/status.astro` | `src/pages/fr/status.astro` | |
 | CTF | `src/pages/ctf.astro` | `src/pages/fr/ctf.astro` | Verified badges, profiles, techniques (split from securite) |
 | Contributions | `src/pages/contributions.astro` | `src/pages/fr/contributions.astro` | OSS PRs/reports — statuts reflètent l'état upstream réel (vérifier via `gh pr view`) |
@@ -44,7 +45,7 @@ This site is written in **first person by Claude**. I am the narrator. Stéphane
 
 **Redirects (301):** symbiose→about, cybersecurite→securite (PAS ia : page archivée, accessible)
 
-**Nav:** Projects | Security | CTF | Infra | Contributions | Status | Chat | About | Blog↗
+**Nav:** Infra | **Agents** | Security | Projects | CTF | Contributions | Status | Blog↗
 (2026-06-08 : « Lab »/`/ia` retiré de la nav → remplacé par « Contributions » ; brick OSS de l'accueil supprimé — il vedettait la PR #309, fermée sans merge)
 
 URL slugs are shared between languages (same paths, just `/fr/` prefix).
@@ -104,6 +105,12 @@ PY
 `src/config.ts` defines `ASSETS_BASE`. `Screenshot.astro` and `Carousel.astro` auto-prefix `/images/` paths to R2.
 
 ⚠️ **Image d'une origine TIERCE (hors R2) = étendre `img-src` dans `public/_headers` DANS LE MÊME COMMIT.** La CSP est `default-src 'none'` : une origine non déclarée est **bloquée en silence** par le navigateur — seul l'`alt` s'affiche, alors que `npm run build` passe et que l'URL distante répond `200`. Rien ne le signale (ni le CI, ni le freshness guard). Les 2 badges de `/ctf` sont restés invisibles **3 mois et demi** pour cette raison (fix `#74`, 2026-07-30 ; détail → mémoire web `reference_csp_img_src_tiers`). Même piège sur `media-src`. Vérifier après deploy : `curl -sS -D - -o /dev/null <url> | grep -i img-src` — **EN et FR séparément**, le edge cache aussi les en-têtes.
+
+## Fichiers texte générés au build (plus dans `public/`)
+
+`humans.txt` et `llms.txt` sont des **routes** (`src/pages/humans.txt.ts`, `src/pages/llms.txt.ts`, `prerender = true`) qui lisent `getBuildStats()`. Ils vivaient dans `public/` avec leurs compteurs écrits en dur et **ont dérivé tous les deux** (2026-08-25 : 61 conteneurs pour 59 réels, 58 playbooks pour 63, et un « 46 services » dans `llms.txt` pour 61 — soit un tiers de moins dans le fichier censé décrire le site à une machine).
+
+⚠️ Ne PAS les recréer dans `public/` : Astro ne traite pas ce dossier, donc aucun nombre n'y est vérifiable et le freshness guard ne les voit pas. Le commentaire du guard affirmait d'ailleurs qu'un fichier de `public/` « CAN'T be made dynamic » — c'était vrai de `public/`, pas de ces fichiers.
 
 ## API endpoints (hybrid mode — Cloudflare Workers)
 
