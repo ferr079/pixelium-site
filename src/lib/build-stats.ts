@@ -17,22 +17,27 @@
 
 // Last-known snapshot (2026-08-19). Only used if the build can't reach /api/stats.
 const FALLBACK: Record<string, string | number> = {
-  claude_hours: 8205,
+  claude_hours: 8367,
   claude_cache_hit: 96.9,
-  claude_sessions: 1176,
-  claude_tokens_billions: 29.8,
-  services_up: 62,
-  services_total: 62,
-  services_up_core: 50,
-  services_total_core: 50,
+  claude_sessions: 1253,
+  claude_tokens_billions: 30.7,
+  services_up: 49,
+  services_total: 60,
+  services_up_core: 48,
+  services_total_core: 48,
+  // uptime_pct compte TOUS les services, on-demand compris : quand pve3 dort (WOL),
+  // il tombe mecaniquement a ~82% sans qu'un seul service soit en panne. Ce n'est donc
+  // pas un indicateur de sante, et sa valeur instantanee n'a pas de sens comme
+  // "dernier bon connu" — d'ou le nominal ici. L'indicateur affiche est uptime_pct_core.
   uptime_pct: 100.0,
-  forgejo_commits_30d: 1545,
+  uptime_pct_core: 100.0,
+  forgejo_commits_30d: 1421,
   proxmox_nodes: 4,
-  htb_flags: 111,
+  htb_flags: 115,
   htb_rank: 'Pro Hacker',
-  htb_ranking: 346,
-  htb_system_owns: 55,
-  htb_user_owns: 56,
+  htb_ranking: 253,
+  htb_system_owns: 57,
+  htb_user_owns: 58,
   // htb_flags ci-dessus = user_owns + system_owns, donc MACHINES uniquement — le profil HTB
   // (/user/profile/basic) ne porte aucun champ fortress. Les flags de Fortress vivent sur
   // /profile/progress/fortress/{uid} et n'étaient comptés nulle part (21 au 2026-08-21 :
@@ -40,36 +45,36 @@ const FALLBACK: Record<string, string | number> = {
   // n'est PAS encore affichée (réserve v5). Le jour où elle sortira, ce sera comme DEUX
   // statistiques distinctes : pas de clé « total » qui les additionnerait,
   // les deux comptes n'ont pas la même échelle (7 à 11 flags par Fortress, 2 par machine).
-  htb_fortress_flags: 21,
+  htb_fortress_flags: 36,
   rootme_score: 1050,
   rootme_validations: 75,
   rootme_position: 15486,
-  ansible_playbooks: 58,
-  lxc_count: 61,
-  https_services: 48,
+  ansible_playbooks: 63,
+  lxc_count: 59,
+  https_services: 46,
   ansible_hosts: 64,
-  beszel_agents: 51,
+  beszel_agents: 52,
   // Couverture défensive — publiées par kv-push depuis le 2026-08-01 (infra/homelab#129,
   // PR #246/#249). Jusque-là ces 4 nombres vivaient en dur dans la prose de /securite et
   // dans les CV, invisibles au freshness guard. wazuh_agents vaut 37 et non 38 : les 38
   // entrées d'`agent_control -l` incluent le manager `000`, qui n'est pas un agent.
   // inv_crowdsec_scenarios porte le préfixe inv_ (inventaire quotidien CT 110), pas une
   // collecte live — ne pas chercher `crowdsec_scenarios` sans préfixe.
-  wazuh_agents: 37,
+  wazuh_agents: 36,
   alloy_hosts: 58,
   authentik_services: 6,
   inv_crowdsec_scenarios: 57,
   // inv_services (SoT inventory/services.yaml) : ce que le site appelle « le nombre de
   // services du homelab » dans ses textes. NE PAS confondre avec services_total, qui
   // compte les cibles MONITORÉES (Uptime-Kuma) et reste réservé aux pages status/bbs.
-  inv_services: 63,
+  inv_services: 61,
   inv_skills: 153,
   // Provenance changée 2026-07-25 : plus le conteneur Podman Kali local (terre2),
   // mais l'inventaire offensif de la VM dédiée/isolée strix (pve3). Clé renommée
   // inv_kali → inv_offensive_tools. Le forwarding kv-push.sh ("kali" →
   // "offensive_tools") est en place : la clé est servie live (116 au 2026-08-11),
   // ce fallback n'est plus le seul à la porter. Le chiffre n'est donc plus figé.
-  inv_offensive_tools: 145,
+  inv_offensive_tools: 149,
   inv_forworld: 171,
 };
 

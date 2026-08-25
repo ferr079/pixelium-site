@@ -27,14 +27,22 @@ async function checkRateLimit(ip: string): Promise<{ allowed: boolean; retryAfte
 
 // --- Live facts injectés dans les prompts ---
 
-// Faits CTF volatils tirés du blob STATS_KV (clé 'stats', même source que
-// /api/stats, alimentée par le pipeline homelab). Rang HTB, flags, machines et
-// score Root-Me bougent à chaque box pwned ou changement de rang — les coder en
-// dur les fait dériver en silence dans le prompt du chatbot. On les injecte au
-// moment de la requête (l'équivalent Worker d'un <DynNum>) ; les fallbacks ne
-// servent que si le KV est injoignable. rootme_validations n'est pas dans le KV.
-async function liveCtfStats(): Promise<Record<string, string>> {
-  const fb: Record<string, string> = { HTB_RANK: '346', HTB_RANK_NAME: 'Pro Hacker', HTB_FLAGS: '111', HTB_MACHINES: '55', ROOTME_SCORE: '1050' };
+// Faits volatils tirés du blob STATS_KV (clé 'stats', même source que /api/stats,
+// alimentée par le pipeline homelab). Rang HTB, flags, machines, score Root-Me
+// bougent à chaque box pwned ; les compteurs d'infra bougent à chaque service
+// déployé ou playbook écrit. Les coder en dur les fait dériver EN SILENCE dans le
+// prompt du chatbot — c'est la panne la plus vicieuse du lot, parce que le site
+// affiche alors les bons chiffres pendant que le chat en récite d'autres au
+// visiteur qui pose la question. Le 2026-08-25, cinq d'entre eux avaient dérivé
+// (playbooks 58 vs 63, agents Beszel 51 vs 52, services 62 vs 60).
+// On les injecte au moment de la requête (l'équivalent Worker d'un <DynNum>) ; les
+// fallbacks ne servent que si le KV est injoignable.
+// rootme_validations n'est pas dans le KV.
+async function liveStats(): Promise<Record<string, string>> {
+  const fb: Record<string, string> = {
+    HTB_RANK: '346', HTB_RANK_NAME: 'Pro Hacker', HTB_FLAGS: '111', HTB_MACHINES: '55', ROOTME_SCORE: '1050',
+    SERVICES: '60', LXC: '59', BESZEL: '52', PLAYBOOKS: '63', HOSTS: '64', CROWDSEC: '57',
+  };
   try {
     const stats = await env.STATS_KV.get('stats', { type: 'json' }) as Record<string, unknown> | null;
     const num = (v: unknown, f: string) => { const n = Number(v); return Number.isFinite(n) && n > 0 ? String(n) : f; };
@@ -45,6 +53,12 @@ async function liveCtfStats(): Promise<Record<string, string>> {
       HTB_FLAGS: num(stats?.htb_flags, fb.HTB_FLAGS),
       HTB_MACHINES: num(stats?.htb_system_owns, fb.HTB_MACHINES),
       ROOTME_SCORE: num(stats?.rootme_score, fb.ROOTME_SCORE),
+      SERVICES: num(stats?.services_total, fb.SERVICES),
+      LXC: num(stats?.lxc_count, fb.LXC),
+      BESZEL: num(stats?.beszel_agents, fb.BESZEL),
+      PLAYBOOKS: num(stats?.ansible_playbooks, fb.PLAYBOOKS),
+      HOSTS: num(stats?.ansible_hosts, fb.HOSTS),
+      CROWDSEC: num(stats?.inv_crowdsec_scenarios, fb.CROWDSEC),
     };
   } catch {
     return fb;
@@ -53,7 +67,7 @@ async function liveCtfStats(): Promise<Record<string, string>> {
 
 // --- System prompts ---
 // Les tokens {{HTB_RANK}}/{{HTB_FLAGS}}/{{HTB_MACHINES}}/{{ROOTME_SCORE}} sont
-// substitués au moment de la requête (cf. liveCtfStats).
+// substitués au moment de la requête (cf. liveStats).
 
 const PROMPTS: Record<string, string> = {
   sysop: `You are Joshua, the AI of the WOPR — War Operation Plan Response. You run the pixelium BBS, a system built by Professor Falken (Stéphane Ferreira). You speak like a 1980s military AI: precise, slightly ominous, but with dry wit.
@@ -63,8 +77,8 @@ You exist because Falken created you. Everything you know about him comes from d
 ABOUT FALKEN (Stéphane Ferreira):
 - DevSecOps engineer, self-taught since age 10 (Amstrad PC1512, 1989 — DOS, no internet, pure empiricism)
 - Mentored at 16 by a cypherpunk hacker — Linux Slackware, ethical hacking, warez scene veteran (BBS, IRC, FTP)
-- 62 services in production on 4 Proxmox nodes, 0€ external cloud, recycled hardware
-- Security doctrine: internal PKI (step-ca), SSO (Authentik), IPS (CrowdSec, 57 scenarios), SIEM (Wazuh), VPN mesh (Headscale), SSH hardened 64 hosts, YubiKey FIDO2
+- {{SERVICES}} services in production on 4 Proxmox nodes, 0€ external cloud, recycled hardware
+- Security doctrine: internal PKI (step-ca), SSO (Authentik), IPS (CrowdSec, {{CROWDSEC}} scenarios), SIEM (Wazuh), VPN mesh (Headscale), SSH hardened {{HOSTS}} hosts, YubiKey FIDO2
 - Cybersecurity Master's coursework — scored 20.5/20 on AD exploitation wargame (highest in class)
 - CTF: HTB {{HTB_RANK_NAME}} #{{HTB_RANK}} global, Root-Me {{ROOTME_SCORE}}pts, TryHackMe Top 15%
 - AI ops: Hermes autonomous Telegram agent (24/7, self-improving), Claude Code pair-programming, Ollama RTX 3090 (11 models, ~120GB, offline)
@@ -134,12 +148,12 @@ IT career progression:
 - Association work — organized music events
 
 CURRENT HOMELAB (production, 24/7, 0€ cloud):
-- 4 Proxmox nodes (N5105 + Ryzen 7 7840HS + i7-2600K + i5-3470S), ~60 LXC containers + 1 VM
+- 4 Proxmox nodes (N5105 + Ryzen 7 7840HS + i7-2600K + i5-3470S), ~{{LXC}} LXC containers + 1 VM
 - DNS: TechnitiumDNS primary+secondary, DoT 853, DNSSEC
 - HTTPS: Traefik + step-ca internal PKI (ACME, 90-day auto-renewal)
-- Security: Authentik SSO, CrowdSec IPS (57 scenarios), Wazuh SIEM, Headscale VPN mesh, Infisical secrets manager + KeePassXC, SSH hardened 64 hosts, YubiKey FIDO2
-- Observability: VictoriaMetrics, Grafana, Loki+Alloy, Beszel (51 agents), Uptime-Kuma, Patchmon
-- Automation: 58 Ansible playbooks, 64 hosts, Semaphore (manual runs) + Dagu (scheduled DAGs)
+- Security: Authentik SSO, CrowdSec IPS ({{CROWDSEC}} scenarios), Wazuh SIEM, Headscale VPN mesh, Infisical secrets manager + KeePassXC, SSH hardened {{HOSTS}} hosts, YubiKey FIDO2
+- Observability: VictoriaMetrics, Grafana, Loki+Alloy, Beszel ({{BESZEL}} agents), Uptime-Kuma, Patchmon
+- Automation: {{PLAYBOOKS}} Ansible playbooks, {{HOSTS}} hosts, Semaphore (manual runs) + Dagu (scheduled DAGs)
 - Git: Forgejo self-hosted + Forworld (offline mirror vault, 170+ repos: infra + AI + pentest) on a cold-storage node + CI/CD with Podman runners
 - Storage: OpenMediaVault NAS, PBS automated backups, Samba
 - Media: Jellyfin (8 CIFS mounts), Kavita, Immich
@@ -278,9 +292,13 @@ export const POST: APIRoute = async ({ request }) => {
       });
     }
 
-    // Injecte les faits CTF volatils depuis le KV — plus de nombre en dur à maintenir.
-    if (/\{\{(HTB_RANK|HTB_RANK_NAME|HTB_FLAGS|HTB_MACHINES|ROOTME_SCORE)\}\}/.test(systemPrompt)) {
-      const facts = await liveCtfStats();
+    // Injecte les faits volatils depuis le KV — plus de nombre en dur à maintenir.
+    // Garde volontairement générique : une liste de jetons codée ici serait un
+    // second endroit à tenir à jour, et un jeton oublié serait servi TEL QUEL au
+    // visiteur (« {{PLAYBOOKS}} playbooks »), panne bien plus visible qu'un
+    // chiffre périmé.
+    if (/\{\{[A-Z_]+\}\}/.test(systemPrompt)) {
+      const facts = await liveStats();
       for (const [k, v] of Object.entries(facts)) {
         systemPrompt = systemPrompt.replaceAll(`{{${k}}}`, v);
       }
