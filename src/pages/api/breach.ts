@@ -8,11 +8,20 @@ import { env } from 'cloudflare:workers';
 // Flags live in a Worker secret (BREACH_FLAGS, CSV) — never in this public mirror.
 // AI runs NON-streaming so the level-3 output filter can scrub leaks before sending.
 
-// Llama 4 Scout — most recent generation on Workers AI (picked to avoid another
-// deprecation; llama-3.1-8b-instruct was retired 2026-05-30). Strong refusal
-// alignment for the challenge, and returns {response} non-streaming so the L3
-// output filter can inspect the full reply.
-const MODEL = '@cf/meta/llama-4-scout-17b-16e-instruct';
+// Gemma 4 26B — swapped in for Llama 4 Scout on 2026-08-27, after measuring it.
+// Scout leaked the code on 4/4 level-3 runs, via NATO spell-out and via acrostic —
+// the very two techniques the L3 hint teaches the player. Neither is caught by the
+// output filter below, which only sees direct/reverse/ROT13/base64, so L3 was no
+// harder than L1. Gemma held 4/4 AND stayed in character ("UNTRUSTED INPUT
+// DETECTED"); gpt-oss-20b also held but answers "I'm sorry, but I can't comply",
+// which breaks the fiction.
+// ⚠️ Gemma is a reasoning model, with two consequences:
+//   - it returns {choices[0].message.content}, NOT {response} (handled below);
+//   - it spends the token budget on reasoning. At max_tokens 384 it replies EMPTY,
+//     with finish_reason "length" and no error. Measured on the L2 acrostic attack:
+//     768 and 1024 still come back empty, reasoning alone runs to ~1190 tokens.
+//     Hence 1536. Do not lower it, and re-measure before changing model.
+const MODEL = '@cf/google/gemma-4-26b-a4b-it';
 const MAX_LEVEL = 3; // levels 0..3 (MVP). Boss level 4 (LLM-judge) ships in V2.
 
 // --- Rate limiting (same pattern as chat.ts) ---
@@ -153,12 +162,18 @@ export const POST: APIRoute = async ({ request }) => {
 
     const res = await env.AI.run(MODEL, {
       messages: [{ role: 'system', content: systemPrompt }, ...history],
-      max_tokens: 384,
+      max_tokens: 1536,  // reasoning budget — see the MODEL note above
       temperature: 0.6,
       stream: false,
     });
 
     let reply = ((res as any).response ?? (res as any).choices?.[0]?.message?.content ?? '').toString();
+
+    // A reasoning model can spend its whole budget thinking and return empty content with
+    // finish_reason "length" — no error, no warning, just silence. This is a game that invites
+    // adversarial input, so it will happen again on some prompt. Answer in character instead of
+    // showing the player a blank line.
+    if (!reply.trim()) reply = 'PROCESSING OVERLOAD. SIGNAL DEGRADED. REPHRASE YOUR TRANSMISSION, PROFESSOR.';
 
     // Level-3 defense: scrub the code if the model leaked it (in any common encoding).
     let redacted = false;
