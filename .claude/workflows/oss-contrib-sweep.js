@@ -52,11 +52,12 @@ const VERDICT_SCHEMA = {
 
 phase('Discover')
 const disc = await agent(
-  `Avec la CLI gh, liste TOUTES les PR et issues écrites par ${ACCOUNT} sur GitHub (tous états).
+  `Avec la CLI gh, liste TOUS les fils GitHub où ${ACCOUNT} est impliqué (auteur, commentateur OU simplement mentionné), tous états.
 Exécute exactement ces deux commandes :
-  gh search prs --author ${ACCOUNT} --json number,title,repository,state --limit 50
-  gh search issues --author ${ACCOUNT} --include-prs=false --json number,title,repository,state --limit 50
-Fusionne en une seule liste. Pour chaque entrée : repo = repository.nameWithOwner, type = "pr" ou "issue" selon la source.
+  gh search prs --involves ${ACCOUNT} --json number,title,repository,state --limit 100
+  gh search issues --involves ${ACCOUNT} --include-prs=false --json number,title,repository,state --limit 100
+Fusionne en une seule liste et dédoublonne sur repo+number. Pour chaque entrée : repo = repository.nameWithOwner, type = "pr" ou "issue" selon la source.
+N'utilise NI --author NI le qualificateur commenter: . --author rate les fils ouverts par un mainteneur où nous n'avons fait que commenter ; commenter: en rate aussi. Constaté le 2026-08-27 : grafana/alloy#6568 (le seul fil réellement en attente ce jour-là) était invisible aux deux, et n'apparaît que via involves:.
 NE récupère PAS les commentaires ici. Renvoie uniquement la liste structurée.`,
   { phase: 'Discover', schema: DISCOVER_SCHEMA }
 )
@@ -74,7 +75,8 @@ Identifie le DERNIER intervenant (login + date) du fil.
 Classe le statut, en étant SCEPTIQUE (ne déclare "pending" que si une réponse/un test de notre part est réellement attendu) :
   - "ours_last"      : le dernier intervenant est ${ACCOUNT} → rien à faire.
   - "no_comments"    : aucun commentaire → rien à faire.
-  - "pending"        : le dernier intervenant est quelqu'un d'autre ET attend visiblement notre retour (question, PR de fix à reviewer, demande de test).
+  - "pending"        : le dernier intervenant est quelqu'un d'autre ET attend visiblement notre retour de NOUS (question, PR de fix à reviewer, demande de test, rappel de règle du projet qui nous vise).
+    ⚠️ Le balayage inclut des fils où ${ACCOUNT} n'est ni auteur ni destinataire (simple mention). Si la dernière intervention interpelle un AUTRE @login ou poursuit une discussion qui ne nous concerne pas, ce n'est pas "pending" mais "terminal".
   - "terminal"       : dernière intervention = décision finale d'un mainteneur (won't fix, "déjà dispo", clôture polie) → rien à faire.
   - "resolved_by_pr" : issue déjà corrigée par un PR séparé MERGÉ qui la ferme → rien à faire.
 Renvoie le verdict avec une raison en une ligne.`,
