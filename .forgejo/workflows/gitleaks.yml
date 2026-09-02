@@ -1,0 +1,51 @@
+# Gate secrets — réplique du job `gitleaks` de infra/homelab (posé le 2026-07-14).
+#
+# Scan de l'ARBRE COURANT (--no-git) et non de l'historique : un scan d'historique
+# resterait rouge pour toujours sur un secret déjà poussé et rédigé depuis, et ce
+# n'est de toute façon pas la CI qui répare ça — c'est une ROTATION.
+#
+# --redact : ne jamais imprimer la valeur d'un secret dans les logs du run
+# (infra/homelab#517 : un outil de revue a affiché 4 credentials en clair).
+#
+# Faux positif → créer un .gitleaks.toml à la racine avec une allowlist PRÉCISE
+# (jamais une règle ou un dossier entier). Contexte : infra/homelab#507.
+name: Security
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+# Le CA interne (step-ca) n'est pas dans le trust store du conteneur au démarrage :
+# sans ces deux lignes, actions/checkout échoue AVANT gitleaks sur
+# « server certificate verification failed. CAfile: none » (mesuré, run 2131).
+env:
+  NODE_EXTRA_CA_CERTS: /usr/local/share/ca-certificates/step-ca.crt
+
+jobs:
+  gitleaks:
+    runs-on: linux-amd64
+    steps:
+      # ⚠️ AVANT le checkout : c'est le checkout lui-même qui parle en HTTPS au Forgejo interne.
+      - name: Trust step-ca
+        run: update-ca-certificates 2>/dev/null || true
+
+      - uses: actions/checkout@v4
+
+      - name: Install gitleaks
+        # Version épinglée : une CI de sécurité dont l'outil bouge tout seul ne
+        # produit pas des résultats comparables d'un run à l'autre.
+        run: |
+          VER=8.28.0
+          curl -sSL --fail \
+            "https://github.com/gitleaks/gitleaks/releases/download/v${VER}/gitleaks_${VER}_linux_x64.tar.gz" -o /tmp/gl.tar.gz
+          tar -xzf /tmp/gl.tar.gz -C /usr/local/bin gitleaks
+          gitleaks version
+
+      - name: Scan (arbre suivi, secrets masqués)
+        run: |
+          if [ -f .gitleaks.toml ]; then
+            gitleaks detect --no-git --source . -c .gitleaks.toml --redact -v
+          else
+            gitleaks detect --no-git --source . --redact -v
+          fi
