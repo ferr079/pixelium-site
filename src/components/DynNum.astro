@@ -9,6 +9,14 @@
  *
  * Usage:
  *   <DynNum stat="lxc_count" fallback="53+" suffix="+" />
+ *
+ * The rendered span carries `data-stat` so the number stays identifiable in the
+ * SERVED html. It is not styling and no script reads it — it exists so
+ * scripts/check-deployed.mjs can compare what production actually serves against
+ * the live KV, key by key. Without it a baked number is an anonymous <span>, and
+ * the only way to audit production is a per-value prose regex — the approach that
+ * already failed twice (a regex matches the first occurrence only, so a file can
+ * hold a second stale literal and the guard still goes green). See issue #136.
  */
 import { statValue } from '../lib/build-stats';
 
@@ -21,4 +29,4 @@ interface Props {
 const { stat, fallback, suffix = '' } = Astro.props;
 const display = await statValue(stat, fallback, suffix);
 ---
-<span>{display}</span>
+<span data-stat={stat}>{display}</span>

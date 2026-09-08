@@ -1,0 +1,72 @@
+name: Deployed check
+
+# Compares the numbers PRODUCTION actually serves against the live KV, and flags a
+# deployment that stopped being rebaked. This is the guard that was missing on
+# 2026-08-27, when the home page served 115 flags against a KV that said 117 while
+# both existing guards stayed green (issue #136):
+#   - Freshness guard compares the SOURCE to the KV   → green, the source was right
+#   - headers-check    compares served HEADERS        → green, headers were right
+# Nobody looked at the served HTML. DynNum bakes at build time and never hydrates,
+# so the numbers are frozen between rebakes — and that day's rebake was simply
+# skipped, because GitHub `schedule` is best-effort.
+#
+# Timing matters here. Deploy runs at 05:00 UTC (in practice ~05:25). We check at
+# 09:00 with a 26 h threshold, so:
+#   - normal day       → build is 2-4 h old   → pass
+#   - rebake skipped   → build is ~28 h old   → STALE DEPLOY
+# A tighter threshold would fire every time GitHub delays the deploy cron by a
+# couple of hours, which is exactly how a guard earns being ignored.
+#
+# Does NOT gate deploys: it audits what is already public.
+on:
+  schedule:
+    - cron: '0 9 * * *' # 09:00 UTC daily, ~4 h after the deploy cron
+  workflow_dispatch: {}
+  # No `push` trigger on purpose: this guard reads production, not the working tree.
+  # Running it on a commit would audit the PREVIOUS deployment and report on code
+  # that is not live yet.
+
+jobs:
+  deployed:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v5
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Check what production serves
+        run: |
+          set -o pipefail
+          node scripts/check-deployed.mjs --max-age-hours 26 2>&1 | tee deployed-output.txt
+
+      - name: Write step summary
+        if: always()
+        run: |
+          {
+            echo '### Deployed check'
+            echo
+            echo '```'
+            cat deployed-output.txt
+            echo '```'
+          } >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Notify Telegram on a real production problem
+        # Only when the PUBLIC site is wrong — a stale deployment or numbers that
+        # disagree with the KV. A GUARD BLIND result means this script can no longer
+        # see what it audits (markup changed, sitemap unreadable): that needs a code
+        # fix, not a production alert, and paging on it would train us to ignore it.
+        if: failure()
+        run: |
+          if grep -qE 'DEPLOYED DRIFT|STALE DEPLOY' deployed-output.txt; then
+            RUN_URL="https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}"
+            TEXT=$(printf '⚠️ *pixelium.win sert des chiffres faux*\n\nLe HTML servi diverge du KV, ou le rebake quotidien a été sauté.\nVoir le run : %s' "$RUN_URL")
+            curl -s -X POST "https://api.telegram.org/bot${{ secrets.TELEGRAM_BOT_TOKEN }}/sendMessage" \
+              -d chat_id="${{ secrets.TELEGRAM_CHAT_ID }}" \
+              -d parse_mode=Markdown \
+              --data-urlencode "text=${TEXT}"
+          else
+            echo "Échec sans marqueur DEPLOYED DRIFT / STALE DEPLOY (garde aveugle) — pas de notif, corriger check-deployed.mjs."
+          fi

@@ -10,6 +10,7 @@
     "og": "node scripts/og/gen-og.mjs",
     "audit:freshness": "node scripts/audit-freshness.mjs",
     "headers:check": "node scripts/headers-check.mjs",
+    "check:deployed": "node scripts/check-deployed.mjs",
     "topology:export": "node scripts/export-topology.mjs",
     "build": "node scripts/og/gen-og.mjs && astro build && node scripts/gen-md.mjs",
     "preview": "astro preview",
