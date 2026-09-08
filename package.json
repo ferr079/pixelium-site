@@ -17,14 +17,14 @@
     "md": "node scripts/gen-md.mjs --report"
   },
   "dependencies": {
-    "@astrojs/cloudflare": "^14.2.5",
-    "@astrojs/sitemap": "^3.7.3",
-    "astro": "^7.2.9",
+    "@astrojs/cloudflare": "^14.3.1",
+    "@astrojs/sitemap": "^3.7.4",
+    "astro": "^7.3.2",
     "zod": "^4.4.3"
   },
   "devDependencies": {
     "@resvg/resvg-js": "^2.6.2",
     "satori": "^0.29.0",
-    "wrangler": "^4.123.0"
+    "wrangler": "^4.125.0"
   }
 }
