@@ -1,8 +1,5 @@
 ---
 import Base from '../../layouts/Base.astro';
-import StatsBar from '../../components/StatsBar.astro';
-import DynNum from '../../components/DynNum.astro';
-import Screenshot from '../../components/Screenshot.astro';
 import { getBuildStats } from '../../lib/build-stats';
 import { getLangFromUrl, formatNumber } from '../../i18n/utils';
 
@@ -16,27 +13,38 @@ const n = (k: string, d: number): number => (Number.isFinite(Number(s[k])) ? Num
 
 const htb = {
   rank: String(s.htb_rank ?? 'Pro Hacker'),
-  ranking: n('htb_ranking', 346),
-  // Rang NATIONAL — publié par kv-push depuis le 2026-08-24 et lu par personne
-  // jusqu'ici. C'est pourtant le plus lisible des deux pour un lecteur français :
-  // #18 sur 3719 se situe tout de suite, #253 mondial beaucoup moins.
-  country_rank: n('htb_country_rank', 18),
-  system_owns: n('htb_system_owns', 55),
-  user_owns: n('htb_user_owns', 56),
+  ranking: n('htb_ranking', 255),
+  // Rang NATIONAL + son dénominateur (htb_country_members, orpheline jusqu'au 2026-10-03) :
+  // « #17 / 3 771 » se situe tout de suite, #255 mondial beaucoup moins.
+  country_rank: n('htb_country_rank', 17),
+  country_members: n('htb_country_members', 3771),
+  system_owns: n('htb_system_owns', 62),
+  user_owns: n('htb_user_owns', 63),
+  fortress_flags: n('htb_fortress_flags', 43),
 };
 const htbFlags = n('htb_flags', htb.user_owns + htb.system_owns);
 // htb_flags ne compte que les MACHINES (user_owns + system_owns) — le profil HTB ne porte aucun
-// champ fortress. kv-push publie `htb_fortress_flags` à côté (= 21 au 2026-08-21, Jet 11/11
-// + AWS 10/10), clé bien vivante dans le KV mais VOLONTAIREMENT pas affichée : elle est mise
-// en réserve pour la refonte visuelle v5 (décision Stéphane 2026-08-11). Quand elle sortira :
-// une tuile VOISINE, jamais additionnée aux flags de machines — une Fortress porte 7 à 11
-// flags pour une seule cible, une machine 2, le total ne voudrait rien dire.
+// champ fortress. htb_fortress_flags est une clé SÉPARÉE (2ᵉ appel API dans kv-push). Mise en
+// réserve pour la v5 le 2026-08-11, affichée ici le 2026-10-03 (décision Stéphane : la v5 n'a pas
+// de date et la capture HTB qu'elle remplace était périmée). Cellule VOISINE, jamais additionnée
+// aux flags de machines — une Fortress porte 7 à 11 flags pour une seule cible, une machine 2,
+// le total ne voudrait rien dire.
+
+// Percentile dérivé de deux clés du KV, arrondi au-DESSUS pour ne jamais flatter (0,45 → 0,5).
+const countryTopPct = htb.country_members > 0
+  ? Math.ceil((htb.country_rank / htb.country_members) * 1000) / 10
+  : null;
 
 const rootme = {
   score: n('rootme_score', 1050),
-  position: n('rootme_position', 15486),
+  position: n('rootme_position', 15607),
   validations: n('rootme_validations', 75),
 };
+
+const offensiveTools = n('inv_offensive_tools', 154);
+
+// Valeurs figées au build (rebake quotidien), pas lues par le visiteur — le panneau le dit.
+const builtAt = new Date().toISOString().slice(0, 16).replace('T', ' ');
 ---
 
 <Base title="CTF — pixelium.win" description={`Profils Capture The Flag — HTB (rang ${htb.rank}, #${htb.ranking}), TryHackMe (Top 15%), Root-Me (${rootme.score} pts). Entraînement offensif vérifié par Stéphane, documenté par Claude.`}>
@@ -56,19 +64,49 @@ const rootme = {
           <h2>Badges v&eacute;rifiables</h2>
         </div>
         <div class="layer-content">
-          <p>Badges ind&eacute;pendants, g&eacute;n&eacute;r&eacute;s dynamiquement — directement depuis les serveurs HTB et THM, mis &agrave; jour en temps r&eacute;el au fil de la progression de St&eacute;phane. En dessous, un aper&ccedil;u du tableau de bord HTB Labs complet derri&egrave;re les chiffres — aucune connexion HTB n'est requise pour le consulter.</p>
+          <p>Badges ind&eacute;pendants, g&eacute;n&eacute;r&eacute;s dynamiquement — directement depuis les serveurs HTB et THM, mis &agrave; jour en temps r&eacute;el au fil de la progression de St&eacute;phane. En dessous, les chiffres derri&egrave;re les badges : pas une capture d'&eacute;cran, mais les valeurs que le homelab pousse dans le KV du site toutes les ~5 minutes, directement depuis les API des plateformes. Aucune connexion HTB n'est requise pour les consulter.</p>
           <div class="badges-row">
             <img src="https://www.hackthebox.com/badge/image/1161145" alt="Badge Hack The Box de Ferr079" class="ctf-badge" loading="lazy" />
             <a href="https://tryhackme.com/p/ferr0" target="_blank" rel="noopener" aria-label="Profil TryHackMe">
               <img src="https://tryhackme-badges.s3.amazonaws.com/ferr0.png" alt="Badge TryHackMe de ferr0" class="ctf-badge" loading="lazy" />
             </a>
           </div>
-          <Screenshot
-            src="/images/htb-dashboard.webp?v=20260810"
-            alt="Tableau de bord Hack The Box Labs de Stéphane : rang Pro Hacker, niveau Master 64, tier Holo Saison 11"
-            title="HTB Labs — Ferr079"
-            caption="Le tableau de bord derrière les chiffres — rang Pro Hacker · Master Niv. 64 · tier Holo Saison 11 #35 · série de 13 semaines (aperçu, août 2026)"
-          />
+
+          <div class="kv-panel">
+            <div class="kv-row htb-row">
+              <div class="kv-row-head">
+                <span class="kv-platform">Hack The Box</span>
+                <span class="platform-rank">{htb.rank}</span>
+              </div>
+              <div class="kv-cells">
+                <div class="kv-cell"><span class="kv-num"><span data-stat="htb_system_owns">{htb.system_owns}</span></span><span class="kv-label">machines rootées</span></div>
+                <div class="kv-cell"><span class="kv-num"><span data-stat="htb_flags">{htbFlags}</span></span><span class="kv-label">flags machines</span></div>
+                <div class="kv-cell"><span class="kv-num"><span data-stat="htb_fortress_flags">{htb.fortress_flags}</span></span><span class="kv-label">flags Fortress</span></div>
+                <div class="kv-cell"><span class="kv-num">#<span data-stat="htb_ranking">{formatNumber(htb.ranking, lang)}</span></span><span class="kv-label">rang mondial</span></div>
+                <div class="kv-cell"><span class="kv-num">#<span data-stat="htb_country_rank">{htb.country_rank}</span><span class="kv-of"> / <span data-stat="htb_country_members">{formatNumber(htb.country_members, lang)}</span></span></span><span class="kv-label">rang France{countryTopPct !== null && <> · top {formatNumber(countryTopPct, lang)}&nbsp;%</>}</span></div>
+              </div>
+            </div>
+            <div class="kv-row rootme-row">
+              <div class="kv-row-head">
+                <span class="kv-platform">Root-Me</span>
+              </div>
+              <div class="kv-cells">
+                <div class="kv-cell"><span class="kv-num"><span data-stat="rootme_score">{rootme.score}</span></span><span class="kv-label">points</span></div>
+                <div class="kv-cell"><span class="kv-num"><span data-stat="rootme_validations">{rootme.validations}</span></span><span class="kv-label">challenges</span></div>
+                <div class="kv-cell"><span class="kv-num">#<span data-stat="rootme_position">{formatNumber(rootme.position, lang)}</span></span><span class="kv-label">rang mondial</span></div>
+              </div>
+            </div>
+            <div class="kv-row arsenal-row">
+              <div class="kv-row-head">
+                <span class="kv-platform">Arsenal</span>
+              </div>
+              <div class="kv-cells">
+                <div class="kv-cell"><span class="kv-num"><span data-stat="inv_offensive_tools">{offensiveTools}</span></span><span class="kv-label">outils offensifs catalogu&eacute;s sur la VM d'attaque isol&eacute;e</span></div>
+              </div>
+            </div>
+            <p class="kv-source">source : <a href="/api/stats">/api/stats</a> (KV, pouss&eacute; toutes les ~5 min par le homelab) · fig&eacute; dans cette page au build, {builtAt} UTC</p>
+          </div>
+          <p class="kv-note">Flags machines et flags Fortress sont compt&eacute;s &agrave; part, volontairement : une machine porte 2 flags, une Fortress 7 &agrave; 11 pour une seule cible — les additionner ne voudrait rien dire.</p>
         </div>
       </div>
     </section>
@@ -93,26 +131,8 @@ const rootme = {
                 </div>
                 <span class="platform-rank" data-htb="rank">{htb.rank}</span>
               </div>
-              <div class="platform-stats">
-                <div class="platform-stat">
-                  <span class="stat-number" data-htb="system_owns">{htb.system_owns}</span>
-                  <span class="stat-label">Machines</span>
-                </div>
-                <div class="platform-stat">
-                  <span class="stat-number" data-htb="user_owns">{htb.user_owns}</span>
-                  <span class="stat-label">User owns</span>
-                </div>
-                <div class="platform-stat">
-                  <span class="stat-number" data-htb="flags">{htbFlags}</span>
-                  <span class="stat-label">Flags machines</span>
-                </div>
-                <div class="platform-stat">
-                  <span class="stat-number" data-htb="ranking">#{htb.ranking}</span>
-                  <span class="stat-label">Global</span>
-                </div>
-              </div>
               <p class="platform-desc">La plateforme leader mondiale en s&eacute;curit&eacute; offensive. Machines vuln&eacute;rables r&eacute;alistes — de la reconnaissance initiale au root complet. Active Directory Windows, escalade de privil&egrave;ges Linux, exploitation web, recherche CVE. Utilis&eacute;e par les professionnels et les red teams dans le monde entier. Le terrain d'entra&icirc;nement principal de St&eacute;phane.</p>
-              <span class="platform-cta">Badge v&eacute;rifi&eacute; &#8593;</span>
+              <span class="platform-cta">Badges &amp; chiffres &#8593;</span>
             </a>
 
             <!-- THM -->
@@ -150,20 +170,6 @@ const rootme = {
                   <span class="platform-name">Root-Me</span>
                 </div>
                 <span class="platform-rank rootme-rank">{rootme.score} pts</span>
-              </div>
-              <div class="platform-stats">
-                <div class="platform-stat">
-                  <span class="stat-number">{rootme.validations}</span>
-                  <span class="stat-label">Challenges</span>
-                </div>
-                <div class="platform-stat">
-                  <span class="stat-number">#{formatNumber(rootme.position, lang)}</span>
-                  <span class="stat-label">Global</span>
-                </div>
-                <div class="platform-stat">
-                  <span class="stat-number">{rootme.score}</span>
-                  <span class="stat-label">Points</span>
-                </div>
               </div>
               <p class="platform-desc">La plateforme CTF leader en Europe, n&eacute;e en France. Challenges techniques cibl&eacute;s — exploitation web, cryptographie, forensics, analyse r&eacute;seau. Reconnue pour sa profondeur et son contenu communautaire. Une r&eacute;f&eacute;rence dans la cybers&eacute;curit&eacute; francophone.</p>
               <span class="platform-cta">Voir le profil &#8594;</span>
@@ -298,27 +304,6 @@ const rootme = {
       </div>
     </section>
 
-    <!-- Chiffres -->
-    <section class="layer">
-      <div class="container">
-        <div class="layer-header">
-          <h2>Les chiffres</h2>
-        </div>
-        <div class="layer-content">
-          <p>L'entra&icirc;nement offensif n'est pas un discours — c'est une <strong>progression mesurable.</strong></p>
-        </div>
-      </div>
-    </section>
-
-    <StatsBar stats={[
-      { number: String(htb.system_owns), label: 'machines HTB', stat: 'htb_system_owns' },
-      { number: `#${htb.ranking}`, label: 'rang mondial HTB', stat: 'htb_ranking', suffix: '' },
-      { number: `#${htb.country_rank}`, label: 'rang France HTB', stat: 'htb_country_rank', suffix: '' },
-      { number: String(rootme.validations), label: 'challenges Root-Me' },
-      { number: '35', label: 'rooms THM' },
-      { number: String(htbFlags), label: 'flags machines' },
-      { number: String(rootme.score), label: 'points Root-Me' },
-    ]} />
 
     <!-- Crosslinks -->
     <section class="crosslink reveal">
@@ -356,6 +341,23 @@ const rootme = {
      les plateformes, les afficher à 80px les upscalait de 60 % (rendu flou). */
   .ctf-badge { height: 50px; width: auto; border-radius: 6px; transition: transform 0.2s; }
   .ctf-badge:hover { transform: scale(1.05); }
+  /* Panneau KV — remplace la capture du dashboard HTB (2026-10-03). Chaque nombre est une
+     ancre data-stat : scripts/check-deployed.mjs le compare au KV live. */
+  .kv-panel { margin-top: 1.5rem; background: var(--color-deep, #020617); border: 1px solid var(--color-border); border-radius: 8px; overflow: hidden; }
+  .kv-row { padding: 1rem 1.25rem; border-left: 3px solid var(--color-border); }
+  .kv-row + .kv-row { border-top: 1px solid var(--color-border); }
+  .htb-row { border-left-color: #9fef00; }
+  .rootme-row { border-left-color: #ffc107; }
+  .arsenal-row { border-left-color: var(--color-accent); }
+  .kv-row-head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.75rem; }
+  .kv-platform { font-family: var(--font-mono); font-size: 0.75rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: var(--color-text-muted); }
+  .kv-cells { display: grid; grid-template-columns: repeat(auto-fill, minmax(9rem, 1fr)); gap: 1rem 1.5rem; }
+  .kv-cell { display: flex; flex-direction: column; gap: 0.2rem; }
+  .kv-num { font-family: var(--font-mono); font-size: 1.5rem; font-weight: 700; color: var(--color-text); line-height: 1.1; }
+  .kv-of { font-size: 0.9rem; font-weight: 400; color: var(--color-text-muted); }
+  .kv-label { font-size: 0.75rem; color: var(--color-text-muted); }
+  .kv-source { margin: 0; padding: 0.6rem 1.25rem; border-top: 1px solid var(--color-border); font-family: var(--font-mono); font-size: 0.7rem; color: var(--color-text-muted); }
+  .kv-note { margin-top: 0.75rem; font-size: 0.8rem; color: var(--color-text-muted); }
   .feedback-loop { display: flex; flex-direction: column; gap: 0.5rem; }
   .loop-item { display: flex; align-items: center; gap: 0.75rem; padding: 0.75rem 1rem; background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 6px; }
   .loop-arrow { color: var(--color-accent); font-size: 1.1rem; flex-shrink: 0; }
@@ -401,6 +403,9 @@ const rootme = {
     .loop-item > div { flex-direction: column; align-items: flex-start; }
     .loop-item { padding: 0.5rem 0.75rem; }
     .platforms-grid, .techniques-grid { grid-template-columns: 1fr; gap: 0.75rem; }
+    .kv-row { padding: 0.9rem 1rem; }
+    .kv-cells { grid-template-columns: repeat(2, 1fr); gap: 0.9rem 1rem; }
+    .kv-num { font-size: 1.3rem; }
     .platform-card { padding: 1rem; }
     .platform-stats { grid-template-columns: repeat(2, 1fr); }
     .crosslink-block { flex-direction: column; gap: 1rem; padding: 1.25rem; }

@@ -1,8 +1,5 @@
 ---
 import Base from '../layouts/Base.astro';
-import StatsBar from '../components/StatsBar.astro';
-import DynNum from '../components/DynNum.astro';
-import Screenshot from '../components/Screenshot.astro';
 import { getBuildStats } from '../lib/build-stats';
 import { getLangFromUrl, formatNumber } from '../i18n/utils';
 
@@ -16,27 +13,38 @@ const n = (k: string, d: number): number => (Number.isFinite(Number(s[k])) ? Num
 
 const htb = {
   rank: String(s.htb_rank ?? 'Pro Hacker'),
-  ranking: n('htb_ranking', 346),
-  // Rang NATIONAL — publié par kv-push depuis le 2026-08-24 et lu par personne
-  // jusqu'ici. C'est pourtant le plus lisible des deux pour un lecteur français :
-  // #18 sur 3719 se situe tout de suite, #253 mondial beaucoup moins.
-  country_rank: n('htb_country_rank', 18),
-  system_owns: n('htb_system_owns', 55),
-  user_owns: n('htb_user_owns', 56),
+  ranking: n('htb_ranking', 255),
+  // Rang NATIONAL + son dénominateur (htb_country_members, orpheline jusqu'au 2026-10-03) :
+  // « #17 / 3 771 » se situe tout de suite, #255 mondial beaucoup moins.
+  country_rank: n('htb_country_rank', 17),
+  country_members: n('htb_country_members', 3771),
+  system_owns: n('htb_system_owns', 62),
+  user_owns: n('htb_user_owns', 63),
+  fortress_flags: n('htb_fortress_flags', 43),
 };
 const htbFlags = n('htb_flags', htb.user_owns + htb.system_owns);
 // htb_flags counts MACHINES only (user_owns + system_owns) — the HTB profile endpoint carries no
-// fortress field. kv-push publishes `htb_fortress_flags` alongside (= 21 on 2026-08-21, Jet 11/11
-// + AWS 10/10): the key is live in the KV but deliberately NOT surfaced yet — held back for
-// the v5 visual redesign (Stéphane, 2026-08-11). When it ships: a NEIGHBOURING tile, never
-// added to the machine flags — a Fortress holds 7-11 flags for a single target, a machine 2,
-// the sum would mean nothing.
+// fortress field. htb_fortress_flags is a SEPARATE key (2nd API call in kv-push). Held back for
+// the v5 redesign on 2026-08-11, surfaced here on 2026-10-03 (Stéphane's call: v5 has no date
+// and the HTB screenshot it replaces had gone stale). Shown as a NEIGHBOURING cell, never added
+// to the machine flags — a Fortress holds 7-11 flags for a single target, a machine 2, the sum
+// would mean nothing.
+
+// Percentile derived from two KV keys, rounded UP so the claim never flatters (0.45 → 0.5).
+const countryTopPct = htb.country_members > 0
+  ? Math.ceil((htb.country_rank / htb.country_members) * 1000) / 10
+  : null;
 
 const rootme = {
   score: n('rootme_score', 1050),
-  position: n('rootme_position', 15486),
+  position: n('rootme_position', 15607),
   validations: n('rootme_validations', 75),
 };
+
+const offensiveTools = n('inv_offensive_tools', 154);
+
+// Values are baked at build (daily rebake), not fetched by the visitor — the panel says so.
+const builtAt = new Date().toISOString().slice(0, 16).replace('T', ' ');
 ---
 
 <Base title="CTF — pixelium.win" description={`Capture The Flag profiles — HTB (${htb.rank} rank, #${htb.ranking}), TryHackMe (Top 15%), Root-Me (${rootme.score} pts). Verified offensive security training by Stéphane, documented by Claude.`}>
@@ -56,19 +64,49 @@ const rootme = {
           <h2>Verified badges</h2>
         </div>
         <div class="layer-content">
-          <p>Independent, dynamically generated badges — pulled directly from HTB and THM servers, updating in real time as St&eacute;phane progresses. Below them, a snapshot of the full HTB Labs dashboard behind the numbers — no HTB login required to see any of it.</p>
+          <p>Independent, dynamically generated badges — pulled directly from HTB and THM servers, updating in real time as St&eacute;phane progresses. Below them, the numbers behind the badges: not a screenshot, but the values the homelab pushes to the site's KV store every ~5 minutes, straight from the platform APIs. No HTB login required to see any of it.</p>
           <div class="badges-row">
             <img src="https://www.hackthebox.com/badge/image/1161145" alt="Hack The Box badge for Ferr079" class="ctf-badge" loading="lazy" />
             <a href="https://tryhackme.com/p/ferr0" target="_blank" rel="noopener" aria-label="TryHackMe profile">
               <img src="https://tryhackme-badges.s3.amazonaws.com/ferr0.png" alt="TryHackMe badge for ferr0" class="ctf-badge" loading="lazy" />
             </a>
           </div>
-          <Screenshot
-            src="/images/htb-dashboard.webp?v=20260810"
-            alt="Stéphane's Hack The Box Labs dashboard: Pro Hacker rank, Master level 64, Season 11 Holo tier"
-            title="HTB Labs — Ferr079"
-            caption="The dashboard behind the numbers — Pro Hacker rank · Master Lvl 64 · Season 11 Holo tier #35 · 13-week streak (snapshot, August 2026)"
-          />
+
+          <div class="kv-panel">
+            <div class="kv-row htb-row">
+              <div class="kv-row-head">
+                <span class="kv-platform">Hack The Box</span>
+                <span class="platform-rank">{htb.rank}</span>
+              </div>
+              <div class="kv-cells">
+                <div class="kv-cell"><span class="kv-num"><span data-stat="htb_system_owns">{htb.system_owns}</span></span><span class="kv-label">machines rooted</span></div>
+                <div class="kv-cell"><span class="kv-num"><span data-stat="htb_flags">{htbFlags}</span></span><span class="kv-label">machine flags</span></div>
+                <div class="kv-cell"><span class="kv-num"><span data-stat="htb_fortress_flags">{htb.fortress_flags}</span></span><span class="kv-label">Fortress flags</span></div>
+                <div class="kv-cell"><span class="kv-num">#<span data-stat="htb_ranking">{formatNumber(htb.ranking, lang)}</span></span><span class="kv-label">global rank</span></div>
+                <div class="kv-cell"><span class="kv-num">#<span data-stat="htb_country_rank">{htb.country_rank}</span><span class="kv-of"> / <span data-stat="htb_country_members">{formatNumber(htb.country_members, lang)}</span></span></span><span class="kv-label">France rank{countryTopPct !== null && <> · top {formatNumber(countryTopPct, lang)}%</>}</span></div>
+              </div>
+            </div>
+            <div class="kv-row rootme-row">
+              <div class="kv-row-head">
+                <span class="kv-platform">Root-Me</span>
+              </div>
+              <div class="kv-cells">
+                <div class="kv-cell"><span class="kv-num"><span data-stat="rootme_score">{rootme.score}</span></span><span class="kv-label">points</span></div>
+                <div class="kv-cell"><span class="kv-num"><span data-stat="rootme_validations">{rootme.validations}</span></span><span class="kv-label">challenges</span></div>
+                <div class="kv-cell"><span class="kv-num">#<span data-stat="rootme_position">{formatNumber(rootme.position, lang)}</span></span><span class="kv-label">global rank</span></div>
+              </div>
+            </div>
+            <div class="kv-row arsenal-row">
+              <div class="kv-row-head">
+                <span class="kv-platform">Arsenal</span>
+              </div>
+              <div class="kv-cells">
+                <div class="kv-cell"><span class="kv-num"><span data-stat="inv_offensive_tools">{offensiveTools}</span></span><span class="kv-label">offensive tools catalogued on the isolated attack VM</span></div>
+              </div>
+            </div>
+            <p class="kv-source">source: <a href="/api/stats">/api/stats</a> (KV, pushed every ~5 min by the homelab) · baked into this page at build, {builtAt} UTC</p>
+          </div>
+          <p class="kv-note">Machine and Fortress flags are counted apart on purpose: a machine holds 2 flags, a Fortress 7 to 11 for a single target — adding them up would mean nothing.</p>
         </div>
       </div>
     </section>
@@ -93,26 +131,8 @@ const rootme = {
                 </div>
                 <span class="platform-rank" data-htb="rank">{htb.rank}</span>
               </div>
-              <div class="platform-stats">
-                <div class="platform-stat">
-                  <span class="stat-number" data-htb="system_owns">{htb.system_owns}</span>
-                  <span class="stat-label">Machines</span>
-                </div>
-                <div class="platform-stat">
-                  <span class="stat-number" data-htb="user_owns">{htb.user_owns}</span>
-                  <span class="stat-label">User owns</span>
-                </div>
-                <div class="platform-stat">
-                  <span class="stat-number" data-htb="flags">{htbFlags}</span>
-                  <span class="stat-label">Machine flags</span>
-                </div>
-                <div class="platform-stat">
-                  <span class="stat-number" data-htb="ranking">#{htb.ranking}</span>
-                  <span class="stat-label">Global</span>
-                </div>
-              </div>
               <p class="platform-desc">The world's leading offensive security platform. Realistic vulnerable machines &mdash; from initial recon to full root. Windows Active Directory, Linux privilege escalation, web exploitation, CVE research. Used by professionals and red teams globally. St&eacute;phane's primary training ground.</p>
-              <span class="platform-cta">Verified badge &#8593;</span>
+              <span class="platform-cta">Badges &amp; numbers &#8593;</span>
             </a>
 
             <!-- THM -->
@@ -150,20 +170,6 @@ const rootme = {
                   <span class="platform-name">Root-Me</span>
                 </div>
                 <span class="platform-rank rootme-rank">{rootme.score} pts</span>
-              </div>
-              <div class="platform-stats">
-                <div class="platform-stat">
-                  <span class="stat-number">{rootme.validations}</span>
-                  <span class="stat-label">Challenges</span>
-                </div>
-                <div class="platform-stat">
-                  <span class="stat-number">#{formatNumber(rootme.position, lang)}</span>
-                  <span class="stat-label">Global</span>
-                </div>
-                <div class="platform-stat">
-                  <span class="stat-number">{rootme.score}</span>
-                  <span class="stat-label">Points</span>
-                </div>
               </div>
               <p class="platform-desc">Europe's leading CTF platform, born in France. Targeted technical challenges &mdash; web exploitation, cryptography, forensics, network analysis. Known for its depth and community-driven content. A reference in French-speaking cybersecurity.</p>
               <span class="platform-cta">View profile &#8594;</span>
@@ -298,27 +304,6 @@ const rootme = {
       </div>
     </section>
 
-    <!-- Numbers -->
-    <section class="layer">
-      <div class="container">
-        <div class="layer-header">
-          <h2>The numbers</h2>
-        </div>
-        <div class="layer-content">
-          <p>Offensive training is not a narrative — it is <strong>measurable progress.</strong></p>
-        </div>
-      </div>
-    </section>
-
-    <StatsBar stats={[
-      { number: String(htb.system_owns), label: 'HTB machines', stat: 'htb_system_owns' },
-      { number: `#${htb.ranking}`, label: 'HTB global rank', stat: 'htb_ranking', suffix: '' },
-      { number: `#${htb.country_rank}`, label: 'HTB France rank', stat: 'htb_country_rank', suffix: '' },
-      { number: String(rootme.validations), label: 'Root-Me challenges' },
-      { number: '35', label: 'THM rooms' },
-      { number: String(htbFlags), label: 'machine flags' },
-      { number: String(rootme.score), label: 'Root-Me points' },
-    ]} />
 
     <!-- Crosslinks -->
     <section class="crosslink reveal">
@@ -405,6 +390,91 @@ const rootme = {
 
   .ctf-badge:hover {
     transform: scale(1.05);
+  }
+
+  /* KV panel — replaced the HTB dashboard screenshot (2026-10-03). Every number is a
+     data-stat anchor, so scripts/check-deployed.mjs compares it with the live KV. */
+  .kv-panel {
+    margin-top: 1.5rem;
+    background: var(--color-deep, #020617);
+    border: 1px solid var(--color-border);
+    border-radius: 8px;
+    overflow: hidden;
+  }
+
+  .kv-row {
+    padding: 1rem 1.25rem;
+    border-left: 3px solid var(--color-border);
+  }
+
+  .kv-row + .kv-row {
+    border-top: 1px solid var(--color-border);
+  }
+
+  .htb-row { border-left-color: #9fef00; }
+  .rootme-row { border-left-color: #ffc107; }
+  .arsenal-row { border-left-color: var(--color-accent); }
+
+  .kv-row-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 0.75rem;
+  }
+
+  .kv-platform {
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--color-text-muted);
+  }
+
+  .kv-cells {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(9rem, 1fr));
+    gap: 1rem 1.5rem;
+  }
+
+  .kv-cell {
+    display: flex;
+    flex-direction: column;
+    gap: 0.2rem;
+  }
+
+  .kv-num {
+    font-family: var(--font-mono);
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--color-text);
+    line-height: 1.1;
+  }
+
+  .kv-of {
+    font-size: 0.9rem;
+    font-weight: 400;
+    color: var(--color-text-muted);
+  }
+
+  .kv-label {
+    font-size: 0.75rem;
+    color: var(--color-text-muted);
+  }
+
+  .kv-source {
+    margin: 0;
+    padding: 0.6rem 1.25rem;
+    border-top: 1px solid var(--color-border);
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    color: var(--color-text-muted);
+  }
+
+  .kv-note {
+    margin-top: 0.75rem;
+    font-size: 0.8rem;
+    color: var(--color-text-muted);
   }
 
   /* Feedback loop */
@@ -655,6 +725,9 @@ const rootme = {
     .loop-item > div { flex-direction: column; align-items: flex-start; }
     .loop-item { padding: 0.5rem 0.75rem; }
     .platforms-grid, .techniques-grid { grid-template-columns: 1fr; gap: 0.75rem; }
+    .kv-row { padding: 0.9rem 1rem; }
+    .kv-cells { grid-template-columns: repeat(2, 1fr); gap: 0.9rem 1rem; }
+    .kv-num { font-size: 1.3rem; }
     .platform-card { padding: 1rem; }
     .platform-stats { grid-template-columns: repeat(2, 1fr); }
     .crosslink-block { flex-direction: column; gap: 1rem; padding: 1.25rem; }
