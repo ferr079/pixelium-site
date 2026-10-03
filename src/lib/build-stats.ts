@@ -101,6 +101,16 @@ function withFloor(stats: Record<string, string | number>): Record<string, strin
 
 let promise: Promise<Record<string, string | number>> | null = null;
 
+// Where the baked snapshot came from. The footer exposes it so scripts/check-deployed.mjs
+// can tell a build baked from the live KV from one baked from FALLBACK — the only
+// "wrong number" a deployment can ship that the build-age check doesn't already catch
+// (issue #154). kvUpdatedAt is the KV's own timestamp as read at build.
+export interface BuildStatsMeta {
+  source: 'kv' | 'fallback';
+  kvUpdatedAt: string | null;
+}
+let meta: BuildStatsMeta = { source: 'fallback', kvUpdatedAt: null };
+
 async function fetchOnce(): Promise<Record<string, string | number>> {
   try {
     const res = await fetch('https://pixelium.win/api/stats', {
@@ -109,6 +119,10 @@ async function fetchOnce(): Promise<Record<string, string | number>> {
     if (res.ok) {
       const data = await res.json();
       if (data?.stats && typeof data.stats === 'object') {
+        meta = {
+          source: 'kv',
+          kvUpdatedAt: typeof data.updated_at === 'string' ? data.updated_at : null,
+        };
         // live values win, fallback fills gaps — monotonic-up metrics are floored
         // at the last-known-good value (withFloor) so a glitch can't lower them.
         return withFloor({ ...FALLBACK, ...data.stats });
@@ -125,6 +139,12 @@ async function fetchOnce(): Promise<Record<string, string | number>> {
 export function getBuildStats(): Promise<Record<string, string | number>> {
   if (!promise) promise = fetchOnce();
   return promise;
+}
+
+/** Provenance of the baked snapshot (resolved with it, fetched at most once). */
+export async function getBuildStatsMeta(): Promise<BuildStatsMeta> {
+  await getBuildStats();
+  return meta;
 }
 
 /** Resolve one stat to its display string (value + suffix), or the given fallback. */

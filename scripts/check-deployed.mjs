@@ -24,9 +24,19 @@
 //   node scripts/check-deployed.mjs --max-age-hours 30  # staleness threshold
 //   node scripts/check-deployed.mjs --json              # machine-readable
 //
+// What counts as WRONG (issue #154, 2026-10-03). This guard used to compare every baked
+// number strictly to the LIVE KV, and went red one day in two: the cron that should run
+// at 09:00 actually runs 13:40-17:30 UTC, 8-12 h after the rebake, and counters such as
+// journal_entries, claude_hours or inv_dagu legitimately climb in between — each of those
+// runs paged "pixelium.win sert des chiffres faux" while nothing was. A baked number that
+// has moved since its build is the CONTRACT of a daily rebake, not a defect. The defects
+// are: a rebake that did not happen (build age, per page) and a build baked from the
+// FALLBACK snapshot because the KV was unreachable (footer data-stats-source). Those
+// fail; the gap with the live KV is still printed, as information.
+//
 // Exit codes: 0 = pass (or skipped, network unreachable) · 1 = a problem was found.
 // The first line of a failure carries a marker so CI can tell a real production
-// problem from a broken guard: DEPLOYED DRIFT / STALE DEPLOY / GUARD BLIND.
+// problem from a broken guard: FALLBACK BAKE / STALE DEPLOY / GUARD BLIND.
 
 const args = process.argv.slice(2);
 const flag = (name, fallback) => {
@@ -45,6 +55,8 @@ const UA = 'Mozilla/5.0 (compatible; pixelium-check-deployed/1.0; +https://pixel
 
 // Below this, a "page" is not a page — almost certainly a redirect body or an error.
 const MIN_BODY_BYTES = 1000;
+// A baked counter this far behind the live KV is printed as a hint, never as a failure.
+const MOVED_HINT = 'moved since the build — expected between two daily rebakes, not a defect';
 // If the whole site yields fewer anchors than this, the markup changed under us and
 // the guard has gone blind. Louder than a silent pass. (106 <DynNum> today.)
 const MIN_TOTAL_ANCHORS = 40;   // baked (data-stat) anchors; ~106 <DynNum> today
@@ -83,9 +95,11 @@ async function fetchText(url) {
 // Two different mechanisms, and only one of them is allowed to be compared strictly:
 //
 //   <span data-stat="lxc_count">59</span>                      DynNum   — baked, NEVER
-//     hydrated ("no client fetch"). What is in the HTML is what every visitor sees,
-//     forever, until the next rebake. This is the surface issue #136 is about, and
-//     any disagreement with the KV is a real, visible defect.
+//     hydrated ("no client fetch"). What is in the HTML is what every visitor sees
+//     until the next rebake — the surface issue #136 is about. Its defects are a
+//     rebake that did not happen (build age) or a bake from the fallback snapshot
+//     (footer provenance). A gap with the LIVE KV a few hours after the build is
+//     not one (issue #154): it is printed, not failed.
 //
 //   <span class="brick-value" data-key="claude_hours" …>10,669</span>   LiveStats —
 //     baked AND refreshed client-side on every visit. Its baked value is *expected*
@@ -111,12 +125,25 @@ function isRedirectStub(html) {
   return /<meta\s+http-equiv="refresh"/i.test(html) && html.length < 2000;
 }
 
-// The footer carries: "▚ this deployment … built 2026-09-08 19:18 UTC".
+// The footer carries the build stamp twice: as data (data-built-at, ISO, since #154) and as
+// text ("▚ this deployment … built 2026-09-08 19:18 UTC"). The attribute is language-proof —
+// the French footer says "compilé", which the text regex never matched.
 function extractBuiltAt(html) {
+  const attr = html.match(/data-built-at="([^"]+)"/);
+  if (attr) {
+    const d = new Date(attr[1]);
+    if (!Number.isNaN(d.getTime())) return d;
+  }
   const m = html.match(/built (\d{4})-(\d{2})-(\d{2})[ T](\d{2}):(\d{2})\s*UTC/i);
   if (!m) return null;
   const [, y, mo, d, h, mi] = m;
   return new Date(Date.UTC(+y, +mo - 1, +d, +h, +mi));
+}
+
+// Footer: data-stats-source="kv" | "fallback" — where the baked numbers came from.
+function extractStatsSource(html) {
+  const m = html.match(/data-stats-source="([a-z]+)"/);
+  return m ? m[1] : null;
 }
 
 async function main() {
@@ -167,8 +194,12 @@ async function main() {
   let bakedAnchors = 0;
   let redirects = 0;
   let newestBuild = null;
+  let oldestBuild = null;
+  let oldestPage = null;
   let pagesWithStamp = 0;
-  const drift = [];
+  let pagesWithSource = 0;
+  const fallbackPages = [];
+  const moved = [];
 
   for (const page of pages) {
     let res;
@@ -194,6 +225,15 @@ async function main() {
     if (builtAt) {
       pagesWithStamp++;
       if (!newestBuild || builtAt > newestBuild) newestBuild = builtAt;
+      // Age is judged on the OLDEST page: one page left in cache from an older deployment
+      // is exactly the frozen number this guard exists for, and the newest page hid it.
+      if (!oldestBuild || builtAt < oldestBuild) { oldestBuild = builtAt; oldestPage = page; }
+    }
+
+    const source = extractStatsSource(res.body);
+    if (source) {
+      pagesWithSource++;
+      if (source !== 'kv') fallbackPages.push(page);
     }
 
     for (const { key, rendered, baked } of extractAnchors(res.body)) {
@@ -209,7 +249,7 @@ async function main() {
       const live = normalise(stats[kvKey]);
       if (served === null || live === null) continue; // non-numeric (e.g. htb_rank "Pro Hacker")
       if (served !== live) {
-        drift.push({ page, key: kvKey, served, live });
+        moved.push({ page, key: kvKey, served, live });
       }
     }
   }
@@ -223,14 +263,22 @@ async function main() {
   if (pagesWithStamp === 0) {
     blind.push('no build stamp found on any page — cannot tell how old the deployment is');
   }
+  // Positive assertion: without the provenance attribute we cannot tell a KV bake from a
+  // fallback bake, so the absence is blindness, never a pass.
+  if (pagesWithSource === 0) {
+    blind.push('no data-stats-source found on any page — cannot tell whether the numbers were baked from the KV or from the fallback snapshot');
+  }
+  if (fallbackPages.length) {
+    problems.push(`${fallbackPages.length} page(s) baked from the FALLBACK snapshot (KV unreachable at build) — every number on them is a hand-kept last-known value: ${fallbackPages.slice(0, 5).join(', ')}${fallbackPages.length > 5 ? ', …' : ''}`);
+  }
 
   // 4. Is the deployment still being rebaked? This is the actual failure mode of
   //    #136: everything is "correct" but frozen.
   let ageHours = null;
-  if (newestBuild) {
-    ageHours = (Date.now() - newestBuild.getTime()) / 36e5;
+  if (oldestBuild) {
+    ageHours = (Date.now() - oldestBuild.getTime()) / 36e5;
     if (ageHours > MAX_AGE_HOURS) {
-      problems.push(`deployment is ${ageHours.toFixed(1)} h old (built ${newestBuild.toISOString().slice(0, 16).replace('T', ' ')} UTC, threshold ${MAX_AGE_HOURS} h) — the daily rebake did not run, every baked number is frozen`);
+      problems.push(`deployment is ${ageHours.toFixed(1)} h old (oldest page ${oldestPage}, built ${oldestBuild.toISOString().slice(0, 16).replace('T', ' ')} UTC, threshold ${MAX_AGE_HOURS} h) — the daily rebake did not run or that page is served from an older deployment, its baked numbers are frozen`);
     }
   }
 
@@ -238,20 +286,15 @@ async function main() {
     console.log(JSON.stringify({
       base: BASE, pages: pages.length, redirects,
       anchors: totalAnchors, baked_anchors: bakedAnchors,
-      built_at: newestBuild?.toISOString() ?? null, age_hours: ageHours,
-      drift, problems, blind,
+      built_at: newestBuild?.toISOString() ?? null,
+      oldest_built_at: oldestBuild?.toISOString() ?? null, age_hours: ageHours,
+      fallback_pages: fallbackPages, moved, problems, blind,
     }, null, 2));
   }
 
   // 5. Report. Marker first — CI keys its alerting off it.
   const stale = problems.some((p) => p.startsWith('deployment is'));
-  if (drift.length) {
-    console.log('DEPLOYED DRIFT — production is serving numbers that disagree with the live KV\n');
-    for (const d of drift) {
-      console.log(`  ${d.page}\n    ${d.key}: served ${d.served} — KV ${d.live}`);
-    }
-    console.log('');
-  }
+  if (fallbackPages.length) console.log('FALLBACK BAKE — production serves numbers baked from the fallback snapshot, not the KV');
   if (stale) console.log('STALE DEPLOY');
   if (blind.length) {
     console.log('GUARD BLIND — this run could not verify what it claims to verify:');
@@ -264,13 +307,26 @@ async function main() {
     console.log('');
   }
 
-  if (drift.length || problems.length || blind.length) {
+  // Information only (#154): one line per key, not per page — 8 identical lines for one
+  // counter that moved is how the old output buried the real signal.
+  if (moved.length) {
+    const byKey = new Map();
+    for (const m of moved) {
+      const k = `${m.key}: served ${m.served} — KV ${m.live}`;
+      byKey.set(k, (byKey.get(k) ?? 0) + 1);
+    }
+    console.log(`Note — ${byKey.size} key(s) ${MOVED_HINT}:`);
+    for (const [k, count] of byKey) console.log(`  ${k}${count > 1 ? `  (${count} pages)` : ''}`);
+    console.log('');
+  }
+
+  if (problems.length || blind.length) {
     console.log(`Checked ${pages.length} pages (${redirects} redirect stubs skipped), ${bakedAnchors} baked + ${totalAnchors - bakedAnchors} client-refreshed anchors, against ${Object.keys(stats).length} KV keys.`);
     process.exit(1);
   }
 
-  console.log(`OK — ${pages.length} pages (${redirects} redirect stubs skipped), ${bakedAnchors} baked numbers all matching the live KV, ${totalAnchors - bakedAnchors} client-refreshed anchors key-checked.`);
-  console.log(`Deployment built ${newestBuild.toISOString().slice(0, 16).replace('T', ' ')} UTC (${ageHours.toFixed(1)} h ago, threshold ${MAX_AGE_HOURS} h).`);
+  console.log(`OK — ${pages.length} pages (${redirects} redirect stubs skipped), ${bakedAnchors} baked numbers from the KV (${pagesWithSource} pages carry the provenance), every key present in the live KV, ${totalAnchors - bakedAnchors} client-refreshed anchors key-checked.`);
+  console.log(`Oldest page built ${oldestBuild.toISOString().slice(0, 16).replace('T', ' ')} UTC (${ageHours.toFixed(1)} h ago, threshold ${MAX_AGE_HOURS} h).`);
   process.exit(0);
 }
 

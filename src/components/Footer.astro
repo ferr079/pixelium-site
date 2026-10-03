@@ -1,5 +1,6 @@
 ---
 import { getLangFromUrl } from '../i18n/utils';
+import { getBuildStatsMeta } from '../lib/build-stats';
 
 const lang = getLangFromUrl(Astro.url);
 
@@ -29,6 +30,9 @@ const BUILD_TIME = (import.meta.env.PUBLIC_BUILD_TIME as string) ?? '';
 const shaShort = COMMIT_SHA.slice(0, 7);
 const builtDisplay = BUILD_TIME ? `${BUILD_TIME.slice(0, 16).replace('T', ' ')} UTC` : 'dev';
 const commitUrl = COMMIT_SHA !== 'dev' ? `https://github.com/ferr079/pixelium-site/commit/${COMMIT_SHA}` : null;
+// Stats provenance, read by scripts/check-deployed.mjs (issue #154): a page baked from the
+// FALLBACK snapshot is the one wrong-number case the build-age check can't see on its own.
+const statsMeta = await getBuildStatsMeta();
 ---
 
 <footer class="site-footer">
@@ -60,7 +64,7 @@ const commitUrl = COMMIT_SHA !== 'dev' ? `https://github.com/ferr079/pixelium-si
         ? <a class="fd-commit" href={commitUrl} target="_blank" rel="noopener" title="View this commit on GitHub">{shaShort}</a>
         : <span class="fd-commit">{shaShort}</span>}
       <span class="fd-sep">·</span>
-      <span>{t.builtAt} {builtDisplay}</span>
+      <span data-built-at={BUILD_TIME || undefined} data-stats-source={statsMeta.source} data-stats-kv-at={statsMeta.kvUpdatedAt ?? undefined}>{t.builtAt} {builtDisplay}</span>
       <span class="fd-sep">·</span>
       <span class="fd-edge" data-deploy-edge>{t.edge} <span class="fd-colo">…</span></span>
     </p>
