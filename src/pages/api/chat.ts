@@ -40,7 +40,7 @@ async function checkRateLimit(ip: string): Promise<{ allowed: boolean; retryAfte
 // rootme_validations n'est pas dans le KV.
 async function liveStats(): Promise<Record<string, string>> {
   const fb: Record<string, string> = {
-    HTB_RANK: '346', HTB_RANK_NAME: 'Pro Hacker', HTB_FLAGS: '111', HTB_MACHINES: '55', ROOTME_SCORE: '1050',
+    HTB_RANK: '255', HTB_RANK_NAME: 'Pro Hacker', HTB_FLAGS: '125', HTB_MACHINES: '62', ROOTME_SCORE: '1050',
     SERVICES: '60', LXC: '59', BESZEL: '52', PLAYBOOKS: '63', HOSTS: '64', CROWDSEC: '57',
   };
   try {
