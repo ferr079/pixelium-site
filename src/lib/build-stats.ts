@@ -33,22 +33,25 @@ const FALLBACK: Record<string, string | number> = {
   uptime_pct_core: 100.0,
   forgejo_commits_30d: 1421,
   proxmox_nodes: 4,
-  htb_flags: 115,
+  // Clés CTF relevées le 2026-10-03 (le reste du snapshot date du 2026-08-19). Elles servent
+  // aussi de PLANCHER aux métriques MONOTONIC_UP ci-dessous : ne jamais y mettre plus que le KV.
+  htb_flags: 125,
   htb_rank: 'Pro Hacker',
-  htb_ranking: 253,
-  htb_system_owns: 57,
-  htb_user_owns: 58,
+  htb_ranking: 255,
+  htb_country_rank: 17,
+  htb_country_members: 3771,
+  htb_system_owns: 62,
+  htb_user_owns: 63,
   // htb_flags ci-dessus = user_owns + system_owns, donc MACHINES uniquement — le profil HTB
   // (/user/profile/basic) ne porte aucun champ fortress. Les flags de Fortress vivent sur
-  // /profile/progress/fortress/{uid} et n'étaient comptés nulle part (21 au 2026-08-21 :
-  // Jet 11/11 + AWS 10/10). kv-push publie la clé ci-dessous SANS toucher htb_flags ; elle
-  // n'est PAS encore affichée (réserve v5). Le jour où elle sortira, ce sera comme DEUX
-  // statistiques distinctes : pas de clé « total » qui les additionnerait,
-  // les deux comptes n'ont pas la même échelle (7 à 11 flags par Fortress, 2 par machine).
-  htb_fortress_flags: 36,
+  // /profile/progress/fortress/{uid} et kv-push les publie dans la clé ci-dessous SANS toucher
+  // htb_flags. Affichée sur /ctf depuis le 2026-10-03, comme statistique DISTINCTE : pas de clé
+  // « total » qui les additionnerait, les deux comptes n'ont pas la même échelle (7 à 11 flags
+  // par Fortress, 2 par machine).
+  htb_fortress_flags: 43,
   rootme_score: 1050,
   rootme_validations: 75,
-  rootme_position: 15486,
+  rootme_position: 15607,
   ansible_playbooks: 63,
   lxc_count: 59,
   https_services: 46,
@@ -74,7 +77,7 @@ const FALLBACK: Record<string, string | number> = {
   // inv_kali → inv_offensive_tools. Le forwarding kv-push.sh ("kali" →
   // "offensive_tools") est en place : la clé est servie live (116 au 2026-08-11),
   // ce fallback n'est plus le seul à la porter. Le chiffre n'est donc plus figé.
-  inv_offensive_tools: 149,
+  inv_offensive_tools: 154,
   inv_forworld: 171,
 };
 
