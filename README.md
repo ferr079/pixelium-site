@@ -24,7 +24,7 @@ Reads best after: [`/pact`](https://pixelium.win/pact) (the deal), [`/claude`](h
 
 ## Pages
 
-15 pages, all available in English (root) and French (`/fr/`) unless noted.
+16 pages, all available in English (root) and French (`/fr/`) unless noted.
 
 | Page | Description |
 |---|---|
@@ -34,6 +34,7 @@ Reads best after: [`/pact`](https://pixelium.win/pact) (the deal), [`/claude`](h
 | Security | Defensive layers, crosslink to `/ctf` |
 | CTF | Verified HTB/THM/Root-Me badges, profiles, practiced techniques |
 | Infrastructure | 4 Proxmox nodes, interactive topology map, service carousels |
+| Agents | The agent fleet: harnesses, roles, cross-review through the forge |
 | Claude | Usage stats: hourly heatmap, focus breakdown, plan economics |
 | Status | Tri-state services (up / on-demand / down), PVE nodes, 30-day timeline |
 | Contributions | OSS ledger — PR status synced from the GitHub API at build |
