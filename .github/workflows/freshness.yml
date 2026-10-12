@@ -9,11 +9,14 @@ on:
   workflow_dispatch: {}
   push:
     branches: [main]
-    # Le guard fait DEUX passes, et `paths` doit couvrir les deux :
+    # Le guard fait TROIS passes, et `paths` doit couvrir les trois :
     #   1. CHECKS — des littéraux épinglés dans une poignée de fichiers ;
     #   2. le sweep « orphan stats » — qui lit TOUT `src/**` (.astro/.ts) pour
     #      vérifier que chaque <DynNum stat="x"> / StatsBar { stat: 'x' } existe
-    #      bien dans le KV.
+    #      bien dans le KV ;
+    #   3. le sweep inverse « unread KV keys » — chaque clé du KV doit être lue
+    #      quelque part dans `src/**`, ou déclarée sans affichage. Une clé ajoutée
+    #      côté kv-push, sans commit ici, est vue par le cron du lendemain.
     # Lister les fichiers de CHECKS un par un couvrait la passe 1 mais laissait la
     # passe 2 aveugle : ajouter un <DynNum> sur une page non listée (projets.astro,
     # par ex.) pouvait introduire une stat orpheline sans rien déclencher avant le

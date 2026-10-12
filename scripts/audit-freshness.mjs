@@ -124,6 +124,29 @@ for (const file of astroSources(join(root, 'src'))) {
   }
 }
 
+// --- Unread KV keys (sens inverse, pixelium-site#56) -----------------------------
+// Le sweep ci-dessus attrape le site qui MENT : il lit une clé que le KV ne publie pas.
+// L'inverse n'est pas un mensonge, c'est une dette : une clé poussée que rien n'affiche.
+// Il a fallu des rejeux à la main pour en relever jusqu'à 11, et trois autres
+// (technitium_*) sont arrivées après l'arbitrage du 2026-08-29 sans que rien ne le dise.
+// Recherche par NOM de clé en mot entier dans tout src/, pas par `stat="…"` : bbs.astro
+// lit `s.forgejo_commits_total`, chat.ts `stats?.inv_ollama`. build-stats.ts est exclu :
+// son FALLBACK est un instantané, pas un affichage (htb_fortress_flags n'y vivait plus
+// que là quand elle était « en réserve »).
+// Une clé poussée sans affichage VOLONTAIREMENT se déclare ici, avec sa raison : une
+// entrée = une décision datée, pas un oubli. La retirer = la brancher, ou cesser de la
+// pousser côté kv-push.
+const KV_KEYS_WITHOUT_UI = {
+  uptime_kuma_monitors: 'lue par le README du profil GitHub ferr079, pas par le site (2026-10-09)',
+};
+const corpus = astroSources(join(root, 'src'))
+  .filter((f) => !f.endsWith('/lib/build-stats.ts'))
+  .map((f) => readFileSync(f, 'utf8'))
+  .join('\n');
+const unread = Object.keys(stats).filter(
+  (k) => !(k in KV_KEYS_WITHOUT_UI) && !new RegExp(`\\b${k}\\b`).test(corpus),
+);
+
 if (missing.length) {
   console.error('⚠ stale checks (regex/file/key no longer match — update audit-freshness.mjs):');
   for (const m of missing) console.error(`   - ${m}`);
@@ -138,6 +161,11 @@ if (drift.length) {
   for (const d of drift) console.error(`   - ${d}`);
   console.error('\nFix the source (or convert to <DynNum>) so the site stops lying.');
 }
-if (drift.length || orphans.size) process.exit(1);
+if (unread.length) {
+  console.error('\n✗ UNREAD KV KEYS — pushed by kv-push, displayed nowhere on the site:');
+  for (const k of unread) console.error(`   - ${k} = ${stats[k]}`);
+  console.error('\nWire the key into a page, stop pushing it (kv-push), or declare it in KV_KEYS_WITHOUT_UI with its reason.');
+}
+if (drift.length || orphans.size || unread.length) process.exit(1);
 if (missing.length) process.exit(1); // a broken check is itself a problem to fix
-console.log(`✓ freshness OK — ${CHECKS.length} hardcoded values match live KV, no orphan stat keys`);
+console.log(`✓ freshness OK — ${CHECKS.length} hardcoded values match live KV, no orphan stat keys, no unread KV keys`);

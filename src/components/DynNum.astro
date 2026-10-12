@@ -19,14 +19,20 @@
  * hold a second stale literal and the guard still goes green). See issue #136.
  */
 import { statValue } from '../lib/build-stats';
+import { getLangFromUrl, formatNumber } from '../i18n/utils';
 
 interface Props {
   stat: string;
   fallback: string;
   suffix?: string;
+  // Séparateur de milliers dans la langue de la PAGE (2,068,833 · 2 068 833).
+  // Opt-in : une valeur non numérique ou un fallback comme « 2700+ » passe tel quel.
+  group?: boolean;
 }
 
-const { stat, fallback, suffix = '' } = Astro.props;
-const display = await statValue(stat, fallback, suffix);
+const { stat, fallback, suffix = '', group = false } = Astro.props;
+const raw = await statValue(stat, fallback, suffix);
+const n = Number(raw.slice(0, raw.length - suffix.length));
+const display = group && Number.isFinite(n) ? `${formatNumber(n, getLangFromUrl(Astro.url))}${suffix}` : raw;
 ---
 <span data-stat={stat}>{display}</span>

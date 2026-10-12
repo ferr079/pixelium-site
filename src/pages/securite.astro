@@ -31,7 +31,7 @@ const stats = await getBuildStats();
               <span class="layer-icon">&#9638;</span>
               <div>
                 <h4>Network layer</h4>
-                <p>Proxmox firewall on every CT, CrowdSec IPS, filtered DNS (OISD + Hagezi blocklists)</p>
+                <p>Proxmox firewall on every CT, CrowdSec IPS, filtered DNS (OISD + Hagezi blocklists, <DynNum stat="technitium_blocklist_size" fallback="2068833" group /> domains)</p>
               </div>
             </div>
             <div class="defense-layer">
@@ -303,6 +303,7 @@ const stats = await getBuildStats();
         </div>
         <div class="layer-content">
           <p>Security is not a narrative — it is concrete, verifiable measures.</p>
+          <p>In a single day, the primary DNS resolver blocked <DynNum stat="technitium_blocked_24h" fallback="5260" group /> of the <DynNum stat="technitium_queries_24h" fallback="105337" group /> queries it received.</p>
         </div>
       </div>
     </section>
@@ -310,7 +311,7 @@ const stats = await getBuildStats();
     <StatsBar stats={[
       { number: '64', label: 'hardened SSH hosts', stat: 'ansible_hosts' },
       { number: '6', label: 'SSO services', stat: 'authentik_services' },
-      { number: '7', label: 'defensive layers' },
+      { number: '11', label: 'defensive tools', stat: 'inv_defensive_tools' },
       { number: '0', label: 'SSH passwords' },
     ]} />
 

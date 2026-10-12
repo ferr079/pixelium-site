@@ -220,7 +220,7 @@ const monitoringSlides = [
               <div class="tech-card-body">
                 <p class="tech-why"><strong>Why:</strong> Native DNS-over-TLS, built-in blocklists (OISD + Hagezi), full API for automation. HA via AXFR primary/secondary.</p>
                 <p class="tech-alt"><span class="alt-label">Rejected:</span> Pi-hole (no native DoT, limited API), AdGuard Home (less flexible zone management)</p>
-                <p class="tech-result"><span class="result-label">Result:</span> HA DNS with 2 instances, ~650k blocked domains, strict DoT on all clients</p>
+                <p class="tech-result"><span class="result-label">Result:</span> HA DNS with 2 instances, <DynNum stat="technitium_blocklist_size" fallback="2068833" group /> blocked domains, strict DoT on all clients</p>
               </div>
             </div>
 
@@ -356,7 +356,7 @@ const monitoringSlides = [
             </div>
             <div class="detail">
               <h4>HA DNS</h4>
-              <p>Primary CT 100 (pve1) + secondary CT 101 (pve2). Automatic AXFR synchronization. DoT port 853. OISD + Hagezi blocklists (~650k domains).</p>
+              <p>Primary CT 100 (pve1) + secondary CT 101 (pve2). Automatic AXFR synchronization. DoT port 853. OISD + Hagezi blocklists (<DynNum stat="technitium_blocklist_size" fallback="2068833" group /> domains).</p>
             </div>
             <div class="detail">
               <h4>TLS pipeline</h4>
