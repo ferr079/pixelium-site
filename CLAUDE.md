@@ -17,7 +17,7 @@ This site is written in **first person by Claude**. I am the narrator. Stéphane
 
 - **English** is the default locale (root `/`)
 - **French** at `/fr/` prefix
-- 20 pages total (10 EN + 10 FR)
+- 27 pages servies : 15 EN + 12 FR. `/bbs`, `/chat` et `/breach` sont EN seulement (`/fr/bbs` et `/fr/chat` redirigent vers l'EN, pas de `/fr/breach`)
 - `src/i18n/ui.ts` — shared UI strings dictionary
 - `src/i18n/utils.ts` — `getLangFromUrl()`, `useTranslations()`, `getLocalizedPath()`, `getAlternateLangs()`
 - Language switcher (globe SVG + FR/EN) in Nav.astro
@@ -26,7 +26,7 @@ This site is written in **first person by Claude**. I am the narrator. Stéphane
 
 **When editing a page**: always edit BOTH the root (EN) and `/fr/` (FR) versions.
 
-## Site structure (10 pages + 2 interactive)
+## Site structure (12 pages + 3 interactive)
 
 | Page | EN (root) | FR (`/fr/`) | Notes |
 |---|---|---|---|
@@ -38,12 +38,16 @@ This site is written in **first person by Claude**. I am the narrator. Stéphane
 | Status | `src/pages/status.astro` | `src/pages/fr/status.astro` | |
 | CTF | `src/pages/ctf.astro` | `src/pages/fr/ctf.astro` | Verified badges + **panneau KV** (remplace la capture du dashboard HTB depuis le 2026-10-03 : chaque chiffre est une ancre `data-stat` vérifiée par `check-deployed.mjs`), profiles, techniques (split from securite) |
 | Contributions | `src/pages/contributions.astro` | `src/pages/fr/contributions.astro` | OSS PRs/reports — statuts reflètent l'état upstream réel (vérifier via `gh pr view`) |
-| About | `src/pages/about.astro` | `src/pages/fr/about.astro` | Merged with symbiose.astro |
+| About | `src/pages/about.astro` | `src/pages/fr/about.astro` | Merged with symbiose.astro. ⚠️ **Hors nav et hors sitemap** (`fba7918`) mais servie en 200 et entretenue : `check-deployed` lit le sitemap, il ne la voit donc pas (#156) |
+| Now | `src/pages/now.astro` | `src/pages/fr/now.astro` | Focus & stack. A absorbé `/uses` (V4). Liste des modèles locaux : **pas inlinée**, renvoi vers la collection HF ; seul le nombre (`inv_ollama`) est affiché |
+| Claude | `src/pages/claude.astro` | `src/pages/fr/claude.astro` | Le registre du binôme : heures, sessions, tokens, cache (clés `claude_*`) |
+| Pact | `src/pages/pact.astro` | `src/pages/fr/pact.astro` | Pourquoi le site est écrit à la première personne par Claude |
 | BBS | `src/pages/bbs.astro` | — (EN only) | WOPR terminal, Workers AI |
 | Chat | `src/pages/chat.astro` | — (EN only) | CV conversationnel, Workers AI |
-| ~~Lab~~ (`/ia`) | `src/pages/ia.astro` | `src/pages/fr/ia.astro` | **Archivée 2026-06-08** (hors nav, toujours accessible) — instantané AIops v2 (trio décommissionné). Deep-link `/ia#mcp` conservé depuis l'accueil (contenu MCP toujours valide) |
+| Breach | `src/pages/breach.astro` | — (EN only) | Door game WOPR, Workers AI |
 
-**Redirects (301):** symbiose→about, cybersecurite→securite (PAS ia : page archivée, accessible)
+**Redirections** (`Astro.redirect(…, 301)` dans une page prérendue) : `symbiose`→`about`, `cybersecurite`→`securite`, `ia`→`infrastructure#mcp` (Lab retiré le 2026-07-21), `uses`→`now`, `fr/bbs`→`bbs`, `fr/chat`→`chat`.
+⚠️ En SSG, ce ne sont **pas** des 301 HTTP : Astro génère une page servie en **200** avec meta refresh, `noindex` et `canonical` (vérifié en prod le 2026-10-12 ; aucun `_redirects`). Acceptable pour les moteurs, mais une vraie 301 demanderait une règle côté Workers (#156).
 
 **Nav:** Infra | **Agents** | Security | Projects | CTF | Contributions | Status | Blog↗
 (2026-06-08 : « Lab »/`/ia` retiré de la nav → remplacé par « Contributions » ; brick OSS de l'accueil supprimé — il vedettait la PR #309, fermée sans merge)
@@ -57,8 +61,8 @@ URL slugs are shared between languages (same paths, just `/fr/` prefix).
 - **Infusion breach (2026-07-21)** : `--color-deep #020617` (panneaux terminal : topo hero, tooltips, overlay ⌘K), point final des titres = **pixel CARRÉ vert phosphore** (glyphe `.` transparent, carré dessiné par `::before` dans Base — pixelium : un pixel est carré, pas rond) + curseur `_` clignotant sur les h1, labels uppercase mono (hero + tuiles signature). Sur le hero, carré + curseur **masqués pendant le glitch** des noms de modèles (`.flux`/`.hc-critic`) — ils n'appartiennent qu'à « Claude ». Les glows du hero (cyan/ambre) vivent sur `.hero-zone` avec le même fondu que la grille de points (aucune couche ne se coupe au bord du hero). Validé sur maquette — ne PAS revenir au point cyan/rond ni au fond `#0f172a`.
 - **Font**: `JetBrains Mono` (monospace), `system-ui` (body)
 - **Zero JS framework** — pure CSS only, 0 Tailwind, 0 React
-- **Only JS**: < 50 lines vanilla JS — IntersectionObserver in `Base.astro` (scroll reveal) + Carousel navigation
-- **Components**: Nav, Footer, Terminal, StatsBar, Card, SectionHeading, Screenshot, Carousel in `src/components/`
+- **JS** : uniquement des îlots `<script>` vanilla, aucun framework — `Base` (scroll reveal), `Nav`, `Footer`, `StatsBar` et `LiveStats` (count-up, rafraîchissement `/api/stats`), `HeroCockpit` (canvas), `Carousel`/`TapeCarousel`, et les pages interactives (`bbs`, `chat`, `breach`, `status`, `infrastructure`)
+- **Components** (`src/components/`) : Nav, Footer, Card, SectionHeading, Terminal, Screenshot, Carousel, TapeBlock, TapeCarousel, TopologyMap, Video, WindowChrome, SessionImprint, HeroCockpit, et les trois composants de chiffres : **DynNum**, **StatsBar**, **LiveStats** (voir « Stats KV » plus bas)
 - **Icons**: Simple Icons CDN (`cdn.simpleicons.org`) — verify 200 OK before adding new ones (some brands missing: wazuh, openai)
 
 ## CTF APIs (stats from KV — unified 2026-07-05)
@@ -112,6 +116,27 @@ PY
 
 ⚠️ Ne PAS les recréer dans `public/` : Astro ne traite pas ce dossier, donc aucun nombre n'y est vérifiable et le freshness guard ne les voit pas. Le commentaire du guard affirmait d'ailleurs qu'un fichier de `public/` « CAN'T be made dynamic » — c'était vrai de `public/`, pas de ces fichiers.
 
+## Stats KV — trois composants, trois passes de garde
+
+Les chiffres viennent de `/api/stats` (KV `pixelium-stats`), alimenté par `kv-push` sur le CT 246 (homelab, toutes les 15 min).
+
+| Composant | Rendu | Usage |
+|---|---|---|
+| `<DynNum stat="x" fallback="…" />` | figé au build (rebuild quotidien), aucun JS | chiffre dans la prose. Option **`group`** : séparateur de milliers dans la langue de la page (`2,068,833` / `2 068 833`) |
+| `StatsBar` `{ stat: 'x' }` | figé au build | bandeaux de chiffres |
+| `LiveStats` `{ key: 'x' }` | figé au build **puis** rafraîchi côté client | grille « Live infrastructure » de l'accueil |
+
+Un chiffre « sur 24 h » figé au build décrit la journée qui précède le build : l'écrire « en une journée », pas « ces dernières 24 h ».
+
+**`scripts/audit-freshness.mjs`** (cron quotidien 06:17 UTC + push sur `main`, ne bloque pas le déploiement) fait trois passes :
+1. **CHECKS** — littéraux écrits en dur, épinglés à une clé ;
+2. **orphan stats** — le site lit une clé absente du KV → il sert sa valeur de secours en silence → échec ;
+3. **unread KV keys** — le KV pousse une clé affichée nulle part (nom de clé en mot entier dans `src/`, `build-stats.ts` exclu) → échec, sauf si elle est déclarée dans `KV_KEYS_WITHOUT_UI` **avec sa raison** (aujourd'hui : `uptime_kuma_monitors`, lue par le profil GitHub).
+
+🔴 **Ordre imposé pour une clé neuve** : la pousser côté `kv-push` (homelab) **avant** que le site la lise, sinon la passe 2 sort rouge. Et une clé poussée sans affichage fait rougir la passe 3 le lendemain : l'afficher, cesser de la pousser, ou la déclarer.
+
+**`scripts/check-deployed.mjs`** compare ce que la prod sert (ancres `data-stat` / `data-key`) au KV, page par page, en partant du **sitemap** : une page hors sitemap lui échappe (`/about`, #156).
+
 ## API endpoints (hybrid mode — Cloudflare Workers)
 
 | Endpoint | KV namespace | Description |
@@ -125,25 +150,30 @@ Access KV: `import { env } from 'cloudflare:workers'` → `env.STATUS_KV.get('ke
 ## Deploy procedure
 
 ```bash
-# 1. Build
-npm run build
+# 1. Branche (jamais de travail direct sur main)
+git -C <repo> switch -c <type>/<sujet>
 
-# 2. Commit ALL files (critical — CI/CD builds from git HEAD)
-git commit -m "..."   # global config already set: stephane@pixelium.win / Stephane
+# 2. Build
+npm --prefix <repo> run build   # doit finir sur "Complete!"
 
-# 3. Push — CI/CD deploys automatically via GitHub Action (~35s)
-git push origin main   # origin = Forgejo (org pixelium) ; push-mirror → GitHub (remote `github`) → deploy
+# 3. Commit — git add SÉLECTIF des fichiers du changement (jamais -A) ; CI/CD build depuis git HEAD
+git -C <repo> commit -m "..."   # config globale déjà en place : stephane@pixelium.win / Stephane
+
+# 4. Push de la branche, PR sur Forgejo (org pixelium), merge (squash)
+git -C <repo> push -u origin <type>/<sujet>
 ```
 
-**CI/CD is active.** `git push origin main` (Forgejo) triggers the automatic deploy via the push-mirror to GitHub. No manual `wrangler deploy` needed. Always commit everything before pushing — uncommitted files won't be deployed.
+**CI/CD is active.** Le merge sur `main` (Forgejo, `origin`) est poussé par le push-mirror vers GitHub (remote `github`), où GitHub Actions lance `Deploy to Cloudflare Workers` et `Freshness guard`. Aucun `wrangler deploy` manuel. Après un merge : relire `main` (un `merged:true` ne garantit pas que le code y est), attendre les deux workflows, puis vérifier la prod (`node scripts/check-deployed.mjs`).
 
 ## Profiles — real data, do not modify without verification
+
+⚠️ Les chiffres HTB et Root-Me de ce tableau sont les **valeurs de secours** du code (`ctf.astro` ×2, `build-stats.ts`), pas le live. Le live vient du KV et les dépasse : au 2026-10-12, HTB #231, 130 flags (64 system + 66 user), France #18 / 3 736 ; Root-Me #15391. Relire `/api/stats` plutôt que ce tableau.
 
 | Platform | Username | Current stats |
 |---|---|---|
 | Hack The Box | Ferr079 | Pro Hacker rank, #255 (2026-10-03), 62 system + 63 user owns, 125 flags, France #17 / 3 771 (fallback ctf.astro ×2 + build-stats.ts + chat.ts + about.astro ×2 `DynNum` aligné sur le KV `/api/stats` — cf [[reference_ctf_htb_stats_freshness]], garder ce fallback à jour à la main ; **6 emplacements** portent le ranking en dur, `grep -rn '<ancienne valeur>' src/` avant de croire en avoir fini). ⚠️ `htb_flags` = `user_owns + system_owns` = **machines uniquement** — le profil HTB ne porte aucun champ fortress. Les flags de **Fortress** viennent d'un 2ᵉ appel (`GET /api/v4/profile/progress/fortress/{uid}`) et vivent dans la clé **séparée** `htb_fortress_flags` (**21** au 2026-08-21 : Jet 11/11 + AWS 10/10 — c'était 2 le 2026-08-11, ça monte par paliers de Fortress entière, relire `GET /api/v4/profile/progress/fortress/{uid}` au lieu de recopier) — **affichée sur `/ctf` depuis le 2026-10-03** (panneau KV, 43 ce jour-là) — elle avait été mise en réserve pour la v5 le 2026-08-11, réserve levée par Stéphane le 03/10 (la v5 n'a pas de date, la capture était périmée). Elle y est une cellule **voisine**, **jamais additionnée** aux flags de machines — 7 à 11 flags par Fortress contre 2 par machine, le total ne veut rien dire (une clé `htb_flags_total` avait été écrite puis retirée). La tuile `/ctf` s'appelle désormais « flags machines » (ex « flags total », label qui portait le malentendu). ⚠️ *historique — la capture `htb-dashboard.webp` n'est plus affichée depuis le 2026-10-03, ces infos (niveau, saison, série) ne sont pas dans le KV et ont quitté la page :* Lvl 64 « Master » · Season 11 **Holo** tier #35 (sur 12 000) **au moment du screenshot** — l'API donne **#36 sur 12 145 au 2026-08-21** à points constants (720 pts, 24/26 flags inchangés depuis le 08/08 : ce sont les autres qui progressent) · streak 13 sem. (screenshot `htb-dashboard.webp` MAJ **2026-08-11** = Pro Hacker/Lvl 64/Holo #35/13-week, 1200x689 ; cache-buster `?v=20260810` — il porte la date **UTC** de l'édition, faite dans la nuit du 10 au 11 ; ⚠️ le dénominateur de la saison bouge aussi (12 660 → 12 000), le relire sur `GET /api/v4/season/user/rank/15` au lieu de recopier ; **capture recadrée par Stéphane** sur la zone haute — le dashboard entier fait un ratio 1,37 = 876 px de haut à 1200 de large, trop encombrant, et ses graphes/badges deviennent illisibles à cette échelle). ⚠️ `/profile/activity` **supprimé par HTB 2026** (HTTP 400) → `flags = user_owns + system_owns`, ne PAS ré-ajouter d'appel activity. NB : `ranking` = rang **global** HTB (≠ `#35` = rang de **saison** du screenshot — deux échelles, ne pas les confondre au refresh) ; le « HTB Rank » du dashboard (Professional → **Master** au Lvl 61) est une **2ᵉ échelle**, distincte du `rank` de l'API (`Pro Hacker`) — les deux coexistent dans la caption |
 | TryHackMe | ferr0 | Top 15%, 35 rooms, 7 badges |
-| Root-Me | Ferr0 | 1050 pts, 75 challenges, #15486 — **les 3 clés (`rootme_score`, `rootme_validations`, `rootme_position`) sont servies live par le KV** depuis le 2026-07-25 (homelab `infra/homelab#117` **FERMÉE**, condition de fermeture vérifiée sur le payload ; l'API Root-Me rend les 3 champs dans le même appel `auteurs/{uid}`). Les nombres ci-dessus ne sont donc plus que le **fallback** `ctf.astro` + `build-stats.ts` — à garder à jour à la main pour le cas où le KV est injoignable au build. ⚠️ Root-Me **exige un User-Agent explicite** côté pipeline (429 sinon, cf [[reference_ctf_htb_stats_freshness]]) |
+| Root-Me | Ferr0 | 1050 pts, 75 challenges, #15607 (valeurs de secours du code) — **les 3 clés (`rootme_score`, `rootme_validations`, `rootme_position`) sont servies live par le KV** depuis le 2026-07-25 (homelab `infra/homelab#117` **FERMÉE**, condition de fermeture vérifiée sur le payload ; l'API Root-Me rend les 3 champs dans le même appel `auteurs/{uid}`). Les nombres ci-dessus ne sont donc plus que le **fallback** `ctf.astro` + `build-stats.ts` — à garder à jour à la main pour le cas où le KV est injoignable au build. ⚠️ Root-Me **exige un User-Agent explicite** côté pipeline (429 sinon, cf [[reference_ctf_htb_stats_freshness]]) |
 | GitHub | ferr079 | github.com/ferr079 |
 | X/Twitter | @ferr079 | x.com/ferr079 |
 
@@ -152,7 +182,7 @@ git push origin main   # origin = Forgejo (org pixelium) ; push-mirror → GitHu
 - **All content is sourced** from the real ops journal or verifiable data. No invention.
 - **MCP = least-privilege**: Proxmox = PVEAuditor (read-only). Always mention access restrictions when the topic is discussed.
 - **Update platform stats** (HTB/THM/Root-Me) after each CTF session.
-- **Local models list** (`/uses` → « Local models — Ollama », EN+FR) is **static, maintained by hand** — Ollama (`0.0.0.0:11434`) is local, unreachable from CI. Refresh it when the model set changes (`ollama list` / `GET /api/tags`). Offensive models (abliterated/uncensored) are grouped under CTF/red-team, no raw suffixes, with the legitimate-use framing.
+- **Local models** : `/uses` n'existe plus (redirige vers `/now`). Sur `/now`, la liste des modèles n'est **pas** inlinée : elle renvoie vers la collection Hugging Face, tenue à jour là-bas. Seul le **nombre** est affiché (`inv_ollama`, compté par l'inventaire homelab). Les modèles offensifs (abliterated/uncensored) restent présentés sous l'angle CTF/red-team, usage légitime, sans suffixes bruts.
 - **Do not add npm dependencies** without explicit reason.
 - **Edit both EN and FR** when modifying page content.
 - **Cross-link projects ↔ blog**: any `/projets` card that has a matching post on `blog.pixelium.win` must link it — add `<a href="https://blog.pixelium.win/<slug>" class="project-link" target="_blank" rel="noopener">read the story &rarr;</a>` (FR: `lire le récit`) inside that card's `project-services` span (decommissioned cards link from their `decom-note` instead). When a **new project** is added *or* a **new blog post** is published, create the link. Verify the URL returns 200 before committing. EN + FR. The fiche sells (the what), the post proves (the how) — keep them wired.
