@@ -37,14 +37,26 @@ async function checkRateLimit(ip: string): Promise<{ allowed: boolean; retryAfte
 // (playbooks 58 vs 63, agents Beszel 51 vs 52, services 62 vs 60).
 // On les injecte au moment de la requête (l'équivalent Worker d'un <DynNum>) ; les
 // fallbacks ne servent que si le KV est injoignable.
-// rootme_validations n'est pas dans le KV.
+//
+// ⚠️ La clé 'stats' contient l'ENVELOPPE {ok, stats, updated_at} que /api/stats
+// renvoie telle quelle : les valeurs sont sous `.stats`. Du 2026-08-25 au
+// 2026-10-12, ce code lisait la racine de l'enveloppe, n'y trouvait rien, et
+// servait les fallbacks à chaque requête sans rien signaler — le chat récitait
+// #255 quand le KV disait #231. D'où le warn ci-dessous : un repli sur les
+// fallbacks doit laisser une trace dans Workers Logs.
 async function liveStats(): Promise<Record<string, string>> {
   const fb: Record<string, string> = {
-    HTB_RANK: '255', HTB_RANK_NAME: 'Pro Hacker', HTB_FLAGS: '125', HTB_MACHINES: '62', ROOTME_SCORE: '1050',
-    SERVICES: '60', LXC: '59', BESZEL: '52', PLAYBOOKS: '63', HOSTS: '64', CROWDSEC: '57',
+    HTB_RANK: '231', HTB_RANK_NAME: 'Pro Hacker', HTB_FLAGS: '129', HTB_MACHINES: '64', ROOTME_SCORE: '1050',
+    ROOTME_VALIDATIONS: '75', SERVICES: '60', LXC: '59', BESZEL: '51', PLAYBOOKS: '67', HOSTS: '64', CROWDSEC: '57',
+    OLLAMA: '23', ZIM: '66', MCP: '20',
   };
   try {
-    const stats = await env.STATS_KV.get('stats', { type: 'json' }) as Record<string, unknown> | null;
+    const blob = await env.STATS_KV.get('stats', { type: 'json' }) as { stats?: Record<string, unknown> } | null;
+    const stats = blob?.stats;
+    if (!stats || typeof stats !== 'object') {
+      console.warn('[chat] STATS_KV « stats » sans objet .stats — prompt servi avec les fallbacks');
+      return fb;
+    }
     const num = (v: unknown, f: string) => { const n = Number(v); return Number.isFinite(n) && n > 0 ? String(n) : f; };
     const str = (v: unknown, f: string) => { const s = typeof v === 'string' ? v.trim() : ''; return s ? s : f; };
     return {
@@ -53,14 +65,19 @@ async function liveStats(): Promise<Record<string, string>> {
       HTB_FLAGS: num(stats?.htb_flags, fb.HTB_FLAGS),
       HTB_MACHINES: num(stats?.htb_system_owns, fb.HTB_MACHINES),
       ROOTME_SCORE: num(stats?.rootme_score, fb.ROOTME_SCORE),
+      ROOTME_VALIDATIONS: num(stats?.rootme_validations, fb.ROOTME_VALIDATIONS),
       SERVICES: num(stats?.services_total, fb.SERVICES),
       LXC: num(stats?.lxc_count, fb.LXC),
       BESZEL: num(stats?.beszel_agents, fb.BESZEL),
       PLAYBOOKS: num(stats?.ansible_playbooks, fb.PLAYBOOKS),
       HOSTS: num(stats?.ansible_hosts, fb.HOSTS),
       CROWDSEC: num(stats?.inv_crowdsec_scenarios, fb.CROWDSEC),
+      OLLAMA: num(stats?.inv_ollama, fb.OLLAMA),
+      ZIM: num(stats?.inv_zim, fb.ZIM),
+      MCP: num(stats?.inv_mcp, fb.MCP),
     };
   } catch {
+    console.warn('[chat] lecture STATS_KV en échec — prompt servi avec les fallbacks');
     return fb;
   }
 }
@@ -81,7 +98,7 @@ ABOUT FALKEN (Stéphane Ferreira):
 - Security doctrine: internal PKI (step-ca), SSO (Authentik), IPS (CrowdSec, {{CROWDSEC}} scenarios), SIEM (Wazuh), VPN mesh (Headscale), SSH hardened {{HOSTS}} hosts, YubiKey FIDO2
 - Cybersecurity Master's coursework — scored 20.5/20 on AD exploitation wargame (highest in class)
 - CTF: HTB {{HTB_RANK_NAME}} #{{HTB_RANK}} global, Root-Me {{ROOTME_SCORE}}pts, TryHackMe Top 15%
-- AI ops: Hermes autonomous Telegram agent (24/7, self-improving), Claude Code pair-programming, Ollama RTX 3090 (11 models, ~120GB, offline)
+- AI ops: Hermes autonomous Telegram agent (24/7, self-improving), Claude Code pair-programming, Ollama on an RTX 3090 ({{OLLAMA}} models, offline)
 - Also: music producer (Ableton), 3D artist (Blender/Maya), game dev (UE5/Godot) — Falken is not just infrastructure
 - Contact: github.com/ferr079, x.com/ferr079 (Falken), stephane@pixelium.win
 
@@ -157,20 +174,20 @@ CURRENT HOMELAB (production, 24/7, 0€ cloud):
 - Git: Forgejo self-hosted + Forworld (offline mirror vault, 170+ repos: infra + AI + pentest) on a cold-storage node + CI/CD with Podman runners
 - Storage: OpenMediaVault NAS, PBS automated backups, Samba
 - Media: Jellyfin (8 CIFS mounts), Kavita, Immich
-- Offline-first knowledge: Kiwix (60 ZIM archives — Wikipedia, Stack Exchange, docs), IT-Tools, Transmute; local Ollama models can query the ZIMs as an offline RAG knowledge base (no cloud, no internet)
+- Offline-first knowledge: Kiwix ({{ZIM}} ZIM archives — Wikipedia, Stack Exchange, docs), IT-Tools, Transmute; local Ollama models can query the ZIMs as an offline RAG knowledge base (no cloud, no internet)
 - Public: pixelium.win (Astro 7 + Cloudflare Workers, pure CSS, bilingual EN/FR)
 - Workstation: RTX 3090 24GB, 3 monitors, Bluefin (Fedora immutable)
 
 CTF PLATFORMS:
 - Hack The Box: {{HTB_RANK_NAME}} rank, #{{HTB_RANK}} global, {{HTB_MACHINES}} machines, {{HTB_FLAGS}} flags
-- Root-Me: {{ROOTME_SCORE}} pts, 73 challenges
+- Root-Me: {{ROOTME_SCORE}} pts, {{ROOTME_VALIDATIONS}} challenges
 - TryHackMe: Top 15%, 35 rooms, 7 badges
 - Tools: Kali (distrobox), Exegol, Nmap, Burp, BloodHound, sqlmap, Hashcat (RTX 3090)
 
 AI & AUTOMATION:
 - Hermes: autonomous self-improving Telegram agent, 24/7 monitoring + nightly audit crons (OpenFang & PentAGI: earlier agents, decommissioned 2026)
-- Claude Code: daily pair-programming partner, 6 MCP servers (Proxmox ×3, NetBox, Forgejo, Cloudflare)
-- Ollama local: RTX 3090, 11 models (~120GB), fully offline-capable
+- Claude Code: daily pair-programming partner, {{MCP}} MCP servers (Proxmox read-only, NetBox, Forgejo and Cloudflare among them)
+- Ollama local: RTX 3090, {{OLLAMA}} models, fully offline-capable
 - Knows: HuggingFace, TensorFlow, PyTorch, RAG, SDXL. LLMs: Llama3, Mistral/Mixtral, Gemma2, Phi3
 - Built this chatbot: Workers AI + KV rate limiting + streaming SSE
 

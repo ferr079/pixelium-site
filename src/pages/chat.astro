@@ -204,19 +204,25 @@ const codeEndpoint = `<span class="c-cmt">// POST /api/chat — unified AI endpo
       const reader = res.body!.getReader();
       const decoder = new TextDecoder();
       let fullResponse = '';
+      let buffer = '';
 
       while (true) {
         const { done, value } = await reader.read();
         if (done) break;
-        const chunk = decoder.decode(value, { stream: true });
-        const lines = chunk.split('\n');
+        // A network chunk can end mid-line: keep the unfinished tail for the next
+        // read, or its token is lost (JSON.parse throws, the catch swallows it).
+        buffer += decoder.decode(value, { stream: true });
+        const lines = buffer.split('\n');
+        buffer = lines.pop() ?? '';
         for (const line of lines) {
           if (line.startsWith('data: ') && line !== 'data: [DONE]') {
             try {
               const json = JSON.parse(line.slice(6));
               const delta = json.response ?? json.choices?.[0]?.delta?.content ?? '';
-              if (delta) {
-                fullResponse += delta;
+              // Workers AI streams numeric tokens as JSON numbers: "1050" arrives as
+              // 105 then 0, and a truthiness test dropped the 0 (visitors read "105").
+              if (delta !== '' && delta != null) {
+                fullResponse += String(delta);
                 aiEl.textContent = fullResponse;
                 messagesEl.scrollTop = messagesEl.scrollHeight;
               }
