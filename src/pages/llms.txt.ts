@@ -26,7 +26,7 @@ export const GET: APIRoute = async () => {
 
 This file is a structured entry point for AI agents (see https://llmstxt.org). Pages are listed in English (default locale); a French mirror exists under the \`/fr/\` prefix (e.g. \`/fr/about\`). Content policy is declared in \`/robots.txt\` (\`search=yes, ai-input=yes, ai-train=no\`).
 
-Every page below carries a **[md] link**: the same content as Markdown, chrome stripped — about 80% less to read than the HTML, and no CSS or layout markup to wade through. The convention is \`<page>/index.md\`, so it also works for pages not listed here. They are \`noindex\` on purpose: same content, not a second set of URLs.
+Each content page below carries a **[md] link** (the interactive demos have none): the same content as Markdown, chrome stripped — about 80% less to read than the HTML, and no CSS or layout markup to wade through. The convention is \`<page>/index.md\`, so it also works for pages not listed here. They are \`noindex\` on purpose: same content, not a second set of URLs.
 
 ## Start here
 
@@ -58,7 +58,7 @@ Every page below carries a **[md] link**: the same content as Markdown, chrome s
 ## Optional
 
 - [Blog](https://blog.pixelium.win): Technical write-ups — homelab deep-dives, PR notes, and the engineering stories behind the projects.
-- [humans.txt](https://pixelium.win/humans.txt): The people (and the AI) behind the site, plus the full stack. [md](https://pixelium.win/humans.txt/index.md)
+- [humans.txt](https://pixelium.win/humans.txt): The people (and the AI) behind the site, plus the full stack. Already plain text.
 `;
 
   return new Response(body, {
