@@ -62,6 +62,15 @@ const OG_HEADERS = { ...BASE, 'cross-origin-resource-policy': 'cross-origin' };
  */
 const MD_HEADERS = { ...BASE, 'x-robots-tag': 'noindex' };
 
+/**
+ * Fichiers texte : le Content-Type que Workers Assets déduit de l'extension n'a
+ * pas de charset. Rien ne casse visiblement sans lui, sauf pour un client qui
+ * retombe sur ISO-8859-1 (« StÃ©phane ») et pour security.txt, que la RFC 9116
+ * veut en utf-8. Posé par la règle `/*.txt` de public/_headers (2026-10-12).
+ * Valeur exacte, pas un préfixe : /^text\/plain/ restait vert sans charset.
+ */
+const TXT_UTF8 = /^text\/plain; ?charset=utf-8$/i;
+
 const SITE_CSP = {
   'default-src': ["'none'"],
   'script-src': ["'self'", "'unsafe-inline'", 'https://static.cloudflareinsights.com'],
@@ -105,8 +114,11 @@ const TARGETS = {
     routes: [
       { path: '/', status: 200, csp: SITE_CSP, headers: BASE, contentType: /^text\/html/ },
       { path: '/fr/', status: 200, csp: SITE_CSP, headers: BASE, contentType: /^text\/html/ },
-      { path: '/robots.txt', status: 200, csp: SITE_CSP, headers: BASE },
-      { path: '/llms.txt', status: 200, csp: SITE_CSP, headers: BASE },
+      { path: '/robots.txt', status: 200, csp: SITE_CSP, headers: BASE, contentType: TXT_UTF8 },
+      { path: '/llms.txt', status: 200, csp: SITE_CSP, headers: BASE, contentType: TXT_UTF8 },
+      { path: '/humans.txt', status: 200, csp: SITE_CSP, headers: BASE, contentType: TXT_UTF8 },
+      { path: '/.well-known/security.txt', status: 200, csp: SITE_CSP, headers: BASE,
+        contentType: TXT_UTF8 },
       { path: '/.well-known/api-catalog', status: 200, csp: SITE_CSP, headers: BASE,
         contentType: /^application\/linkset\+json/ },
       { path: '/page-inexistante-headers-check', status: 404, csp: SITE_CSP, headers: BASE,
@@ -134,7 +146,10 @@ const TARGETS = {
     origin: 'https://blog.pixelium.win',
     routes: [
       { path: '/', status: 200, csp: BLOG_CSP, headers: BASE, contentType: /^text\/html/ },
-      { path: '/robots.txt', status: 200, csp: BLOG_CSP, headers: BASE, contentType: /^text\/plain/ },
+      { path: '/robots.txt', status: 200, csp: BLOG_CSP, headers: BASE, contentType: TXT_UTF8 },
+      { path: '/llms.txt', status: 200, csp: BLOG_CSP, headers: BASE, contentType: TXT_UTF8 },
+      { path: '/.well-known/security.txt', status: 200, csp: BLOG_CSP, headers: BASE,
+        contentType: TXT_UTF8 },
       { path: '/rss.xml', status: 200, csp: BLOG_CSP, headers: BASE, contentType: /^application\/xml/ },
       { path: '/page-inexistante-headers-check', status: 404, csp: BLOG_CSP, headers: BASE },
       { path: '/og/home.png', status: 200, csp: BLOG_CSP, headers: OG_HEADERS,
