@@ -75,6 +75,10 @@ export const SERVICE_INFO: Record<string, ServiceBlurb> = {
     what: { en: 'Credential-injection proxy (Infisical Agent Vault) fronting the secrets vault.', fr: 'Proxy d\'injection de secrets (Infisical Agent Vault) qui précède le vault.' },
     why: { en: 'Agents call APIs through placeholders — the real token is injected in transit, never held by the agent or left on the workstation.', fr: 'Les agents appellent les API via des placeholders — le vrai token est injecté en transit, jamais détenu par l\'agent ni laissé sur la workstation.' },
   },
+  'OpenBao': {
+    what: { en: 'Open-source secrets vault (community fork of HashiCorp Vault), direct TLS, no reverse proxy.', fr: 'Coffre de secrets libre (fork communautaire de HashiCorp Vault), TLS direct, sans reverse proxy.' },
+    why: { en: 'Planned successor to Infisical, piloted with one agent first. Manual unseal by design: the key never touches disk, so a reboot seals the vault until a human opens it.', fr: 'Successeur prévu d\'Infisical, piloté d\'abord avec un seul agent. Unseal manuel assumé : la clé ne touche jamais le disque, donc un reboot scelle le coffre jusqu\'à ce qu\'un humain l\'ouvre.' },
+  },
   'Vaultwarden': {
     what: { en: 'Self-hosted password manager, Bitwarden-compatible.', fr: 'Gestionnaire de mots de passe self-hosted, compatible Bitwarden.' },
     why: { en: 'Passwords stay in the lab and sync to the Bitwarden apps — no vendor cloud ever holds the vault.', fr: 'Les mots de passe restent dans le lab et se synchronisent avec les apps Bitwarden — aucun cloud tiers ne détient le coffre.' },
@@ -168,6 +172,10 @@ export const SERVICE_INFO: Record<string, ServiceBlurb> = {
   'Homelable': {
     what: { en: 'Interactive homelab topology visualizer with live monitoring.', fr: 'Visualiseur interactif de topologie homelab avec monitoring live.' },
     why: { en: 'The source of this site\'s network map — it scans, maps and exposes the canvas via MCP.', fr: 'La source de la carte réseau de ce site — il scanne, cartographie et expose le canvas via MCP.' },
+  },
+  'Homelable MCP': {
+    what: { en: 'MCP server in front of Homelable\'s API: read the canvas, run a scan, add or edit nodes and links.', fr: 'Serveur MCP devant l\'API de Homelable : lire le canvas, lancer un scan, ajouter ou modifier nœuds et liens.' },
+    why: { en: 'Lets me keep the topology map in step with the infra from a session, instead of redrawing it by hand. Two keys in the chain: one to reach the MCP server, another between it and the API.', fr: 'Me permet de tenir la carte de topologie à jour depuis une session, au lieu de la redessiner à la main. Deux clés dans la chaîne : une pour joindre le serveur MCP, une autre entre lui et l\'API.' },
   },
 
   // ── Monitoring & Security ───────────────────────────────────────
