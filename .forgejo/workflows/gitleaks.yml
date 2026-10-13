@@ -35,9 +35,13 @@ jobs:
       - name: Install gitleaks
         # Version épinglée : une CI de sécurité dont l'outil bouge tout seul ne
         # produit pas des résultats comparables d'un run à l'autre.
+        # --retry : le CDN GitHub coupe par salves depuis le LAN (2026-08-12, CT 178) ; sans
+        # retry, un téléchargement raté ressemble à un secret détecté et bloque le merge.
+        # Aligné sur le job de référence (infra/homelab lint.yml), 2026-10-13.
         run: |
-          VER=8.28.0
-          curl -sSL --fail \
+          VER=8.30.1
+          curl -sSL --fail --retry 8 --retry-delay 5 --retry-all-errors \
+               --connect-timeout 15 --max-time 240 \
             "https://github.com/gitleaks/gitleaks/releases/download/v${VER}/gitleaks_${VER}_linux_x64.tar.gz" -o /tmp/gl.tar.gz
           tar -xzf /tmp/gl.tar.gz -C /usr/local/bin gitleaks
           gitleaks version
