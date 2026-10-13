@@ -53,7 +53,7 @@ const FALLBACK: Record<string, string | number> = {
   htb_fortress_flags: 43,
   rootme_score: 1050,
   rootme_validations: 75,
-  rootme_position: 15394,
+  rootme_position: 15396,
   ansible_playbooks: 63,
   lxc_count: 59,
   https_services: 46,

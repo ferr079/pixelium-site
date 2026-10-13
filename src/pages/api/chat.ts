@@ -46,7 +46,7 @@ async function checkRateLimit(ip: string): Promise<{ allowed: boolean; retryAfte
 // fallbacks doit laisser une trace dans Workers Logs.
 async function liveStats(): Promise<Record<string, string>> {
   const fb: Record<string, string> = {
-    HTB_RANK: '231', HTB_RANK_NAME: 'Pro Hacker', HTB_FLAGS: '129', HTB_MACHINES: '64', ROOTME_SCORE: '1050',
+    HTB_RANK: '229', HTB_RANK_NAME: 'Pro Hacker', HTB_FLAGS: '130', HTB_MACHINES: '64', ROOTME_SCORE: '1050',
     ROOTME_VALIDATIONS: '75', SERVICES: '60', LXC: '59', BESZEL: '51', PLAYBOOKS: '67', HOSTS: '64', CROWDSEC: '57',
     OLLAMA: '23', ZIM: '66', MCP: '20',
   };
