@@ -13,13 +13,13 @@ const n = (k: string, d: number): number => (Number.isFinite(Number(s[k])) ? Num
 
 const htb = {
   rank: String(s.htb_rank ?? 'Pro Hacker'),
-  ranking: n('htb_ranking', 255),
+  ranking: n('htb_ranking', 229),
   // Rang NATIONAL + son dénominateur (htb_country_members, orpheline jusqu'au 2026-10-03) :
-  // « #17 / 3 771 » se situe tout de suite, #255 mondial beaucoup moins.
-  country_rank: n('htb_country_rank', 17),
-  country_members: n('htb_country_members', 3771),
-  system_owns: n('htb_system_owns', 62),
-  user_owns: n('htb_user_owns', 63),
+  // « #18 / 3 738 » se situe tout de suite, #229 mondial beaucoup moins.
+  country_rank: n('htb_country_rank', 18),
+  country_members: n('htb_country_members', 3738),
+  system_owns: n('htb_system_owns', 64),
+  user_owns: n('htb_user_owns', 66),
   fortress_flags: n('htb_fortress_flags', 43),
 };
 const htbFlags = n('htb_flags', htb.user_owns + htb.system_owns);
@@ -37,7 +37,7 @@ const countryTopPct = htb.country_members > 0
 
 const rootme = {
   score: n('rootme_score', 1050),
-  position: n('rootme_position', 15607),
+  position: n('rootme_position', 15394),
   validations: n('rootme_validations', 75),
 };
 
