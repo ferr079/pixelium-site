@@ -9,7 +9,7 @@ const topology = JSON.parse(fs.readFileSync('public/data/topology.json', 'utf-8'
 
 // Proof-of-life line under the CTAs — baked at build like every DynNum, no client fetch.
 const commits30d = await statValue('forgejo_commits_30d', '1257');
-const sessions = await statValue('claude_sessions', '273');
+const sessions = await statValue('claude_sessions', '1557');
 const htbRank = await statValue('htb_rank', 'Pro Hacker');
 
 // Adaptive counter, baked at the state the KV had at build time: full fleet when

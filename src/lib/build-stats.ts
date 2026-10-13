@@ -17,10 +17,11 @@
 
 // Last-known snapshot (2026-08-19). Only used if the build can't reach /api/stats.
 const FALLBACK: Record<string, string | number> = {
-  claude_hours: 8367,
-  claude_cache_hit: 96.9,
-  claude_sessions: 1253,
-  claude_tokens_billions: 30.7,
+  // Clés claude_* relevées le 2026-10-13.
+  claude_hours: 13982,
+  claude_cache_hit: 97.0,
+  claude_sessions: 1557,
+  claude_tokens_billions: 35.3,
   services_up: 49,
   services_total: 60,
   services_up_core: 48,

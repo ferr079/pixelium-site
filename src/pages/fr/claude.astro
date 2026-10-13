@@ -5,10 +5,11 @@ import SectionHeading from '../../components/SectionHeading.astro';
 import { getLangFromUrl, formatNumber } from '../../i18n/utils';
 
 const lang = getLangFromUrl(Astro.url);
+// Turns par heure, heure de Paris (heure d'été gérée). Instantané usage.db du 2026-10-13, à rafraîchir à la main.
 const heatmapLocal = [
-  7473, 7102, 5358, 3973, 4256, 4374, 2299,  897,
-   730,  362,  193, 1115, 2091, 3075, 3951, 4251,
-  3722, 3879, 5241, 6679, 4423, 4928, 6239, 8203
+  16667, 12056,  9074,  8021,  5577,  3949,  1488,   524,
+    584,   452,   241,  1657,  3182,  5765,  8344, 10204,
+   9361, 10266, 10323, 11484,  7864, 10145, 13400, 14601
 ];
 const maxTurns = Math.max(...heatmapLocal);
 ---
@@ -21,7 +22,7 @@ const maxTurns = Math.max(...heatmapLocal);
     <section class="cs-hero">
       <div class="container cs-hero-wrap">
         <p class="cs-eyebrow">∷ stats claude · le grand livre</p>
-        <h1>À quoi ressemblent <span class="accent"><DynNum stat="claude_hours" fallback="1432" /> heures</span></h1>
+        <h1>À quoi ressemblent <span class="accent"><DynNum stat="claude_hours" fallback="13982" /> heures</span></h1>
         <p class="cs-lede">
           Rien n'est arrondi vers le haut. Chaque chiffre vient de <code>~/.claude/usage.db</code> —
           les transcripts JSONL que Claude Code écrit sur la workstation de Stéphane,
@@ -37,28 +38,28 @@ const maxTurns = Math.max(...heatmapLocal);
         <div class="cs-grid four">
           <div class="cs-card">
             <span class="cs-label">heures</span>
-            <span class="cs-value"><DynNum stat="claude_hours" fallback="1432" /></span>
+            <span class="cs-value"><DynNum stat="claude_hours" fallback="13982" /></span>
             <span class="cs-sub">temps calendaire des sessions</span>
           </div>
           <div class="cs-card">
             <span class="cs-label">sessions</span>
-            <span class="cs-value"><DynNum stat="claude_sessions" fallback="273" /></span>
+            <span class="cs-value"><DynNum stat="claude_sessions" fallback="1557" /></span>
             <span class="cs-sub">tous projets confondus</span>
           </div>
           <div class="cs-card">
             <span class="cs-label">turns</span>
-            <span class="cs-value">124.2K</span>
+            <span class="cs-value">175.2K</span>
             <span class="cs-sub">chaque échange user+assistant</span>
           </div>
           <div class="cs-card">
             <span class="cs-label">tokens</span>
-            <span class="cs-value"><DynNum stat="claude_tokens_billions" fallback="23.6" suffix="B" /></span>
+            <span class="cs-value"><DynNum stat="claude_tokens_billions" fallback="35.3" suffix="B" /></span>
             <span class="cs-sub">input + output + cache</span>
           </div>
           <div class="cs-card">
             <span class="cs-label">cache hit</span>
-            <span class="cs-value"><DynNum stat="claude_cache_hit" fallback="97.3" />%</span>
-            <span class="cs-sub">22,7 milliards de cache reads</span>
+            <span class="cs-value"><DynNum stat="claude_cache_hit" fallback="97" />%</span>
+            <span class="cs-sub">34,1 milliards de cache reads</span>
           </div>
         </div>
 
@@ -77,27 +78,36 @@ const maxTurns = Math.max(...heatmapLocal);
         <SectionHeading id="rhythm">Rythme</SectionHeading>
         <div class="cs-grid three">
           <div class="cs-card">
-            <span class="cs-label">heures par jour actif</span>
-            <span class="cs-value">~17</span>
-            <span class="cs-sub">83 jours actifs / 113 écoulés</span>
+            <span class="cs-label">heures actives par jour</span>
+            <span class="cs-value">~6</span>
+            <span class="cs-sub">temps actif mesuré · 197 jours actifs</span>
           </div>
           <div class="cs-card">
             <span class="cs-label">plus longue session</span>
-            <span class="cs-value">104.7h</span>
-            <span class="cs-sub">plus longue session continue</span>
+            <span class="cs-value">18h</span>
+            <span class="cs-sub">temps actif, pauses de plus de 30 min exclues</span>
           </div>
           <div class="cs-card">
             <span class="cs-label">taux de jours actifs</span>
-            <span class="cs-value">74%</span>
-            <span class="cs-sub">83 / 113 — presque tous les jours</span>
+            <span class="cs-value">85%</span>
+            <span class="cs-sub">197 / 232 — presque tous les jours</span>
           </div>
         </div>
 
-        <h3 class="cs-sub-heading">Activité horaire — heure locale (CEST)</h3>
+        <p class="cs-note">
+          <strong>Deux façons de compter les heures.</strong> Le chiffre du haut additionne la durée
+          de chaque session, de son premier turn au dernier. Une session reprise plusieurs jours plus
+          tard compte tout l'intervalle, et les sessions menées en parallèle s'additionnent. Si l'on
+          ne compte que le temps où les turns sont espacés de moins de 30 minutes, sessions parallèles
+          comptées une seule fois, on arrive à environ 1 200 heures en octobre 2026. Les cartes
+          ci-dessus utilisent ce temps actif mesuré.
+        </p>
+
+        <h3 class="cs-sub-heading">Activité horaire — heure locale (Paris)</h3>
         <p class="cs-paragraph">
-          Turns par heure, cumulé sur 113 jours. La forme est le portrait honnête
-          de notre rythme de travail : <strong>16h → 06h</strong> est la fenêtre principale,
-          avec un creux de sommeil entre 08h et 12h.
+          Turns par heure, cumulés sur 232 jours. La forme est le portrait honnête
+          de notre rythme de travail : <strong>13h → 03h</strong> est la fenêtre principale,
+          avec un creux de sommeil entre 07h et 11h.
         </p>
         <div class="heatmap">
           {heatmapLocal.map((v, h) => {
@@ -115,7 +125,7 @@ const maxTurns = Math.max(...heatmapLocal);
         </div>
         <p class="cs-legend">
           <span class="legend-dot"></span>survol une colonne pour voir le nombre exact ·
-          pic 22h-01h, creux 09h-11h
+          pic 23h-00h, creux 07h-10h
         </p>
       </div>
     </section>
@@ -129,19 +139,19 @@ const maxTurns = Math.max(...heatmapLocal);
         </p>
         <div class="cs-grid three">
           <div class="cs-card">
-            <span class="cs-label">commits / heure</span>
-            <span class="cs-value">~1.8</span>
-            <span class="cs-sub">repos homelab, 30 derniers jours</span>
+            <span class="cs-label">commits / heure active</span>
+            <span class="cs-value">~7</span>
+            <span class="cs-sub">tous les repos Forgejo, merges compris, 30 derniers jours</span>
           </div>
           <div class="cs-card">
             <span class="cs-label">minutes / commit</span>
-            <span class="cs-value">~32</span>
+            <span class="cs-value">~8</span>
             <span class="cs-sub">inclut réflexion + test + fix</span>
           </div>
           <div class="cs-card">
             <span class="cs-label">issues fermées / semaine</span>
             <span class="cs-value">~8</span>
-            <span class="cs-sub">Forgejo <code>uzer/homelab-infra</code></span>
+            <span class="cs-sub">Forgejo <code>infra/homelab</code>, 4 dernières semaines</span>
           </div>
         </div>
       </div>
@@ -150,37 +160,37 @@ const maxTurns = Math.max(...heatmapLocal);
     <section class="cs-section alt reveal">
       <div class="container">
         <SectionHeading id="focus">Répartition par projet</SectionHeading>
-        <p class="cs-paragraph center">Où sont passées les heures.</p>
+        <p class="cs-paragraph center">Où est passé le temps actif.</p>
         <div class="focus-bars">
           <div class="focus-row">
             <span class="focus-label">Claude/homelab</span>
-            <div class="focus-track"><div class="focus-fill" style="width:70.9%"></div></div>
-            <span class="focus-val">70.9%</span>
-          </div>
-          <div class="focus-row">
-            <span class="focus-label">Claude/HTB</span>
-            <div class="focus-track"><div class="focus-fill" style="width:12%"></div></div>
-            <span class="focus-val">12.0%</span>
+            <div class="focus-track"><div class="focus-fill" style="width:66.2%"></div></div>
+            <span class="focus-val">66.2%</span>
           </div>
           <div class="focus-row">
             <span class="focus-label">Claude/web (ce site)</span>
-            <div class="focus-track"><div class="focus-fill" style="width:7.9%"></div></div>
-            <span class="focus-val">7.9%</span>
+            <div class="focus-track"><div class="focus-fill" style="width:12.1%"></div></div>
+            <span class="focus-val">12.1%</span>
           </div>
           <div class="focus-row">
-            <span class="focus-label">Claude/terre2</span>
-            <div class="focus-track"><div class="focus-fill" style="width:5.4%"></div></div>
-            <span class="focus-val">5.4%</span>
+            <span class="focus-label">Claude/HTB</span>
+            <div class="focus-track"><div class="focus-fill" style="width:10.0%"></div></div>
+            <span class="focus-val">10.0%</span>
+          </div>
+          <div class="focus-row">
+            <span class="focus-label">Claude (hub)</span>
+            <div class="focus-track"><div class="focus-fill" style="width:5.6%"></div></div>
+            <span class="focus-val">5.6%</span>
           </div>
           <div class="focus-row">
             <span class="focus-label">Claude/veille</span>
-            <div class="focus-track"><div class="focus-fill" style="width:0.8%"></div></div>
-            <span class="focus-val">0.8%</span>
+            <div class="focus-track"><div class="focus-fill" style="width:3.3%"></div></div>
+            <span class="focus-val">3.3%</span>
           </div>
           <div class="focus-row">
             <span class="focus-label">autres</span>
-            <div class="focus-track"><div class="focus-fill" style="width:3%"></div></div>
-            <span class="focus-val">3.0%</span>
+            <div class="focus-track"><div class="focus-fill" style="width:2.8%"></div></div>
+            <span class="focus-val">2.8%</span>
           </div>
         </div>
       </div>
@@ -192,8 +202,8 @@ const maxTurns = Math.max(...heatmapLocal);
         <div class="cs-grid three">
           <div class="cs-card cs-card-muted">
             <span class="cs-label">équivalent pay-as-you-go</span>
-            <span class="cs-value">≈ 10 000 $</span>
-            <span class="cs-sub">tarif API sur 113 jours</span>
+            <span class="cs-value">≈ 27 000 $</span>
+            <span class="cs-sub">tarif API sur 232 jours</span>
           </div>
           <div class="cs-card cs-card-muted">
             <span class="cs-label">ce qu'on paye vraiment</span>
@@ -202,7 +212,7 @@ const maxTurns = Math.max(...heatmapLocal);
           </div>
           <div class="cs-card cs-card-accent">
             <span class="cs-label">facteur compression</span>
-            <span class="cs-value">~25×</span>
+            <span class="cs-value">~30×</span>
             <span class="cs-sub">Max plan utilisé comme il faut</span>
           </div>
         </div>
@@ -230,10 +240,10 @@ const maxTurns = Math.max(...heatmapLocal);
                                                              └────────────────────┘`}</code></pre>
         <p class="cs-paragraph">
           Scan-script : <a href="https://github.com/phuryn/claude-usage" target="_blank" rel="noopener">phuryn/claude-usage</a>.
-          Push-script : <code>~/Claude/claude-usage/scripts/push-stats.sh</code> sur la workstation de Stéphane.
+          Push-script : <code>push-stats.sh</code>, versionné dans le dépôt homelab, lancé chaque jour à 18h par un timer systemd sur la workstation de Stéphane.
           Récepteur : <code>/srv/kv-inbox/claude-stats.json</code> sur CT 246 (Dagu) — déménagé d'OpenFang à son décommissionnement (juin 2026).
-          Forwarder : <code>/usr/local/bin/kv-push</code> (DAG Dagu, toutes les 5 min) fusionne le fichier dans le payload stats et poste vers Cloudflare KV.
-          Rendu : le composant <code>DynNum</code> appelle <code>/api/stats</code> et met à jour le texte côté client.
+          Forwarder : <code>/usr/local/bin/kv-push</code> (DAG Dagu, toutes les 15 min) fusionne le fichier dans le payload stats et poste vers Cloudflare KV.
+          Rendu : le composant <code>DynNum</code> lit <code>/api/stats</code> au build et inscrit le chiffre dans le HTML ; le site est reconstruit chaque matin.
         </p>
         <p class="cs-note">
           Le timestamp du dernier run est dans le champ <code>updated_at</code> du blob KV.
