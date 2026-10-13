@@ -1,6 +1,8 @@
 {
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
-  "extends": ["config:recommended"],
+  "extends": [
+    "config:recommended"
+  ],
   "dependencyDashboard": true,
   "prConcurrentLimit": 3,
   "timezone": "Europe/Paris",
@@ -9,11 +11,24 @@
     {
       "customType": "regex",
       "description": "gitleaks épinglé dans le gate CI (VER=x.y.z) — invisible aux managers standards (infra/homelab#611)",
-      "managerFilePatterns": ["/^\\.forgejo/workflows/gitleaks\\.ya?ml$/"],
-      "matchStrings": ["VER=(?<currentValue>\\d+\\.\\d+\\.\\d+)"],
+      "managerFilePatterns": [
+        "/^\\.forgejo/workflows/gitleaks\\.ya?ml$/"
+      ],
+      "matchStrings": [
+        "VER=(?<currentValue>\\d+\\.\\d+\\.\\d+)"
+      ],
       "depNameTemplate": "gitleaks/gitleaks",
       "datasourceTemplate": "github-releases",
       "extractVersionTemplate": "^v(?<version>.+)$"
+    }
+  ],
+  "packageRules": [
+    {
+      "description": "satori figé en 0.29.x : la 0.55 casse les cartes OG (ligne date+tags disparue, titre décalé ; moteur yoga-layout → harfbuzzjs). Constat : pixelium/blog-pixelium#55 (2026-10-13). À lever après adaptation de scripts/og/gen-og.mjs.",
+      "matchPackageNames": [
+        "satori"
+      ],
+      "allowedVersions": "<0.30.0"
     }
   ]
 }
