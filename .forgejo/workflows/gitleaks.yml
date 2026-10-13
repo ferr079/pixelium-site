@@ -38,18 +38,34 @@ jobs:
         # --retry : le CDN GitHub coupe par salves depuis le LAN (2026-08-12, CT 178) ; sans
         # retry, un téléchargement raté ressemble à un secret détecté et bloque le merge.
         # Aligné sur le job de référence (infra/homelab lint.yml), 2026-10-13.
+        # Intégrité (2026-10-13) : archive vérifiée contre gitleaks_<VER>_checksums.txt DE LA
+        # RELEASE, et non contre un sha256 figé ici que Renovate ne saurait pas mettre à jour
+        # (sa PR de montée de VER= échouerait). Détecte un téléchargement tronqué ou corrompu.
+        shell: bash
         run: |
+          set -euo pipefail
           VER=8.30.1
-          curl -sSL --fail --retry 8 --retry-delay 5 --retry-all-errors \
-               --connect-timeout 15 --max-time 240 \
-            "https://github.com/gitleaks/gitleaks/releases/download/v${VER}/gitleaks_${VER}_linux_x64.tar.gz" -o /tmp/gl.tar.gz
+          base="https://github.com/gitleaks/gitleaks/releases/download/v${VER}"
+          dl() { curl -sSL --fail --retry 8 --retry-delay 5 --retry-all-errors \
+                      --connect-timeout 15 --max-time 240 "$1" -o "$2"; }
+          dl "$base/gitleaks_${VER}_linux_x64.tar.gz" /tmp/gl.tar.gz
+          dl "$base/gitleaks_${VER}_checksums.txt"    /tmp/gl.sums
+          sum=$(grep " gitleaks_${VER}_linux_x64.tar.gz\$" /tmp/gl.sums | cut -d' ' -f1)
+          [ ${#sum} -eq 64 ] || { echo "::error::empreinte introuvable dans checksums.txt"; exit 1; }
+          echo "${sum}  /tmp/gl.tar.gz" | sha256sum -c --quiet - \
+            || { echo "::error::archive gitleaks corrompue (sha256 ≠ checksums.txt de la release)"; exit 1; }
           tar -xzf /tmp/gl.tar.gz -C /usr/local/bin gitleaks
           gitleaks version
 
-      - name: Scan (arbre suivi, secrets masqués)
+      - name: Scan (arbre suivi, secrets masqués, volume contrôlé)
+        # pipefail : sans lui, `| tee` avalerait le code de sortie de gitleaks (vert sur une fuite).
+        # Volume : un scan de 0 octet (checkout vide, mauvais --source) n'est pas un succès.
+        # Les deux repris du gate des dépôts GitHub-only (pixelium/web#102), 2026-10-13.
+        shell: bash
         run: |
-          if [ -f .gitleaks.toml ]; then
-            gitleaks detect --no-git --source . -c .gitleaks.toml --redact -v
-          else
-            gitleaks detect --no-git --source . --redact -v
-          fi
+          set -euo pipefail
+          cfg=(); [ -f .gitleaks.toml ] && cfg=(-c .gitleaks.toml)
+          gitleaks detect --no-git --source . "${cfg[@]}" --redact -v 2>&1 | tee /tmp/gitleaks.log
+          bytes=$(grep -oE 'scanned ~[0-9]+ bytes' /tmp/gitleaks.log | grep -oE '[0-9]+' | tail -1)
+          [ "${bytes:-0}" -gt 0 ] || { echo "::error::scan vide (0 octet) — gate inopérant"; exit 1; }
+          echo "volume scanné : ${bytes} octets"
