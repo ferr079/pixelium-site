@@ -1,0 +1,14 @@
+# gitleaks — config du gate CI (pixelium-site).
+# Étend les règles par défaut ; allowliste UNIQUEMENT des faux positifs identifiés.
+# Volontairement PRÉCIS : jamais une règle ni un dossier entier (cf gitleaks.yml).
+title = "pixelium-site gitleaks"
+
+[extend]
+useDefault = true
+
+[[allowlists]]
+description = "Nom de clé KV des stats live (generic-api-key sur key: '...'), pas un secret — 2026-10-13"
+regexTarget = "match"
+regexes = [
+  '''forgejo_contributions_12mo''',
+]
