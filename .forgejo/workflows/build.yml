@@ -1,0 +1,47 @@
+# Build — vrai test d'une PR CÔTÉ FORGEJO (infra/homelab#611, posé le 2026-10-13).
+#
+# Jusqu'ici seul .github/workflows/ci.yml (mirror GitHub) construisait le dépôt : son
+# verdict n'est pas visible là où on merge. Ce job le rapatrie — prérequis à toute idée
+# de merge automatique des PR Renovate.
+#
+# 🔒 AUCUN secret, volontairement : le build exécute le code des dépendances (scripts npm)
+# d'une PR pas encore relue — typiquement une PR Renovate. Sans GITHUB_TOKEN, les appels à
+# l'API GitHub publique retombent sur leurs fallbacks (warning, pas d'échec).
+name: Build
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+# CA interne : monté dans tout conteneur de job par le runner (CT 178, config.yaml options).
+env:
+  NODE_EXTRA_CA_CERTS: /usr/local/share/ca-certificates/step-ca.crt
+
+jobs:
+  build:
+    # Label node-22 → node:22-bookworm (engines: node >= 22.12 côté site).
+    runs-on: node-22
+    timeout-minutes: 20
+    steps:
+      - name: Trust step-ca
+        run: update-ca-certificates 2>/dev/null || true
+
+      - uses: actions/checkout@v4
+
+      - run: node --version && npm --version
+
+      - run: npm ci
+
+      - run: npm run build
+
+      - name: Assert build artefact
+        run: test -f dist/server/wrangler.json && test -d dist/client
+
+      - name: No secrets in dist
+        # Mêmes motifs que .github/workflows/ci.yml (longs exprès : « sk-… » court matche du CSS).
+        run: |
+          if grep -rE 'ghp_[A-Za-z0-9]{20,}|github_pat_[A-Za-z0-9_]{20,}|sk-[A-Za-z0-9]{16,}|BEGIN [A-Z ]*PRIVATE' dist; then
+            echo "Possible secret material in dist" >&2
+            exit 1
+          fi
