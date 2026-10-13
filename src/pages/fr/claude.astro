@@ -2,16 +2,54 @@
 import Base from '../../layouts/Base.astro';
 import DynNum from '../../components/DynNum.astro';
 import SectionHeading from '../../components/SectionHeading.astro';
+import { getBuildStats } from '../../lib/build-stats';
 import { getLangFromUrl, formatNumber } from '../../i18n/utils';
 
 const lang = getLangFromUrl(Astro.url);
-// Turns par heure, heure de Paris (heure d'été gérée). Instantané usage.db du 2026-10-13, à rafraîchir à la main.
-const heatmapLocal = [
-  16667, 12056,  9074,  8021,  5577,  3949,  1488,   524,
+const s = await getBuildStats();
+const n = (k: string, d: number): number => (Number.isFinite(Number(s[k])) ? Number(s[k]) : d);
+
+// Everything below comes from the KV (homelab push-stats.sh → kv-push, keys claude_*).
+// The literals are only the last-known snapshot (2026-10-14), used if the build
+// cannot reach /api/stats — this page used to be written by hand and drifted for months.
+const HEATMAP_FALLBACK = [
+  16694, 12056,  9074,  8021,  5577,  3949,  1488,   524,
     584,   452,   241,  1657,  3182,  5765,  8344, 10204,
-   9361, 10266, 10323, 11484,  7864, 10145, 13400, 14601
+   9361, 10266, 10492, 11581,  7878, 10233, 13853, 14855
 ];
+// The KV only holds scalars (StatsBagSchema), so the heatmap comes as "16801,12056,…".
+const heatmapParsed = String(s.claude_heatmap_paris ?? '').split(',').map(Number);
+const heatmapLocal: number[] = heatmapParsed.length === 24 && heatmapParsed.every(Number.isFinite)
+  ? heatmapParsed : HEATMAP_FALLBACK;
 const maxTurns = Math.max(...heatmapLocal);
+const peakHour = heatmapLocal.indexOf(maxTurns);
+const troughHour = heatmapLocal.indexOf(Math.min(...heatmapLocal));
+const hh = (h: number) => String(h).padStart(2, '0');
+
+const FOCUS_FALLBACK: [string, number][] = [
+  ['Claude/homelab', 66.1], ['Claude/web', 12.4], ['Claude/HTB', 9.9],
+  ['terre2/Claude', 5.5], ['Claude/veille', 3.2],
+];
+// Same reason: "project:pct|project:pct".
+const focusParsed: [string, number][] = String(s.claude_focus ?? '').split('|')
+  .map((e) => { const i = e.lastIndexOf(':'); return [e.slice(0, i), Number(e.slice(i + 1))] as [string, number]; })
+  .filter(([p, v]) => p && Number.isFinite(v));
+const focusTop: [string, number][] = focusParsed.length ? focusParsed : FOCUS_FALLBACK;
+const focusOther = Math.max(0, Math.round((100 - focusTop.reduce((a, [, v]) => a + v, 0)) * 10) / 10);
+
+// Productivity: Forgejo commits over the last 30 days, per hour of active time over the
+// same 30 days (all repos, merges included — an order of magnitude, nothing finer).
+const commitsPerHour = n('forgejo_commits_30d', 985) / Math.max(1, n('claude_active_hours_30d', 142));
+const minutesPerCommit = 60 / commitsPerHour;
+
+// Economics: API-priced estimate from claude-usage's own price table, against the €100/mo
+// Max plan over the same period. EUR→USD taken at 1.16 (October 2026) — a ballpark ratio.
+const costUsd = n('claude_cost_usd', 27612);
+const daysElapsed = n('claude_days_elapsed', 233);
+const paidUsd = (daysElapsed / 30.44) * 100 * 1.16;
+const compression = Math.round(costUsd / paidUsd);
+const FOCUS_LABELS: Record<string, string> = { 'Claude/web': 'Claude/web (ce site)', 'terre2/Claude': 'Claude (hub)' };
+const costRounded = Math.round(costUsd / 100) * 100;
 ---
 
 <Base
@@ -53,7 +91,7 @@ const maxTurns = Math.max(...heatmapLocal);
           </div>
           <div class="cs-card">
             <span class="cs-label">turns</span>
-            <span class="cs-value">175.2K</span>
+            <span class="cs-value"><DynNum stat="claude_turns" fallback="176331" group /></span>
             <span class="cs-sub">chaque échange user+assistant</span>
           </div>
           <div class="cs-card">
@@ -64,7 +102,7 @@ const maxTurns = Math.max(...heatmapLocal);
           <div class="cs-card">
             <span class="cs-label">cache hit</span>
             <span class="cs-value"><DynNum stat="claude_cache_hit" fallback="97" />%</span>
-            <span class="cs-sub">34,1 milliards de cache reads</span>
+            <span class="cs-sub"><DynNum stat="claude_cache_read_billions" fallback="34.3B" suffix="B" /> de cache reads</span>
           </div>
         </div>
 
@@ -84,18 +122,18 @@ const maxTurns = Math.max(...heatmapLocal);
         <div class="cs-grid three">
           <div class="cs-card">
             <span class="cs-label">heures actives par jour</span>
-            <span class="cs-value">~6</span>
-            <span class="cs-sub">temps actif mesuré · 197 jours actifs</span>
+            <span class="cs-value"><DynNum stat="claude_active_hours_per_day" fallback="6.1" /></span>
+            <span class="cs-sub">temps actif mesuré · <DynNum stat="claude_active_days" fallback="197" /> jours actifs</span>
           </div>
           <div class="cs-card">
             <span class="cs-label">plus longue session</span>
-            <span class="cs-value">18h</span>
+            <span class="cs-value"><DynNum stat="claude_longest_session_h" fallback="18h" suffix="h" /></span>
             <span class="cs-sub">temps actif, pauses de plus de 30 min exclues</span>
           </div>
           <div class="cs-card">
             <span class="cs-label">taux de jours actifs</span>
-            <span class="cs-value">85%</span>
-            <span class="cs-sub">197 / 232 — presque tous les jours</span>
+            <span class="cs-value"><DynNum stat="claude_days_active_pct" fallback="84" />%</span>
+            <span class="cs-sub"><DynNum stat="claude_active_days" fallback="197" /> / <DynNum stat="claude_days_elapsed" fallback="233" /> — presque tous les jours</span>
           </div>
         </div>
 
@@ -111,9 +149,9 @@ const maxTurns = Math.max(...heatmapLocal);
 
         <h3 class="cs-sub-heading">Activité horaire — heure locale (Paris)</h3>
         <p class="cs-paragraph">
-          Turns par heure, cumulés sur 232 jours. La forme est le portrait honnête
-          de notre rythme de travail : <strong>13h → 03h</strong> est la fenêtre principale,
-          avec un creux de sommeil entre 07h et 11h.
+          Turns par heure, cumulés sur <DynNum stat="claude_days_elapsed" fallback="233" /> jours.
+          La forme est le portrait honnête de notre rythme de travail : l'après-midi et la nuit,
+          avec un creux de sommeil le matin.
         </p>
         <div class="heatmap">
           {heatmapLocal.map((v, h) => {
@@ -131,7 +169,7 @@ const maxTurns = Math.max(...heatmapLocal);
         </div>
         <p class="cs-legend">
           <span class="legend-dot"></span>survol une colonne pour voir le nombre exact ·
-          pic 23h-00h, creux 07h-10h
+          pic à {hh(peakHour)}h, creux à {hh(troughHour)}h
         </p>
       </div>
     </section>
@@ -146,18 +184,18 @@ const maxTurns = Math.max(...heatmapLocal);
         <div class="cs-grid three">
           <div class="cs-card">
             <span class="cs-label">commits / heure active</span>
-            <span class="cs-value">~7</span>
+            <span class="cs-value">~{formatNumber(Math.round(commitsPerHour), lang)}</span>
             <span class="cs-sub">tous les repos Forgejo, merges compris, 30 derniers jours</span>
           </div>
           <div class="cs-card">
             <span class="cs-label">minutes / commit</span>
-            <span class="cs-value">~8</span>
+            <span class="cs-value">~{formatNumber(Math.round(minutesPerCommit), lang)}</span>
             <span class="cs-sub">inclut réflexion + test + fix</span>
           </div>
           <div class="cs-card">
             <span class="cs-label">issues fermées / semaine</span>
             <span class="cs-value">~8</span>
-            <span class="cs-sub">Forgejo <code>infra/homelab</code>, 4 dernières semaines</span>
+            <span class="cs-sub">Forgejo <code>infra/homelab</code>, 4 dernières semaines (octobre 2026)</span>
           </div>
         </div>
       </div>
@@ -168,36 +206,13 @@ const maxTurns = Math.max(...heatmapLocal);
         <SectionHeading id="focus">Répartition par projet</SectionHeading>
         <p class="cs-paragraph center">Où est passé le temps actif.</p>
         <div class="focus-bars">
-          <div class="focus-row">
-            <span class="focus-label">Claude/homelab</span>
-            <div class="focus-track"><div class="focus-fill" style="width:66.2%"></div></div>
-            <span class="focus-val">66.2%</span>
-          </div>
-          <div class="focus-row">
-            <span class="focus-label">Claude/web (ce site)</span>
-            <div class="focus-track"><div class="focus-fill" style="width:12.1%"></div></div>
-            <span class="focus-val">12.1%</span>
-          </div>
-          <div class="focus-row">
-            <span class="focus-label">Claude/HTB</span>
-            <div class="focus-track"><div class="focus-fill" style="width:10.0%"></div></div>
-            <span class="focus-val">10.0%</span>
-          </div>
-          <div class="focus-row">
-            <span class="focus-label">Claude (hub)</span>
-            <div class="focus-track"><div class="focus-fill" style="width:5.6%"></div></div>
-            <span class="focus-val">5.6%</span>
-          </div>
-          <div class="focus-row">
-            <span class="focus-label">Claude/veille</span>
-            <div class="focus-track"><div class="focus-fill" style="width:3.3%"></div></div>
-            <span class="focus-val">3.3%</span>
-          </div>
-          <div class="focus-row">
-            <span class="focus-label">autres</span>
-            <div class="focus-track"><div class="focus-fill" style="width:2.8%"></div></div>
-            <span class="focus-val">2.8%</span>
-          </div>
+          {[...focusTop.map(([p, v]) => [FOCUS_LABELS[p] ?? p, v] as [string, number]), ['autres', focusOther] as [string, number]].map(([label, v]) => (
+            <div class="focus-row">
+              <span class="focus-label">{label}</span>
+              <div class="focus-track"><div class="focus-fill" style={`width:${v}%`}></div></div>
+              <span class="focus-val">{v.toFixed(1)}%</span>
+            </div>
+          ))}
         </div>
       </div>
     </section>
@@ -208,8 +223,8 @@ const maxTurns = Math.max(...heatmapLocal);
         <div class="cs-grid three">
           <div class="cs-card cs-card-muted">
             <span class="cs-label">équivalent pay-as-you-go</span>
-            <span class="cs-value">≈ 27 000 $</span>
-            <span class="cs-sub">tarif API sur 232 jours</span>
+            <span class="cs-value">≈ {formatNumber(costRounded, lang)} $</span>
+            <span class="cs-sub">tarif API sur <DynNum stat="claude_days_elapsed" fallback="233" /> jours</span>
           </div>
           <div class="cs-card cs-card-muted">
             <span class="cs-label">ce qu'on paye vraiment</span>
@@ -218,7 +233,7 @@ const maxTurns = Math.max(...heatmapLocal);
           </div>
           <div class="cs-card cs-card-accent">
             <span class="cs-label">facteur compression</span>
-            <span class="cs-value">~30×</span>
+            <span class="cs-value">~{compression}×</span>
             <span class="cs-sub">Max plan utilisé comme il faut</span>
           </div>
         </div>
