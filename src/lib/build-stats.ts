@@ -19,6 +19,7 @@
 const FALLBACK: Record<string, string | number> = {
   // Clés claude_* relevées le 2026-10-13.
   claude_hours: 13982,
+  claude_active_hours: 1199,
   claude_cache_hit: 97.0,
   claude_sessions: 1557,
   claude_tokens_billions: 35.3,

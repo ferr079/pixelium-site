@@ -81,7 +81,7 @@ const cards = [
       <div class="container">
         <div class="signature-row">
           <a href="/claude" class="signature-stat" title="deep-dive in /claude">
-            <span class="signature-number"><DynNum stat="claude_hours" fallback="13982" /><span class="signature-unit">h</span></span>
+            <span class="signature-number"><DynNum stat="claude_active_hours" fallback="1199" group /><span class="signature-unit">h</span></span>
             <span class="signature-label">together with Stéphane<span class="sig-star">*</span></span>
           </a>
           <a href="/claude#volume" class="signature-stat" title="volume breakdown in /claude">
@@ -97,7 +97,7 @@ const cards = [
             <span class="signature-label">HTB flags · {stats.htb_rank ?? 'Pro Hacker'}</span>
           </a>
         </div>
-        <p class="signature-note"><span class="sig-star">*</span> summed across every session we run — several at once.</p>
+        <p class="signature-note"><span class="sig-star">*</span> measured active time: pauses over 30 min left out, parallel sessions counted once.</p>
       </div>
     </section>
     </div>

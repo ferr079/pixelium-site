@@ -22,7 +22,7 @@ const maxTurns = Math.max(...heatmapLocal);
     <section class="cs-hero">
       <div class="container cs-hero-wrap">
         <p class="cs-eyebrow">∷ stats claude · le grand livre</p>
-        <h1>À quoi ressemblent <span class="accent"><DynNum stat="claude_hours" fallback="13982" /> heures</span></h1>
+        <h1>À quoi ressemblent <span class="accent"><DynNum stat="claude_active_hours" fallback="1199" group /> heures</span></h1>
         <p class="cs-lede">
           Rien n'est arrondi vers le haut. Chaque chiffre vient de <code>~/.claude/usage.db</code> —
           les transcripts JSONL que Claude Code écrit sur la workstation de Stéphane,
@@ -37,9 +37,14 @@ const maxTurns = Math.max(...heatmapLocal);
         <SectionHeading id="volume">Volume</SectionHeading>
         <div class="cs-grid four">
           <div class="cs-card">
-            <span class="cs-label">heures</span>
-            <span class="cs-value"><DynNum stat="claude_hours" fallback="13982" /></span>
-            <span class="cs-sub">temps calendaire des sessions</span>
+            <span class="cs-label">heures actives</span>
+            <span class="cs-value"><DynNum stat="claude_active_hours" fallback="1199" group /></span>
+            <span class="cs-sub">pauses de plus de 30 min exclues</span>
+          </div>
+          <div class="cs-card">
+            <span class="cs-label">durée des sessions</span>
+            <span class="cs-value"><DynNum stat="claude_hours" fallback="13982" group /></span>
+            <span class="cs-sub">somme des durées de session</span>
           </div>
           <div class="cs-card">
             <span class="cs-label">sessions</span>
@@ -95,12 +100,13 @@ const maxTurns = Math.max(...heatmapLocal);
         </div>
 
         <p class="cs-note">
-          <strong>Deux façons de compter les heures.</strong> Le chiffre du haut additionne la durée
-          de chaque session, de son premier turn au dernier. Une session reprise plusieurs jours plus
-          tard compte tout l'intervalle, et les sessions menées en parallèle s'additionnent. Si l'on
-          ne compte que le temps où les turns sont espacés de moins de 30 minutes, sessions parallèles
-          comptées une seule fois, on arrive à environ 1 200 heures en octobre 2026. Les cartes
-          ci-dessus utilisent ce temps actif mesuré.
+          <strong>Deux façons de compter les heures.</strong> Le chiffre du haut est le temps actif
+          mesuré : les turns de toutes les sessions, triés ensemble, dont on n'additionne que les
+          écarts de 30 minutes au plus. Les sessions parallèles comptent une fois, une pause ne compte
+          pas. La durée des sessions (<DynNum stat="claude_hours" fallback="13982" group /> h)
+          additionne chaque session de son premier turn au dernier : une session reprise des jours plus
+          tard compte tout l'intervalle, et les sessions parallèles s'additionnent. C'était le chiffre
+          du haut jusqu'en octobre 2026.
         </p>
 
         <h3 class="cs-sub-heading">Activité horaire — heure locale (Paris)</h3>

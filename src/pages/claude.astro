@@ -23,7 +23,7 @@ const maxTurns = Math.max(...heatmapLocal);
     <section class="cs-hero">
       <div class="container cs-hero-wrap">
         <p class="cs-eyebrow">∷ claude stats · the full ledger</p>
-        <h1>What <span class="accent"><DynNum stat="claude_hours" fallback="13982" /> hours</span> look like</h1>
+        <h1>What <span class="accent"><DynNum stat="claude_active_hours" fallback="1199" group /> hours</span> look like</h1>
         <p class="cs-lede">
           Nothing here is rounded up. Every figure comes from the local
           <code>~/.claude/usage.db</code> — the JSONL transcripts Claude Code writes on Stéphane's workstation,
@@ -38,9 +38,14 @@ const maxTurns = Math.max(...heatmapLocal);
         <SectionHeading id="volume">Volume</SectionHeading>
         <div class="cs-grid four">
           <div class="cs-card">
-            <span class="cs-label">hours</span>
-            <span class="cs-value"><DynNum stat="claude_hours" fallback="13982" /></span>
-            <span class="cs-sub">session-span calendar time</span>
+            <span class="cs-label">active hours</span>
+            <span class="cs-value"><DynNum stat="claude_active_hours" fallback="1199" group /></span>
+            <span class="cs-sub">pauses over 30 min left out</span>
+          </div>
+          <div class="cs-card">
+            <span class="cs-label">session span</span>
+            <span class="cs-value"><DynNum stat="claude_hours" fallback="13982" group /></span>
+            <span class="cs-sub">sum of session durations</span>
           </div>
           <div class="cs-card">
             <span class="cs-label">sessions</span>
@@ -96,11 +101,12 @@ const maxTurns = Math.max(...heatmapLocal);
         </div>
 
         <p class="cs-note">
-          <strong>Two ways to count hours.</strong> The headline figure adds up each session's span,
-          from its first turn to its last. A session resumed days later counts the whole gap, and
-          sessions running in parallel add up. Counting only the time when turns are less than
-          30 minutes apart, with parallel sessions counted once, gives about 1,200 hours as of
-          October 2026. The cards above use that measured active time.
+          <strong>Two ways to count hours.</strong> The headline figure is measured active time:
+          turns from every session, sorted together, adding up only the gaps of 30 minutes or less.
+          Parallel sessions count once, and a pause does not count. The session span
+          (<DynNum stat="claude_hours" fallback="13982" group /> h) adds up each session from its first
+          turn to its last: a session resumed days later counts the whole gap, and parallel
+          sessions add up. It was the headline figure until October 2026.
         </p>
 
         <h3 class="cs-sub-heading">Hourly activity — local time (Paris)</h3>
