@@ -3,5 +3,17 @@
   "extends": ["config:recommended"],
   "dependencyDashboard": true,
   "prConcurrentLimit": 3,
-  "timezone": "Europe/Paris"
+  "timezone": "Europe/Paris",
+  "osvVulnerabilityAlerts": true,
+  "customManagers": [
+    {
+      "customType": "regex",
+      "description": "gitleaks épinglé dans le gate CI (VER=x.y.z) — invisible aux managers standards (infra/homelab#611)",
+      "managerFilePatterns": ["/^\\.forgejo/workflows/gitleaks\\.ya?ml$/"],
+      "matchStrings": ["VER=(?<currentValue>\\d+\\.\\d+\\.\\d+)"],
+      "depNameTemplate": "gitleaks/gitleaks",
+      "datasourceTemplate": "github-releases",
+      "extractVersionTemplate": "^v(?<version>.+)$"
+    }
+  ]
 }
