@@ -34,15 +34,15 @@ const FALLBACK: Record<string, string | number> = {
   uptime_pct_core: 100.0,
   forgejo_commits_30d: 1421,
   proxmox_nodes: 4,
-  // Clés CTF relevées le 2026-10-03 (le reste du snapshot date du 2026-08-19). Elles servent
+  // Clés CTF relevées le 2026-10-13 (le reste du snapshot date du 2026-08-19). Elles servent
   // aussi de PLANCHER aux métriques MONOTONIC_UP ci-dessous : ne jamais y mettre plus que le KV.
-  htb_flags: 125,
+  htb_flags: 130,
   htb_rank: 'Pro Hacker',
-  htb_ranking: 255,
-  htb_country_rank: 17,
-  htb_country_members: 3771,
-  htb_system_owns: 62,
-  htb_user_owns: 63,
+  htb_ranking: 229,
+  htb_country_rank: 18,
+  htb_country_members: 3738,
+  htb_system_owns: 64,
+  htb_user_owns: 66,
   // htb_flags ci-dessus = user_owns + system_owns, donc MACHINES uniquement — le profil HTB
   // (/user/profile/basic) ne porte aucun champ fortress. Les flags de Fortress vivent sur
   // /profile/progress/fortress/{uid} et kv-push les publie dans la clé ci-dessous SANS toucher
@@ -52,7 +52,7 @@ const FALLBACK: Record<string, string | number> = {
   htb_fortress_flags: 43,
   rootme_score: 1050,
   rootme_validations: 75,
-  rootme_position: 15607,
+  rootme_position: 15394,
   ansible_playbooks: 63,
   lxc_count: 59,
   https_services: 46,
