@@ -421,10 +421,13 @@ const topoJson = JSON.stringify({
   .hc-model.glitch.hc-critic::before, .hc-model.glitch.hc-critic::after { opacity: 0; }
   .hc-model.glitch.hc-critic::before { color: #d97706; text-shadow: 2px 0 #d97706; animation: hc-lock .15s steps(1, end) 1; }
   .hc-model.glitch.hc-critic::after { color: var(--color-accent); text-shadow: -2px 0 var(--color-accent); animation: hc-lock .15s steps(1, end) 1 reverse; }
+  /* Sliced (clip-path) like hc-glitch-1/2 — NOT cosmetic: unclipped, this 150ms
+     flash on « Supergrok » (wider than « Claude ») became the page's Largest
+     Contentful Paint at ~6 s on desktop (FCP 0.18 s). Measured 2026-10-14. */
   @keyframes hc-lock {
-    0% { opacity: .7; transform: translate(-2px, 0); }
+    0% { opacity: .7; transform: translate(-2px, 0); clip-path: inset(18% 0 52% 0); }
     40% { opacity: 0; transform: translate(2px, 0); }
-    65% { opacity: .5; transform: translate(1px, 0); }
+    65% { opacity: .5; transform: translate(1px, 0); clip-path: inset(58% 0 12% 0); }
     100% { opacity: 0; transform: none; }
   }
   /* Cockpit-style stats: accent numerals, small-caps labels */
