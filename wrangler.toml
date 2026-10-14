@@ -1,5 +1,8 @@
 name = "pixelium-site"
-compatibility_date = "2025-01-01"
+# Relevée le 2026-10-14 (était 2025-01-01) ; plafond = date max du workerd local. Au-delà du 2026-08-04, Node.js est
+# actif par défaut (nodejs_compat implicite) — aucune route API n'en dépend,
+# process.env n'est lu qu'au build (src/lib/gh-card.ts, prerender Node).
+compatibility_date = "2026-10-13"
 # Pas de bloc `routes` ici : pixelium.win/www sont déjà attachés en Custom
 # Domains (Workers Domains API, indépendant de ce fichier — vérifié via API
 # Cloudflare). Un `routes` même en custom_domain:true fait passer wrangler
@@ -52,4 +55,11 @@ namespace_id = "1001"
 # Vérifié absent sur les deux Workers le 2026-08-16 (settings API + requête
 # Workers Logs sur 24 h, toutes deux vides).
 [observability]
+enabled = true
+
+# Workers Issues (bêta ouverte 2026-09-30) : regroupe exceptions, 5xx et
+# console.error en « issues » — la panne silencieuse ci-dessus devient visible
+# sans aller fouiller les logs. Doit rester ici : un `wrangler deploy` sans ce
+# bloc DÉSACTIVE Issues, même s'il a été activé au dashboard.
+[observability.issues]
 enabled = true
