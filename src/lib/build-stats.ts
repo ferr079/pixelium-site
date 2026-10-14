@@ -79,7 +79,13 @@ const FALLBACK: Record<string, string | number> = {
   // inv_kali → inv_offensive_tools. Le forwarding kv-push.sh ("kali" →
   // "offensive_tools") est en place : la clé est servie live (116 au 2026-08-11),
   // ce fallback n'est plus le seul à la porter. Le chiffre n'est donc plus figé.
-  inv_offensive_tools: 154,
+  inv_offensive_tools: 221,
+  // Pendant blue-team d'inv_offensive_tools, même générateur côté strix
+  // (tools/inventaire-dfir.sh). NE PAS confondre avec inv_defensive_tools, qui est une
+  // vue de POSTURE éditée à la main (12 entrées) et non un inventaire d'outils.
+  // Clé arbitrée « publiée » le 2026-10-14 ; ce fallback la porte SEUL jusqu'à ce que
+  // l'allowlist de kv-push soit déployée sur CT 246.
+  inv_dfir_tools: 60,
   inv_forworld: 171,
 };
 
