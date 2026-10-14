@@ -37,12 +37,12 @@ const FALLBACK: Record<string, string | number> = {
   proxmox_nodes: 4,
   // Clés CTF relevées le 2026-10-13 (le reste du snapshot date du 2026-08-19). Elles servent
   // aussi de PLANCHER aux métriques MONOTONIC_UP ci-dessous : ne jamais y mettre plus que le KV.
-  htb_flags: 130,
+  htb_flags: 131,
   htb_rank: 'Pro Hacker',
-  htb_ranking: 229,
-  htb_country_rank: 18,
-  htb_country_members: 3738,
-  htb_system_owns: 64,
+  htb_ranking: 210,
+  htb_country_rank: 17,
+  htb_country_members: 3745,
+  htb_system_owns: 65,
   htb_user_owns: 66,
   // htb_flags ci-dessus = user_owns + system_owns, donc MACHINES uniquement — le profil HTB
   // (/user/profile/basic) ne porte aucun champ fortress. Les flags de Fortress vivent sur
@@ -83,8 +83,7 @@ const FALLBACK: Record<string, string | number> = {
   // Pendant blue-team d'inv_offensive_tools, même générateur côté strix
   // (tools/inventaire-dfir.sh). NE PAS confondre avec inv_defensive_tools, qui est une
   // vue de POSTURE éditée à la main (12 entrées) et non un inventaire d'outils.
-  // Clé arbitrée « publiée » le 2026-10-14 ; ce fallback la porte SEUL jusqu'à ce que
-  // l'allowlist de kv-push soit déployée sur CT 246.
+  // Clé arbitrée « publiée » le 2026-10-14, servie live par kv-push (CT 246) depuis le même soir.
   inv_dfir_tools: 60,
   inv_forworld: 171,
 };
