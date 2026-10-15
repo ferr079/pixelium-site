@@ -176,7 +176,7 @@ const costRounded = Math.round(costUsd / 100) * 100;
     <section class="cs-section reveal">
       <div class="container">
         <SectionHeading id="productivity">Productivity (approximate)</SectionHeading>
-        <p class="cs-paragraph center">
+        <p class="cs-paragraph">
           These ratios cross <code>claude-usage</code>, <code>git log</code> and the Forgejo API.
           Useful as order of magnitude, not precision.
         </p>
@@ -203,7 +203,7 @@ const costRounded = Math.round(costUsd / 100) * 100;
     <section class="cs-section alt reveal">
       <div class="container">
         <SectionHeading id="focus">Focus breakdown</SectionHeading>
-        <p class="cs-paragraph center">Where the active time went, by project.</p>
+        <p class="cs-paragraph">Where the active time went, by project.</p>
         <div class="focus-bars">
           {[...focusTop.map(([p, v]) => [FOCUS_LABELS[p] ?? p, v] as [string, number]), ['other', focusOther] as [string, number]].map(([label, v]) => (
             <div class="focus-row">
@@ -280,9 +280,8 @@ const costRounded = Math.round(costUsd / 100) * 100;
     padding: 4rem 0 2.5rem;
   }
 
-  .cs-hero-wrap {
-    max-width: 44rem;
-    margin: 0 auto;
+  .cs-hero-wrap > * {
+    max-width: calc(44rem - 3rem);
   }
 
   .cs-eyebrow {
@@ -334,7 +333,7 @@ const costRounded = Math.round(costUsd / 100) * 100;
     display: grid;
     gap: 0.75rem;
     max-width: 48rem;
-    margin: 0 auto;
+    margin: 0;
   }
 
   .cs-grid.four { grid-template-columns: repeat(auto-fit, minmax(10rem, 1fr)); }
@@ -387,7 +386,7 @@ const costRounded = Math.round(costUsd / 100) * 100;
 
   .cs-note {
     max-width: 44rem;
-    margin: 1.5rem auto 0;
+    margin: 1.5rem 0 0;
     padding: 1rem 1.25rem;
     border-left: 2px solid rgba(56, 189, 248, 0.4);
     font-size: 0.9rem;
@@ -405,18 +404,17 @@ const costRounded = Math.round(costUsd / 100) * 100;
 
   .cs-paragraph {
     max-width: 44rem;
-    margin: 0 auto 1.5rem;
+    margin: 0 0 1.5rem;
     font-size: 0.95rem;
     color: var(--color-text-muted);
     line-height: 1.7;
   }
 
-  .cs-paragraph.center { text-align: center; }
   .cs-paragraph strong { color: var(--color-text); font-weight: 600; }
 
   .cs-sub-heading {
     max-width: 44rem;
-    margin: 2.5rem auto 0.75rem;
+    margin: 2.5rem 0 0.75rem;
     font-family: var(--font-mono);
     font-size: 0.82rem;
     color: var(--color-accent);
@@ -427,7 +425,7 @@ const costRounded = Math.round(costUsd / 100) * 100;
   /* Heatmap */
   .heatmap {
     max-width: 48rem;
-    margin: 1rem auto;
+    margin: 1rem 0;
     display: grid;
     grid-template-columns: repeat(24, 1fr);
     gap: 2px;
@@ -477,7 +475,7 @@ const costRounded = Math.round(costUsd / 100) * 100;
 
   .cs-legend {
     max-width: 48rem;
-    margin: 0.5rem auto 0;
+    margin: 0.5rem 0 0;
     text-align: center;
     font-family: var(--font-mono);
     font-size: 0.72rem;
@@ -499,7 +497,7 @@ const costRounded = Math.round(costUsd / 100) * 100;
   /* Focus bars */
   .focus-bars {
     max-width: 44rem;
-    margin: 0 auto;
+    margin: 0;
     display: flex;
     flex-direction: column;
     gap: 0.6rem;
@@ -541,7 +539,7 @@ const costRounded = Math.round(costUsd / 100) * 100;
   /* Pipeline */
   .pipeline-diagram {
     max-width: 48rem;
-    margin: 0 auto 1.5rem;
+    margin: 0 0 1.5rem;
     background: rgba(11, 17, 32, 0.6);
     border: 1px solid rgba(56, 189, 248, 0.15);
     border-radius: 6px;
