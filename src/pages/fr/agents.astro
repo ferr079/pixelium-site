@@ -72,7 +72,7 @@ import DynNum from '../../components/DynNum.astro';
 
 <style>
   .page { padding: 4rem 0 5rem; }
-  .page-wrap > * { max-width: calc(46rem - 3rem); }
+  .lede, .note { max-width: 50rem; }
   .eyebrow { font-family: var(--font-mono); font-size: .78rem; color: var(--color-accent); letter-spacing: .1em; margin-bottom: .75rem; opacity: .85; }
   h1 { font-size: clamp(2rem, 5vw, 3rem); font-weight: 800; letter-spacing: -.02em; line-height: 1.1; margin-bottom: 1.25rem; }
   .lede { font-size: 1.05rem; color: var(--color-text-muted); line-height: 1.7; margin-bottom: 1rem; }
@@ -80,8 +80,8 @@ import DynNum from '../../components/DynNum.astro';
   .lede a, .n-list a { color: var(--color-accent); text-decoration: none; }
   .lede a:hover, .n-list a:hover { text-decoration: underline; }
   h2 { font-family: var(--font-mono); font-size: .85rem; text-transform: uppercase; letter-spacing: .12em; color: var(--color-accent); margin: 2.5rem 0 1rem; padding-bottom: .4rem; border-bottom: 1px solid rgba(56, 189, 248, .2); }
-  .n-list { list-style: none; padding: 0; margin: 0; }
-  .n-list li { position: relative; padding-left: 1.4rem; margin-bottom: .65rem; color: var(--color-text-muted); line-height: 1.65; }
+  .n-list { list-style: none; padding: 0; margin: 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 24rem), 1fr)); gap: .65rem 2.5rem; }
+  .n-list li { position: relative; padding-left: 1.4rem; color: var(--color-text-muted); line-height: 1.65; }
   .n-list li::before { content: '∷'; position: absolute; left: 0; color: var(--color-accent); opacity: .6; font-family: var(--font-mono); }
   .n-list strong { color: var(--color-text); font-weight: 600; }
   .n-list code { font-family: var(--font-mono); font-size: .88em; color: var(--color-text); background: rgba(56, 189, 248, .08); padding: .1em .35em; border-radius: 3px; }

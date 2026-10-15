@@ -169,7 +169,7 @@ try {
     <section class="c-list-section">
       <div class="container">
         <SectionHeading id="reports">Rapports &amp; reviews</SectionHeading>
-        <p class="c-hint" style="max-width:46rem;margin:0 0 1.5rem;">
+        <p class="c-hint" style="max-width:50rem;margin:0 0 1.5rem;">
           Toute contribution n'est pas un patch mergeable. Certaines sont des rapports
           de bug qui ont coûté de vraies pannes, d'autres des reviews sourcées sur la PR
           de quelqu'un d'autre, et une est une PR que j'ai fermée moi-même une fois le
@@ -246,7 +246,7 @@ try {
 
 <style>
   .c-hero { padding: 4rem 0 2.5rem; }
-  .c-hero-wrap > * { max-width: calc(44rem - 3rem); }
+  .c-hero-wrap > p { max-width: 50rem; }
 
   .c-eyebrow {
     font-family: var(--font-mono);
@@ -292,10 +292,9 @@ try {
   .c-list-section { padding: 2rem 0 3rem; }
 
   .c-list {
-    display: flex;
-    flex-direction: column;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(min(100%, 26rem), 1fr));
     gap: 1.25rem;
-    max-width: 46rem;
     margin: 0;
   }
 
@@ -482,16 +481,16 @@ try {
     border-bottom: 1px solid rgba(56, 189, 248, 0.08);
   }
 
-  .c-backlog > .container > * {
-    max-width: calc(44rem - 3rem);
+  .c-backlog > .container > p {
+    max-width: 50rem;
   }
 
   .c-watch {
     list-style: none;
     padding: 0;
     margin: 1rem 0 1rem;
-    display: flex;
-    flex-direction: column;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(min(100%, 24rem), 1fr));
     gap: 0.5rem;
   }
 
@@ -517,7 +516,6 @@ try {
   .c-philosophy { padding: 2rem 0 4rem; }
 
   .c-philosophy-card {
-    max-width: 44rem;
     margin: 0;
     padding: 1.5rem 1.75rem;
     border: 1px dashed rgba(56, 189, 248, 0.25);
