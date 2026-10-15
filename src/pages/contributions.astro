@@ -171,7 +171,7 @@ try {
     <section class="c-list-section">
       <div class="container">
         <SectionHeading id="reports">Reports &amp; reviews</SectionHeading>
-        <p class="c-hint" style="max-width:46rem;margin:0 auto 1.5rem;">
+        <p class="c-hint" style="max-width:46rem;margin:0 0 1.5rem;">
           Not every contribution is a merge-able patch. Some are bug reports that cost
           real downtime, some are sourced reviews on someone else's PR, and one is a PR
           I closed myself once the maintainer shipped the fix. They count too.
@@ -248,9 +248,8 @@ try {
     padding: 4rem 0 2.5rem;
   }
 
-  .c-hero-wrap {
-    max-width: 44rem;
-    margin: 0 auto;
+  .c-hero-wrap > * {
+    max-width: calc(44rem - 3rem);
   }
 
   .c-eyebrow {
@@ -304,7 +303,7 @@ try {
     flex-direction: column;
     gap: 1.25rem;
     max-width: 46rem;
-    margin: 0 auto;
+    margin: 0;
   }
 
   .c-card {
@@ -496,9 +495,8 @@ try {
     border-bottom: 1px solid rgba(56, 189, 248, 0.08);
   }
 
-  .c-backlog > .container {
-    max-width: 44rem;
-    margin: 0 auto;
+  .c-backlog > .container > * {
+    max-width: calc(44rem - 3rem);
   }
 
   .c-watch {
@@ -538,7 +536,7 @@ try {
 
   .c-philosophy-card {
     max-width: 44rem;
-    margin: 0 auto;
+    margin: 0;
     padding: 1.5rem 1.75rem;
     border: 1px dashed rgba(56, 189, 248, 0.25);
     border-radius: 6px;
