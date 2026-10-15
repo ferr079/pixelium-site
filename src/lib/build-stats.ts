@@ -15,15 +15,15 @@
  * snapshot so a build never ships empty numbers.
  */
 
-// Last-known snapshot (2026-08-19). Only used if the build can't reach /api/stats.
+// Last-known snapshot (recalé sur le KV le 2026-10-16). Only used if the build can't reach /api/stats.
 const FALLBACK: Record<string, string | number> = {
-  // Clés claude_* relevées le 2026-10-13.
-  claude_hours: 13982,
-  claude_active_hours: 1199,
+  // Clés claude_* relevées le 2026-10-16.
+  claude_hours: 14154,
+  claude_active_hours: 1213,
   claude_cache_hit: 97.0,
-  claude_sessions: 1557,
-  claude_tokens_billions: 35.3,
-  services_up: 49,
+  claude_sessions: 1587,
+  claude_tokens_billions: 35.8,
+  services_up: 59,
   services_total: 60,
   services_up_core: 48,
   services_total_core: 48,
@@ -33,15 +33,15 @@ const FALLBACK: Record<string, string | number> = {
   // "dernier bon connu" — d'ou le nominal ici. L'indicateur affiche est uptime_pct_core.
   uptime_pct: 100.0,
   uptime_pct_core: 100.0,
-  forgejo_commits_30d: 1421,
+  forgejo_commits_30d: 1106,
   proxmox_nodes: 4,
   // Clés CTF relevées le 2026-10-13 (le reste du snapshot date du 2026-08-19). Elles servent
   // aussi de PLANCHER aux métriques MONOTONIC_UP ci-dessous : ne jamais y mettre plus que le KV.
   htb_flags: 131,
   htb_rank: 'Pro Hacker',
-  htb_ranking: 210,
+  htb_ranking: 212,
   htb_country_rank: 17,
-  htb_country_members: 3745,
+  htb_country_members: 3749,
   htb_system_owns: 65,
   htb_user_owns: 66,
   // htb_flags ci-dessus = user_owns + system_owns, donc MACHINES uniquement — le profil HTB
@@ -53,19 +53,19 @@ const FALLBACK: Record<string, string | number> = {
   htb_fortress_flags: 43,
   rootme_score: 1050,
   rootme_validations: 75,
-  rootme_position: 15396,
-  ansible_playbooks: 63,
+  rootme_position: 15403,
+  ansible_playbooks: 101,
   lxc_count: 59,
-  https_services: 46,
+  https_services: 45,
   ansible_hosts: 64,
-  beszel_agents: 52,
+  beszel_agents: 51,
   // Couverture défensive — publiées par kv-push depuis le 2026-08-01 (infra/homelab#129,
   // PR #246/#249). Jusque-là ces 4 nombres vivaient en dur dans la prose de /securite et
   // dans les CV, invisibles au freshness guard. wazuh_agents vaut 37 et non 38 : les 38
   // entrées d'`agent_control -l` incluent le manager `000`, qui n'est pas un agent.
   // inv_crowdsec_scenarios porte le préfixe inv_ (inventaire quotidien CT 110), pas une
   // collecte live — ne pas chercher `crowdsec_scenarios` sans préfixe.
-  wazuh_agents: 36,
+  wazuh_agents: 37,
   alloy_hosts: 58,
   authentik_services: 6,
   inv_crowdsec_scenarios: 57,
@@ -86,6 +86,34 @@ const FALLBACK: Record<string, string | number> = {
   // Clé arbitrée « publiée » le 2026-10-14, servie live par kv-push (CT 246) depuis le même soir.
   inv_dfir_tools: 81,
   inv_forworld: 171,
+  // Clés qui n'avaient de secours QUE dans les pages (<DynNum fallback>, bricks, n(k, d)),
+  // ajoutées le 2026-10-16. statValue() ne lit le fallback d'une page que si la clé manque
+  // à la fois au KV et à ce snapshot : une fois la clé ici, la valeur de la page ne sert
+  // plus. Il n'y a donc qu'un seul endroit à recaler, ce fichier.
+  // technitium_blocklist_size reste volontairement hors du snapshot : le KV est passé de
+  // ~2,07 M à ~353 k domaines (16/10), baisse non expliquée — ne pas figer ce chiffre
+  // comme « dernier bon connu » avant d'avoir vérifié les listes côté Technitium.
+  forgejo_commits_total: 6424,
+  forgejo_contributions_12mo: 12843,
+  journal_entries: 1769,
+  blog_articles: 42,
+  inv_hermes: 3,
+  inv_dagu: 27,
+  inv_mcp: 20,
+  inv_zim: 66,
+  inv_ollama: 23,
+  inv_defensive_tools: 20,
+  claude_turns: 177812,
+  claude_cache_read_billions: 34.5,
+  claude_active_hours_per_day: 6.1,
+  claude_active_days: 199,
+  claude_longest_session_h: 18.0,
+  claude_days_active_pct: 85,
+  claude_days_elapsed: 234,
+  claude_active_hours_30d: 146,
+  claude_cost_usd: 27786,
+  technitium_blocked_24h: 13009,
+  technitium_queries_24h: 102173,
 };
 
 // Metrics that only ever increase — CTF progress fetched from flaky external APIs
