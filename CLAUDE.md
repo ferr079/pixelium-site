@@ -126,7 +126,7 @@ Les chiffres viennent de `/api/stats` (KV `pixelium-stats`), alimenté par `kv-p
 | `StatsBar` `{ stat: 'x' }` | figé au build | bandeaux de chiffres |
 | `LiveStats` `{ key: 'x' }` | figé au build **puis** rafraîchi côté client | grille « Live infrastructure » de l'accueil |
 
-🔴 **Valeur de secours = le snapshot `FALLBACK` de `build-stats.ts`, et lui seul** (depuis `#198`, 2026-10-16). `statValue()` lit le KV, puis ce snapshot, et ne lit le `fallback` d'un composant (`DynNum`, brick `LiveStats`, `n(k, d)`, tuile `number:`) que si la clé manque aux deux. Toutes les clés affichées étant dans le snapshot, ces ~230 props ne s'affichent jamais : un `fallback="60"` périmé trouvé par grep n'est **pas** une dérive. On recale `build-stats.ts` seul, jamais les props une par une. Nouvelle clé affichée → l'ajouter aussi au snapshot. Seule exception : `technitium_blocklist_size`, gardée hors du snapshot tant que sa chute (2,07 M → 353 k) n'est pas expliquée.
+🔴 **Valeur de secours = le snapshot `FALLBACK` de `build-stats.ts`, et lui seul** (depuis `#198`, 2026-10-16). `statValue()` lit le KV, puis ce snapshot, et ne lit le `fallback` d'un composant (`DynNum`, brick `LiveStats`, `n(k, d)`, tuile `number:`) que si la clé manque aux deux. Toutes les clés affichées étant dans le snapshot, ces ~230 props ne s'affichent jamais : un `fallback="60"` périmé trouvé par grep n'est **pas** une dérive. On recale `build-stats.ts` seul, jamais les props une par une. Nouvelle clé affichée → l'ajouter aussi au snapshot.
 
 Un chiffre « sur 24 h » figé au build décrit la journée qui précède le build : l'écrire « en une journée », pas « ces dernières 24 h ».
 
