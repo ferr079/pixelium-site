@@ -90,9 +90,6 @@ const FALLBACK: Record<string, string | number> = {
   // ajoutées le 2026-10-16. statValue() ne lit le fallback d'une page que si la clé manque
   // à la fois au KV et à ce snapshot : une fois la clé ici, la valeur de la page ne sert
   // plus. Il n'y a donc qu'un seul endroit à recaler, ce fichier.
-  // technitium_blocklist_size reste volontairement hors du snapshot : le KV est passé de
-  // ~2,07 M à ~353 k domaines (16/10), baisse non expliquée — ne pas figer ce chiffre
-  // comme « dernier bon connu » avant d'avoir vérifié les listes côté Technitium.
   forgejo_commits_total: 6424,
   forgejo_contributions_12mo: 12843,
   journal_entries: 1769,
@@ -114,6 +111,11 @@ const FALLBACK: Record<string, string | number> = {
   claude_cost_usd: 27786,
   technitium_blocked_24h: 13009,
   technitium_queries_24h: 102173,
+  // Chute à ~353 k le 15/10 : jsDelivr a servi Hagezi TIF en 199 octets, et Technitium l'a
+  // accepté comme un succès (0 domaine chargé). Listes rebranchées sur GitHub raw
+  // (infra/homelab#821, alerte Dagu technitium-blocklist-watch). ~1,73 M est la valeur
+  // NORMALE : TIF a elle-même rétréci de 1,9 M à 1,57 M à la source.
+  technitium_blocklist_size: 1732250,
 };
 
 // Metrics that only ever increase — CTF progress fetched from flaky external APIs
