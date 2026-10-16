@@ -70,7 +70,7 @@ URL slugs are shared between languages (same paths, just `/fr/` prefix).
 Pages `ctf.astro` (EN + FR) read HTB + Root-Me stats from **`getBuildStats()`** (the KV `/api/stats` blob) — the SAME source as the homepage, fed by the homelab pipeline `kv-push.sh` (Dagu CT 246, ~every 5 min, proper creds/UA/residential IP). Replaced the old per-page build-time API fetches, which 401'd on the CI runner IP and served stale hardcoded fallbacks.
 - KV keys consumed: `htb_rank`, `htb_ranking`, `htb_system_owns`, `htb_user_owns`, `htb_flags`, `rootme_score`, `rootme_validations`, `rootme_position`, + depuis le 2026-10-03 (panneau KV) `htb_country_rank`, `htb_country_members`, `htb_fortress_flags`, `inv_offensive_tools`. La StatsBar « The numbers » du bas de page a été retirée : elle doublait le panneau.
 - **THM**: no public API — stats hardcoded, update manually after sessions.
-- Fallbacks: `build-stats.ts` FALLBACK snapshot (if the KV is unreachable at build) + inline `n(key, default)` defaults in `ctf.astro`.
+- Fallbacks: `build-stats.ts` FALLBACK snapshot only (if the KV is unreachable at build). The inline `n(key, default)` defaults in `ctf.astro` never render since every key is in the snapshot (2026-10-16).
 - ⚠️ The site build **no longer needs** `HTB_API_TOKEN` / `ROOTME_API_KEY` / `ROOTME_UID` (they live only in the homelab pipeline now) — those CI secrets can be retired. Plain `npm run build` reads the live KV.
 
 **`contributions.astro` (EN+FR) — statut PR synchronisé au build** : le tableau `contributions` porte le contenu éditorial (insight/tags/blog) + un `status` *fallback* ; au build, `liveStatus()` fetch `api.github.com/repos/{o}/{r}/pulls/{n}` → `merged`/`open`/`closed` réel (override le fallback ; warning loggé `[contributions] …` si dérive ou échec). Résumé du hero (`statusBreakdown`) dérivé du live. Discussions exclues (pas d'état de merge). Token : `GITHUB_TOKEN` (CI = auto-Actions `secrets.GITHUB_TOKEN`, lecture publique). ⚠️ **Une NOUVELLE contribution s'ajoute toujours à la main** (l'éditorial n'est pas auto-généré) — seul le statut est auto-synchro. Vérifier les nouvelles PR mergées : `gh search prs --author ferr079 --merged`.
@@ -125,6 +125,8 @@ Les chiffres viennent de `/api/stats` (KV `pixelium-stats`), alimenté par `kv-p
 | `<DynNum stat="x" fallback="…" />` | figé au build (rebuild quotidien), aucun JS | chiffre dans la prose. Option **`group`** : séparateur de milliers dans la langue de la page (`2,068,833` / `2 068 833`) |
 | `StatsBar` `{ stat: 'x' }` | figé au build | bandeaux de chiffres |
 | `LiveStats` `{ key: 'x' }` | figé au build **puis** rafraîchi côté client | grille « Live infrastructure » de l'accueil |
+
+🔴 **Valeur de secours = le snapshot `FALLBACK` de `build-stats.ts`, et lui seul** (depuis `#198`, 2026-10-16). `statValue()` lit le KV, puis ce snapshot, et ne lit le `fallback` d'un composant (`DynNum`, brick `LiveStats`, `n(k, d)`, tuile `number:`) que si la clé manque aux deux. Toutes les clés affichées étant dans le snapshot, ces ~230 props ne s'affichent jamais : un `fallback="60"` périmé trouvé par grep n'est **pas** une dérive. On recale `build-stats.ts` seul, jamais les props une par une. Nouvelle clé affichée → l'ajouter aussi au snapshot. Seule exception : `technitium_blocklist_size`, gardée hors du snapshot tant que sa chute (2,07 M → 353 k) n'est pas expliquée.
 
 Un chiffre « sur 24 h » figé au build décrit la journée qui précède le build : l'écrire « en une journée », pas « ces dernières 24 h ».
 
