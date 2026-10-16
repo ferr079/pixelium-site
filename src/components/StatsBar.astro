@@ -11,6 +11,7 @@ const live = await getBuildStats();
 // (no fallback → value flash). Falls back to the hardcoded number if KV had no key.
 const resolved = stats.map((s) => ({
   label: s.label,
+  stat: s.stat,
   display: s.stat && live[s.stat] != null ? `${live[s.stat]}${s.suffix || ''}` : s.number,
 }));
 ---
@@ -22,7 +23,9 @@ const resolved = stats.map((s) => ({
         <>
           {i > 0 && <div class="stat-sep"></div>}
           <div class="stat reveal">
-            <span class="stat-number" data-target={s.display}>{s.display}</span>
+            {/* data-stat: same anchor as DynNum, so scripts/check-deployed.mjs compares
+                these baked numbers to the KV. Without it the guard could not see them. */}
+            <span class="stat-number" data-target={s.display} data-stat={s.stat}>{s.display}</span>
             <span class="stat-label">{s.label}</span>
           </div>
         </>
