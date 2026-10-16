@@ -5,7 +5,12 @@
  * The real value is fetched once per build (see lib/build-stats) and rendered
  * straight into the static HTML — no client fetch, no fallback "flash". CI rebuilds
  * daily, so the number stays fresh. If the build couldn't reach /api/stats, the
- * `fallback` prop is used.
+ * FALLBACK snapshot of lib/build-stats is used instead.
+ *
+ * The `fallback` prop is only read when the key is missing from BOTH the KV and that
+ * snapshot (statValue). Since every displayed key is in the snapshot (2026-10-16),
+ * these props never render: a stale `fallback="60"` found by grep is not a drift.
+ * Keep stale numbers fixed in build-stats.ts only, not prop by prop.
  *
  * Usage:
  *   <DynNum stat="lxc_count" fallback="53+" suffix="+" />
