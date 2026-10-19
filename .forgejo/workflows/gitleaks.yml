@@ -30,7 +30,7 @@ jobs:
       - name: Trust step-ca
         run: update-ca-certificates 2>/dev/null || true
 
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
 
       - name: Install gitleaks
         # Version épinglée : une CI de sécurité dont l'outil bouge tout seul ne
