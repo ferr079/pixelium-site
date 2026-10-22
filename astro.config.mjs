@@ -23,10 +23,9 @@ export default defineConfig({
   // locally (all variants byte-identical, verified by sha1). Instead, -480/-800
   // variants are pre-generated on R2 and Screenshot/Carousel build an honest
   // srcset by naming convention (see assetSrcset in src/config.ts).
-  integrations: [sitemap({
-    // Exclude archived / redirect-only pages from the sitemap (refonte V4)
-    filter: (page) => !/\/(ia|uses|cybersecurite|symbiose)(\/|$)/.test(page),
-  })],
+  // Les pages retirées (uses, ia, symbiose, cybersecurite, fr/bbs, fr/chat) ne sont plus
+  // des pages : ce sont des 301 HTTP dans public/_redirects (site#156), hors sitemap d'office.
+  integrations: [sitemap()],
   // Self-hosted JetBrains Mono via the official Fonts API — automatic preload +
   // optimized fallback metrics (no CLS) + subsetting. Same-origin, no third-party.
   fonts: [{
