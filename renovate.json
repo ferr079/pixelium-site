@@ -21,14 +21,5 @@
       "datasourceTemplate": "github-releases",
       "extractVersionTemplate": "^v(?<version>.+)$"
     }
-  ],
-  "packageRules": [
-    {
-      "description": "satori figé en 0.29.x : la 0.55 casse les cartes OG (ligne date+tags disparue, titre décalé ; moteur yoga-layout → harfbuzzjs). Constat : pixelium/blog-pixelium#55 (2026-10-13). À lever après adaptation de scripts/og/gen-og.mjs.",
-      "matchPackageNames": [
-        "satori"
-      ],
-      "allowedVersions": "<0.30.0"
-    }
   ]
 }
