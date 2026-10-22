@@ -36,7 +36,9 @@
 //
 // Exit codes: 0 = pass (or skipped, network unreachable) · 1 = a problem was found.
 // The first line of a failure carries a marker so CI can tell a real production
-// problem from a broken guard: FALLBACK BAKE / STALE DEPLOY / GUARD BLIND.
+// problem from a broken guard: FALLBACK BAKE / STALE DEPLOY / ORPHAN KEY / GUARD BLIND.
+// ORPHAN KEY = the page shows a key the live KV no longer has, so the visitor sees its
+// fallback: a producer-side loss (kv-push), real for production, not a guard defect.
 
 const args = process.argv.slice(2);
 const flag = (name, fallback) => {
@@ -296,6 +298,7 @@ async function main() {
   const stale = problems.some((p) => p.startsWith('deployment is'));
   if (fallbackPages.length) console.log('FALLBACK BAKE — production serves numbers baked from the fallback snapshot, not the KV');
   if (stale) console.log('STALE DEPLOY');
+  if (problems.some((p) => p.includes('(orphan:'))) console.log('ORPHAN KEY — the page shows a key the live KV no longer has (its fallback is on screen): check the kv-push producer');
   if (blind.length) {
     console.log('GUARD BLIND — this run could not verify what it claims to verify:');
     for (const b of blind) console.log(`  - ${b}`);

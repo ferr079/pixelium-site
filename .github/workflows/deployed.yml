@@ -71,6 +71,17 @@ jobs:
               -d chat_id="${{ secrets.TELEGRAM_CHAT_ID }}" \
               -d parse_mode=Markdown \
               --data-urlencode "text=${TEXT}"
+          elif grep -q 'ORPHAN KEY' deployed-output.txt; then
+            # Le KV a perdu une clé affichée (21/10 : les 3 clés Root-Me, 63 → 60) : la page
+            # montre sa valeur de secours. Panne du producteur kv-push, pas du garde ; avant
+            # ce cas, elle tombait dans « garde aveugle » et ne prévenait personne.
+            RUN_URL="https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}"
+            KEYS=$(grep -oE 'KV has no key "[^"]+"' deployed-output.txt | sort -u | grep -oE '"[^"]+"' | tr -d '"' | sed 's/.*/`&`/' | paste -sd, -)
+            TEXT=$(printf '⚠️ *pixelium.win : clé(s) absente(s) du KV*\n\n%s — la page affiche la valeur de secours. Vérifier le producteur kv-push (CT 246).\nVoir le run : %s' "$KEYS" "$RUN_URL")
+            curl -s -X POST "https://api.telegram.org/bot${{ secrets.TELEGRAM_BOT_TOKEN }}/sendMessage" \
+              -d chat_id="${{ secrets.TELEGRAM_CHAT_ID }}" \
+              -d parse_mode=Markdown \
+              --data-urlencode "text=${TEXT}"
           else
-            echo "Échec sans marqueur FALLBACK BAKE / STALE DEPLOY (garde aveugle) — pas de notif, corriger check-deployed.mjs."
+            echo "Échec sans marqueur FALLBACK BAKE / STALE DEPLOY / ORPHAN KEY (garde aveugle) — pas de notif, corriger check-deployed.mjs."
           fi
