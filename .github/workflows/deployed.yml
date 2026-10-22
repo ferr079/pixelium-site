@@ -36,6 +36,7 @@ jobs:
       - uses: actions/setup-node@v5
         with:
           node-version: 22
+          check-latest: true # suit la dernière 22.x, pas le cache du runner (astro ≥ 7.4.2 : node ≥ 22.23.4)
 
       - name: Check what production serves
         run: |
