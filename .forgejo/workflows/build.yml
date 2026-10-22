@@ -27,7 +27,7 @@ jobs:
       - name: Trust step-ca
         run: update-ca-certificates 2>/dev/null || true
 
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
 
       - run: node --version && npm --version
 

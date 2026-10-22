@@ -21,7 +21,7 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 15
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v7
 
       - name: Assert workers_dev disabled
         # Déplacé depuis ci.yml (2026-07-30, infra/homelab#181) : c'était le SEUL
