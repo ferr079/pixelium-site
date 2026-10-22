@@ -38,7 +38,7 @@ This site is written in **first person by Claude**. I am the narrator. Stéphane
 | Status | `src/pages/status.astro` | `src/pages/fr/status.astro` | |
 | CTF | `src/pages/ctf.astro` | `src/pages/fr/ctf.astro` | Verified badges + **panneau KV** (remplace la capture du dashboard HTB depuis le 2026-10-03 : chaque chiffre est une ancre `data-stat` vérifiée par `check-deployed.mjs`), profiles, techniques (split from securite) |
 | Contributions | `src/pages/contributions.astro` | `src/pages/fr/contributions.astro` | OSS PRs/reports — statuts reflètent l'état upstream réel (vérifier via `gh pr view`) |
-| About | `src/pages/about.astro` | `src/pages/fr/about.astro` | Merged with symbiose.astro. ⚠️ **Hors nav et hors sitemap** (`fba7918`) mais servie en 200 et entretenue : `check-deployed` lit le sitemap, il ne la voit donc pas (#156) |
+| About | `src/pages/about.astro` | `src/pages/fr/about.astro` | Merged with symbiose.astro. Hors nav (`fba7918`) mais dans le sitemap depuis #186 (2026-10-13), donc contrôlée par `check-deployed` |
 | Now | `src/pages/now.astro` | `src/pages/fr/now.astro` | Focus & stack. A absorbé `/uses` (V4). Liste des modèles locaux : **pas inlinée**, renvoi vers la collection HF ; seul le nombre (`inv_ollama`) est affiché |
 | Claude | `src/pages/claude.astro` | `src/pages/fr/claude.astro` | Le registre du binôme : heures, sessions, tokens, cache (clés `claude_*`) |
 | Pact | `src/pages/pact.astro` | `src/pages/fr/pact.astro` | Pourquoi le site est écrit à la première personne par Claude |
@@ -46,8 +46,8 @@ This site is written in **first person by Claude**. I am the narrator. Stéphane
 | Chat | `src/pages/chat.astro` | — (EN only) | CV conversationnel, Workers AI |
 | Breach | `src/pages/breach.astro` | — (EN only) | Door game WOPR, Workers AI |
 
-**Redirections** (`Astro.redirect(…, 301)` dans une page prérendue) : `symbiose`→`about`, `cybersecurite`→`securite`, `ia`→`infrastructure#mcp` (Lab retiré le 2026-07-21), `uses`→`now`, `fr/bbs`→`bbs`, `fr/chat`→`chat`.
-⚠️ En SSG, ce ne sont **pas** des 301 HTTP : Astro génère une page servie en **200** avec meta refresh, `noindex` et `canonical` (vérifié en prod le 2026-10-12 ; aucun `_redirects`). Acceptable pour les moteurs, mais une vraie 301 demanderait une règle côté Workers (#156).
+**Redirections = vraies 301 HTTP dans `public/_redirects`** (depuis #156, 2026-10-23) : `symbiose`→`about`, `cybersecurite`→`securite`, `ia`→`infrastructure#mcp` (Lab retiré le 2026-07-21), `uses`→`now`, `fr/bbs`→`bbs`, `fr/chat`→`chat`, plus leurs versions `/fr/`.
+⚠️ Ne PAS revenir à une page `Astro.redirect(…, 301)` : prérendue, elle sort en **200** avec meta refresh (c'était l'état jusqu'au 2026-10-22). Retirer une page = supprimer le `.astro` **et** ajouter sa ligne dans `_redirects`, cible avec slash final (sans lui, l'edge ajoute un 307). `_redirects` ne s'applique qu'aux requêtes servies par les assets, pas aux routes du Worker (`/api/*`).
 
 **Nav:** Infra | **Agents** | Security | Projects | CTF | Contributions | Status | Blog↗
 (2026-06-08 : « Lab »/`/ia` retiré de la nav → remplacé par « Contributions » ; brick OSS de l'accueil supprimé — il vedettait la PR #309, fermée sans merge)
@@ -137,7 +137,7 @@ Un chiffre « sur 24 h » figé au build décrit la journée qui précède le bu
 
 🔴 **Ordre imposé pour une clé neuve** : la pousser côté `kv-push` (homelab) **avant** que le site la lise, sinon la passe 2 sort rouge. Et une clé poussée sans affichage fait rougir la passe 3 le lendemain : l'afficher, cesser de la pousser, ou la déclarer.
 
-**`scripts/check-deployed.mjs`** compare ce que la prod sert (ancres `data-stat` / `data-key`) au KV, page par page, en partant du **sitemap** : une page hors sitemap lui échappe (`/about`, #156).
+**`scripts/check-deployed.mjs`** compare ce que la prod sert (ancres `data-stat` / `data-key`) au KV, page par page, en partant du **sitemap** : une page hors sitemap lui échappe (c'était le cas de `/about` jusqu'à #186).
 
 ## API endpoints (hybrid mode — Cloudflare Workers)
 

@@ -1,0 +1,27 @@
+# Vraies 301 HTTP pour les pages retirées (site#156). Avant : des pages Astro
+# `Astro.redirect(…, 301)` qui, prérendues, sortaient en 200 + meta refresh.
+# Lu par les Workers static assets (pas servi comme fichier). Ne s'applique
+# qu'aux requêtes servies par les assets, pas aux routes du Worker (/api/*).
+# Cibles avec slash final : sans lui, l'edge ajoute un 307 de plus (/now → /now/).
+# Chaque source en deux formes : _redirects ne normalise pas le slash final, et les
+# anciennes pages étaient servies en /uses/ (vérifié sous wrangler dev le 23/10).
+/uses               /now/                     301
+/uses/              /now/                     301
+/fr/uses            /fr/now/                  301
+/fr/uses/           /fr/now/                  301
+/ia                 /infrastructure/#mcp      301
+/ia/                /infrastructure/#mcp      301
+/fr/ia              /fr/infrastructure/#mcp   301
+/fr/ia/             /fr/infrastructure/#mcp   301
+/symbiose           /about/                   301
+/symbiose/          /about/                   301
+/fr/symbiose        /fr/about/                301
+/fr/symbiose/       /fr/about/                301
+/cybersecurite      /securite/                301
+/cybersecurite/     /securite/                301
+/fr/cybersecurite   /fr/securite/             301
+/fr/cybersecurite/  /fr/securite/             301
+/fr/bbs             /bbs/                     301
+/fr/bbs/            /bbs/                     301
+/fr/chat            /chat/                    301
+/fr/chat/           /chat/                    301
