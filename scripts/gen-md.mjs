@@ -32,9 +32,9 @@ const report = process.argv.includes('--report');
 /** Éléments dont le contenu n'a aucun sens hors navigateur. */
 const SKIP_TAGS = new Set(['script', 'style', 'svg', 'canvas', 'form', 'button', 'input', 'noscript']);
 
-/** Pages sans contenu textuel à extraire : redirections et terminaux interactifs. */
-const SKIP_PATHS = new Set(['/bbs/', '/breach/', '/chat/', '/symbiose/', '/cybersecurite/',
-  '/fr/bbs/', '/fr/breach/', '/fr/chat/', '/fr/symbiose/', '/fr/cybersecurite/']);
+/** Terminaux interactifs, sans contenu textuel à extraire. Les redirections n'ont plus
+ *  de page depuis site#156 (301 dans public/_redirects) : rien à exclure pour elles. */
+const SKIP_PATHS = new Set(['/bbs/', '/breach/', '/chat/']);
 
 const ENTITIES = { amp: '&', lt: '<', gt: '>', quot: '"', '#39': "'", apos: "'", nbsp: ' ',
   rarr: '→', larr: '←', nearr: '↗', hellip: '…', mdash: '—', ndash: '–', euro: '€',
@@ -178,7 +178,7 @@ for (const file of walk(DIST)) {
 }
 
 const tot = rows.reduce((a, r) => ({ html: a.html + r.html, md: a.md + r.md }), { html: 0, md: 0 });
-console.log(`[md] ${rows.length} pages converties, ${skipped} ignorées (redirections, terminaux interactifs)`);
+console.log(`[md] ${rows.length} pages converties, ${skipped} ignorées (terminaux interactifs)`);
 console.log(`[md] HTML ${(tot.html / 1024).toFixed(0)} Ko → Markdown ${(tot.md / 1024).toFixed(0)} Ko  (${(100 - tot.md / tot.html * 100).toFixed(0)} % de moins)`);
 
 if (report) {

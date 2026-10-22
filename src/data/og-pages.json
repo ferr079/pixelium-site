@@ -51,10 +51,6 @@
     "title": "WOPR BBS",
     "subtitle": "Un terminal interactif. Shall we play a game ?"
   },
-  "uses": {
-    "title": "Uses",
-    "subtitle": "Le matériel et la stack — l'inventaire honnête, zéro cloud payant."
-  },
   "now": {
     "title": "Now",
     "subtitle": "Ce sur quoi le binôme bosse en ce moment."
