@@ -18,16 +18,12 @@ const root = join(dirname(fileURLToPath(import.meta.url)), '..');
 // Each check: the captured group (1) is parsed as an int and compared to stats[key].
 const CHECKS = [
   { file: 'src/pages/api/chat.ts', re: /(\d+) Proxmox nodes/, key: 'proxmox_nodes', label: 'chat.ts — Proxmox nodes' },
-  { file: 'src/pages/securite.astro', re: /number: '(\d+)', label: 'hardened SSH hosts'/, key: 'ansible_hosts', label: 'securite.astro — SSH hosts StatsBar' },
-  { file: 'src/pages/fr/securite.astro', re: /number: '(\d+)', label: 'hosts SSH durci'/, key: 'ansible_hosts', label: 'fr/securite.astro — SSH hosts StatsBar' },
-  { file: 'src/pages/index.astro', re: /hardened SSH on (\d+) hosts/, key: 'ansible_hosts', label: 'index.astro — SSH hosts (Security card)' },
-  { file: 'src/pages/fr/index.astro', re: /SSH durci sur (\d+) h(?:ô|o)tes/, key: 'ansible_hosts', label: 'fr/index.astro — SSH hosts (Security card)' },
   // Les playbooks des cartes IaC (index.astro + fr/index.astro) ne sont plus surveillés :
   // ils sont injectés au build depuis le KV (`stats.ansible_playbooks`, 2026-08-08), comme
   // lxc_count. Plus de littéral = plus de dérive possible. Les 2 checks correspondants ont
   // été retirés — les garder les faisait remonter en « stale » et sortir le guard en 1.
-  // Static prose / SEO meta — the ansible_hosts/playbooks literals above still need
-  // pinning (manual check 2026-06-23 caught LXC 48/53, playbooks 41/46).
+  // Static prose / SEO meta — pinning caught LXC 48/53 and playbooks 41/46 (2026-06-23).
+  // ansible_hosts n'a plus de littéral non plus depuis le 2026-10-23 (carte Sécurité).
   // lxc_count was the worst offender (drifted 49→58→59 in days as the homelab grew):
   // ALL its literals are now dynamic — `${stats.lxc_count}` from build-stats on the
   // index cards + infra meta (EN/FR), and fuzzy "~60" in the chat.ts system prompt —
@@ -60,11 +56,15 @@ const CHECKS = [
   // inv_crowdsec_scenarios / wazuh_agents sont enfin publiées au KV (infra/homelab#129),
   // donc /securite, /infrastructure et /projets sont passés en <DynNum> : le sweep
   // "orphan stats" plus bas les couvre déjà, rien à pinner pour ces pages. Restent les
-  // deux surfaces qui ne PEUVENT pas lire build-stats :
-  //   - chat.ts, Worker runtime (même raison que les facts pinnés plus haut) ;
-  //   - les meta SEO des cartes d'accueil, chaînes statiques dans le frontmatter.
-  { file: 'src/pages/index.astro', re: /Authentik SSO on (\d+) services/, key: 'authentik_services', label: 'index.astro — Authentik services (Security card meta)' },
-  { file: 'src/pages/fr/index.astro', re: /SSO Authentik sur (\d+) services/, key: 'authentik_services', label: 'fr/index.astro — Authentik services (Security card meta)' },
+  // surfaces qui ne peuvent pas lire build-stats : chat.ts (Worker runtime).
+  // Les cartes d'accueil, elles, le PEUVENT : `stats` est chargé dans le même frontmatter.
+  // Le commentaire qui vivait ici les disait « chaînes statiques » ; la carte Sécurité
+  // a donc gardé « 65 hôtes » et « 6 services » en dur, et le guard a rougi deux fois
+  // (18/10 ansible_hosts 64→65, 21/10 authentik_services 6→8). Depuis le 2026-10-23 elle
+  // lit stats.ansible_hosts et stats.authentik_services : plus rien à épingler.
+  // Retirés aussi : les deux checks du `number:` de la StatsBar /securite. Avec `stat:`
+  // renseigné, StatsBar affiche le KV (ou le snapshot) ; `number` n'est jamais rendu,
+  // et l'épingler faisait réclamer des corrections sans effet sur la page.
 ];
 
 const STATS_URL = 'https://pixelium.win/api/stats';
