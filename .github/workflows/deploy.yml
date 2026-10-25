@@ -108,18 +108,6 @@ jobs:
           cat /tmp/dep.json >&2
           exit 1
 
-      - name: Notify Telegram on failure
-        if: failure()
-        env:
-          COMMIT_MSG: ${{ github.event.head_commit.message }}
-        run: |
-          # Message de commit = texte libre non maîtrisé : tronqué + caractères
-          # Markdown (legacy) échappés pour ne pas casser le parse_mode Telegram
-          # ni le format de la requête (--data-urlencode plutôt que -d brut).
-          SAFE_MSG=$(printf '%s' "$COMMIT_MSG" | cut -c1-300 | sed -e 's/[_*`[]/\\&/g')
-          TEXT=$(printf '⚠️ *Deploy pixelium.win FAILED*\n\nCommit: `%s`\nMessage: %s\nVoir le run: %s' \
-            "${GITHUB_SHA::7}" "$SAFE_MSG" "https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}")
-          curl -s -X POST "https://api.telegram.org/bot${{ secrets.TELEGRAM_BOT_TOKEN }}/sendMessage" \
-            -d chat_id="${{ secrets.TELEGRAM_CHAT_ID }}" \
-            -d parse_mode=Markdown \
-            --data-urlencode "text=${TEXT}"
+      # Pas d'étape de notification : un deploy en échec est relevé depuis le homelab par
+      # le DAG `gh-actions-watch` (CT 246, infra/homelab), qui publie sur ntfy. L'ancienne
+      # étape Telegram est retirée le 2026-10-25 : canal mort depuis le 23/10.
