@@ -21,5 +21,14 @@
       "datasourceTemplate": "github-releases",
       "extractVersionTemplate": "^v(?<version>.+)$"
     }
+  ],
+  "packageRules": [
+    {
+      "description": "fflate est un override de satori (qui épingle 0.7.3, GHSA-px8p-9vwx-vf98) : rester sur la branche 0.7.x que satori attend — la 0.8 a cassé le lockfile (site#214, même cas que blog#71)",
+      "matchPackageNames": [
+        "fflate"
+      ],
+      "allowedVersions": "<0.8.0"
+    }
   ]
 }
