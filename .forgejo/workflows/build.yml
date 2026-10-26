@@ -34,7 +34,7 @@ jobs:
       # dernière 22.x au lieu de l'image.
       - uses: actions/setup-node@v7
         with:
-          node-version: '22'
+          node-version: '24'
           check-latest: true
 
       - run: node --version && npm --version

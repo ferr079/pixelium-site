@@ -36,7 +36,7 @@ jobs:
 
       - uses: actions/setup-node@v5
         with:
-          node-version: '22.23' # aligné sur engines >=22.23.4 (package.json, plancher d'astro 7.4.2)
+          node-version: '24.22' # aligné sur engines >=22.23.4 (package.json, plancher d'astro 7.4.2)
           check-latest: true # suit la dernière 22.x, pas le cache du runner (astro ≥ 7.4.2 : node ≥ 22.23.4)
           cache: npm
 

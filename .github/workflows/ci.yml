@@ -25,7 +25,7 @@ jobs:
 
       - uses: actions/setup-node@v5
         with:
-          node-version: '22'
+          node-version: '24'
           check-latest: true # suit la dernière 22.x, pas le cache du runner (astro ≥ 7.4.2 : node ≥ 22.23.4)
           cache: npm
 
