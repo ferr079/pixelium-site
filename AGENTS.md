@@ -23,7 +23,7 @@ cd ~/Claude/web/pixelium-site && codex --profile web-audit
 - **Lecture seule.** Le sandbox `read-only` t'en empêche déjà — ne cherche pas à le contourner
   et ne propose pas de patch appliqué : décris le correctif, c'est tout.
 - **Aucun secret ne vit dans ce working tree** (doctrine : Cloudflare Worker secrets +
-  Infisical). Si tu en trouves un en clair, c'est un finding P0 — signale-le **sans recopier
+  OpenBao). Si tu en trouves un en clair, c'est un finding P0 — signale-le **sans recopier
   la valeur**.
 - Contexte produit, voix éditoriale, i18n, design system : `CLAUDE.md` à la racine.
 
@@ -62,8 +62,8 @@ L'audit à blanc est fait. Ta valeur est ailleurs, dans cet ordre :
    l'articulation rate-limit (binding atomique `CHAT_RL` 4/60s **vs** compteur horaire KV — la
    course est-elle bornée comme le prétend le commentaire de `wrangler.toml` ?), la chaîne de
    build (`scripts/og/`, `astro.config.mjs`) et la CI (`ci.yml`, `deploy.yml`, `freshness.yml`).
-3. **Les régressions.** **10 commits** sont passés depuis l'audit (PR #45 à #52 : hotfixes et
-   durcissement CI). Les correctifs de sécu ont-ils survécu ? Cas d'école : #46 a retiré le
+3. **Les régressions.** Lister les commits depuis l'audit (`git log --oneline <sha>..main`)
+   et vérifier que les correctifs de sécu ont survécu. Cas d'école : #46 a retiré le
    bloc `routes` posé par #44 — que reste-t-il réellement du fix P1 ?
 
 ## Antériorité plus ancienne — l'audit du 2026-06-07
