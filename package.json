@@ -18,9 +18,9 @@
     "md": "node scripts/gen-md.mjs --report"
   },
   "dependencies": {
-    "@astrojs/cloudflare": "^14.4.3",
+    "@astrojs/cloudflare": "^14.4.4",
     "@astrojs/sitemap": "^3.7.4",
-    "astro": "^7.4.4",
+    "astro": "^7.4.5",
     "zod": "^4.4.3"
   },
   "devDependencies": {
