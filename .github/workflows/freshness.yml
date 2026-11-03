@@ -33,6 +33,14 @@ jobs:
     steps:
       - uses: actions/checkout@v7
 
+      # Le script n'importe que des modules node:*, mais sans setup-node il tournait
+      # sur le Node de l'image ubuntu-latest : le seul workflow dont la version
+      # changeait au gré du runner. Aligné sur ci/deploy/deployed.
+      - uses: actions/setup-node@v7
+        with:
+          node-version: '26' # LTS active, comme les autres workflows
+          check-latest: true
+
       - name: Run freshness check
         run: |
           set -o pipefail
