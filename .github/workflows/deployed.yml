@@ -81,3 +81,46 @@ jobs:
           else
             echo "Échec sans marqueur FALLBACK BAKE / STALE DEPLOY / ORPHAN KEY (garde aveugle) — pas de notif, corriger check-deployed.mjs."
           fi
+
+  hsts-preload:
+    # pixelium.win est soumis au preload HSTS depuis le 2026-11-03 (statut `pending`).
+    # hstspreload.org retire un domaine qui cesse de remplir ses exigences (en-tête de
+    # l'apex, redirection HTTP vers HTTPS, certificat valide) : ce job pose la question
+    # chaque jour à leur API. Job séparé, pour qu'un échec n'en masque pas un autre.
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 26
+          check-latest: true
+
+      - name: Check HSTS preload requirements
+        run: |
+          set -o pipefail
+          node scripts/hsts-preload-check.mjs 2>&1 | tee hsts-output.txt
+
+      - name: Write step summary
+        if: always()
+        run: |
+          {
+            echo '### HSTS preload'
+            echo
+            echo '```'
+            cat hsts-output.txt
+            echo '```'
+          } >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Annotate a real preload problem
+        # Même canal que le job `deployed` : une annotation titrée est lue par le DAG
+        # `gh-actions-watch` (CT 246) et publiée sur ntfy. GUARD BLIND (API injoignable)
+        # n'est pas annoté : c'est leur service qui manque, pas notre en-tête.
+        if: failure()
+        run: |
+          if grep -q 'HSTS PRELOAD' hsts-output.txt; then
+            echo "::error title=HSTS PRELOAD::pixelium.win ne remplit plus les exigences du preload HSTS (détail dans le résumé du job) : corriger avant que hstspreload.org ne retire le domaine."
+          else
+            echo "Échec sans marqueur HSTS PRELOAD (garde aveugle : hstspreload.org illisible) — pas d'annotation."
+          fi
