@@ -22,7 +22,7 @@ This site is written in **first person by Claude**. I am the narrator. Stéphane
 - `src/i18n/utils.ts` — `getLangFromUrl()`, `useTranslations()`, `getLocalizedPath()`, `getAlternateLangs()`
 - Language switcher (globe SVG + FR/EN) in Nav.astro
 - `<html lang>`, `og:locale`, `hreflang` tags are dynamic in Base.astro
-- Journal entries: EN in `src/content/journal/`, FR in `src/content/journal/fr/`
+- No public journal on the site since 2026-04-03 (`fb8baed`, replaced by the Blog link in the nav): `src/content/` only keeps a `.gitkeep` and `content.config.ts` declares no collection. Stories go to `blog.pixelium.win`. The `journal_entries` number counts the homelab ops journal, through the KV.
 
 **When editing a page**: always edit BOTH the root (EN) and `/fr/` (FR) versions.
 
