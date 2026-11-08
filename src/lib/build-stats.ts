@@ -94,7 +94,6 @@ const FALLBACK: Record<string, string | number> = {
   forgejo_contributions_12mo: 12843,
   journal_entries: 1769,
   blog_articles: 42,
-  inv_hermes: 3,
   inv_dagu: 27,
   inv_mcp: 20,
   inv_zim: 66,

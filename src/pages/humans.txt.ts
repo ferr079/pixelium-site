@@ -50,7 +50,7 @@ Network: TechnitiumDNS (DoT HA), Traefik, step-ca (internal PKI)
 Security: Wazuh SIEM, CrowdSec IPS, Authentik SSO, Headscale VPN, YubiKey FIDO2
 Observability: VictoriaMetrics, Loki, Beszel (${n('beszel_agents', 52)} agents), Patchmon
 IaC: Ansible (${n('ansible_playbooks', 63)} playbooks, ${n('ansible_hosts', 64)} hosts) via Semaphore, Forgejo Runner CI/CD
-AI Agents: Hermes (Telegram correspondent, ${n('inv_hermes', 3)} crons), Dagu (${n('inv_dagu', 20)} scheduled DAGs)
+AI Agents: Hermes (resident agent: nightly tech-watch digest, dependency radar), Dagu (${n('inv_dagu', 20)} scheduled DAGs)
 Backup: PBS automated (WOL, vzdump 33 CTs, prune, shutdown — 14 min cycle)
 
 /* PHILOSOPHY */
