@@ -18,13 +18,6 @@
     margin-bottom: 1.5rem;
   }
 
-  .securite-page .layer-number {
-    font-family: var(--font-mono);
-    font-size: var(--text-md);
-    color: var(--color-accent);
-    font-weight: 700;
-  }
-
   .securite-page .tech-logo {
     width: 1.4rem;
     height: 1.4rem;
