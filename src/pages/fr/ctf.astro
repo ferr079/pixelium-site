@@ -1,5 +1,6 @@
 ---
 import Base from '../../layouts/Base.astro';
+import '../../styles/ctf.css';
 import CrossLink from '../../components/CrossLink.astro';
 import PageHero from '../../components/PageHero.astro';
 import { getBuildStats } from '../../lib/build-stats';
@@ -50,7 +51,7 @@ const builtAt = new Date().toISOString().slice(0, 16).replace('T', ' ');
 ---
 
 <Base title="CTF — pixelium.win" description={`Profils Capture The Flag — HTB (rang ${htb.rank}, #${htb.ranking}), TryHackMe (Top 15%), Root-Me (${rootme.score} pts). Entraînement offensif vérifié par Stéphane, documenté par Claude.`}>
-  <main>
+  <main class="ctf-page">
     <PageHero prompt="$ cat /var/log/flags/captured" title="Capture The Flag">
       Entra&icirc;nement offensif v&eacute;rifi&eacute; sur les plateformes utilis&eacute;es par les professionnels. Chaque technique apprise ici renforce les d&eacute;fenses du homelab.
     </PageHero>
@@ -321,75 +322,3 @@ const builtAt = new Date().toISOString().slice(0, 16).replace('T', ' ');
   build-time values (e.g. 30 machines rendered server-side, overwritten to 24).
   HTB moves slowly — a daily rebuild is the right cadence; no client refresh needed.
 */}
-
-<style>
-  .layer-header { display: flex; align-items: center; gap: 1rem; margin-bottom: 1.5rem; }
-  .tech-logo { width: 1.4rem; height: 1.4rem; flex-shrink: 0; }
-  .badges-row { display: flex; gap: 2rem; flex-wrap: wrap; align-items: center; }
-  /* 50px = hauteur NATIVE du badge HTB (220x50) ; le THM (249x58) est donc
-     légèrement réduit. Aucun des deux n'est agrandi : PNG bitmap servis par
-     les plateformes, les afficher à 80px les upscalait de 60 % (rendu flou). */
-  .ctf-badge { height: 50px; width: auto; border-radius: 6px; transition: transform 0.2s; }
-  .ctf-badge:hover { transform: scale(1.05); }
-  /* Panneau KV — remplace la capture du dashboard HTB (2026-10-03). Chaque nombre est une
-     ancre data-stat : scripts/check-deployed.mjs le compare au KV live. */
-  .kv-panel { margin-top: 1.5rem; background: var(--color-deep, var(--color-deep)); border: 1px solid var(--color-border); border-radius: 8px; overflow: hidden; }
-  .kv-row { padding: 1rem 1.25rem; border-left: 3px solid var(--color-border); }
-  .kv-row + .kv-row { border-top: 1px solid var(--color-border); }
-  .htb-row { border-left-color: #9fef00; }
-  .rootme-row { border-left-color: #ffc107; }
-  .arsenal-row { border-left-color: var(--color-accent); }
-  .kv-row-head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.75rem; }
-  .kv-platform { font-family: var(--font-mono); font-size: var(--text-xs); font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: var(--color-text-muted); }
-  .kv-cells { display: grid; grid-template-columns: repeat(auto-fill, minmax(9rem, 1fr)); gap: 1rem 1.5rem; }
-  .kv-cell { display: flex; flex-direction: column; gap: 0.2rem; }
-  .kv-num { font-family: var(--font-mono); font-size: var(--text-4xl); font-weight: 700; color: var(--color-text); line-height: 1.1; }
-  .kv-of { font-size: var(--text-base); font-weight: 400; color: var(--color-text-muted); }
-  .kv-label { font-size: var(--text-xs); color: var(--color-text-muted); }
-  .kv-source { margin: 0; padding: 0.6rem 1.25rem; border-top: 1px solid var(--color-border); font-family: var(--font-mono); font-size: var(--text-2xs); color: var(--color-text-muted); }
-  .kv-note { margin-top: 0.75rem; font-size: var(--text-sm); color: var(--color-text-muted); }
-  .feedback-loop { display: flex; flex-direction: column; gap: 0.5rem; }
-  .loop-item { display: flex; align-items: center; gap: 0.75rem; padding: 0.75rem 1rem; background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 6px; }
-  .loop-arrow { color: var(--color-accent); font-size: var(--text-xl); flex-shrink: 0; }
-  .loop-item > div { display: flex; align-items: center; gap: 0.5rem; flex-wrap: wrap; }
-  .loop-offense { font-family: var(--font-mono); font-size: var(--text-sm); color: #f87171; background: rgba(248, 113, 113, 0.1); padding: 0.15rem 0.5rem; border-radius: 3px; border: 1px solid rgba(248, 113, 113, 0.2); }
-  .loop-result { font-size: var(--text-md); color: var(--color-text-muted); }
-  .platforms-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(18rem, 1fr)); gap: 1rem; }
-  .platform-card { background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 8px; padding: 1.5rem; display: flex; flex-direction: column; gap: 1rem; transition: border-color 0.3s, box-shadow 0.3s; }
-  a.platform-card { text-decoration: none; color: inherit; }
-  a.platform-card:hover { border-color: var(--color-accent); box-shadow: 0 0 20px rgb(var(--accent-rgb) / 0.1); color: inherit; }
-  .htb-card { border-top: 3px solid #9fef00; }
-  .thm-card { border-top: 3px solid #ef3b36; }
-  .rootme-card { border-top: 3px solid #ffc107; }
-  .platform-header { display: flex; justify-content: space-between; align-items: center; }
-  .platform-logo { width: 1.4rem; height: 1.4rem; flex-shrink: 0; }
-  .platform-name { font-family: var(--font-mono); font-size: var(--text-lg); font-weight: 700; color: var(--color-text); }
-  .platform-rank { font-family: var(--font-mono); font-size: var(--text-xs); padding: 0.2rem 0.6rem; border-radius: 4px; background: rgba(159, 239, 0, 0.1); color: #9fef00; border: 1px solid rgba(159, 239, 0, 0.3); }
-  .platform-rank.thm-rank { background: rgba(239, 59, 54, 0.1); color: #ef3b36; border-color: rgba(239, 59, 54, 0.3); }
-  .platform-rank.rootme-rank { background: rgba(255, 193, 7, 0.1); color: #ffc107; border-color: rgba(255, 193, 7, 0.3); }
-  .platform-stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 0.5rem; }
-  .platform-stat { text-align: center; }
-  .stat-number { display: block; font-family: var(--font-mono); font-size: var(--text-xl); font-weight: 700; color: var(--color-text); }
-  .stat-label { font-size: var(--text-2xs); color: var(--color-text-muted); text-transform: uppercase; letter-spacing: 0.05em; }
-  .platform-desc { font-size: var(--text-md); color: var(--color-text-muted); line-height: 1.5; }
-  .platform-cta { font-family: var(--font-mono); font-size: var(--text-sm); color: var(--color-accent); margin-top: auto; }
-  .techniques-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(16rem, 1fr)); gap: 1rem; }
-  .technique-group { background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 6px; padding: 1.25rem; }
-  .technique-group h4 { font-size: var(--text-md); color: var(--color-accent); margin-bottom: 0.75rem; font-family: var(--font-mono); }
-  .technique-tags { display: flex; flex-wrap: wrap; gap: 0.4rem; }
-  .technique-tags span { font-family: var(--font-mono); font-size: var(--text-2xs); background: var(--color-bg); color: var(--color-text-muted); padding: 0.2rem 0.5rem; border-radius: 4px; border: 1px solid var(--color-border); }
-  .crosslink { padding: 2rem 0 3rem; }
-  @media (max-width: 640px) {
-    .badges-row { flex-direction: column; align-items: flex-start; }
-    .ctf-badge { height: 44px; }
-    .loop-item > div { flex-direction: column; align-items: flex-start; }
-    .loop-item { padding: 0.5rem 0.75rem; }
-    .platforms-grid, .techniques-grid { grid-template-columns: 1fr; gap: 0.75rem; }
-    .kv-row { padding: 0.9rem 1rem; }
-    .kv-cells { grid-template-columns: repeat(2, 1fr); gap: 0.9rem 1rem; }
-    .kv-num { font-size: var(--text-2xl); }
-    .platform-card { padding: 1rem; }
-    .platform-stats { grid-template-columns: repeat(2, 1fr); }
-    .layer-header { flex-wrap: wrap; gap: 0.5rem; }
-  }
-</style>

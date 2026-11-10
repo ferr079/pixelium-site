@@ -1,5 +1,6 @@
 ---
 import Base from '../layouts/Base.astro';
+import '../styles/status.css';
 import PageHero from '../components/PageHero.astro';
 import { SERVICE_INFO } from '../data/service-info';
 import { getBuildStats } from '../lib/build-stats';
@@ -9,7 +10,7 @@ const stats = await getBuildStats();
 ---
 
 <Base title="Status — pixelium.win" description={`Live infrastructure status: ${stats.services_total} services, ${stats.proxmox_nodes} Proxmox nodes, tri-state monitoring (up · on-demand · down). Data pushed from the homelab by Dagu every 15 minutes.`}>
-  <main>
+  <main class="status-page">
     <PageHero prompt="$ ping --all" title="Status">
       Live infrastructure dashboard. Data pushed by Dagu every 15 minutes — zero ports exposed.
     </PageHero>
@@ -143,63 +144,6 @@ const stats = await getBuildStats();
   import '../scripts/status-page';
 </script>
 
-<style>
-  /* Staleness alert banner */
-  .stale-banner {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 0.75rem;
-    padding: 0.75rem 1.5rem;
-    background: rgb(var(--down-rgb) / 0.12);
-    border: 1px solid rgb(var(--down-rgb) / 0.3);
-    border-radius: 8px;
-    margin: 1.5rem auto 0;
-    max-width: 700px;
-    font-family: var(--font-mono);
-    font-size: var(--text-md);
-    color: #fca5a5;
-  }
-  .stale-icon {
-    font-size: var(--text-2xl);
-    color: var(--color-down);
-    flex-shrink: 0;
-  }
-
-  /* Static elements (Astro-scoped) */
-  .status-summary { padding: 2rem 0; border-bottom: 1px solid var(--color-border); }
-  .summary-grid { display: flex; justify-content: center; align-items: center; gap: 2.5rem; flex-wrap: wrap; }
-  .summary-card { display: flex; align-items: center; gap: 0.5rem; }
-  .summary-dot { width: 10px; height: 10px; border-radius: 50%; background: var(--color-text-muted); flex-shrink: 0; }
-  .summary-value { font-family: var(--font-mono); font-size: var(--text-5xl); font-weight: 800; color: var(--color-accent); }
-  .summary-total { color: var(--color-text-muted); font-weight: 400; }
-  .summary-sep { font-family: var(--font-mono); font-size: var(--text-4xl); color: var(--color-border); }
-  .summary-label { font-size: var(--text-sm); color: var(--color-text-muted); }
-  .summary-timestamp { font-size: var(--text-lg); font-weight: 600; }
-
-  /* Uptime timeline */
-  .uptime-placeholder { padding: 1rem 0; }
-  .uptime-skeleton { height: 2.5rem; background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 6px; animation: skeleton-pulse 1.5s ease-in-out infinite; }
-  .uptime-wait { text-align: center; color: var(--color-text-muted); font-family: var(--font-mono); font-size: var(--text-sm); margin-top: 0.75rem; }
-  .uptime-header { display: flex; align-items: baseline; gap: 0.75rem; margin-bottom: 0.75rem; }
-  .uptime-avg { font-family: var(--font-mono); font-size: var(--text-6xl); font-weight: 800; color: var(--color-ok); }
-  .uptime-period { font-family: var(--font-mono); font-size: var(--text-sm); color: var(--color-text-muted); }
-  .uptime-labels { display: flex; justify-content: space-between; margin-top: 0.4rem; font-family: var(--font-mono); font-size: var(--text-2xs); color: var(--color-text-muted); }
-
-  .skeleton-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 0.75rem; }
-  .skeleton-card { height: 2.5rem; background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 6px; animation: skeleton-pulse 1.5s ease-in-out infinite; }
-  .skeleton-nodes { grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); }
-  .skeleton-node { height: 8rem; }
-  .status-waiting { text-align: center; color: var(--color-text-muted); font-family: var(--font-mono); font-size: var(--text-md); margin-top: 1.5rem; }
-  .status-loading { padding: 1rem 0; }
-  .status-footer { padding: 2rem 0; }
-  .status-note { font-size: var(--text-sm); color: var(--color-text-muted); text-align: center; font-family: var(--font-mono); line-height: 1.8; }
-
-  @media (max-width: 640px) {
-    .summary-grid { gap: 1.5rem; }
-    .summary-value { font-size: var(--text-2xl); }
-  }
-</style>
 
 <style is:global>
   /* Dynamic elements (created by JS — must be global) */
