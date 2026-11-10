@@ -253,7 +253,7 @@ try {
   }
 
   .c-lede {
-    font-size: 1.05rem;
+    font-size: var(--text-xl);
     color: var(--color-text-muted);
     line-height: 1.7;
     margin-bottom: 0.75rem;
@@ -265,7 +265,7 @@ try {
   }
 
   .c-hint, .c-backlog-lede, .c-backlog-note {
-    font-size: 0.9rem;
+    font-size: var(--text-base);
     color: var(--color-text-muted);
     line-height: 1.65;
     opacity: 0.85;
@@ -314,7 +314,7 @@ try {
 
   .c-pr-number {
     font-family: var(--font-mono);
-    font-size: 0.82rem;
+    font-size: var(--text-sm);
     color: var(--color-accent);
     font-weight: 600;
     text-decoration: none;
@@ -331,14 +331,14 @@ try {
 
   .c-date {
     font-family: var(--font-mono);
-    font-size: 0.78rem;
+    font-size: var(--text-sm);
     color: var(--color-text-muted);
     opacity: 0.8;
   }
 
   .c-badge {
     font-family: var(--font-mono);
-    font-size: 0.65rem;
+    font-size: var(--text-2xs);
     letter-spacing: 0.06em;
     padding: 0.15rem 0.5rem;
     border-radius: 3px;
@@ -353,7 +353,7 @@ try {
 
   .c-status {
     font-family: var(--font-mono);
-    font-size: 0.68rem;
+    font-size: var(--text-2xs);
     letter-spacing: 0.08em;
     text-transform: uppercase;
     padding: 0.15rem 0.55rem;
@@ -381,14 +381,14 @@ try {
 
   .c-project {
     font-family: var(--font-mono);
-    font-size: 0.8rem;
+    font-size: var(--text-sm);
     color: var(--color-text-muted);
     margin-bottom: 0.4rem;
     letter-spacing: 0.02em;
   }
 
   .c-title {
-    font-size: 1.1rem;
+    font-size: var(--text-xl);
     color: var(--color-text);
     font-weight: 600;
     line-height: 1.4;
@@ -396,7 +396,7 @@ try {
   }
 
   .c-insight {
-    font-size: 0.92rem;
+    font-size: var(--text-base);
     color: var(--color-text-muted);
     line-height: 1.65;
     padding: 0.75rem 1rem;
@@ -409,7 +409,7 @@ try {
   .c-insight-label {
     display: block;
     font-family: var(--font-mono);
-    font-size: 0.7rem;
+    font-size: var(--text-2xs);
     color: var(--color-accent);
     letter-spacing: 0.08em;
     margin-bottom: 0.25rem;
@@ -425,7 +425,7 @@ try {
 
   .c-tag {
     font-family: var(--font-mono);
-    font-size: 0.7rem;
+    font-size: var(--text-2xs);
     color: var(--color-text-muted);
     background: rgb(var(--accent-rgb) / 0.05);
     padding: 0.15rem 0.5rem;
@@ -444,7 +444,7 @@ try {
     align-items: center;
     gap: 0.35rem;
     font-family: var(--font-mono);
-    font-size: 0.78rem;
+    font-size: var(--text-sm);
     color: var(--color-accent);
     padding: 0.3rem 0.7rem;
     border: 1px solid rgb(var(--accent-rgb) / 0.25);
@@ -493,7 +493,7 @@ try {
   .c-watch li {
     position: relative;
     padding-left: 1.3rem;
-    font-size: 0.9rem;
+    font-size: var(--text-base);
     color: var(--color-text-muted);
     line-height: 1.6;
   }
@@ -525,7 +525,7 @@ try {
   }
 
   .c-philosophy-text {
-    font-size: 0.95rem;
+    font-size: var(--text-lg);
     color: var(--color-text-muted);
     line-height: 1.75;
   }
@@ -538,7 +538,7 @@ try {
   .c-philosophy-eyebrow {
     display: block;
     font-family: var(--font-mono);
-    font-size: 0.72rem;
+    font-size: var(--text-2xs);
     color: var(--color-accent);
     letter-spacing: 0.1em;
     margin-bottom: 0.5rem;
@@ -547,6 +547,6 @@ try {
   @media (max-width: 640px) {
     .c-card { padding: 1.25rem 1rem; }
     .c-card-header { flex-direction: column; align-items: flex-start; }
-    .c-title { font-size: 1rem; }
+    .c-title { font-size: var(--text-lg); }
   }
 </style>

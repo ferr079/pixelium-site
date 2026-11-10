@@ -234,14 +234,14 @@ const stats = await getBuildStats();
   }
 
   .origin-zines {
-    font-size: 0.82rem;
+    font-size: var(--text-sm);
     color: var(--color-text-muted);
     opacity: 0.75;
   }
 
   .origin-zines code {
     font-family: var(--font-mono);
-    font-size: 0.78rem;
+    font-size: var(--text-sm);
     background: rgb(var(--accent-rgb) / 0.08);
     color: var(--color-accent);
     padding: 0.15rem 0.45rem;
@@ -252,7 +252,7 @@ const stats = await getBuildStats();
   .origin-punchline {
     margin-top: 1.5rem;
     font-family: var(--font-mono);
-    font-size: 0.85rem;
+    font-size: var(--text-md);
     color: var(--color-accent);
     opacity: 0.85;
     border-left: 2px solid var(--color-accent);
@@ -280,13 +280,13 @@ const stats = await getBuildStats();
   }
 
   .philosophy-point h4 {
-    font-size: 0.9rem;
+    font-size: var(--text-base);
     margin-bottom: 0.5rem;
     color: var(--color-accent);
   }
 
   .philosophy-point p {
-    font-size: 0.85rem;
+    font-size: var(--text-md);
     color: var(--color-text-muted);
     line-height: 1.5;
   }
@@ -307,13 +307,13 @@ const stats = await getBuildStats();
   }
 
   .detail h4 {
-    font-size: 0.9rem;
+    font-size: var(--text-base);
     margin-bottom: 0.5rem;
     color: var(--color-text);
   }
 
   .detail p {
-    font-size: 0.85rem;
+    font-size: var(--text-md);
     color: var(--color-text-muted);
     line-height: 1.5;
   }
@@ -356,7 +356,7 @@ const stats = await getBuildStats();
   }
 
   .stat-label {
-    font-size: 0.72rem;
+    font-size: var(--text-2xs);
     color: var(--color-text-muted);
     text-transform: uppercase;
     letter-spacing: 0.05em;
@@ -364,7 +364,7 @@ const stats = await getBuildStats();
   }
 
   .stats-footnote {
-    font-size: 0.82rem;
+    font-size: var(--text-sm);
     opacity: 0.7;
   }
 
@@ -391,19 +391,19 @@ const stats = await getBuildStats();
   }
 
   .crosslink-block h3 {
-    font-size: 0.95rem;
+    font-size: var(--text-lg);
     color: var(--color-accent);
     margin-bottom: 0.3rem;
   }
 
   .crosslink-block p {
-    font-size: 0.8rem;
+    font-size: var(--text-sm);
     color: var(--color-text-muted);
     line-height: 1.4;
   }
 
   .crosslink-arrow {
-    font-size: 1.3rem;
+    font-size: var(--text-2xl);
     color: var(--color-accent);
     flex-shrink: 0;
   }
@@ -419,7 +419,7 @@ const stats = await getBuildStats();
     align-items: center;
     gap: 0.5rem;
     font-family: var(--font-mono);
-    font-size: 0.9rem;
+    font-size: var(--text-base);
     padding: 0.6rem 1.2rem;
     border: 1px solid var(--color-border);
     border-radius: 6px;
@@ -449,13 +449,13 @@ const stats = await getBuildStats();
   }
 
   .transparency-block h3 {
-    font-size: 0.95rem;
+    font-size: var(--text-lg);
     color: var(--color-accent);
     margin-bottom: 0.5rem;
   }
 
   .transparency-block p {
-    font-size: 0.85rem;
+    font-size: var(--text-md);
     color: var(--color-text-muted);
     line-height: 1.6;
   }
@@ -463,9 +463,9 @@ const stats = await getBuildStats();
   @media (max-width: 640px) {
     .details-grid, .philosophy-grid { grid-template-columns: 1fr; gap: 0.75rem; }
     .detail, .philosophy-point { padding: 1rem; }
-    .origin-punchline { font-size: 0.8rem; padding-left: 0.75rem; }
+    .origin-punchline { font-size: var(--text-sm); padding-left: 0.75rem; }
     .contact-links { flex-direction: column; width: 100%; }
-    .contact-link { width: 100%; justify-content: center; padding: 0.6rem 1rem; font-size: 0.85rem; }
+    .contact-link { width: 100%; justify-content: center; padding: 0.6rem 1rem; font-size: var(--text-md); }
     .crosslink-duo { grid-template-columns: 1fr; }
     .crosslink-block { flex-direction: column; gap: 0.75rem; padding: 1rem; }
     .layer-header { flex-wrap: wrap; gap: 0.5rem; }
