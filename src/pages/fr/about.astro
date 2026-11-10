@@ -242,11 +242,11 @@ const stats = await getBuildStats();
   .origin-zines code {
     font-family: var(--font-mono);
     font-size: 0.78rem;
-    background: rgba(56, 189, 248, 0.08);
+    background: rgb(var(--accent-rgb) / 0.08);
     color: var(--color-accent);
     padding: 0.15rem 0.45rem;
     border-radius: 3px;
-    border: 1px solid rgba(56, 189, 248, 0.15);
+    border: 1px solid rgb(var(--accent-rgb) / 0.15);
   }
 
   .origin-punchline {
@@ -343,8 +343,8 @@ const stats = await getBuildStats();
   }
 
   .stat-card.accent {
-    border-color: rgba(56, 189, 248, 0.3);
-    background: rgba(56, 189, 248, 0.05);
+    border-color: rgb(var(--accent-rgb) / 0.3);
+    background: rgb(var(--accent-rgb) / 0.05);
   }
 
   .stat-number {
@@ -382,9 +382,9 @@ const stats = await getBuildStats();
     justify-content: space-between;
     gap: 1.5rem;
     padding: 1.25rem 1.5rem;
-    border: 1px solid rgba(56, 189, 248, 0.2);
+    border: 1px solid rgb(var(--accent-rgb) / 0.2);
     border-radius: 8px;
-    background: linear-gradient(135deg, rgba(56, 189, 248, 0.05), rgba(56, 189, 248, 0.02));
+    background: linear-gradient(135deg, rgb(var(--accent-rgb) / 0.05), rgb(var(--accent-rgb) / 0.02));
     text-decoration: none;
     color: inherit;
     transition: border-color 0.3s, box-shadow 0.3s;
@@ -430,7 +430,7 @@ const stats = await getBuildStats();
   .contact-link:hover {
     border-color: var(--color-accent);
     color: var(--color-accent);
-    box-shadow: 0 0 12px rgba(56, 189, 248, 0.15);
+    box-shadow: 0 0 12px rgb(var(--accent-rgb) / 0.15);
   }
 
   .contact-logo {
@@ -443,9 +443,9 @@ const stats = await getBuildStats();
 
   .transparency-block {
     padding: 1.25rem 1.5rem;
-    border: 1px solid rgba(56, 189, 248, 0.2);
+    border: 1px solid rgb(var(--accent-rgb) / 0.2);
     border-radius: 8px;
-    background: linear-gradient(135deg, rgba(56, 189, 248, 0.05), rgba(56, 189, 248, 0.02));
+    background: linear-gradient(135deg, rgb(var(--accent-rgb) / 0.05), rgb(var(--accent-rgb) / 0.02));
   }
 
   .transparency-block h3 {

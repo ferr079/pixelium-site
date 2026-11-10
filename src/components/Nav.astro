@@ -84,7 +84,7 @@ const blogUrl = 'https://blog.pixelium.win';
     position: sticky;
     top: 0;
     z-index: 100;
-    background: rgba(11, 17, 32, 0.95);
+    background: rgb(var(--bg-rgb) / 0.95);
     backdrop-filter: blur(8px);
     -webkit-backdrop-filter: blur(8px);
     border-bottom: 1px solid var(--color-border);
@@ -131,7 +131,7 @@ const blogUrl = 'https://blog.pixelium.win';
   }
 
   .nav-brand:hover .nav-logo {
-    filter: drop-shadow(0 0 4px rgba(56, 189, 248, 0.5));
+    filter: drop-shadow(0 0 4px rgb(var(--accent-rgb) / 0.5));
   }
 
   .nav-dot {
@@ -183,7 +183,7 @@ const blogUrl = 'https://blog.pixelium.win';
 
   .nav-blog-link:hover {
     border-color: var(--color-accent) !important;
-    background: rgba(56, 189, 248, 0.08);
+    background: rgb(var(--accent-rgb) / 0.08);
   }
 
   .nav-arrow { font-size: 0.65rem; }
@@ -267,7 +267,7 @@ const blogUrl = 'https://blog.pixelium.win';
 
   .lang-link.lang-active {
     color: var(--color-accent) !important;
-    background: rgba(56, 189, 248, 0.1);
+    background: rgb(var(--accent-rgb) / 0.1);
   }
 
   .lang-link:not(.lang-active) {
@@ -315,12 +315,12 @@ const blogUrl = 'https://blog.pixelium.win';
     .nav-links a {
       font-size: 0.9rem;
       padding: 0.6rem 0.5rem;
-      border-bottom: 1px solid rgba(51, 65, 85, 0.3);
+      border-bottom: 1px solid rgb(var(--border-rgb) / 0.3);
       border-radius: 4px;
     }
 
     .nav-links a.active {
-      background: rgba(56, 189, 248, 0.08);
+      background: rgb(var(--accent-rgb) / 0.08);
       border-left: 2px solid var(--color-accent);
     }
 
