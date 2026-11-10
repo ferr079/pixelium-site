@@ -1,0 +1,130 @@
+/* pact — styles de la page /pact, partagés par la version EN et la version FR.
+ *
+ * Ce bloc <style> existait en double, dans pact.astro et fr/pact.astro. Une
+ * retouche faite d'un seul côté faisait diverger les deux langues sans que rien
+ * ne le signale (pixelium-site#237).
+ *
+ * Tout est préfixé par `.pact-page`, classe portée par le <main> des deux pages :
+ * un CSS importé n'est plus limité à sa page par Astro, le préfixe lui rend cette
+ * limite. Même principe que styles/projets.css. Ne pas retirer la classe d'une
+ * page sans l'autre.
+ */
+
+  .pact-page .pact {
+    padding: 5rem 0 6rem;
+    position: relative;
+  }
+
+  .pact-page .pact::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image:
+      linear-gradient(rgb(var(--accent-rgb) / 0.03) 1px, transparent 1px),
+      linear-gradient(90deg, rgb(var(--accent-rgb) / 0.03) 1px, transparent 1px);
+    background-size: 3rem 3rem;
+    mask-image: radial-gradient(ellipse 60% 50% at 50% 20%, black 10%, transparent 70%);
+    -webkit-mask-image: radial-gradient(ellipse 60% 50% at 50% 20%, black 10%, transparent 70%);
+    pointer-events: none;
+  }
+
+  .pact-page .pact-wrap {
+    position: relative;
+    max-width: 44rem;
+    margin: 0;
+  }
+
+  .pact-page .lede {
+    font-size: var(--text-xl);
+    color: var(--color-text);
+    line-height: 1.7;
+    margin-bottom: 1.25rem;
+  }
+
+  .pact-page .lede strong {
+    color: var(--color-accent);
+    font-weight: 600;
+  }
+
+  .pact-page h2 {
+    font-family: var(--font-mono);
+    font-size: var(--text-base);
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    color: var(--color-accent);
+    margin: 3rem 0 1rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid rgb(var(--accent-rgb) / 0.2);
+  }
+
+  .pact-page p {
+    font-size: var(--text-lg);
+    color: var(--color-text-muted);
+    line-height: 1.75;
+    margin-bottom: 1rem;
+  }
+
+  .pact-page p strong {
+    color: var(--color-text);
+    font-weight: 600;
+  }
+
+  .pact-page .pact-list {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 1rem;
+  }
+
+  .pact-page .pact-list li {
+    position: relative;
+    padding-left: 1.5rem;
+    font-size: var(--text-lg);
+    color: var(--color-text-muted);
+    line-height: 1.7;
+    margin-bottom: 0.6rem;
+  }
+
+  .pact-page .pact-list li::before {
+    content: '∷';
+    position: absolute;
+    left: 0;
+    color: var(--color-accent);
+    font-family: var(--font-mono);
+  }
+
+  .pact-page .pact-list strong {
+    color: var(--color-text);
+    font-weight: 600;
+  }
+
+  .pact-page code {
+    font-family: var(--font-mono);
+    font-size: 0.92em;
+    color: var(--color-accent);
+    background: rgb(var(--accent-rgb) / 0.08);
+    padding: 0.1rem 0.4rem;
+    border-radius: 4px;
+  }
+
+  .pact-page .sig {
+    margin-top: 3.5rem;
+    padding-top: 2rem;
+    border-top: 1px solid var(--color-border);
+    font-family: var(--font-mono);
+    font-size: var(--text-lg);
+    color: var(--color-text);
+  }
+
+  .pact-page .sig-meta {
+    display: block;
+    margin-top: 0.4rem;
+    font-size: var(--text-2xs);
+    color: var(--color-text-muted);
+    letter-spacing: 0.05em;
+  }
+
+  @media (max-width: 640px) {
+    .pact-page .pact { padding: 3rem 0 4rem; }
+    .pact-page .lede { font-size: var(--text-lg); }
+    .pact-page h2 { margin-top: 2rem; }
+  }

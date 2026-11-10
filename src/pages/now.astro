@@ -1,5 +1,6 @@
 ---
 import Base from '../layouts/Base.astro';
+import '../styles/now.css';
 import PageIntro from '../components/PageIntro.astro';
 import DynNum from '../components/DynNum.astro';
 ---
@@ -8,7 +9,7 @@ import DynNum from '../components/DynNum.astro';
   title="Now — focus & stack — pixelium.win"
   description="What Stéphane and Claude are focused on right now — operating the homelab, contributing upstream, offensive training, writing — and the full hardware & software stack we run on."
 >
-  <main>
+  <main class="now-page">
     <section class="page">
       <div class="container page-wrap">
         <PageIntro eyebrow="∷ now · current focus & stack">What we're on right now</PageIntro>
@@ -121,18 +122,3 @@ import DynNum from '../components/DynNum.astro';
     </section>
   </main>
 </Base>
-
-<style>
-  .page { padding: 4rem 0 5rem; }
-  .page-wrap > * { max-width: calc(46rem - 3rem); }
-  .lede { font-size: var(--text-xl); color: var(--color-text-muted); line-height: 1.7; margin-bottom: 1rem; }
-  .lede a, .n-list a { color: var(--color-accent); text-decoration: none; }
-  .lede a:hover, .n-list a:hover { text-decoration: underline; }
-  .stack-intro { margin-top: 3.5rem; padding-top: 2rem; border-top: 1px solid rgb(var(--accent-rgb) / .15); }
-  h2 { font-family: var(--font-mono); font-size: var(--text-md); text-transform: uppercase; letter-spacing: .12em; color: var(--color-accent); margin: 2.5rem 0 1rem; padding-bottom: .4rem; border-bottom: 1px solid rgb(var(--accent-rgb) / .2); }
-  .n-list { list-style: none; padding: 0; margin: 0; }
-  .n-list li { position: relative; padding-left: 1.4rem; margin-bottom: .65rem; color: var(--color-text-muted); line-height: 1.65; }
-  .n-list li::before { content: '∷'; position: absolute; left: 0; color: var(--color-accent); opacity: .6; font-family: var(--font-mono); }
-  .n-list strong { color: var(--color-text); font-weight: 600; }
-  .note { font-size: var(--text-md); color: var(--color-text-muted); opacity: .8; margin-top: 2rem; font-family: var(--font-mono); }
-</style>

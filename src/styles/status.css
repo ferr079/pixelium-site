@@ -1,0 +1,67 @@
+/* status — styles de la page /status, partagés par la version EN et la version FR.
+ *
+ * Ce bloc <style> existait en double, dans status.astro et fr/status.astro. Une
+ * retouche faite d'un seul côté faisait diverger les deux langues sans que rien
+ * ne le signale (pixelium-site#237).
+ *
+ * Tout est préfixé par `.status-page`, classe portée par le <main> des deux pages :
+ * un CSS importé n'est plus limité à sa page par Astro, le préfixe lui rend cette
+ * limite. Même principe que styles/projets.css. Ne pas retirer la classe d'une
+ * page sans l'autre.
+ */
+
+  /* Staleness alert banner */
+  .status-page .stale-banner {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.75rem;
+    padding: 0.75rem 1.5rem;
+    background: rgb(var(--down-rgb) / 0.12);
+    border: 1px solid rgb(var(--down-rgb) / 0.3);
+    border-radius: 8px;
+    margin: 1.5rem auto 0;
+    max-width: 700px;
+    font-family: var(--font-mono);
+    font-size: var(--text-md);
+    color: #fca5a5;
+  }
+  .status-page .stale-icon {
+    font-size: var(--text-2xl);
+    color: var(--color-down);
+    flex-shrink: 0;
+  }
+
+  /* Static elements (Astro-scoped) */
+  .status-page .status-summary { padding: 2rem 0; border-bottom: 1px solid var(--color-border); }
+  .status-page .summary-grid { display: flex; justify-content: center; align-items: center; gap: 2.5rem; flex-wrap: wrap; }
+  .status-page .summary-card { display: flex; align-items: center; gap: 0.5rem; }
+  .status-page .summary-dot { width: 10px; height: 10px; border-radius: 50%; background: var(--color-text-muted); flex-shrink: 0; }
+  .status-page .summary-value { font-family: var(--font-mono); font-size: var(--text-5xl); font-weight: 800; color: var(--color-accent); }
+  .status-page .summary-total { color: var(--color-text-muted); font-weight: 400; }
+  .status-page .summary-sep { font-family: var(--font-mono); font-size: var(--text-4xl); color: var(--color-border); }
+  .status-page .summary-label { font-size: var(--text-sm); color: var(--color-text-muted); }
+  .status-page .summary-timestamp { font-size: var(--text-lg); font-weight: 600; }
+
+  /* Uptime timeline */
+  .status-page .uptime-placeholder { padding: 1rem 0; }
+  .status-page .uptime-skeleton { height: 2.5rem; background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 6px; animation: skeleton-pulse 1.5s ease-in-out infinite; }
+  .status-page .uptime-wait { text-align: center; color: var(--color-text-muted); font-family: var(--font-mono); font-size: var(--text-sm); margin-top: 0.75rem; }
+  .status-page .uptime-header { display: flex; align-items: baseline; gap: 0.75rem; margin-bottom: 0.75rem; }
+  .status-page .uptime-avg { font-family: var(--font-mono); font-size: var(--text-6xl); font-weight: 800; color: var(--color-ok); }
+  .status-page .uptime-period { font-family: var(--font-mono); font-size: var(--text-sm); color: var(--color-text-muted); }
+  .status-page .uptime-labels { display: flex; justify-content: space-between; margin-top: 0.4rem; font-family: var(--font-mono); font-size: var(--text-2xs); color: var(--color-text-muted); }
+
+  .status-page .skeleton-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 0.75rem; }
+  .status-page .skeleton-card { height: 2.5rem; background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 6px; animation: skeleton-pulse 1.5s ease-in-out infinite; }
+  .status-page .skeleton-nodes { grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); }
+  .status-page .skeleton-node { height: 8rem; }
+  .status-page .status-waiting { text-align: center; color: var(--color-text-muted); font-family: var(--font-mono); font-size: var(--text-md); margin-top: 1.5rem; }
+  .status-page .status-loading { padding: 1rem 0; }
+  .status-page .status-footer { padding: 2rem 0; }
+  .status-page .status-note { font-size: var(--text-sm); color: var(--color-text-muted); text-align: center; font-family: var(--font-mono); line-height: 1.8; }
+
+  @media (max-width: 640px) {
+    .status-page .summary-grid { gap: 1.5rem; }
+    .status-page .summary-value { font-size: var(--text-2xl); }
+  }

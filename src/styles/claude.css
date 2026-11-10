@@ -1,0 +1,275 @@
+/* claude — styles de la page /claude, partagés par la version EN et la version FR.
+ *
+ * Ce bloc <style> existait en double, dans claude.astro et fr/claude.astro. Une
+ * retouche faite d'un seul côté faisait diverger les deux langues sans que rien
+ * ne le signale (pixelium-site#237).
+ *
+ * Tout est préfixé par `.claude-page`, classe portée par le <main> des deux pages :
+ * un CSS importé n'est plus limité à sa page par Astro, le préfixe lui rend cette
+ * limite. Même principe que styles/projets.css. Ne pas retirer la classe d'une
+ * page sans l'autre.
+ */
+
+  .claude-page .cs-hero {
+    padding: 4rem 0 2.5rem;
+  }
+
+  .claude-page .cs-hero-wrap > p {
+    max-width: 50rem;
+  }
+
+  .claude-page .accent { color: var(--color-accent); }
+
+  .claude-page .cs-lede {
+    font-size: var(--text-xl);
+    color: var(--color-text-muted);
+    line-height: 1.7;
+  }
+
+  .claude-page .cs-lede code, .claude-page .cs-note code, .claude-page .cs-paragraph code {
+    color: var(--color-accent);
+    background: rgb(var(--accent-rgb) / 0.08);
+    padding: 0.08rem 0.35rem;
+    border-radius: 3px;
+    font-size: 0.9em;
+  }
+
+  .claude-page .cs-lede a, .claude-page .cs-note a, .claude-page .cs-paragraph a {
+    color: var(--color-accent);
+  }
+
+  .claude-page .cs-section { padding: 3rem 0; }
+
+  .claude-page .cs-section.alt {
+    background: linear-gradient(180deg, rgb(var(--accent-rgb) / 0.02), transparent);
+    border-top: 1px solid rgb(var(--accent-rgb) / 0.08);
+    border-bottom: 1px solid rgb(var(--accent-rgb) / 0.08);
+  }
+
+  .claude-page .cs-grid {
+    display: grid;
+    gap: 0.75rem;
+    margin: 0;
+  }
+
+  .claude-page .cs-grid.four { grid-template-columns: repeat(3, 1fr); }
+  @media (max-width: 640px) { .claude-page .cs-grid.four { grid-template-columns: repeat(2, 1fr); } }
+  .claude-page .cs-grid.three { grid-template-columns: repeat(auto-fit, minmax(12rem, 1fr)); }
+
+  .claude-page .cs-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.35rem;
+    padding: 1.25rem 1rem;
+    border: 1px solid var(--color-border);
+    border-radius: 6px;
+    background: linear-gradient(180deg, rgb(var(--accent-rgb) / 0.04), transparent);
+    text-align: center;
+  }
+
+  .claude-page .cs-card-muted {
+    background: rgb(var(--bg-rgb) / 0.5);
+  }
+
+  .claude-page .cs-card-accent {
+    border-color: rgb(var(--accent-rgb) / 0.4);
+    background: linear-gradient(180deg, rgb(var(--accent-rgb) / 0.1), rgb(var(--accent-rgb) / 0.02));
+  }
+
+  .claude-page .cs-label {
+    font-family: var(--font-mono);
+    font-size: var(--text-2xs);
+    color: var(--color-text-muted);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    opacity: 0.8;
+  }
+
+  .claude-page .cs-value {
+    font-family: var(--font-mono);
+    font-size: clamp(1.4rem, 3.5vw, 2rem);
+    font-weight: 700;
+    color: var(--color-accent);
+    line-height: 1;
+  }
+
+  .claude-page .cs-sub {
+    font-size: var(--text-2xs);
+    color: var(--color-text-muted);
+    opacity: 0.75;
+    line-height: 1.4;
+  }
+
+  .claude-page .cs-note {
+    max-width: 50rem;
+    margin: 1.5rem 0 0;
+    padding: 1rem 1.25rem;
+    border-left: 2px solid rgb(var(--accent-rgb) / 0.4);
+    font-size: var(--text-base);
+    color: var(--color-text-muted);
+    line-height: 1.7;
+    background: rgb(var(--accent-rgb) / 0.03);
+  }
+
+  .claude-page .cs-note strong {
+    color: var(--color-text);
+    font-weight: 600;
+  }
+
+  .claude-page .cs-note em { color: var(--color-text); }
+
+  .claude-page .cs-paragraph {
+    max-width: 50rem;
+    margin: 0 0 1.5rem;
+    font-size: var(--text-lg);
+    color: var(--color-text-muted);
+    line-height: 1.7;
+  }
+
+  .claude-page .cs-paragraph strong { color: var(--color-text); font-weight: 600; }
+
+  .claude-page .cs-sub-heading {
+    margin: 2.5rem 0 0.75rem;
+    font-family: var(--font-mono);
+    font-size: var(--text-sm);
+    color: var(--color-accent);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+
+  /* Heatmap */
+  .claude-page .heatmap {
+    margin: 1rem 0;
+    display: grid;
+    grid-template-columns: repeat(24, 1fr);
+    gap: 2px;
+    height: 10rem;
+    align-items: end;
+    padding: 0.75rem;
+    border: 1px solid rgb(var(--accent-rgb) / 0.15);
+    border-radius: 6px;
+    background: rgb(var(--bg-rgb) / 0.4);
+  }
+
+  .claude-page .heatmap-col {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-end;
+    height: 100%;
+    gap: 0.25rem;
+    cursor: help;
+  }
+
+  .claude-page .heatmap-bar-wrap {
+    width: 100%;
+    height: calc(100% - 1rem);
+    display: flex;
+    align-items: flex-end;
+  }
+
+  .claude-page .heatmap-bar {
+    width: 100%;
+    background: linear-gradient(180deg, var(--color-accent), rgb(var(--accent-rgb) / 0.3));
+    border-radius: 2px 2px 0 0;
+    transition: opacity 0.2s;
+    min-height: 2px;
+  }
+
+  .claude-page .heatmap-col:hover .heatmap-bar {
+    opacity: 0.7;
+  }
+
+  .claude-page .heatmap-hour {
+    font-family: var(--font-mono);
+    font-size: var(--text-3xs);
+    color: var(--color-text-muted);
+    opacity: 0.6;
+  }
+
+  .claude-page .cs-legend {
+    margin: 0.5rem 0 0;
+    text-align: center;
+    font-family: var(--font-mono);
+    font-size: var(--text-2xs);
+    color: var(--color-text-muted);
+    opacity: 0.65;
+  }
+
+  .claude-page .legend-dot {
+    display: inline-block;
+    width: 0.5rem;
+    height: 0.5rem;
+    background: var(--color-accent);
+    border-radius: 2px;
+    margin-right: 0.5rem;
+    vertical-align: middle;
+    opacity: 0.7;
+  }
+
+  /* Focus bars */
+  .claude-page .focus-bars {
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+  }
+
+  .claude-page .focus-row {
+    display: grid;
+    grid-template-columns: 12rem 1fr 3.5rem;
+    align-items: center;
+    gap: 0.75rem;
+  }
+
+  .claude-page .focus-label {
+    font-family: var(--font-mono);
+    font-size: var(--text-md);
+    color: var(--color-text);
+  }
+
+  .claude-page .focus-track {
+    height: 0.6rem;
+    background: var(--color-surface);
+    border-radius: 3px;
+    overflow: hidden;
+  }
+
+  .claude-page .focus-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--color-accent), rgb(var(--accent-rgb) / 0.5));
+    border-radius: 3px;
+  }
+
+  .claude-page .focus-val {
+    font-family: var(--font-mono);
+    font-size: var(--text-sm);
+    color: var(--color-accent);
+    text-align: right;
+  }
+
+  /* Pipeline */
+  .claude-page .pipeline-diagram {
+    margin: 0 0 1.5rem;
+    background: rgb(var(--bg-rgb) / 0.6);
+    border: 1px solid rgb(var(--accent-rgb) / 0.15);
+    border-radius: 6px;
+    padding: 1.25rem;
+    overflow-x: auto;
+    font-size: var(--text-2xs);
+    line-height: 1.4;
+  }
+
+  .claude-page .pipeline-diagram code {
+    font-family: var(--font-mono);
+    color: var(--color-text);
+    background: none;
+    padding: 0;
+    white-space: pre;
+  }
+
+  @media (max-width: 640px) {
+    .claude-page .focus-row { grid-template-columns: 8rem 1fr 3rem; }
+    .claude-page .focus-label { font-size: var(--text-xs); }
+  }
