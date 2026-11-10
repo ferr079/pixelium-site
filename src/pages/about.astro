@@ -1,5 +1,6 @@
 ---
 import Base from '../layouts/Base.astro';
+import CrossLink from '../components/CrossLink.astro';
 import PageHero from '../components/PageHero.astro';
 import DynNum from '../components/DynNum.astro';
 import { getBuildStats } from '../lib/build-stats';
@@ -166,20 +167,12 @@ const stats = await getBuildStats();
     <section class="crosslink reveal">
       <div class="container">
         <div class="crosslink-duo">
-          <a href="/infrastructure" class="crosslink-block">
-            <div>
-              <h3>&#9881; Applied architecture</h3>
-              <p>PKI, VPN mesh, reverse proxy, SIEM &mdash; <DynNum stat="proxmox_nodes" fallback="4" /> Proxmox nodes, <DynNum stat="inv_services" fallback="63" /> services.</p>
-            </div>
-            <span class="crosslink-arrow">&#8594;</span>
-          </a>
-          <a href="/chat" class="crosslink-block">
-            <div>
-              <h3>&#9993; Ask Claude directly</h3>
-              <p>Questions about St&eacute;phane's profile? Talk to me &mdash; I know him from hundreds of sessions.</p>
-            </div>
-            <span class="crosslink-arrow">&#8594;</span>
-          </a>
+          <CrossLink href="/infrastructure" title="⚙ Applied architecture" compact>
+            PKI, VPN mesh, reverse proxy, SIEM &mdash; <DynNum stat="proxmox_nodes" fallback="4" /> Proxmox nodes, <DynNum stat="inv_services" fallback="63" /> services.
+          </CrossLink>
+          <CrossLink href="/chat" title="✉ Ask Claude directly" compact>
+            Questions about St&eacute;phane's profile? Talk to me &mdash; I know him from hundreds of sessions.
+          </CrossLink>
         </div>
       </div>
     </section>
@@ -382,38 +375,6 @@ const stats = await getBuildStats();
   /* Crosslinks — duo layout */
   .crosslink { padding: 2rem 0 1rem; }
 
-  .crosslink-block {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 1.5rem;
-    padding: 1.25rem 1.5rem;
-    border: 1px solid rgb(var(--accent-rgb) / 0.2);
-    border-radius: 8px;
-    background: linear-gradient(135deg, rgb(var(--accent-rgb) / 0.05), rgb(var(--accent-rgb) / 0.02));
-    text-decoration: none;
-    color: inherit;
-    transition: border-color 0.3s, box-shadow 0.3s;
-  }
-
-  .crosslink-block h3 {
-    font-size: var(--text-lg);
-    color: var(--color-accent);
-    margin-bottom: 0.3rem;
-  }
-
-  .crosslink-block p {
-    font-size: var(--text-sm);
-    color: var(--color-text-muted);
-    line-height: 1.4;
-  }
-
-  .crosslink-arrow {
-    font-size: var(--text-2xl);
-    color: var(--color-accent);
-    flex-shrink: 0;
-  }
-
   /* Contact */
   .contact-links {
     display: flex;
@@ -475,7 +436,6 @@ const stats = await getBuildStats();
     .contact-links { flex-direction: column; width: 100%; }
     .contact-link { width: 100%; justify-content: center; padding: 0.6rem 1rem; font-size: var(--text-md); }
     .crosslink-duo { grid-template-columns: 1fr; }
-    .crosslink-block { flex-direction: column; gap: 0.75rem; padding: 1rem; }
     .layer-header { flex-wrap: wrap; gap: 0.5rem; }
   }
 </style>
