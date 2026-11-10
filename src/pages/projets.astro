@@ -1,5 +1,6 @@
 ---
 import Base from '../layouts/Base.astro';
+import CrossLink from '../components/CrossLink.astro';
 import PageHero from '../components/PageHero.astro';
 import DynNum from '../components/DynNum.astro';
 import '../styles/projets.css';
@@ -894,13 +895,9 @@ import '../styles/projets.css';
     <!-- Crosslink security -->
     <section class="crosslink reveal">
       <div class="container">
-        <a href="/securite" class="crosslink-block">
-          <div>
-            <h3>&#9670; Full defensive stack</h3>
-            <p>Internal PKI, Authentik SSO, CrowdSec IPS, Wazuh SIEM, Headscale VPN — the 5 security layers deployed on this homelab, detailed one by one.</p>
-          </div>
-          <span class="crosslink-arrow">&#8594;</span>
-        </a>
+        <CrossLink href="/securite" title="◆ Full defensive stack">
+          Internal PKI, Authentik SSO, CrowdSec IPS, Wazuh SIEM, Headscale VPN — the 5 security layers deployed on this homelab, detailed one by one.
+        </CrossLink>
       </div>
     </section>
   </main>
