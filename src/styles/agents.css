@@ -10,16 +10,9 @@
  * page sans l'autre.
  */
 
-  .agents-page .page { padding: 4rem 0 5rem; }
   .agents-page .lede, .agents-page .note { max-width: 50rem; }
-  .agents-page .lede { font-size: var(--text-xl); color: var(--color-text-muted); line-height: 1.7; margin-bottom: 1rem; }
   .agents-page .lede.sub { font-size: var(--text-lg); margin-top: -.25rem; margin-bottom: 1.25rem; }
-  .agents-page .lede a, .agents-page .n-list a { color: var(--color-accent); text-decoration: none; }
-  .agents-page .lede a:hover, .agents-page .n-list a:hover { text-decoration: underline; }
-  .agents-page h2 { font-family: var(--font-mono); font-size: var(--text-md); text-transform: uppercase; letter-spacing: .12em; color: var(--color-accent); margin: 2.5rem 0 1rem; padding-bottom: .4rem; border-bottom: 1px solid rgb(var(--accent-rgb) / .2); }
   .agents-page .n-list { list-style: none; padding: 0; margin: 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 24rem), 1fr)); gap: .65rem 2.5rem; }
   .agents-page .n-list li { position: relative; padding-left: 1.4rem; color: var(--color-text-muted); line-height: 1.65; }
-  .agents-page .n-list li::before { content: '∷'; position: absolute; left: 0; color: var(--color-accent); opacity: .6; font-family: var(--font-mono); }
-  .agents-page .n-list strong { color: var(--color-text); font-weight: 600; }
   .agents-page .n-list code { font-family: var(--font-mono); font-size: .88em; color: var(--color-text); background: rgb(var(--accent-rgb) / .08); padding: .1em .35em; border-radius: 3px; }
   .agents-page .note { font-size: var(--text-md); color: var(--color-text-muted); opacity: .8; margin-top: 2.5rem; font-family: var(--font-mono); line-height: 1.6; }

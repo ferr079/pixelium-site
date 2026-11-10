@@ -10,14 +10,6 @@
  * page sans l'autre.
  */
 
-  /* Layers */
-  .ctf-page .layer-header {
-    display: flex;
-    align-items: center;
-    gap: 1rem;
-    margin-bottom: 1.5rem;
-  }
-
   .ctf-page .tech-logo {
     width: 1.4rem;
     height: 1.4rem;
@@ -351,5 +343,4 @@
     .ctf-page .kv-num { font-size: var(--text-2xl); }
     .ctf-page .platform-card { padding: 1rem; }
     .ctf-page .platform-stats { grid-template-columns: repeat(2, 1fr); }
-    .ctf-page .layer-header { flex-wrap: wrap; gap: 0.5rem; }
   }

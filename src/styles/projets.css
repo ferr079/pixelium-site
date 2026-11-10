@@ -147,14 +147,6 @@
     line-height: 1.6;
   }
 
-  /* Layers (from ia.astro) */
-  .projets-page .layer-header {
-    display: flex;
-    align-items: center;
-    gap: 1rem;
-    margin-bottom: 1.5rem;
-  }
-
   .projets-page .tech-logo {
     width: 1.4rem;
     height: 1.4rem;
@@ -462,5 +454,4 @@
       font-size: var(--text-base);
     }
 
-    .layer-header { flex-wrap: wrap; gap: 0.5rem; }
   }

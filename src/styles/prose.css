@@ -1,0 +1,21 @@
+/* prose — ce que les pages en prose ont en commun : /agents et /now.
+ *
+ * Ces règles existaient à l'identique dans styles/agents.css et styles/now.css
+ * (pixelium-site#237). Elles sont préfixées par `.prose-page`, classe portée
+ * par le <main> de ces pages à côté de leur classe propre. Ce qui diffère d'une
+ * page à l'autre (grilles de listes, largeur de colonne, notes) reste dans
+ * styles/<page>.css.
+ *
+ * /pact a la même grammaire mais ses propres réglages (chapeau blanc, intertitres
+ * plus espacés) : elle garde sa feuille à part.
+ */
+
+.prose-page .page { padding: 4rem 0 5rem; }
+.prose-page .lede { font-size: var(--text-xl); color: var(--color-text-muted); line-height: 1.7; margin-bottom: 1rem; }
+.prose-page .lede a { color: var(--color-accent); text-decoration: none; }
+.prose-page .n-list a { color: var(--color-accent); text-decoration: none; }
+.prose-page .lede a:hover { text-decoration: underline; }
+.prose-page .n-list a:hover { text-decoration: underline; }
+.prose-page h2 { font-family: var(--font-mono); font-size: var(--text-md); text-transform: uppercase; letter-spacing: .12em; color: var(--color-accent); margin: 2.5rem 0 1rem; padding-bottom: .4rem; border-bottom: 1px solid rgb(var(--accent-rgb) / .2); }
+.prose-page .n-list li::before { content: '∷'; position: absolute; left: 0; color: var(--color-accent); opacity: .6; font-family: var(--font-mono); }
+.prose-page .n-list strong { color: var(--color-text); font-weight: 600; }

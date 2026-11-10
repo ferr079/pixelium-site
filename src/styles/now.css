@@ -10,15 +10,8 @@
  * page sans l'autre.
  */
 
-  .now-page .page { padding: 4rem 0 5rem; }
   .now-page .page-wrap > * { max-width: calc(46rem - 3rem); }
-  .now-page .lede { font-size: var(--text-xl); color: var(--color-text-muted); line-height: 1.7; margin-bottom: 1rem; }
-  .now-page .lede a, .now-page .n-list a { color: var(--color-accent); text-decoration: none; }
-  .now-page .lede a:hover, .now-page .n-list a:hover { text-decoration: underline; }
   .now-page .stack-intro { margin-top: 3.5rem; padding-top: 2rem; border-top: 1px solid rgb(var(--accent-rgb) / .15); }
-  .now-page h2 { font-family: var(--font-mono); font-size: var(--text-md); text-transform: uppercase; letter-spacing: .12em; color: var(--color-accent); margin: 2.5rem 0 1rem; padding-bottom: .4rem; border-bottom: 1px solid rgb(var(--accent-rgb) / .2); }
   .now-page .n-list { list-style: none; padding: 0; margin: 0; }
   .now-page .n-list li { position: relative; padding-left: 1.4rem; margin-bottom: .65rem; color: var(--color-text-muted); line-height: 1.65; }
-  .now-page .n-list li::before { content: '∷'; position: absolute; left: 0; color: var(--color-accent); opacity: .6; font-family: var(--font-mono); }
-  .now-page .n-list strong { color: var(--color-text); font-weight: 600; }
   .now-page .note { font-size: var(--text-md); color: var(--color-text-muted); opacity: .8; margin-top: 2rem; font-family: var(--font-mono); }
