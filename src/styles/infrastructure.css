@@ -63,6 +63,20 @@
     flex-shrink: 0;
   }
 
+  /* Ces deux règles répètent page-chrome.css, exprès. Sous le préfixe de la
+     page, elles l'emportent sur .mcp-note (interligne 1.6) : le paragraphe
+     « Principle: least privilege » garde l'interligne 1.7 des autres. Les
+     retirer change son rendu (vu en capture, pixelium-site#237). */
+  .infrastructure-page .layer-content > p {
+    color: var(--color-text-muted);
+    margin-bottom: 1.5rem;
+    line-height: 1.7;
+  }
+
+  .infrastructure-page .layer-content > p strong {
+    color: var(--color-text);
+  }
+
   /* Node cards */
   .infrastructure-page .nodes-grid {
     display: grid;
