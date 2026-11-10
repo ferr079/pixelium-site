@@ -32,7 +32,7 @@
   .ctf-page .ctf-badge {
     height: 50px;
     width: auto;
-    border-radius: 6px;
+    border-radius: var(--radius-md);
     transition: transform 0.2s;
   }
 
@@ -46,7 +46,7 @@
     margin-top: 1.5rem;
     background: var(--color-deep, var(--color-deep));
     border: 1px solid var(--color-border);
-    border-radius: 8px;
+    border-radius: var(--radius-lg);
     overflow: hidden;
   }
 
@@ -139,7 +139,7 @@
     padding: 0.75rem 1rem;
     background: var(--color-surface);
     border: 1px solid var(--color-border);
-    border-radius: 6px;
+    border-radius: var(--radius-md);
   }
 
   .ctf-page .loop-arrow {
@@ -161,7 +161,7 @@
     color: #f87171;
     background: rgba(248, 113, 113, 0.1);
     padding: 0.15rem 0.5rem;
-    border-radius: 3px;
+    border-radius: var(--radius-xs);
     border: 1px solid rgba(248, 113, 113, 0.2);
   }
 
@@ -180,7 +180,7 @@
   .ctf-page .platform-card {
     background: var(--color-surface);
     border: 1px solid var(--color-border);
-    border-radius: 8px;
+    border-radius: var(--radius-lg);
     padding: 1.5rem;
     display: flex;
     flex-direction: column;
@@ -234,7 +234,7 @@
     font-family: var(--font-mono);
     font-size: var(--text-xs);
     padding: 0.2rem 0.6rem;
-    border-radius: 4px;
+    border-radius: var(--radius-sm);
     background: rgba(159, 239, 0, 0.1);
     color: #9fef00;
     border: 1px solid rgba(159, 239, 0, 0.3);
@@ -300,7 +300,7 @@
   .ctf-page .technique-group {
     background: var(--color-surface);
     border: 1px solid var(--color-border);
-    border-radius: 6px;
+    border-radius: var(--radius-md);
     padding: 1.25rem;
   }
 
@@ -323,7 +323,7 @@
     background: var(--color-bg);
     color: var(--color-text-muted);
     padding: 0.2rem 0.5rem;
-    border-radius: 4px;
+    border-radius: var(--radius-sm);
     border: 1px solid var(--color-border);
   }
 

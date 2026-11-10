@@ -30,7 +30,7 @@
     color: var(--color-accent);
     background: rgb(var(--accent-rgb) / 0.08);
     padding: 0.08rem 0.35rem;
-    border-radius: 3px;
+    border-radius: var(--radius-xs);
     font-size: 0.9em;
   }
 
@@ -63,7 +63,7 @@
     gap: 0.35rem;
     padding: 1.25rem 1rem;
     border: 1px solid var(--color-border);
-    border-radius: 6px;
+    border-radius: var(--radius-md);
     background: linear-gradient(180deg, rgb(var(--accent-rgb) / 0.04), transparent);
     text-align: center;
   }
@@ -148,7 +148,7 @@
     align-items: end;
     padding: 0.75rem;
     border: 1px solid rgb(var(--accent-rgb) / 0.15);
-    border-radius: 6px;
+    border-radius: var(--radius-md);
     background: rgb(var(--bg-rgb) / 0.4);
   }
 
@@ -172,7 +172,7 @@
   .claude-page .heatmap-bar {
     width: 100%;
     background: linear-gradient(180deg, var(--color-accent), rgb(var(--accent-rgb) / 0.3));
-    border-radius: 2px 2px 0 0;
+    border-radius: var(--radius-2xs) var(--radius-2xs) 0 0;
     transition: opacity 0.2s;
     min-height: 2px;
   }
@@ -202,7 +202,7 @@
     width: 0.5rem;
     height: 0.5rem;
     background: var(--color-accent);
-    border-radius: 2px;
+    border-radius: var(--radius-2xs);
     margin-right: 0.5rem;
     vertical-align: middle;
     opacity: 0.7;
@@ -232,14 +232,14 @@
   .claude-page .focus-track {
     height: 0.6rem;
     background: var(--color-surface);
-    border-radius: 3px;
+    border-radius: var(--radius-xs);
     overflow: hidden;
   }
 
   .claude-page .focus-fill {
     height: 100%;
     background: linear-gradient(90deg, var(--color-accent), rgb(var(--accent-rgb) / 0.5));
-    border-radius: 3px;
+    border-radius: var(--radius-xs);
   }
 
   .claude-page .focus-val {
@@ -254,7 +254,7 @@
     margin: 0 0 1.5rem;
     background: rgb(var(--bg-rgb) / 0.6);
     border: 1px solid rgb(var(--accent-rgb) / 0.15);
-    border-radius: 6px;
+    border-radius: var(--radius-md);
     padding: 1.25rem;
     overflow-x: auto;
     font-size: var(--text-2xs);

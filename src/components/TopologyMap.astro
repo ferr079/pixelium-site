@@ -143,7 +143,7 @@ const nodeTitle = (n: { label: string; hostname?: string | null; ipAddress?: str
     margin: 2rem auto;
     padding: 1.5rem;
     border: 1px solid rgb(var(--accent-rgb) / 0.15);
-    border-radius: 8px;
+    border-radius: var(--radius-lg);
     background: rgb(var(--bg-rgb) / 0.5);
   }
 
@@ -177,7 +177,7 @@ const nodeTitle = (n: { label: string; hostname?: string | null; ipAddress?: str
   .topo-map {
     position: relative;
     padding: 1.25rem 1rem 1.5rem;
-    border-radius: 6px;
+    border-radius: var(--radius-md);
     background:
       linear-gradient(rgb(var(--accent-rgb) / 0.04) 1px, transparent 1px),
       linear-gradient(90deg, rgb(var(--accent-rgb) / 0.04) 1px, transparent 1px),
@@ -270,7 +270,7 @@ const nodeTitle = (n: { label: string; hostname?: string | null; ipAddress?: str
     color: var(--color-text-muted);
     background: rgb(var(--bg-rgb) / 0.8);
     padding: 0.1rem 0.5rem;
-    border-radius: 3px;
+    border-radius: var(--radius-xs);
     border: 1px solid rgb(var(--accent-rgb) / 0.15);
     opacity: 0.8;
   }
@@ -286,7 +286,7 @@ const nodeTitle = (n: { label: string; hostname?: string | null; ipAddress?: str
   .topo-zone {
     padding: 0.85rem;
     border: 1px solid rgba(245, 158, 11, 0.4); /* orange like Homelable canvas */
-    border-radius: 6px;
+    border-radius: var(--radius-md);
     background: rgb(var(--bg-rgb) / 0.4);
     display: flex;
     flex-direction: column;
@@ -327,7 +327,7 @@ const nodeTitle = (n: { label: string; hostname?: string | null; ipAddress?: str
     color: var(--color-accent);
     background: rgb(var(--accent-rgb) / 0.08);
     padding: 0.1rem 0.4rem;
-    border-radius: 3px;
+    border-radius: var(--radius-xs);
     border: 1px solid rgb(var(--accent-rgb) / 0.2);
     letter-spacing: 0.04em;
   }
@@ -351,7 +351,7 @@ const nodeTitle = (n: { label: string; hostname?: string | null; ipAddress?: str
     padding: 0.4rem 0.55rem;
     background: rgb(var(--bg-rgb) / 0.7);
     border: 1px solid var(--color-border);
-    border-radius: 3px;
+    border-radius: var(--radius-xs);
     cursor: help;
     transition: border-color 0.15s, box-shadow 0.15s, transform 0.15s;
   }
@@ -405,7 +405,7 @@ const nodeTitle = (n: { label: string; hostname?: string | null; ipAddress?: str
     color: var(--color-accent);
     background: rgb(var(--accent-rgb) / 0.08);
     padding: 0.2rem 0.7rem;
-    border-radius: 3px;
+    border-radius: var(--radius-xs);
     border: 1px solid rgb(var(--accent-rgb) / 0.25);
     letter-spacing: 0.05em;
   }
@@ -432,7 +432,7 @@ const nodeTitle = (n: { label: string; hostname?: string | null; ipAddress?: str
     display: inline-block;
     width: 0.7rem;
     height: 0.7rem;
-    border-radius: 2px;
+    border-radius: var(--radius-2xs);
     border: 1px solid;
   }
 

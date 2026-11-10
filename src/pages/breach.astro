@@ -222,7 +222,7 @@ import Base from '../layouts/Base.astro';
 
     .wopr {
       border: 1px solid var(--color-border);
-      border-radius: 10px;
+      border-radius: var(--radius-xl);
       background: linear-gradient(180deg, rgb(var(--bg-rgb) / 0.6), rgb(var(--deep-rgb) / 0.6));
       overflow: hidden;
       box-shadow: 0 0 0 1px rgb(var(--ok-rgb) / 0.04), 0 18px 50px -20px rgba(0,0,0,0.6);
@@ -239,7 +239,7 @@ import Base from '../layouts/Base.astro';
     .wopr-lvl b { color: var(--color-accent); }
 
     .wopr-progress { display: flex; gap: 0.4rem; padding: 0.8rem 1rem 0; }
-    .pdot { width: 26px; height: 4px; border-radius: 2px; background: var(--color-border); transition: background 0.3s; }
+    .pdot { width: 26px; height: 4px; border-radius: var(--radius-2xs); background: var(--color-border); transition: background 0.3s; }
     .pdot.cur { background: var(--color-accent); }
     .pdot.done { background: var(--color-ok, var(--color-ok)); }
 
@@ -249,7 +249,7 @@ import Base from '../layouts/Base.astro';
       color: var(--color-text-muted);
       border-left: 2px solid var(--color-accent);
       background: rgb(var(--accent-rgb) / 0.05);
-      border-radius: 0 6px 6px 0;
+      border-radius: 0 var(--radius-md) var(--radius-md) 0;
     }
 
     .wopr-log {
@@ -275,7 +275,7 @@ import Base from '../layouts/Base.astro';
     .sign-code { color: var(--color-warn, var(--color-warn)); }
     .wopr-row input {
       flex: 1; min-width: 0;
-      background: rgb(var(--deep-rgb) / 0.5); border: 1px solid var(--color-border); border-radius: 6px;
+      background: rgb(var(--deep-rgb) / 0.5); border: 1px solid var(--color-border); border-radius: var(--radius-md);
       padding: 0.55rem 0.7rem; color: var(--color-text);
       font-family: var(--font-mono); font-size: var(--text-md);
     }
@@ -284,7 +284,7 @@ import Base from '../layouts/Base.astro';
     .wopr-row button {
       flex-shrink: 0; cursor: pointer;
       background: rgb(var(--accent-rgb) / 0.12); border: 1px solid rgb(var(--accent-rgb) / 0.35);
-      color: var(--color-accent); border-radius: 6px; padding: 0.55rem 0.9rem;
+      color: var(--color-accent); border-radius: var(--radius-md); padding: 0.55rem 0.9rem;
       font-family: var(--font-mono); font-size: var(--text-sm); letter-spacing: 0.05em;
       transition: background 0.2s;
     }

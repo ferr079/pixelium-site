@@ -22,7 +22,7 @@ const { icon, title, description, tags } = Astro.props;
   .card {
     background: var(--color-surface);
     border: 1px solid var(--color-border);
-    border-radius: 8px;
+    border-radius: var(--radius-lg);
     padding: 1.5rem;
     transition: border-color 0.3s, transform 0.3s, box-shadow 0.3s;
     position: relative;
@@ -40,7 +40,7 @@ const { icon, title, description, tags } = Astro.props;
     content: '';
     position: absolute;
     inset: -1px;
-    border-radius: 8px;
+    border-radius: var(--radius-lg);
     background: linear-gradient(135deg, rgb(var(--accent-rgb) / 0.15), transparent 60%);
     opacity: 0;
     transition: opacity 0.3s;
@@ -95,7 +95,7 @@ const { icon, title, description, tags } = Astro.props;
     background: var(--color-bg);
     color: var(--color-accent);
     padding: 0.2rem 0.6rem;
-    border-radius: 4px;
+    border-radius: var(--radius-sm);
     border: 1px solid var(--color-border);
     transition: border-color 0.2s, background 0.2s;
   }

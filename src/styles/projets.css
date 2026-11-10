@@ -32,7 +32,7 @@
     background: rgb(var(--accent-rgb) / 0.1);
     border: 1px solid rgb(var(--accent-rgb) / 0.2);
     padding: 0.15rem 0.6rem;
-    border-radius: 4px;
+    border-radius: var(--radius-sm);
     margin-bottom: 0.75rem;
     text-transform: uppercase;
     letter-spacing: 0.05em;
@@ -65,7 +65,7 @@
   .projets-page .detail-block {
     background: var(--color-surface);
     border: 1px solid var(--color-border);
-    border-radius: 6px;
+    border-radius: var(--radius-md);
     padding: 1.25rem;
   }
 
@@ -106,7 +106,7 @@
     background: var(--color-bg);
     color: var(--color-accent);
     padding: 0.2rem 0.6rem;
-    border-radius: 4px;
+    border-radius: var(--radius-sm);
     border: 1px solid var(--color-border);
   }
 
@@ -195,7 +195,7 @@
   .projets-page .model-group {
     background: var(--color-surface);
     border: 1px solid var(--color-border);
-    border-radius: 6px;
+    border-radius: var(--radius-md);
     padding: 1.25rem;
   }
 
@@ -218,7 +218,7 @@
     background: var(--color-bg);
     color: var(--color-text-muted);
     padding: 0.2rem 0.5rem;
-    border-radius: 4px;
+    border-radius: var(--radius-sm);
     border: 1px solid var(--color-border);
   }
 
@@ -232,7 +232,7 @@
   .projets-page .api-card {
     background: var(--color-surface);
     border: 1px solid var(--color-border);
-    border-radius: 8px;
+    border-radius: var(--radius-lg);
     padding: 1.5rem;
     display: flex;
     flex-direction: column;
@@ -280,7 +280,7 @@
     background: var(--color-bg);
     color: var(--color-text-muted);
     padding: 0.15rem 0.4rem;
-    border-radius: 3px;
+    border-radius: var(--radius-xs);
     border: 1px solid var(--color-border);
   }
 
@@ -288,10 +288,10 @@
   .agents-deployed { margin-top: 2rem; padding-top: 1.5rem; border-top: 1px solid var(--color-border); }
   .agents-deployed h4 { font-family: var(--font-mono); font-size: var(--text-base); color: var(--color-accent); margin-bottom: 1rem; letter-spacing: 0.05em; text-transform: uppercase; }
   .agents-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1rem; }
-  .agent-card { background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 8px; padding: 1.25rem; transition: border-color 0.3s, transform 0.3s; }
+  .agent-card { background: var(--color-surface); border: 1px solid var(--color-border); border-radius: var(--radius-lg); padding: 1.25rem; transition: border-color 0.3s, transform 0.3s; }
   .agent-card:hover { border-color: var(--color-accent); transform: translateY(-2px); }
   .agent-card-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 0.5rem; }
-  .agent-badge { font-family: var(--font-mono); font-size: var(--text-2xs); font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; padding: 0.2rem 0.5rem; border-radius: 4px; }
+  .agent-badge { font-family: var(--font-mono); font-size: var(--text-2xs); font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; padding: 0.2rem 0.5rem; border-radius: var(--radius-sm); }
   .agent-badge.running { background: rgb(var(--ok-rgb) / 0.15); color: var(--color-ok); }
   .agent-badge.observing { background: rgb(var(--warn-rgb) / 0.15); color: var(--color-warn); }
   .agent-badge.decommissioned { background: rgb(var(--muted-rgb) / 0.15); color: var(--color-text-muted); }
@@ -302,7 +302,7 @@
   .agent-role { font-family: var(--font-mono); font-size: var(--text-xs); color: var(--color-accent); margin-bottom: 0.6rem; }
   .agent-desc { font-size: var(--text-md); color: var(--color-text-muted); line-height: 1.5; margin-bottom: 0.75rem; }
   .agent-tags { display: flex; flex-wrap: wrap; gap: 0.35rem; }
-  .agent-tags span { font-family: var(--font-mono); font-size: var(--text-2xs); background: var(--color-bg); color: var(--color-accent); padding: 0.15rem 0.5rem; border-radius: 4px; border: 1px solid var(--color-border); }
+  .agent-tags span { font-family: var(--font-mono); font-size: var(--text-2xs); background: var(--color-bg); color: var(--color-accent); padding: 0.15rem 0.5rem; border-radius: var(--radius-sm); border: 1px solid var(--color-border); }
 
   /* Roadmap */
   .projets-page .roadmap {
@@ -338,7 +338,7 @@
   .projets-page .roadmap-item {
     background: var(--color-surface);
     border: 1px solid var(--color-border);
-    border-radius: 6px;
+    border-radius: var(--radius-md);
     padding: 1.25rem;
     border-left: 3px solid var(--color-border);
     transition: border-left-color 0.2s;
@@ -354,7 +354,7 @@
     text-transform: uppercase;
     letter-spacing: 0.08em;
     padding: 0.15rem 0.5rem;
-    border-radius: 3px;
+    border-radius: var(--radius-xs);
     display: inline-block;
     margin-bottom: 0.6rem;
   }

@@ -152,7 +152,7 @@ const stats = await getBuildStats();
 
   /* Uptime bars (created by JS) */
   .uptime-bars { display: flex; gap: 3px; height: 2.5rem; align-items: stretch; }
-  .ubar { flex: 1; border-radius: 3px; cursor: pointer; transition: transform 0.15s, opacity 0.15s; min-width: 0; }
+  .ubar { flex: 1; border-radius: var(--radius-xs); cursor: pointer; transition: transform 0.15s, opacity 0.15s; min-width: 0; }
   .ubar:hover { transform: scaleY(1.15); opacity: 0.85; }
   .ubar-perfect { background: var(--color-ok); }
   .ubar-good { background: #4ade80; }
@@ -166,7 +166,7 @@ const stats = await getBuildStats();
   .service-category { margin-bottom: 2rem; }
   .category-title { font-family: var(--font-mono); font-size: var(--text-base); color: var(--color-accent); margin-bottom: 0.75rem; letter-spacing: 0.05em; }
   .service-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 0.5rem; }
-  .service-card { display: flex; align-items: center; gap: 0.6rem; padding: 0.6rem 0.9rem; background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 6px; transition: border-color 0.2s; }
+  .service-card { display: flex; align-items: center; gap: 0.6rem; padding: 0.6rem 0.9rem; background: var(--color-surface); border: 1px solid var(--color-border); border-radius: var(--radius-md); transition: border-color 0.2s; }
   .service-card:hover { border-color: var(--color-accent); }
   .svc-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
   .svc-dot.up { background: var(--color-ok); }
@@ -187,13 +187,13 @@ const stats = await getBuildStats();
   .svc-latency { font-family: var(--font-mono); font-size: var(--text-xs); color: var(--color-text-muted); }
 
   .nodes-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 0.75rem; }
-  .node-card { background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 6px; padding: 1rem 1.1rem; transition: border-color 0.2s; display: flex; flex-direction: column; min-height: 7.5rem; }
+  .node-card { background: var(--color-surface); border: 1px solid var(--color-border); border-radius: var(--radius-md); padding: 1rem 1.1rem; transition: border-color 0.2s; display: flex; flex-direction: column; min-height: 7.5rem; }
   .node-card:hover { border-color: var(--color-accent); }
   .node-name { font-family: var(--font-mono); font-size: var(--text-lg); font-weight: 700; color: var(--color-text); margin: 0 0 0.85rem; }
   .node-metric { display: flex; align-items: center; gap: 0.55rem; margin-bottom: 0.45rem; }
   .metric-label { font-family: var(--font-mono); font-size: var(--text-2xs); color: var(--color-text-muted); width: 2.3rem; }
-  .bar { flex: 1; height: 6px; background: var(--color-border); border-radius: 3px; overflow: hidden; }
-  .bar-fill { height: 100%; border-radius: 3px; transition: width 0.8s ease-out; }
+  .bar { flex: 1; height: 6px; background: var(--color-border); border-radius: var(--radius-xs); overflow: hidden; }
+  .bar-fill { height: 100%; border-radius: var(--radius-xs); transition: width 0.8s ease-out; }
   .metric-value { font-family: var(--font-mono); font-size: var(--text-xs); color: var(--color-text); width: 2.75rem; text-align: right; }
   .node-uptime { font-family: var(--font-mono); font-size: var(--text-2xs); color: var(--color-text-muted); margin-top: auto; padding-top: 0.5rem; }
   .node-offline { font-family: var(--font-mono); font-size: var(--text-sm); color: var(--color-text-muted); font-style: italic; }
@@ -207,7 +207,7 @@ const stats = await getBuildStats();
     background: rgb(var(--accent-rgb) / 0.08);
     border: 1px solid rgb(var(--accent-rgb) / 0.25);
     padding: 0.15rem 0.5rem;
-    border-radius: 3px;
+    border-radius: var(--radius-xs);
     letter-spacing: 0.04em;
     width: fit-content;
   }
@@ -235,7 +235,7 @@ const stats = await getBuildStats();
   .service-card.has-info .svc-name { text-decoration: underline dotted rgb(var(--accent-rgb) / 0.45); text-underline-offset: 3px; }
 
   .svc-popover { position: fixed; inset: 0; z-index: 200; display: flex; align-items: center; justify-content: center; padding: 1.5rem; background: rgba(8,12,22,0.72); backdrop-filter: blur(3px); }
-  .svc-pop-box { position: relative; max-width: 30rem; width: 100%; background: var(--color-surface); border: 1px solid var(--color-accent); border-radius: 10px; padding: 1.75rem 1.75rem 1.5rem; box-shadow: 0 20px 60px rgba(0,0,0,0.5); }
+  .svc-pop-box { position: relative; max-width: 30rem; width: 100%; background: var(--color-surface); border: 1px solid var(--color-accent); border-radius: var(--radius-xl); padding: 1.75rem 1.75rem 1.5rem; box-shadow: 0 20px 60px rgba(0,0,0,0.5); }
   .svc-pop-close { position: absolute; top: 0.5rem; right: 0.85rem; background: none; border: none; color: var(--color-text-muted); font-size: var(--text-5xl); line-height: 1; cursor: pointer; transition: color 0.2s; }
   .svc-pop-close:hover { color: var(--color-accent); }
   .svc-pop-title { font-family: var(--font-mono); font-size: var(--text-2xl); color: var(--color-accent); margin: 0 0 0.75rem; }
