@@ -436,7 +436,7 @@
 
   /* Responsive */
   @media (max-width: 768px) {
-    .infrastructure-page .flow-diagram, .infrastructure-page .tls-pipeline {
+    .infrastructure-page .tls-pipeline {
       flex-direction: column;
     }
 
