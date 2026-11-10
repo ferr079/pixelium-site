@@ -585,12 +585,12 @@ const monitoringSlides = [
 <style>
   .inception-trigger {
     margin-top: 1.1rem; display: inline-flex; align-items: center; gap: 0.5rem;
-    background: rgba(56, 189, 248, 0.06); border: 1px solid rgba(56, 189, 248, 0.25);
+    background: rgb(var(--accent-rgb) / 0.06); border: 1px solid rgb(var(--accent-rgb) / 0.25);
     border-radius: 6px; padding: 0.5rem 0.85rem; cursor: pointer;
     font-family: var(--font-mono); font-size: 0.8rem; color: var(--color-text-muted);
     transition: all 0.2s;
   }
-  .inception-trigger:hover { border-color: var(--color-accent); color: var(--color-accent); background: rgba(56, 189, 248, 0.1); }
+  .inception-trigger:hover { border-color: var(--color-accent); color: var(--color-accent); background: rgb(var(--accent-rgb) / 0.1); }
   .ic-dollar { color: var(--color-accent); }
   .ic-blink { animation: ic-blink 1.1s steps(1) infinite; color: var(--color-accent); }
   @keyframes ic-blink { 50% { opacity: 0; } }
@@ -599,7 +599,7 @@ const monitoringSlides = [
   .inception {
     position: fixed; inset: 0; z-index: 110; display: none;
     align-items: center; justify-content: center; padding: 1.5rem;
-    background: rgba(11, 17, 32, 0.78); -webkit-backdrop-filter: blur(4px); backdrop-filter: blur(4px);
+    background: rgb(var(--bg-rgb) / 0.78); -webkit-backdrop-filter: blur(4px); backdrop-filter: blur(4px);
   }
   .inception.open { display: flex; }
   .inception-win {
@@ -712,15 +712,15 @@ const monitoringSlides = [
   }
 
   .badge-24x7 {
-    background: rgba(34, 197, 94, 0.15);
-    color: #22c55e;
-    border: 1px solid rgba(34, 197, 94, 0.3);
+    background: rgb(var(--ok-rgb) / 0.15);
+    color: var(--color-ok);
+    border: 1px solid rgb(var(--ok-rgb) / 0.3);
   }
 
   .badge-ondemand {
-    background: rgba(234, 179, 8, 0.15);
-    color: #eab308;
-    border: 1px solid rgba(234, 179, 8, 0.3);
+    background: rgb(var(--warn-rgb) / 0.15);
+    color: var(--color-warn);
+    border: 1px solid rgb(var(--warn-rgb) / 0.3);
   }
 
   /* Specs */
@@ -1133,7 +1133,7 @@ const monitoringSlides = [
   .mcp-note code {
     font-size: 0.85em;
     color: var(--color-accent);
-    background: rgba(56, 189, 248, 0.06);
+    background: rgb(var(--accent-rgb) / 0.06);
     padding: 0.05rem 0.3rem;
     border-radius: 3px;
   }

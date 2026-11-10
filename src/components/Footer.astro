@@ -202,7 +202,7 @@ const statsMeta = await getBuildStatsMeta();
   .footer-deploy .fd-commit {
     color: var(--color-accent);
     text-decoration: none;
-    border-bottom: 1px dotted rgba(56, 189, 248, 0.4);
+    border-bottom: 1px dotted rgb(var(--accent-rgb) / 0.4);
   }
 
   .footer-deploy .fd-commit:hover { color: var(--color-accent-hover); }
@@ -218,8 +218,8 @@ const statsMeta = await getBuildStatsMeta();
     width: 2.5rem;
     height: 2.5rem;
     border-radius: 50%;
-    background: rgba(56, 189, 248, 0.15);
-    border: 1px solid rgba(56, 189, 248, 0.3);
+    background: rgb(var(--accent-rgb) / 0.15);
+    border: 1px solid rgb(var(--accent-rgb) / 0.3);
     color: var(--color-accent);
     font-size: 1.1rem;
     cursor: pointer;
@@ -238,6 +238,6 @@ const statsMeta = await getBuildStatsMeta();
   }
 
   .scroll-top:hover {
-    background: rgba(56, 189, 248, 0.3);
+    background: rgb(var(--accent-rgb) / 0.3);
   }
 </style>

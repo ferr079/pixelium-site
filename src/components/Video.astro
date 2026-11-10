@@ -54,7 +54,7 @@ const poster = rawPoster ? (rawPoster.startsWith('/images/') ? assetUrl(rawPoste
   .video-window:hover {
     transform: scale(1.01);
     box-shadow:
-      0 0 20px rgba(56, 189, 248, 0.15),
+      0 0 20px rgb(var(--accent-rgb) / 0.15),
       0 8px 30px rgba(0, 0, 0, 0.4);
   }
 
@@ -74,9 +74,9 @@ const poster = rawPoster ? (rawPoster.startsWith('/images/') ? assetUrl(rawPoste
     background: var(--color-border);
   }
 
-  .video-dot:nth-child(1) { background: #ef4444; }
-  .video-dot:nth-child(2) { background: #eab308; }
-  .video-dot:nth-child(3) { background: #22c55e; }
+  .video-dot:nth-child(1) { background: var(--color-down); }
+  .video-dot:nth-child(2) { background: var(--color-warn); }
+  .video-dot:nth-child(3) { background: var(--color-ok); }
 
   .video-title {
     font-family: var(--font-mono);
@@ -89,7 +89,7 @@ const poster = rawPoster ? (rawPoster.startsWith('/images/') ? assetUrl(rawPoste
     font-family: var(--font-mono);
     font-size: 0.6rem;
     font-weight: 700;
-    color: #ef4444;
+    color: var(--color-down);
     margin-left: auto;
     letter-spacing: 0.1em;
     animation: rec-pulse 2s ease-in-out infinite;

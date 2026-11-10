@@ -29,8 +29,8 @@
     font-family: var(--font-mono);
     font-size: 0.75rem;
     color: var(--color-accent);
-    background: rgba(56, 189, 248, 0.1);
-    border: 1px solid rgba(56, 189, 248, 0.2);
+    background: rgb(var(--accent-rgb) / 0.1);
+    border: 1px solid rgb(var(--accent-rgb) / 0.2);
     padding: 0.15rem 0.6rem;
     border-radius: 4px;
     margin-bottom: 0.75rem;
@@ -300,11 +300,11 @@
   .agent-card:hover { border-color: var(--color-accent); transform: translateY(-2px); }
   .agent-card-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 0.5rem; }
   .agent-badge { font-family: var(--font-mono); font-size: 0.65rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; padding: 0.2rem 0.5rem; border-radius: 4px; }
-  .agent-badge.running { background: rgba(34, 197, 94, 0.15); color: #22c55e; }
-  .agent-badge.observing { background: rgba(234, 179, 8, 0.15); color: #eab308; }
-  .agent-badge.decommissioned { background: rgba(148, 163, 184, 0.15); color: #94a3b8; }
+  .agent-badge.running { background: rgb(var(--ok-rgb) / 0.15); color: var(--color-ok); }
+  .agent-badge.observing { background: rgb(var(--warn-rgb) / 0.15); color: var(--color-warn); }
+  .agent-badge.decommissioned { background: rgb(var(--muted-rgb) / 0.15); color: var(--color-text-muted); }
   .project-tag-decom { color: #f87171; background: rgba(248, 113, 113, 0.08); border-color: rgba(248, 113, 113, 0.25); }
-  .decom-note { font-family: var(--font-mono); font-size: 0.8rem; color: #94a3b8; border-left: 2px solid rgba(248, 113, 113, 0.4); padding-left: 0.75rem; }
+  .decom-note { font-family: var(--font-mono); font-size: 0.8rem; color: var(--color-text-muted); border-left: 2px solid rgba(248, 113, 113, 0.4); padding-left: 0.75rem; }
   .agent-ct { font-family: var(--font-mono); font-size: 0.7rem; color: var(--color-text-muted); }
   .agent-card h5 { font-size: 1.05rem; margin: 0 0 0.15rem; color: var(--color-text); }
   .agent-role { font-family: var(--font-mono); font-size: 0.75rem; color: var(--color-accent); margin-bottom: 0.6rem; }
@@ -369,20 +369,20 @@
 
   .projets-page .status-planned {
     color: var(--color-text-muted);
-    background: rgba(148, 163, 184, 0.1);
-    border: 1px solid rgba(148, 163, 184, 0.3);
+    background: rgb(var(--muted-rgb) / 0.1);
+    border: 1px solid rgb(var(--muted-rgb) / 0.3);
   }
 
   .projets-page .status-wip {
     color: var(--color-accent);
-    background: rgba(56, 189, 248, 0.1);
-    border: 1px solid rgba(56, 189, 248, 0.3);
+    background: rgb(var(--accent-rgb) / 0.1);
+    border: 1px solid rgb(var(--accent-rgb) / 0.3);
   }
 
   .projets-page .status-done {
-    color: #22c55e;
-    background: rgba(34, 197, 94, 0.1);
-    border: 1px solid rgba(34, 197, 94, 0.3);
+    color: var(--color-ok);
+    background: rgb(var(--ok-rgb) / 0.1);
+    border: 1px solid rgb(var(--ok-rgb) / 0.3);
   }
 
   .projets-page .roadmap-item h4 {
@@ -408,9 +408,9 @@
     justify-content: space-between;
     gap: 2rem;
     padding: 1.5rem 2rem;
-    border: 1px solid rgba(56, 189, 248, 0.2);
+    border: 1px solid rgb(var(--accent-rgb) / 0.2);
     border-radius: 8px;
-    background: linear-gradient(135deg, rgba(56, 189, 248, 0.05), rgba(56, 189, 248, 0.02));
+    background: linear-gradient(135deg, rgb(var(--accent-rgb) / 0.05), rgb(var(--accent-rgb) / 0.02));
     text-decoration: none;
     color: inherit;
     transition: border-color 0.3s, box-shadow 0.3s;

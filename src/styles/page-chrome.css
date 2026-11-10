@@ -48,7 +48,7 @@
 
 .crosslink-block:hover {
     border-color: var(--color-accent);
-    box-shadow: 0 0 20px rgba(56, 189, 248, 0.1);
+    box-shadow: 0 0 20px rgb(var(--accent-rgb) / 0.1);
     color: inherit;
   }
 

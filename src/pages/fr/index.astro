@@ -183,7 +183,7 @@ const cards = [
   .hero-zone::before {
     content: '';
     position: absolute; inset: 0; z-index: -1; pointer-events: none;
-    background: radial-gradient(rgba(148, 163, 184, 0.08) 1px, transparent 1px);
+    background: radial-gradient(rgb(var(--muted-rgb) / 0.08) 1px, transparent 1px);
     background-size: 24px 24px;
     mask-image: linear-gradient(to bottom, black 55%, transparent 98%);
   }
@@ -196,7 +196,7 @@ const cards = [
     content: '';
     position: absolute; inset: -4%; z-index: -1; pointer-events: none;
     background:
-      radial-gradient(720px 460px at 15% 16%, rgba(56, 189, 248, 0.16), transparent 68%),
+      radial-gradient(720px 460px at 15% 16%, rgb(var(--accent-rgb) / 0.16), transparent 68%),
       radial-gradient(560px 380px at 85% 42%, rgba(245, 158, 11, 0.06), transparent 70%);
     mask-image: linear-gradient(to bottom, black 55%, transparent 98%);
     animation: hz-drift 90s ease-in-out infinite alternate;
@@ -227,18 +227,18 @@ const cards = [
     flex-direction: column;
     align-items: center;
     padding: 1.5rem 1rem;
-    border: 1px solid rgba(56, 189, 248, 0.15);
+    border: 1px solid rgb(var(--accent-rgb) / 0.15);
     border-radius: 8px;
-    background: linear-gradient(180deg, rgba(2, 6, 23, 0.55), rgba(2, 6, 23, 0.2));
+    background: linear-gradient(180deg, rgb(var(--deep-rgb) / 0.55), rgb(var(--deep-rgb) / 0.2));
     text-align: center;
     transition: border-color 0.25s, transform 0.25s, background 0.25s;
     text-decoration: none;
   }
 
   .signature-stat:hover {
-    border-color: rgba(56, 189, 248, 0.5);
+    border-color: rgb(var(--accent-rgb) / 0.5);
     transform: translateY(-2px);
-    background: linear-gradient(180deg, rgba(56, 189, 248, 0.08), transparent);
+    background: linear-gradient(180deg, rgb(var(--accent-rgb) / 0.08), transparent);
   }
 
   .signature-number {
@@ -312,9 +312,9 @@ const cards = [
     align-items: center;
     gap: 0.75rem;
     padding: 1.5rem 2rem;
-    border: 1px solid rgba(56, 189, 248, 0.2);
+    border: 1px solid rgb(var(--accent-rgb) / 0.2);
     border-radius: 8px;
-    background: linear-gradient(135deg, rgba(56, 189, 248, 0.05), rgba(56, 189, 248, 0.02));
+    background: linear-gradient(135deg, rgb(var(--accent-rgb) / 0.05), rgb(var(--accent-rgb) / 0.02));
     text-align: center;
   }
 
@@ -367,7 +367,7 @@ const cards = [
     padding: 1.5rem 0;
     border-top: 1px solid var(--color-border);
     border-bottom: 1px solid var(--color-border);
-    background: linear-gradient(135deg, rgba(56, 189, 248, 0.03), rgba(56, 189, 248, 0.08));
+    background: linear-gradient(135deg, rgb(var(--accent-rgb) / 0.03), rgb(var(--accent-rgb) / 0.08));
   }
 
   .banner-link {

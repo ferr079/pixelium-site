@@ -60,7 +60,7 @@ const dims = rawSrc.startsWith('/images/') ? assetDims(rawSrc) : undefined;
   .screenshot-window:hover {
     transform: scale(1.02);
     box-shadow:
-      0 0 20px rgba(56, 189, 248, 0.15),
+      0 0 20px rgb(var(--accent-rgb) / 0.15),
       0 8px 30px rgba(0, 0, 0, 0.4);
   }
 
@@ -80,9 +80,9 @@ const dims = rawSrc.startsWith('/images/') ? assetDims(rawSrc) : undefined;
     background: var(--color-border);
   }
 
-  .screenshot-dot:nth-child(1) { background: #ef4444; }
-  .screenshot-dot:nth-child(2) { background: #eab308; }
-  .screenshot-dot:nth-child(3) { background: #22c55e; }
+  .screenshot-dot:nth-child(1) { background: var(--color-down); }
+  .screenshot-dot:nth-child(2) { background: var(--color-warn); }
+  .screenshot-dot:nth-child(3) { background: var(--color-ok); }
 
   .screenshot-link {
     text-decoration: none;
