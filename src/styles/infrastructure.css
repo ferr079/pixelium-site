@@ -64,13 +64,6 @@
     margin-bottom: 1.5rem;
   }
 
-  .infrastructure-page .layer-number {
-    font-family: var(--font-mono);
-    font-size: var(--text-md);
-    color: var(--color-accent);
-    font-weight: 700;
-  }
-
   .infrastructure-page .tech-logo {
     width: 1.4rem;
     height: 1.4rem;
@@ -313,18 +306,6 @@
     flex-shrink: 0;
   }
 
-  /* Screenshots grid */
-  .infrastructure-page .screenshots-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(18rem, 1fr));
-    gap: 1.25rem;
-    margin: 2rem 0;
-  }
-
-  .infrastructure-page .screenshots-grid .screenshot {
-    margin: 0;
-  }
-
   /* Observability grid */
   .infrastructure-page .obs-grid {
     display: grid;
@@ -365,156 +346,6 @@
     font-size: var(--text-sm);
     color: var(--color-text-muted);
     line-height: 1.5;
-  }
-
-  /* Agent block */
-  .infrastructure-page .agent-block {
-    background: var(--color-surface);
-    border: 1px solid var(--color-accent);
-    border-radius: 8px;
-    padding: 1.5rem;
-  }
-
-  .infrastructure-page .agent-header {
-    display: flex;
-    align-items: center;
-    gap: 0.6rem;
-    margin-bottom: 0.75rem;
-  }
-
-  .infrastructure-page .agent-header h4 {
-    font-size: var(--text-lg);
-    color: var(--color-accent);
-    margin: 0;
-  }
-
-  .infrastructure-page .agent-block p {
-    font-size: var(--text-md);
-    color: var(--color-text-muted);
-    line-height: 1.6;
-  }
-
-  /* Tags */
-  .infrastructure-page .tags {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.4rem;
-    list-style: none;
-  }
-
-  .infrastructure-page .tags li {
-    font-family: var(--font-mono);
-    font-size: var(--text-xs);
-    background: var(--color-bg);
-    color: var(--color-accent);
-    padding: 0.2rem 0.6rem;
-    border-radius: 4px;
-    border: 1px solid var(--color-border);
-  }
-
-  /* Flow diagram */
-  .infrastructure-page .flow-diagram {
-    display: flex;
-    align-items: center;
-    gap: 0.75rem;
-    flex-wrap: wrap;
-    margin-bottom: 2rem;
-  }
-
-  .infrastructure-page .flow-step {
-    background: var(--color-surface);
-    border: 1px solid var(--color-border);
-    border-radius: 8px;
-    padding: 1rem 1.25rem;
-    display: flex;
-    align-items: flex-start;
-    gap: 0.75rem;
-    flex: 1;
-    min-width: 10rem;
-  }
-
-  .infrastructure-page .flow-icon {
-    font-family: var(--font-mono);
-    font-size: var(--text-sm);
-    color: var(--color-accent);
-    font-weight: 700;
-    flex-shrink: 0;
-    margin-top: 0.1rem;
-  }
-
-  .infrastructure-page .flow-step h4 {
-    font-size: var(--text-md);
-    margin-bottom: 0.25rem;
-  }
-
-  .infrastructure-page .flow-step p {
-    font-size: var(--text-xs);
-    color: var(--color-text-muted);
-    line-height: 1.4;
-  }
-
-  .infrastructure-page .flow-arrow {
-    color: var(--color-accent);
-    font-family: var(--font-mono);
-    font-size: var(--text-2xl);
-    flex-shrink: 0;
-  }
-
-  /* Palette swatches */
-  .infrastructure-page .palette {
-    display: flex;
-    gap: 0.75rem;
-    margin-bottom: 1.5rem;
-    flex-wrap: wrap;
-  }
-
-  .infrastructure-page .swatch {
-    width: 7rem;
-    height: 5rem;
-    border-radius: 8px;
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-end;
-    padding: 0.5rem;
-  }
-
-  .infrastructure-page .swatch-name {
-    font-family: var(--font-mono);
-    font-size: var(--text-2xs);
-    color: var(--color-text);
-  }
-
-  .infrastructure-page .swatch-hex {
-    font-family: var(--font-mono);
-    font-size: var(--text-2xs);
-    color: var(--color-text-muted);
-  }
-
-  /* Absent grid */
-  .infrastructure-page .absent-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(14rem, 1fr));
-    gap: 1rem;
-    margin-bottom: 1.5rem;
-  }
-
-  .infrastructure-page .absent {
-    padding: 1rem;
-    border-left: 2px solid var(--color-border);
-  }
-
-  .infrastructure-page .absent h4 {
-    font-size: var(--text-base);
-    margin-bottom: 0.4rem;
-    color: var(--color-text-muted);
-    text-decoration: line-through;
-    text-decoration-color: var(--color-border);
-  }
-
-  .infrastructure-page .absent p {
-    font-size: var(--text-sm);
-    color: var(--color-text-muted);
-    line-height: 1.4;
   }
 
   /* MCP grid — section 05 */
@@ -609,11 +440,11 @@
       flex-direction: column;
     }
 
-    .infrastructure-page .flow-arrow, .infrastructure-page .tls-arrow {
+    .infrastructure-page .tls-arrow {
       transform: rotate(90deg);
     }
 
-    .infrastructure-page .flow-step, .infrastructure-page .tls-step {
+    .infrastructure-page .tls-step {
       width: 100%;
     }
 
@@ -631,12 +462,8 @@
   }
 
   @media (max-width: 640px) {
-    .infrastructure-page .details-grid, .infrastructure-page .obs-grid, .infrastructure-page .absent-grid { grid-template-columns: 1fr; gap: 0.75rem; }
-    .infrastructure-page .detail, .infrastructure-page .tech-detail { padding: 0.75rem 1rem; }
-    .infrastructure-page .screenshots-grid { grid-template-columns: 1fr; }
+    .infrastructure-page .details-grid, .infrastructure-page .obs-grid { grid-template-columns: 1fr; gap: 0.75rem; }
+    .infrastructure-page .detail { padding: 0.75rem 1rem; }
     .infrastructure-page .node-badge { padding: 0.5rem 0.75rem; font-size: var(--text-xs); }
-    .infrastructure-page .palette { justify-content: center; }
-    .infrastructure-page .crosslink-block { flex-direction: column; gap: 1rem; padding: 1.25rem; }
-    .infrastructure-page .crosslink-block p { font-size: var(--text-sm); }
     .infrastructure-page .layer-header { flex-wrap: wrap; gap: 0.5rem; }
   }
