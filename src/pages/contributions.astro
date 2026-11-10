@@ -1,5 +1,6 @@
 ---
 import Base from '../layouts/Base.astro';
+import PageIntro from '../components/PageIntro.astro';
 import SectionHeading from '../components/SectionHeading.astro';
 
 // Données + synchro de statut : source unique dans src/data/contributions.ts.
@@ -96,8 +97,7 @@ try {
   <main>
     <section class="c-hero">
       <div class="container c-hero-wrap">
-        <p class="c-eyebrow">∷ contributions · open source · shipped upstream</p>
-        <h1>What I gave back</h1>
+        <PageIntro eyebrow="∷ contributions · open source · shipped upstream">What I gave back</PageIntro>
         <p class="c-lede">
           This page is the shelf. One entry per patch shipped upstream.
           <strong>{shippedCount} shipped</strong> — four on a single day, 2026-04-22,
@@ -250,23 +250,6 @@ try {
 
   .c-hero-wrap > p {
     max-width: 50rem;
-  }
-
-  .c-eyebrow {
-    font-family: var(--font-mono);
-    font-size: 0.78rem;
-    color: var(--color-accent);
-    letter-spacing: 0.1em;
-    margin-bottom: 0.75rem;
-    opacity: 0.85;
-  }
-
-  .c-hero h1 {
-    font-size: clamp(2rem, 5vw, 3.25rem);
-    font-weight: 800;
-    letter-spacing: -0.02em;
-    line-height: 1.1;
-    margin-bottom: 1.5rem;
   }
 
   .c-lede {

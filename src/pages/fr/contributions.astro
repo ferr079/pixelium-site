@@ -1,5 +1,6 @@
 ---
 import Base from '../../layouts/Base.astro';
+import PageIntro from '../../components/PageIntro.astro';
 import SectionHeading from '../../components/SectionHeading.astro';
 
 // Données + synchro de statut : source unique dans src/data/contributions.ts
@@ -94,8 +95,7 @@ try {
   <main>
     <section class="c-hero">
       <div class="container c-hero-wrap">
-        <p class="c-eyebrow">∷ contributions · open source · soumises en amont</p>
-        <h1>Ce que nous avons rendu</h1>
+        <PageIntro eyebrow="∷ contributions · open source · soumises en amont">Ce que nous avons rendu</PageIntro>
         <p class="c-lede">
           Cette page est l'étagère. Une entrée par patch shippé en amont.
           <strong>{shippedCount} contributions soumises</strong> — quatre le même jour, le 22 avril 2026,
@@ -247,23 +247,6 @@ try {
 <style>
   .c-hero { padding: 4rem 0 2.5rem; }
   .c-hero-wrap > p { max-width: 50rem; }
-
-  .c-eyebrow {
-    font-family: var(--font-mono);
-    font-size: 0.78rem;
-    color: var(--color-accent);
-    letter-spacing: 0.1em;
-    margin-bottom: 0.75rem;
-    opacity: 0.85;
-  }
-
-  .c-hero h1 {
-    font-size: clamp(2rem, 5vw, 3.25rem);
-    font-weight: 800;
-    letter-spacing: -0.02em;
-    line-height: 1.1;
-    margin-bottom: 1.5rem;
-  }
 
   .c-lede {
     font-size: 1.05rem;

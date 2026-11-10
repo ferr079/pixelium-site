@@ -12,18 +12,21 @@
  * - slot par défaut : le contenu du sous-titre (texte, <DynNum />…).
  * - slot `after`    : ce qui suit le sous-titre dans l'en-tête, s'il y en a.
  *
+ * - `compact`: l'en-tête resserré de /bbs, qui laisse la place au terminal.
+ *
  * `.terminal-prompt` est stylé par styles/page-chrome.css, le point carré et
- * son curseur par Base.astro. /bbs garde son en-tête compact à part.
+ * son curseur par Base.astro.
  */
 interface Props {
   prompt: string;
   title: string;
+  compact?: boolean;
 }
 
-const { prompt, title } = Astro.props;
+const { prompt, title, compact = false } = Astro.props;
 ---
 
-<section class="hero-mini">
+<section class:list={['hero-mini', { compact }]}>
   <div class="container">
     <p class="terminal-prompt">{prompt}</p>
     <h1>{title}<span class="dot">.</span></h1>
@@ -50,6 +53,18 @@ const { prompt, title } = Astro.props;
     font-size: 1.1rem;
   }
 
+  .hero-mini.compact {
+    padding: 1.5rem 0 1rem;
+  }
+
+  .compact h1 {
+    margin-bottom: 0.5rem;
+  }
+
+  .compact .subtitle {
+    font-size: 1rem;
+  }
+
   @media (max-width: 640px) {
     .hero-mini {
       padding: 2rem 0 1.5rem;
@@ -61,6 +76,14 @@ const { prompt, title } = Astro.props;
 
     .subtitle {
       font-size: 0.95rem;
+    }
+
+    .hero-mini.compact {
+      padding: 1rem 0 0.5rem;
+    }
+
+    .compact .subtitle {
+      font-size: 0.85rem;
     }
   }
 </style>

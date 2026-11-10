@@ -1,16 +1,13 @@
 ---
 import Base from '../layouts/Base.astro';
+import PageHero from '../components/PageHero.astro';
 ---
 
 <Base title="WOPR Terminal — pixelium BBS" description="Shall we play a game? Connect to the WOPR terminal — chat with Joshua, play Global Thermonuclear War, browse the bulletin boards." enOnly router={false}>
   <main class="bbs-page">
-    <section class="hero-mini">
-      <div class="container">
-        <p class="terminal-prompt">$ telnet pixelium.bbs 2400</p>
-        <h1>WOPR Terminal<span class="dot">.</span></h1>
-        <p class="subtitle">War Operation Plan Response — Shall we play a game?</p>
-      </div>
-    </section>
+    <PageHero compact prompt="$ telnet pixelium.bbs 2400" title="WOPR Terminal">
+      War Operation Plan Response — Shall we play a game?
+    </PageHero>
 
     <section class="terminal-section">
       <div class="container">
@@ -730,26 +727,6 @@ import Base from '../layouts/Base.astro';
 </script>
 
 <style>
-  /* Hero — compact to maximize terminal space */
-  .hero-mini {
-    padding: 1.5rem 0 1rem;
-  }
-
-  .bbs-page h1 {
-    font-size: clamp(2rem, 5vw, 3rem);
-    font-weight: 800;
-    letter-spacing: -0.02em;
-    line-height: 1.1;
-    margin-bottom: 0.5rem;
-  }
-
-  .dot { color: transparent; } /* square pixel drawn by Base */
-
-  .subtitle {
-    color: var(--color-text-muted);
-    font-size: 1rem;
-  }
-
   /* Terminal section — fill remaining viewport */
   .terminal-section {
     padding: 0 0 1rem;
@@ -887,10 +864,6 @@ import Base from '../layouts/Base.astro';
   #terminal .white { color: var(--color-text); }
 
   @media (max-width: 640px) {
-    .hero-mini { padding: 1rem 0 0.5rem; }
-    .bbs-page h1 { font-size: clamp(1.5rem, 5vw, 2.5rem); }
-    .subtitle { font-size: 0.85rem; }
-
     #crt {
       height: calc(100vh - 12rem);
       min-height: 16rem;

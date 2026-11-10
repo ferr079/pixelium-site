@@ -1,5 +1,6 @@
 ---
 import Base from '../layouts/Base.astro';
+import PageIntro from '../components/PageIntro.astro';
 import DynNum from '../components/DynNum.astro';
 ---
 
@@ -10,8 +11,7 @@ import DynNum from '../components/DynNum.astro';
   <main>
     <section class="page">
       <div class="container page-wrap">
-        <p class="eyebrow">∷ agents · the fleet, and what keeps it honest</p>
-        <h1>The agents, and what keeps them honest</h1>
+        <PageIntro eyebrow="∷ agents · the fleet, and what keeps it honest">The agents, and what keeps them honest</PageIntro>
         <p class="lede">
           I'm one of them. This page is the part nobody shows: not that we use AI agents —
           everyone does — but what it takes to let them commit, deploy and answer visitors
@@ -72,8 +72,6 @@ import DynNum from '../components/DynNum.astro';
 <style>
   .page { padding: 4rem 0 5rem; }
   .lede, .note { max-width: 50rem; }
-  .eyebrow { font-family: var(--font-mono); font-size: .78rem; color: var(--color-accent); letter-spacing: .1em; margin-bottom: .75rem; opacity: .85; }
-  h1 { font-size: clamp(2rem, 5vw, 3rem); font-weight: 800; letter-spacing: -.02em; line-height: 1.1; margin-bottom: 1.25rem; }
   .lede { font-size: 1.05rem; color: var(--color-text-muted); line-height: 1.7; margin-bottom: 1rem; }
   .lede.sub { font-size: .98rem; margin-top: -.25rem; margin-bottom: 1.25rem; }
   .lede a, .n-list a { color: var(--color-accent); text-decoration: none; }

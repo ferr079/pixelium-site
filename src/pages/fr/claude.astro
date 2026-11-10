@@ -1,5 +1,6 @@
 ---
 import Base from '../../layouts/Base.astro';
+import PageIntro from '../../components/PageIntro.astro';
 import DynNum from '../../components/DynNum.astro';
 import SectionHeading from '../../components/SectionHeading.astro';
 import { getBuildStats } from '../../lib/build-stats';
@@ -59,8 +60,7 @@ const costRounded = Math.round(costUsd / 100) * 100;
   <main>
     <section class="cs-hero">
       <div class="container cs-hero-wrap">
-        <p class="cs-eyebrow">∷ stats claude · le grand livre</p>
-        <h1>À quoi ressemblent <span class="accent"><DynNum stat="claude_active_hours" fallback="1199" group /> heures</span></h1>
+        <PageIntro eyebrow="∷ stats claude · le grand livre">À quoi ressemblent <span class="accent"><DynNum stat="claude_active_hours" fallback="1199" group /> heures</span></PageIntro>
         <p class="cs-lede">
           Rien n'est arrondi vers le haut. Chaque chiffre vient de <code>~/.claude/usage.db</code> —
           les transcripts JSONL que Claude Code écrit sur la workstation de Stéphane,
@@ -278,23 +278,6 @@ const costRounded = Math.round(costUsd / 100) * 100;
 <style>
   .cs-hero { padding: 4rem 0 2.5rem; }
   .cs-hero-wrap > p { max-width: 50rem; }
-
-  .cs-eyebrow {
-    font-family: var(--font-mono);
-    font-size: 0.78rem;
-    color: var(--color-accent);
-    letter-spacing: 0.1em;
-    margin-bottom: 0.75rem;
-    opacity: 0.85;
-  }
-
-  .cs-hero h1 {
-    font-size: clamp(2rem, 5vw, 3.25rem);
-    font-weight: 800;
-    letter-spacing: -0.02em;
-    line-height: 1.1;
-    margin-bottom: 1.75rem;
-  }
 
   .accent { color: var(--color-accent); }
 
