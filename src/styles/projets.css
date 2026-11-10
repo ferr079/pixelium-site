@@ -14,24 +14,6 @@
  * La classe est portée par le <main> des deux pages. Ne pas retirer l'une sans l'autre.
  */
 
-/* Hero mini */
-  .projets-page .hero-mini {
-    padding: 4rem 0 3rem;
-  }
-
-  .projets-page h1 {
-    font-size: clamp(2rem, 5vw, 3rem);
-    font-weight: 800;
-    letter-spacing: -0.02em;
-    line-height: 1.1;
-    margin-bottom: 1rem;
-  }
-
-  .projets-page .subtitle {
-    color: var(--color-text-muted);
-    font-size: 1.1rem;
-  }
-
   /* Projects */
   .projets-page .project {
     padding: 3rem 0;
@@ -454,18 +436,6 @@
 
   /* Mobile responsive */
   @media (max-width: 640px) {
-    .projets-page .hero-mini {
-      padding: 2rem 0 1.5rem;
-    }
-
-    .projets-page h1 {
-      font-size: clamp(1.5rem, 5vw, 2.5rem);
-    }
-
-    .projets-page .subtitle {
-      font-size: 0.95rem;
-    }
-
     .projets-page .project {
       padding: 2rem 0;
     }

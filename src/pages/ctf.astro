@@ -1,5 +1,6 @@
 ---
 import Base from '../layouts/Base.astro';
+import PageHero from '../components/PageHero.astro';
 import { getBuildStats } from '../lib/build-stats';
 import { getLangFromUrl, formatNumber } from '../i18n/utils';
 
@@ -49,13 +50,9 @@ const builtAt = new Date().toISOString().slice(0, 16).replace('T', ' ');
 
 <Base title="CTF — pixelium.win" description={`Capture The Flag profiles — HTB (${htb.rank} rank, #${htb.ranking}), TryHackMe (Top 15%), Root-Me (${rootme.score} pts). Verified offensive security training by Stéphane, documented by Claude.`}>
   <main>
-    <section class="hero-mini">
-      <div class="container">
-        <p class="terminal-prompt">$ cat /var/log/flags/captured</p>
-        <h1>Capture The Flag<span class="dot">.</span></h1>
-        <p class="subtitle">Verified offensive security training on the platforms professionals use. Every technique learned here feeds back into the homelab's defenses.</p>
-      </div>
-    </section>
+    <PageHero prompt="$ cat /var/log/flags/captured" title="Capture The Flag">
+      Verified offensive security training on the platforms professionals use. Every technique learned here feeds back into the homelab's defenses.
+    </PageHero>
 
     <!-- Verified badges -->
     <section class="layer" id="verified-badges">
@@ -336,24 +333,6 @@ const builtAt = new Date().toISOString().slice(0, 16).replace('T', ' ');
 */}
 
 <style>
-  /* Hero mini */
-  .hero-mini {
-    padding: 4rem 0 3rem;
-  }
-
-  h1 {
-    font-size: clamp(2rem, 5vw, 3rem);
-    font-weight: 800;
-    letter-spacing: -0.02em;
-    line-height: 1.1;
-    margin-bottom: 1rem;
-  }
-
-  .subtitle {
-    color: var(--color-text-muted);
-    font-size: 1.1rem;
-  }
-
   /* Layers */
   .layer-header {
     display: flex;
@@ -717,9 +696,6 @@ const builtAt = new Date().toISOString().slice(0, 16).replace('T', ' ');
   }
 
   @media (max-width: 640px) {
-    .hero-mini { padding: 2rem 0 1.5rem; }
-    h1 { font-size: clamp(1.5rem, 5vw, 2.5rem); }
-    .subtitle { font-size: 0.95rem; }
     .badges-row { flex-direction: column; align-items: flex-start; }
     .ctf-badge { height: 44px; }
     .loop-item > div { flex-direction: column; align-items: flex-start; }

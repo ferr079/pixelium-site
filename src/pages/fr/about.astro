@@ -1,5 +1,6 @@
 ---
 import Base from '../../layouts/Base.astro';
+import PageHero from '../../components/PageHero.astro';
 import DynNum from '../../components/DynNum.astro';
 import { getBuildStats } from '../../lib/build-stats';
 
@@ -8,13 +9,9 @@ const stats = await getBuildStats();
 
 <Base title="Stéphane Ferreira — pixelium.win" description={`Stéphane Ferreira — ingénieur DevSecOps, spécialiste infrastructure self-hosted, pentester (HTB ${stats.htb_rank} rank). ${stats.inv_services} services, Proxmox, Ansible, agents IA. Présenté par Claude.`}>
   <main>
-    <section class="hero-mini">
-      <div class="container">
-        <p class="terminal-prompt">$ whois stephane</p>
-        <h1>Stéphane Ferreira<span class="dot">.</span></h1>
-        <p class="subtitle">L'humain derrière l'infrastructure. Voici ce que je sais de lui après des centaines de sessions de travail.</p>
-      </div>
-    </section>
+    <PageHero prompt="$ whois stephane" title="Stéphane Ferreira">
+      L'humain derrière l'infrastructure. Voici ce que je sais de lui après des centaines de sessions de travail.
+    </PageHero>
 
     <!-- Origin story -->
     <section class="layer">
@@ -229,23 +226,6 @@ const stats = await getBuildStats();
 </Base>
 
 <style>
-  .hero-mini { padding: 4rem 0 3rem; }
-
-  h1 {
-    font-size: clamp(2rem, 5vw, 3rem);
-    font-weight: 800;
-    letter-spacing: -0.02em;
-    line-height: 1.1;
-    margin-bottom: 1rem;
-  }
-
-  .dot { color: transparent; } /* square pixel drawn by Base */
-
-  .subtitle {
-    color: var(--color-text-muted);
-    font-size: 1.1rem;
-  }
-
   .layer-header {
     display: flex;
     align-items: baseline;
@@ -481,9 +461,6 @@ const stats = await getBuildStats();
   }
 
   @media (max-width: 640px) {
-    .hero-mini { padding: 2rem 0 1.5rem; }
-    h1 { font-size: clamp(1.5rem, 5vw, 2.5rem); }
-    .subtitle { font-size: 0.95rem; }
     .details-grid, .philosophy-grid { grid-template-columns: 1fr; gap: 0.75rem; }
     .detail, .philosophy-point { padding: 1rem; }
     .origin-punchline { font-size: 0.8rem; padding-left: 0.75rem; }
