@@ -1,5 +1,6 @@
 ---
 import Base from '../layouts/Base.astro';
+import PageHero from '../components/PageHero.astro';
 import Screenshot from '../components/Screenshot.astro';
 import Carousel from '../components/Carousel.astro';
 import StatsBar from '../components/StatsBar.astro';
@@ -45,17 +46,15 @@ const monitoringSlides = [
 
 <Base title="Infrastructure — pixelium.win" description={`${stats.lxc_count} LXC containers + 1 VM on ${stats.proxmox_nodes} Proxmox nodes, fully self-hosted — DNS, TLS, monitoring, SIEM, AI agents. Complete homelab architecture with live topology map.`}>
   <main>
-    <section class="hero-mini">
-      <div class="container">
-        <p class="terminal-prompt">$ cat infrastructure.md</p>
-        <h1>Infrastructure<span class="dot">.</span></h1>
-        <p class="subtitle"><DynNum stat="proxmox_nodes" fallback="4" /> Proxmox nodes, <DynNum stat="lxc_count" fallback="62" suffix="+" /> LXC containers, fully self-hosted. Not a single paid cloud service.</p>
-        <p style="margin-top:0.75rem;font-family:var(--font-mono);font-size:0.85rem;"><a href="/now">&rarr; the full hardware &amp; software stack</a></p>
-        <button class="inception-trigger" id="inceptionOpen" type="button" aria-haspopup="dialog">
-          <span class="ic-dollar">$</span> claude --message-to-visitor <span class="ic-blink">▮</span>
-        </button>
-      </div>
-    </section>
+    <PageHero prompt="$ cat infrastructure.md" title="Infrastructure">
+      <DynNum stat="proxmox_nodes" fallback="4" /> Proxmox nodes, <DynNum stat="lxc_count" fallback="62" suffix="+" /> LXC containers, fully self-hosted. Not a single paid cloud service.
+      <Fragment slot="after">
+      <p style="margin-top:0.75rem;font-family:var(--font-mono);font-size:0.85rem;"><a href="/now">&rarr; the full hardware &amp; software stack</a></p>
+      <button class="inception-trigger" id="inceptionOpen" type="button" aria-haspopup="dialog">
+        <span class="ic-dollar">$</span> claude --message-to-visitor <span class="ic-blink">▮</span>
+      </button>
+      </Fragment>
+    </PageHero>
 
     <StatsBar stats={[
       { number: "4", label: "Proxmox nodes", stat: "proxmox_nodes" },
@@ -627,35 +626,6 @@ const monitoringSlides = [
 <style>
   .icons-credit { text-align: center; font-size: 0.75rem; color: var(--color-text-muted); font-family: var(--font-mono); margin-top: 1.5rem; }
   .icons-credit a { color: var(--color-text-muted); }
-
-  /* Hero mini */
-  .hero-mini {
-    padding: 4rem 0 3rem;
-  }
-
-  .terminal-prompt {
-    font-family: var(--font-mono);
-    color: var(--color-accent);
-    font-size: 0.95rem;
-    margin-bottom: 0.75rem;
-  }
-
-  h1 {
-    font-size: clamp(2rem, 5vw, 3rem);
-    font-weight: 800;
-    letter-spacing: -0.02em;
-    line-height: 1.1;
-    margin-bottom: 1rem;
-  }
-
-  .dot {
-    color: transparent; /* square pixel drawn by Base */
-  }
-
-  .subtitle {
-    color: var(--color-text-muted);
-    font-size: 1.1rem;
-  }
 
   /* Layers */
   .layer {
@@ -1240,9 +1210,6 @@ const monitoringSlides = [
   }
 
   @media (max-width: 640px) {
-    .hero-mini { padding: 2rem 0 1.5rem; }
-    h1 { font-size: clamp(1.5rem, 5vw, 2.5rem); }
-    .subtitle { font-size: 0.95rem; }
     .details-grid, .obs-grid, .absent-grid { grid-template-columns: 1fr; gap: 0.75rem; }
     .detail, .tech-detail { padding: 0.75rem 1rem; }
     .screenshots-grid { grid-template-columns: 1fr; }

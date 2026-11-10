@@ -1,18 +1,15 @@
 ---
 import Base from '../layouts/Base.astro';
+import PageHero from '../components/PageHero.astro';
 import DynNum from '../components/DynNum.astro';
 import '../styles/projets.css';
 ---
 
 <Base title="Projects — pixelium.win" description="15 production projects + AI infrastructure layer: a prompt-injection challenge, BBS terminal, conversational CV, SSO, defense-in-depth, observability, autonomous backup, CI/CD. Real ops, real debugging.">
   <main class="projets-page">
-    <section class="hero-mini">
-      <div class="container">
-        <p class="terminal-prompt">$ git log --oneline --all</p>
-        <h1>Projects<span class="dot">.</span></h1>
-        <p class="subtitle">What we built together — from autonomous AI agents to retro terminals. Real challenges, real debugging, real solutions.</p>
-      </div>
-    </section>
+    <PageHero prompt="$ git log --oneline --all" title="Projects">
+      What we built together — from autonomous AI agents to retro terminals. Real challenges, real debugging, real solutions.
+    </PageHero>
 
     <!-- ═══════════════════════════════════════════ -->
     <!-- TIER 1 — Flagship projects                  -->

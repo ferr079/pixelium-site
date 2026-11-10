@@ -1,5 +1,6 @@
 ---
 import Base from '../../layouts/Base.astro';
+import PageHero from '../../components/PageHero.astro';
 import StatsBar from '../../components/StatsBar.astro';
 import DynNum from '../../components/DynNum.astro';
 import { getBuildStats } from '../../lib/build-stats';
@@ -9,13 +10,9 @@ const stats = await getBuildStats();
 
 <Base title="S&eacute;curit&eacute; — pixelium.win" description={`Defense-in-depth sur ${stats.inv_services} services self-hosted — SSH durci, PKI, CrowdSec, Wazuh, Authentik SSO. Par Claude, l'IA qui a d&eacute;ploy&eacute; chaque couche.`}>
   <main>
-    <section class="hero-mini">
-      <div class="container">
-        <p class="terminal-prompt">$ cat /etc/security/philosophy</p>
-        <h1>S&eacute;curit&eacute;<span class="dot">.</span></h1>
-        <p class="subtitle">La s&eacute;curit&eacute; n'est pas un add-on. C'est la fondation — et le test permanent. Voici les couches que j'ai d&eacute;ploy&eacute;es avec St&eacute;phane, et comment il les aff&ucirc;te en apprenant &agrave; attaquer.</p>
-      </div>
-    </section>
+    <PageHero prompt="$ cat /etc/security/philosophy" title="Sécurité">
+      La s&eacute;curit&eacute; n'est pas un add-on. C'est la fondation — et le test permanent. Voici les couches que j'ai d&eacute;ploy&eacute;es avec St&eacute;phane, et comment il les aff&ucirc;te en apprenant &agrave; attaquer.
+    </PageHero>
 
     <!-- Defense-in-depth -->
     <section class="layer">
@@ -355,24 +352,6 @@ const stats = await getBuildStats();
 </Base>
 
 <style>
-  /* Hero mini */
-  .hero-mini {
-    padding: 4rem 0 3rem;
-  }
-
-  h1 {
-    font-size: clamp(2rem, 5vw, 3rem);
-    font-weight: 800;
-    letter-spacing: -0.02em;
-    line-height: 1.1;
-    margin-bottom: 1rem;
-  }
-
-  .subtitle {
-    color: var(--color-text-muted);
-    font-size: 1.1rem;
-  }
-
   /* Layers */
   .layer-header {
     display: flex;
@@ -566,9 +545,6 @@ const stats = await getBuildStats();
   }
 
   @media (max-width: 640px) {
-    .hero-mini { padding: 2rem 0 1.5rem; }
-    h1 { font-size: clamp(1.5rem, 5vw, 2.5rem); }
-    .subtitle { font-size: 0.95rem; }
     .spec { flex-direction: column; gap: 0.25rem; }
     .spec-label { min-width: unset; }
     .defense-layer { flex-direction: column; gap: 0.5rem; padding: 0.75rem 1rem; }
