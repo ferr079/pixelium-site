@@ -362,7 +362,7 @@ const stats = await getBuildStats();
 
   .layer-number {
     font-family: var(--font-mono);
-    font-size: 0.85rem;
+    font-size: var(--text-md);
     color: var(--color-accent);
     font-weight: 700;
   }
@@ -392,20 +392,20 @@ const stats = await getBuildStats();
   }
 
   .layer-icon {
-    font-size: 1.2rem;
+    font-size: var(--text-2xl);
     color: var(--color-accent);
     flex-shrink: 0;
     margin-top: 0.1rem;
   }
 
   .defense-layer h4 {
-    font-size: 0.9rem;
+    font-size: var(--text-base);
     margin-bottom: 0.25rem;
     color: var(--color-text);
   }
 
   .defense-layer p {
-    font-size: 0.85rem;
+    font-size: var(--text-md);
     color: var(--color-text-muted);
     line-height: 1.5;
   }
@@ -425,13 +425,13 @@ const stats = await getBuildStats();
   }
 
   .detail h4 {
-    font-size: 0.9rem;
+    font-size: var(--text-base);
     margin-bottom: 0.5rem;
     color: var(--color-text);
   }
 
   .detail p {
-    font-size: 0.85rem;
+    font-size: var(--text-md);
     color: var(--color-text-muted);
     line-height: 1.5;
   }
@@ -468,14 +468,14 @@ const stats = await getBuildStats();
 
   .spec-label {
     font-family: var(--font-mono);
-    font-size: 0.8rem;
+    font-size: var(--text-sm);
     color: var(--color-accent);
     min-width: 8rem;
     flex-shrink: 0;
   }
 
   .spec-value {
-    font-size: 0.9rem;
+    font-size: var(--text-base);
     color: var(--color-text-muted);
   }
 
@@ -499,19 +499,19 @@ const stats = await getBuildStats();
   }
 
   .crosslink-block h3 {
-    font-size: 1rem;
+    font-size: var(--text-lg);
     color: var(--color-accent);
     margin-bottom: 0.5rem;
   }
 
   .crosslink-block p {
-    font-size: 0.85rem;
+    font-size: var(--text-md);
     color: var(--color-text-muted);
     line-height: 1.5;
   }
 
   .crosslink-arrow {
-    font-size: 1.5rem;
+    font-size: var(--text-4xl);
     color: var(--color-accent);
     flex-shrink: 0;
   }
@@ -529,13 +529,13 @@ const stats = await getBuildStats();
   }
 
   .transparency-block h3 {
-    font-size: 1rem;
+    font-size: var(--text-lg);
     color: var(--color-accent);
     margin-bottom: 0.75rem;
   }
 
   .transparency-block p {
-    font-size: 0.9rem;
+    font-size: var(--text-base);
     color: var(--color-text-muted);
     line-height: 1.6;
   }
@@ -552,7 +552,7 @@ const stats = await getBuildStats();
     .detail { padding: 0.75rem 1rem; }
     .transparency-block { padding: 1rem 1.25rem; }
     .crosslink-block { flex-direction: column; gap: 1rem; padding: 1.25rem; }
-    .crosslink-block p { font-size: 0.82rem; }
+    .crosslink-block p { font-size: var(--text-sm); }
     .layer-header { flex-wrap: wrap; gap: 0.5rem; }
   }
 </style>

@@ -18,7 +18,7 @@
 .terminal-prompt {
     font-family: var(--font-mono);
     color: var(--color-accent);
-    font-size: 0.95rem;
+    font-size: var(--text-lg);
     margin-bottom: 0.75rem;
   }
 
@@ -28,7 +28,7 @@
   }
 
 .layer-header h2 {
-    font-size: 1.4rem;
+    font-size: var(--text-3xl);
     margin-bottom: 0;
   }
 

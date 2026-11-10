@@ -587,7 +587,7 @@ const monitoringSlides = [
     margin-top: 1.1rem; display: inline-flex; align-items: center; gap: 0.5rem;
     background: rgb(var(--accent-rgb) / 0.06); border: 1px solid rgb(var(--accent-rgb) / 0.25);
     border-radius: 6px; padding: 0.5rem 0.85rem; cursor: pointer;
-    font-family: var(--font-mono); font-size: 0.8rem; color: var(--color-text-muted);
+    font-family: var(--font-mono); font-size: var(--text-sm); color: var(--color-text-muted);
     transition: all 0.2s;
   }
   .inception-trigger:hover { border-color: var(--color-accent); color: var(--color-accent); background: rgb(var(--accent-rgb) / 0.1); }
@@ -613,18 +613,18 @@ const monitoringSlides = [
   }
   .ic-dots { display: inline-flex; gap: 0.35rem; }
   .ic-dots i { width: 0.7rem; height: 0.7rem; border-radius: 50%; background: var(--color-border); display: block; }
-  .ic-title { font-family: var(--font-mono); font-size: 0.75rem; color: var(--color-text-muted); flex: 1; }
-  .inception-close { background: none; border: none; color: var(--color-text-muted); font-size: 1.3rem; cursor: pointer; line-height: 1; padding: 0 0.2rem; }
+  .ic-title { font-family: var(--font-mono); font-size: var(--text-xs); color: var(--color-text-muted); flex: 1; }
+  .inception-close { background: none; border: none; color: var(--color-text-muted); font-size: var(--text-2xl); cursor: pointer; line-height: 1; padding: 0 0.2rem; }
   .inception-close:hover { color: var(--color-accent); }
   .inception-body { padding: 1.4rem 1.5rem; }
-  .inception-body p { font-family: var(--font-mono); font-size: 0.88rem; line-height: 1.7; color: var(--color-text-muted); margin-bottom: 1rem; }
+  .inception-body p { font-family: var(--font-mono); font-size: var(--text-base); line-height: 1.7; color: var(--color-text-muted); margin-bottom: 1rem; }
   .inception-body .ic-cmd-line { color: var(--color-accent); }
   .inception-body .ic-end { color: var(--color-text); margin-bottom: 0; }
   .inception-body a { color: var(--color-accent); }
 </style>
 
 <style>
-  .icons-credit { text-align: center; font-size: 0.75rem; color: var(--color-text-muted); font-family: var(--font-mono); margin-top: 1.5rem; }
+  .icons-credit { text-align: center; font-size: var(--text-xs); color: var(--color-text-muted); font-family: var(--font-mono); margin-top: 1.5rem; }
   .icons-credit a { color: var(--color-text-muted); }
 
   /* Layers */
@@ -642,7 +642,7 @@ const monitoringSlides = [
 
   .layer-number {
     font-family: var(--font-mono);
-    font-size: 0.85rem;
+    font-size: var(--text-md);
     color: var(--color-accent);
     font-weight: 700;
   }
@@ -654,7 +654,7 @@ const monitoringSlides = [
   }
 
   .layer-header h2 {
-    font-size: 1.4rem;
+    font-size: var(--text-3xl);
     margin-bottom: 0;
   }
 
@@ -693,19 +693,19 @@ const monitoringSlides = [
 
   .node-name {
     font-family: var(--font-mono);
-    font-size: 1.1rem;
+    font-size: var(--text-xl);
     font-weight: 700;
     color: var(--color-accent);
   }
 
   .node-role {
-    font-size: 0.85rem;
+    font-size: var(--text-md);
     color: var(--color-text-muted);
   }
 
   .node-badge {
     font-family: var(--font-mono);
-    font-size: 0.7rem;
+    font-size: var(--text-2xs);
     padding: 0.15rem 0.5rem;
     border-radius: 4px;
     margin-left: auto;
@@ -742,14 +742,14 @@ const monitoringSlides = [
 
   .spec-label {
     font-family: var(--font-mono);
-    font-size: 0.8rem;
+    font-size: var(--text-sm);
     color: var(--color-accent);
     min-width: 5rem;
     flex-shrink: 0;
   }
 
   .spec-value {
-    font-size: 0.9rem;
+    font-size: var(--text-base);
     color: var(--color-text-muted);
   }
 
@@ -769,13 +769,13 @@ const monitoringSlides = [
   }
 
   .detail h4 {
-    font-size: 0.9rem;
+    font-size: var(--text-base);
     margin-bottom: 0.5rem;
     color: var(--color-text);
   }
 
   .detail p {
-    font-size: 0.85rem;
+    font-size: var(--text-md);
     color: var(--color-text-muted);
     line-height: 1.5;
   }
@@ -808,13 +808,13 @@ const monitoringSlides = [
   }
 
   .tech-card-header h4 {
-    font-size: 1rem;
+    font-size: var(--text-lg);
     color: var(--color-text);
     margin: 0;
   }
 
   .tech-card-body p {
-    font-size: 0.85rem;
+    font-size: var(--text-md);
     color: var(--color-text-muted);
     line-height: 1.5;
     margin-bottom: 0.5rem;
@@ -830,14 +830,14 @@ const monitoringSlides = [
 
   .alt-label {
     font-family: var(--font-mono);
-    font-size: 0.75rem;
+    font-size: var(--text-xs);
     color: var(--color-text-muted);
     opacity: 0.7;
   }
 
   .result-label {
     font-family: var(--font-mono);
-    font-size: 0.75rem;
+    font-size: var(--text-xs);
     color: var(--color-accent);
   }
 
@@ -864,7 +864,7 @@ const monitoringSlides = [
 
   .tls-icon {
     font-family: var(--font-mono);
-    font-size: 0.8rem;
+    font-size: var(--text-sm);
     color: var(--color-accent);
     font-weight: 700;
     flex-shrink: 0;
@@ -872,12 +872,12 @@ const monitoringSlides = [
   }
 
   .tls-step h4 {
-    font-size: 0.85rem;
+    font-size: var(--text-md);
     margin-bottom: 0.25rem;
   }
 
   .tls-step p {
-    font-size: 0.75rem;
+    font-size: var(--text-xs);
     color: var(--color-text-muted);
     line-height: 1.4;
   }
@@ -885,7 +885,7 @@ const monitoringSlides = [
   .tls-arrow {
     color: var(--color-accent);
     font-family: var(--font-mono);
-    font-size: 1.2rem;
+    font-size: var(--text-2xl);
     flex-shrink: 0;
   }
 
@@ -924,21 +924,21 @@ const monitoringSlides = [
   }
 
   .obs-header h4 {
-    font-size: 0.9rem;
+    font-size: var(--text-base);
     color: var(--color-text);
     margin: 0;
   }
 
   .obs-role {
     font-family: var(--font-mono);
-    font-size: 0.7rem;
+    font-size: var(--text-2xs);
     color: var(--color-accent);
     display: block;
     margin-bottom: 0.5rem;
   }
 
   .obs-card p {
-    font-size: 0.8rem;
+    font-size: var(--text-sm);
     color: var(--color-text-muted);
     line-height: 1.5;
   }
@@ -959,13 +959,13 @@ const monitoringSlides = [
   }
 
   .agent-header h4 {
-    font-size: 1rem;
+    font-size: var(--text-lg);
     color: var(--color-accent);
     margin: 0;
   }
 
   .agent-block p {
-    font-size: 0.85rem;
+    font-size: var(--text-md);
     color: var(--color-text-muted);
     line-height: 1.6;
   }
@@ -980,7 +980,7 @@ const monitoringSlides = [
 
   .tags li {
     font-family: var(--font-mono);
-    font-size: 0.75rem;
+    font-size: var(--text-xs);
     background: var(--color-bg);
     color: var(--color-accent);
     padding: 0.2rem 0.6rem;
@@ -1011,7 +1011,7 @@ const monitoringSlides = [
 
   .flow-icon {
     font-family: var(--font-mono);
-    font-size: 0.8rem;
+    font-size: var(--text-sm);
     color: var(--color-accent);
     font-weight: 700;
     flex-shrink: 0;
@@ -1019,12 +1019,12 @@ const monitoringSlides = [
   }
 
   .flow-step h4 {
-    font-size: 0.85rem;
+    font-size: var(--text-md);
     margin-bottom: 0.25rem;
   }
 
   .flow-step p {
-    font-size: 0.75rem;
+    font-size: var(--text-xs);
     color: var(--color-text-muted);
     line-height: 1.4;
   }
@@ -1032,7 +1032,7 @@ const monitoringSlides = [
   .flow-arrow {
     color: var(--color-accent);
     font-family: var(--font-mono);
-    font-size: 1.2rem;
+    font-size: var(--text-2xl);
     flex-shrink: 0;
   }
 
@@ -1056,13 +1056,13 @@ const monitoringSlides = [
 
   .swatch-name {
     font-family: var(--font-mono);
-    font-size: 0.7rem;
+    font-size: var(--text-2xs);
     color: var(--color-text);
   }
 
   .swatch-hex {
     font-family: var(--font-mono);
-    font-size: 0.65rem;
+    font-size: var(--text-2xs);
     color: var(--color-text-muted);
   }
 
@@ -1080,7 +1080,7 @@ const monitoringSlides = [
   }
 
   .absent h4 {
-    font-size: 0.9rem;
+    font-size: var(--text-base);
     margin-bottom: 0.4rem;
     color: var(--color-text-muted);
     text-decoration: line-through;
@@ -1088,7 +1088,7 @@ const monitoringSlides = [
   }
 
   .absent p {
-    font-size: 0.8rem;
+    font-size: var(--text-sm);
     color: var(--color-text-muted);
     line-height: 1.4;
   }
@@ -1113,18 +1113,18 @@ const monitoringSlides = [
 
   .mcp-server strong {
     font-family: var(--font-mono);
-    font-size: 0.88rem;
+    font-size: var(--text-base);
     color: var(--color-accent);
   }
 
   .mcp-server span {
-    font-size: 0.78rem;
+    font-size: var(--text-sm);
     color: var(--color-text-muted);
     line-height: 1.4;
   }
 
   .mcp-note {
-    font-size: 0.85rem;
+    font-size: var(--text-md);
     color: var(--color-text-muted);
     line-height: 1.6;
   }
@@ -1163,14 +1163,14 @@ const monitoringSlides = [
   }
 
   .crosslink-text {
-    font-size: 1.1rem;
+    font-size: var(--text-xl);
     color: var(--color-text);
     font-weight: 600;
   }
 
   .crosslink-arrow {
     font-family: var(--font-mono);
-    font-size: 1.2rem;
+    font-size: var(--text-2xl);
     color: var(--color-accent);
     transition: transform 0.2s;
   }
@@ -1213,10 +1213,10 @@ const monitoringSlides = [
     .details-grid, .obs-grid, .absent-grid { grid-template-columns: 1fr; gap: 0.75rem; }
     .detail, .tech-detail { padding: 0.75rem 1rem; }
     .screenshots-grid { grid-template-columns: 1fr; }
-    .node-badge { padding: 0.5rem 0.75rem; font-size: 0.75rem; }
+    .node-badge { padding: 0.5rem 0.75rem; font-size: var(--text-xs); }
     .palette { justify-content: center; }
     .crosslink-block { flex-direction: column; gap: 1rem; padding: 1.25rem; }
-    .crosslink-block p { font-size: 0.82rem; }
+    .crosslink-block p { font-size: var(--text-sm); }
     .layer-header { flex-wrap: wrap; gap: 0.5rem; }
   }
 </style>

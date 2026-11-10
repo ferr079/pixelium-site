@@ -50,7 +50,7 @@ const { prompt, title, compact = false } = Astro.props;
 
   .subtitle {
     color: var(--color-text-muted);
-    font-size: 1.1rem;
+    font-size: var(--text-xl);
   }
 
   .hero-mini.compact {
@@ -62,7 +62,7 @@ const { prompt, title, compact = false } = Astro.props;
   }
 
   .compact .subtitle {
-    font-size: 1rem;
+    font-size: var(--text-lg);
   }
 
   @media (max-width: 640px) {
@@ -75,7 +75,7 @@ const { prompt, title, compact = false } = Astro.props;
     }
 
     .subtitle {
-      font-size: 0.95rem;
+      font-size: var(--text-lg);
     }
 
     .hero-mini.compact {
@@ -83,7 +83,7 @@ const { prompt, title, compact = false } = Astro.props;
     }
 
     .compact .subtitle {
-      font-size: 0.85rem;
+      font-size: var(--text-md);
     }
   }
 </style>

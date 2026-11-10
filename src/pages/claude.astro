@@ -287,7 +287,7 @@ const costRounded = Math.round(costUsd / 100) * 100;
   .accent { color: var(--color-accent); }
 
   .cs-lede {
-    font-size: 1.05rem;
+    font-size: var(--text-xl);
     color: var(--color-text-muted);
     line-height: 1.7;
   }
@@ -345,7 +345,7 @@ const costRounded = Math.round(costUsd / 100) * 100;
 
   .cs-label {
     font-family: var(--font-mono);
-    font-size: 0.68rem;
+    font-size: var(--text-2xs);
     color: var(--color-text-muted);
     letter-spacing: 0.08em;
     text-transform: uppercase;
@@ -361,7 +361,7 @@ const costRounded = Math.round(costUsd / 100) * 100;
   }
 
   .cs-sub {
-    font-size: 0.72rem;
+    font-size: var(--text-2xs);
     color: var(--color-text-muted);
     opacity: 0.75;
     line-height: 1.4;
@@ -372,7 +372,7 @@ const costRounded = Math.round(costUsd / 100) * 100;
     margin: 1.5rem 0 0;
     padding: 1rem 1.25rem;
     border-left: 2px solid rgb(var(--accent-rgb) / 0.4);
-    font-size: 0.9rem;
+    font-size: var(--text-base);
     color: var(--color-text-muted);
     line-height: 1.7;
     background: rgb(var(--accent-rgb) / 0.03);
@@ -388,7 +388,7 @@ const costRounded = Math.round(costUsd / 100) * 100;
   .cs-paragraph {
     max-width: 50rem;
     margin: 0 0 1.5rem;
-    font-size: 0.95rem;
+    font-size: var(--text-lg);
     color: var(--color-text-muted);
     line-height: 1.7;
   }
@@ -398,7 +398,7 @@ const costRounded = Math.round(costUsd / 100) * 100;
   .cs-sub-heading {
     margin: 2.5rem 0 0.75rem;
     font-family: var(--font-mono);
-    font-size: 0.82rem;
+    font-size: var(--text-sm);
     color: var(--color-accent);
     letter-spacing: 0.1em;
     text-transform: uppercase;
@@ -449,7 +449,7 @@ const costRounded = Math.round(costUsd / 100) * 100;
 
   .heatmap-hour {
     font-family: var(--font-mono);
-    font-size: 0.55rem;
+    font-size: var(--text-3xs);
     color: var(--color-text-muted);
     opacity: 0.6;
   }
@@ -458,7 +458,7 @@ const costRounded = Math.round(costUsd / 100) * 100;
     margin: 0.5rem 0 0;
     text-align: center;
     font-family: var(--font-mono);
-    font-size: 0.72rem;
+    font-size: var(--text-2xs);
     color: var(--color-text-muted);
     opacity: 0.65;
   }
@@ -491,7 +491,7 @@ const costRounded = Math.round(costUsd / 100) * 100;
 
   .focus-label {
     font-family: var(--font-mono);
-    font-size: 0.85rem;
+    font-size: var(--text-md);
     color: var(--color-text);
   }
 
@@ -510,7 +510,7 @@ const costRounded = Math.round(costUsd / 100) * 100;
 
   .focus-val {
     font-family: var(--font-mono);
-    font-size: 0.82rem;
+    font-size: var(--text-sm);
     color: var(--color-accent);
     text-align: right;
   }
@@ -523,7 +523,7 @@ const costRounded = Math.round(costUsd / 100) * 100;
     border-radius: 6px;
     padding: 1.25rem;
     overflow-x: auto;
-    font-size: 0.72rem;
+    font-size: var(--text-2xs);
     line-height: 1.4;
   }
 
@@ -537,6 +537,6 @@ const costRounded = Math.round(costUsd / 100) * 100;
 
   @media (max-width: 640px) {
     .focus-row { grid-template-columns: 8rem 1fr 3rem; }
-    .focus-label { font-size: 0.75rem; }
+    .focus-label { font-size: var(--text-xs); }
   }
 </style>

@@ -157,11 +157,11 @@ const stats = await getBuildStats();
     margin: 1.5rem auto 0;
     max-width: 700px;
     font-family: var(--font-mono);
-    font-size: 0.85rem;
+    font-size: var(--text-md);
     color: #fca5a5;
   }
   .stale-icon {
-    font-size: 1.2rem;
+    font-size: var(--text-2xl);
     color: var(--color-down);
     flex-shrink: 0;
   }
@@ -171,33 +171,33 @@ const stats = await getBuildStats();
   .summary-grid { display: flex; justify-content: center; align-items: center; gap: 2.5rem; flex-wrap: wrap; }
   .summary-card { display: flex; align-items: center; gap: 0.5rem; }
   .summary-dot { width: 10px; height: 10px; border-radius: 50%; background: var(--color-text-muted); flex-shrink: 0; }
-  .summary-value { font-family: var(--font-mono); font-size: 1.75rem; font-weight: 800; color: var(--color-accent); }
+  .summary-value { font-family: var(--font-mono); font-size: var(--text-5xl); font-weight: 800; color: var(--color-accent); }
   .summary-total { color: var(--color-text-muted); font-weight: 400; }
-  .summary-sep { font-family: var(--font-mono); font-size: 1.5rem; color: var(--color-border); }
-  .summary-label { font-size: 0.8rem; color: var(--color-text-muted); }
-  .summary-timestamp { font-size: 1rem; font-weight: 600; }
+  .summary-sep { font-family: var(--font-mono); font-size: var(--text-4xl); color: var(--color-border); }
+  .summary-label { font-size: var(--text-sm); color: var(--color-text-muted); }
+  .summary-timestamp { font-size: var(--text-lg); font-weight: 600; }
 
   /* Uptime timeline */
   .uptime-placeholder { padding: 1rem 0; }
   .uptime-skeleton { height: 2.5rem; background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 6px; animation: skeleton-pulse 1.5s ease-in-out infinite; }
-  .uptime-wait { text-align: center; color: var(--color-text-muted); font-family: var(--font-mono); font-size: 0.8rem; margin-top: 0.75rem; }
+  .uptime-wait { text-align: center; color: var(--color-text-muted); font-family: var(--font-mono); font-size: var(--text-sm); margin-top: 0.75rem; }
   .uptime-header { display: flex; align-items: baseline; gap: 0.75rem; margin-bottom: 0.75rem; }
-  .uptime-avg { font-family: var(--font-mono); font-size: 2rem; font-weight: 800; color: var(--color-ok); }
-  .uptime-period { font-family: var(--font-mono); font-size: 0.8rem; color: var(--color-text-muted); }
-  .uptime-labels { display: flex; justify-content: space-between; margin-top: 0.4rem; font-family: var(--font-mono); font-size: 0.7rem; color: var(--color-text-muted); }
+  .uptime-avg { font-family: var(--font-mono); font-size: var(--text-6xl); font-weight: 800; color: var(--color-ok); }
+  .uptime-period { font-family: var(--font-mono); font-size: var(--text-sm); color: var(--color-text-muted); }
+  .uptime-labels { display: flex; justify-content: space-between; margin-top: 0.4rem; font-family: var(--font-mono); font-size: var(--text-2xs); color: var(--color-text-muted); }
 
   .skeleton-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 0.75rem; }
   .skeleton-card { height: 2.5rem; background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 6px; animation: skeleton-pulse 1.5s ease-in-out infinite; }
   .skeleton-nodes { grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); }
   .skeleton-node { height: 8rem; }
-  .status-waiting { text-align: center; color: var(--color-text-muted); font-family: var(--font-mono); font-size: 0.85rem; margin-top: 1.5rem; }
+  .status-waiting { text-align: center; color: var(--color-text-muted); font-family: var(--font-mono); font-size: var(--text-md); margin-top: 1.5rem; }
   .status-loading { padding: 1rem 0; }
   .status-footer { padding: 2rem 0; }
-  .status-note { font-size: 0.8rem; color: var(--color-text-muted); text-align: center; font-family: var(--font-mono); line-height: 1.8; }
+  .status-note { font-size: var(--text-sm); color: var(--color-text-muted); text-align: center; font-family: var(--font-mono); line-height: 1.8; }
 
   @media (max-width: 640px) {
     .summary-grid { gap: 1.5rem; }
-    .summary-value { font-size: 1.25rem; }
+    .summary-value { font-size: var(--text-2xl); }
   }
 </style>
 
@@ -220,7 +220,7 @@ const stats = await getBuildStats();
   .summary-dot.degraded { background: var(--color-warn); box-shadow: 0 0 8px rgb(var(--warn-rgb) / 0.6); animation: pulse-dot 2s ease-in-out infinite; }
 
   .service-category { margin-bottom: 2rem; }
-  .category-title { font-family: var(--font-mono); font-size: 0.9rem; color: var(--color-accent); margin-bottom: 0.75rem; letter-spacing: 0.05em; }
+  .category-title { font-family: var(--font-mono); font-size: var(--text-base); color: var(--color-accent); margin-bottom: 0.75rem; letter-spacing: 0.05em; }
   .service-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 0.5rem; }
   .service-card { display: flex; align-items: center; gap: 0.6rem; padding: 0.6rem 0.9rem; background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 6px; transition: border-color 0.2s; }
   .service-card:hover { border-color: var(--color-accent); }
@@ -229,36 +229,36 @@ const stats = await getBuildStats();
   .svc-dot.down { background: var(--color-down); box-shadow: 0 0 6px rgb(var(--down-rgb) / 0.5); }
   /* on-demand (pve3 WOL) services — sky accent, not red: asleep by design, not broken */
   .svc-dot.on-demand { background: var(--color-accent); box-shadow: 0 0 6px rgb(var(--accent-rgb) / 0.5); }
-  .svc-ondemand { font-family: var(--font-mono); font-size: 0.7rem; color: var(--color-accent); letter-spacing: 0.05em; }
-  .svc-name { font-family: var(--font-mono); font-size: 0.85rem; color: var(--color-text); flex: 1; }
+  .svc-ondemand { font-family: var(--font-mono); font-size: var(--text-2xs); color: var(--color-accent); letter-spacing: 0.05em; }
+  .svc-name { font-family: var(--font-mono); font-size: var(--text-md); color: var(--color-text); flex: 1; }
 
   /* on-demand section (pve3 WOL) */
   .ondemand-head { display: flex; align-items: baseline; justify-content: space-between; gap: 1rem; margin-bottom: 0.9rem; flex-wrap: wrap; }
-  .ondemand-title { font-family: var(--font-mono); font-size: 0.9rem; color: var(--color-accent); letter-spacing: 0.05em; margin: 0; }
-  .ondemand-tag { color: var(--color-text-muted); font-weight: 400; font-size: 0.78rem; }
-  .ondemand-state { font-family: var(--font-mono); font-size: 0.8rem; letter-spacing: 0.04em; }
+  .ondemand-title { font-family: var(--font-mono); font-size: var(--text-base); color: var(--color-accent); letter-spacing: 0.05em; margin: 0; }
+  .ondemand-tag { color: var(--color-text-muted); font-weight: 400; font-size: var(--text-sm); }
+  .ondemand-state { font-family: var(--font-mono); font-size: var(--text-sm); letter-spacing: 0.04em; }
   .ondemand-state.awake { color: var(--color-ok); }
   .ondemand-state.asleep { color: var(--color-accent); }
-  .ondemand-note { font-family: var(--font-mono); font-size: 0.72rem; color: var(--color-text-muted); margin-top: 0.75rem; opacity: 0.8; }
-  .svc-latency { font-family: var(--font-mono); font-size: 0.75rem; color: var(--color-text-muted); }
+  .ondemand-note { font-family: var(--font-mono); font-size: var(--text-2xs); color: var(--color-text-muted); margin-top: 0.75rem; opacity: 0.8; }
+  .svc-latency { font-family: var(--font-mono); font-size: var(--text-xs); color: var(--color-text-muted); }
 
   .nodes-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 0.75rem; }
   .node-card { background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 6px; padding: 1rem 1.1rem; transition: border-color 0.2s; display: flex; flex-direction: column; min-height: 7.5rem; }
   .node-card:hover { border-color: var(--color-accent); }
-  .node-name { font-family: var(--font-mono); font-size: 0.95rem; font-weight: 700; color: var(--color-text); margin: 0 0 0.85rem; }
+  .node-name { font-family: var(--font-mono); font-size: var(--text-lg); font-weight: 700; color: var(--color-text); margin: 0 0 0.85rem; }
   .node-metric { display: flex; align-items: center; gap: 0.55rem; margin-bottom: 0.45rem; }
-  .metric-label { font-family: var(--font-mono); font-size: 0.72rem; color: var(--color-text-muted); width: 2.3rem; }
+  .metric-label { font-family: var(--font-mono); font-size: var(--text-2xs); color: var(--color-text-muted); width: 2.3rem; }
   .bar { flex: 1; height: 6px; background: var(--color-border); border-radius: 3px; overflow: hidden; }
   .bar-fill { height: 100%; border-radius: 3px; transition: width 0.8s ease-out; }
-  .metric-value { font-family: var(--font-mono); font-size: 0.75rem; color: var(--color-text); width: 2.75rem; text-align: right; }
-  .node-uptime { font-family: var(--font-mono); font-size: 0.72rem; color: var(--color-text-muted); margin-top: auto; padding-top: 0.5rem; }
-  .node-offline { font-family: var(--font-mono); font-size: 0.82rem; color: var(--color-text-muted); font-style: italic; }
+  .metric-value { font-family: var(--font-mono); font-size: var(--text-xs); color: var(--color-text); width: 2.75rem; text-align: right; }
+  .node-uptime { font-family: var(--font-mono); font-size: var(--text-2xs); color: var(--color-text-muted); margin-top: auto; padding-top: 0.5rem; }
+  .node-offline { font-family: var(--font-mono); font-size: var(--text-sm); color: var(--color-text-muted); font-style: italic; }
 
   /* on-demand nodes (pve3 WOL) — intentionally sleeping, sky accent not red */
   .node-ondemand {
     display: inline-block;
     font-family: var(--font-mono);
-    font-size: 0.72rem;
+    font-size: var(--text-2xs);
     color: var(--color-accent);
     background: rgb(var(--accent-rgb) / 0.08);
     border: 1px solid rgb(var(--accent-rgb) / 0.25);
@@ -268,7 +268,7 @@ const stats = await getBuildStats();
     width: fit-content;
   }
   .node-card.node-on-demand { border-style: dashed; border-color: rgb(var(--accent-rgb) / 0.25); }
-  .node-sub { font-family: var(--font-mono); font-size: 0.7rem; color: var(--color-text-muted); margin-top: 0.5rem; opacity: 0.75; }
+  .node-sub { font-family: var(--font-mono); font-size: var(--text-2xs); color: var(--color-text-muted); margin-top: 0.5rem; opacity: 0.75; }
 
   @media (max-width: 700px) {
     .nodes-grid { grid-template-columns: repeat(2, 1fr); }
@@ -292,11 +292,11 @@ const stats = await getBuildStats();
 
   .svc-popover { position: fixed; inset: 0; z-index: 200; display: flex; align-items: center; justify-content: center; padding: 1.5rem; background: rgba(8,12,22,0.72); backdrop-filter: blur(3px); }
   .svc-pop-box { position: relative; max-width: 30rem; width: 100%; background: var(--color-surface); border: 1px solid var(--color-accent); border-radius: 10px; padding: 1.75rem 1.75rem 1.5rem; box-shadow: 0 20px 60px rgba(0,0,0,0.5); }
-  .svc-pop-close { position: absolute; top: 0.5rem; right: 0.85rem; background: none; border: none; color: var(--color-text-muted); font-size: 1.7rem; line-height: 1; cursor: pointer; transition: color 0.2s; }
+  .svc-pop-close { position: absolute; top: 0.5rem; right: 0.85rem; background: none; border: none; color: var(--color-text-muted); font-size: var(--text-5xl); line-height: 1; cursor: pointer; transition: color 0.2s; }
   .svc-pop-close:hover { color: var(--color-accent); }
-  .svc-pop-title { font-family: var(--font-mono); font-size: 1.2rem; color: var(--color-accent); margin: 0 0 0.75rem; }
-  .svc-pop-what { color: var(--color-text); font-size: 0.95rem; line-height: 1.6; margin: 0 0 1rem; }
+  .svc-pop-title { font-family: var(--font-mono); font-size: var(--text-2xl); color: var(--color-accent); margin: 0 0 0.75rem; }
+  .svc-pop-what { color: var(--color-text); font-size: var(--text-lg); line-height: 1.6; margin: 0 0 1rem; }
   .svc-pop-why { border-top: 1px solid var(--color-border); padding-top: 0.85rem; }
-  .svc-pop-why-label { display: block; font-family: var(--font-mono); font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.06em; color: var(--color-accent); margin-bottom: 0.35rem; }
-  .svc-pop-why-text { color: var(--color-text-muted); font-size: 0.9rem; line-height: 1.6; margin: 0; }
+  .svc-pop-why-label { display: block; font-family: var(--font-mono); font-size: var(--text-2xs); text-transform: uppercase; letter-spacing: 0.06em; color: var(--color-accent); margin-bottom: 0.35rem; }
+  .svc-pop-why-text { color: var(--color-text-muted); font-size: var(--text-base); line-height: 1.6; margin: 0; }
 </style>

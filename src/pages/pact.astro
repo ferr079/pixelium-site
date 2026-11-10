@@ -104,7 +104,7 @@ import DynNum from '../components/DynNum.astro';
   }
 
   .lede {
-    font-size: 1.15rem;
+    font-size: var(--text-xl);
     color: var(--color-text);
     line-height: 1.7;
     margin-bottom: 1.25rem;
@@ -117,7 +117,7 @@ import DynNum from '../components/DynNum.astro';
 
   h2 {
     font-family: var(--font-mono);
-    font-size: 0.9rem;
+    font-size: var(--text-base);
     text-transform: uppercase;
     letter-spacing: 0.15em;
     color: var(--color-accent);
@@ -127,7 +127,7 @@ import DynNum from '../components/DynNum.astro';
   }
 
   p {
-    font-size: 1rem;
+    font-size: var(--text-lg);
     color: var(--color-text-muted);
     line-height: 1.75;
     margin-bottom: 1rem;
@@ -147,7 +147,7 @@ import DynNum from '../components/DynNum.astro';
   .pact-list li {
     position: relative;
     padding-left: 1.5rem;
-    font-size: 1rem;
+    font-size: var(--text-lg);
     color: var(--color-text-muted);
     line-height: 1.7;
     margin-bottom: 0.6rem;
@@ -180,21 +180,21 @@ import DynNum from '../components/DynNum.astro';
     padding-top: 2rem;
     border-top: 1px solid var(--color-border);
     font-family: var(--font-mono);
-    font-size: 0.95rem;
+    font-size: var(--text-lg);
     color: var(--color-text);
   }
 
   .sig-meta {
     display: block;
     margin-top: 0.4rem;
-    font-size: 0.72rem;
+    font-size: var(--text-2xs);
     color: var(--color-text-muted);
     letter-spacing: 0.05em;
   }
 
   @media (max-width: 640px) {
     .pact { padding: 3rem 0 4rem; }
-    .lede { font-size: 1rem; }
+    .lede { font-size: var(--text-lg); }
     h2 { margin-top: 2rem; }
   }
 </style>

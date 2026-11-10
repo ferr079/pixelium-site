@@ -27,7 +27,7 @@
   .projets-page .project-tag {
     display: inline-block;
     font-family: var(--font-mono);
-    font-size: 0.75rem;
+    font-size: var(--text-xs);
     color: var(--color-accent);
     background: rgb(var(--accent-rgb) / 0.1);
     border: 1px solid rgb(var(--accent-rgb) / 0.2);
@@ -39,13 +39,13 @@
   }
 
   .projets-page .project-header h2 {
-    font-size: 1.4rem;
+    font-size: var(--text-3xl);
     line-height: 1.3;
   }
 
   .projets-page .project-intro p {
     color: var(--color-text-muted);
-    font-size: 1.05rem;
+    font-size: var(--text-xl);
     line-height: 1.7;
     margin-bottom: 1.5rem;
   }
@@ -70,13 +70,13 @@
   }
 
   .projets-page .detail-block h4 {
-    font-size: 0.9rem;
+    font-size: var(--text-base);
     margin-bottom: 0.5rem;
     color: var(--color-text);
   }
 
   .projets-page .detail-block p {
-    font-size: 0.85rem;
+    font-size: var(--text-md);
     color: var(--color-text-muted);
     line-height: 1.6;
   }
@@ -102,7 +102,7 @@
 
   .projets-page .tags li {
     font-family: var(--font-mono);
-    font-size: 0.75rem;
+    font-size: var(--text-xs);
     background: var(--color-bg);
     color: var(--color-accent);
     padding: 0.2rem 0.6rem;
@@ -111,7 +111,7 @@
   }
 
   .projets-page .project-services {
-    font-size: 0.8rem;
+    font-size: var(--text-sm);
     color: var(--color-text-muted);
     font-style: italic;
   }
@@ -143,7 +143,7 @@
 
   .projets-page .ai-divider-sub {
     color: var(--color-text-muted);
-    font-size: 1rem;
+    font-size: var(--text-lg);
     line-height: 1.6;
   }
 
@@ -182,14 +182,14 @@
 
   .projets-page .spec-label {
     font-family: var(--font-mono);
-    font-size: 0.8rem;
+    font-size: var(--text-sm);
     color: var(--color-accent);
     min-width: 6rem;
     flex-shrink: 0;
   }
 
   .projets-page .spec-value {
-    font-size: 0.9rem;
+    font-size: var(--text-base);
     color: var(--color-text-muted);
   }
 
@@ -208,7 +208,7 @@
   }
 
   .projets-page .model-group h4 {
-    font-size: 0.8rem;
+    font-size: var(--text-sm);
     color: var(--color-accent);
     font-family: var(--font-mono);
     margin-bottom: 0.75rem;
@@ -222,7 +222,7 @@
 
   .projets-page .model-tags span {
     font-family: var(--font-mono);
-    font-size: 0.7rem;
+    font-size: var(--text-2xs);
     background: var(--color-bg);
     color: var(--color-text-muted);
     padding: 0.2rem 0.5rem;
@@ -260,17 +260,17 @@
   .projets-page .api-name {
     font-family: var(--font-mono);
     font-weight: 700;
-    font-size: 1rem;
+    font-size: var(--text-lg);
   }
 
   .projets-page .api-role {
-    font-size: 0.75rem;
+    font-size: var(--text-xs);
     color: var(--color-text-muted);
     font-family: var(--font-mono);
   }
 
   .projets-page .api-desc {
-    font-size: 0.85rem;
+    font-size: var(--text-md);
     color: var(--color-text-muted);
     line-height: 1.5;
   }
@@ -284,7 +284,7 @@
 
   .projets-page .api-tags span {
     font-family: var(--font-mono);
-    font-size: 0.7rem;
+    font-size: var(--text-2xs);
     background: var(--color-bg);
     color: var(--color-text-muted);
     padding: 0.15rem 0.4rem;
@@ -294,23 +294,23 @@
 
   /* Agents deployed */
   .agents-deployed { margin-top: 2rem; padding-top: 1.5rem; border-top: 1px solid var(--color-border); }
-  .agents-deployed h4 { font-family: var(--font-mono); font-size: 0.9rem; color: var(--color-accent); margin-bottom: 1rem; letter-spacing: 0.05em; text-transform: uppercase; }
+  .agents-deployed h4 { font-family: var(--font-mono); font-size: var(--text-base); color: var(--color-accent); margin-bottom: 1rem; letter-spacing: 0.05em; text-transform: uppercase; }
   .agents-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1rem; }
   .agent-card { background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 8px; padding: 1.25rem; transition: border-color 0.3s, transform 0.3s; }
   .agent-card:hover { border-color: var(--color-accent); transform: translateY(-2px); }
   .agent-card-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 0.5rem; }
-  .agent-badge { font-family: var(--font-mono); font-size: 0.65rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; padding: 0.2rem 0.5rem; border-radius: 4px; }
+  .agent-badge { font-family: var(--font-mono); font-size: var(--text-2xs); font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; padding: 0.2rem 0.5rem; border-radius: 4px; }
   .agent-badge.running { background: rgb(var(--ok-rgb) / 0.15); color: var(--color-ok); }
   .agent-badge.observing { background: rgb(var(--warn-rgb) / 0.15); color: var(--color-warn); }
   .agent-badge.decommissioned { background: rgb(var(--muted-rgb) / 0.15); color: var(--color-text-muted); }
   .project-tag-decom { color: #f87171; background: rgba(248, 113, 113, 0.08); border-color: rgba(248, 113, 113, 0.25); }
-  .decom-note { font-family: var(--font-mono); font-size: 0.8rem; color: var(--color-text-muted); border-left: 2px solid rgba(248, 113, 113, 0.4); padding-left: 0.75rem; }
-  .agent-ct { font-family: var(--font-mono); font-size: 0.7rem; color: var(--color-text-muted); }
-  .agent-card h5 { font-size: 1.05rem; margin: 0 0 0.15rem; color: var(--color-text); }
-  .agent-role { font-family: var(--font-mono); font-size: 0.75rem; color: var(--color-accent); margin-bottom: 0.6rem; }
-  .agent-desc { font-size: 0.85rem; color: var(--color-text-muted); line-height: 1.5; margin-bottom: 0.75rem; }
+  .decom-note { font-family: var(--font-mono); font-size: var(--text-sm); color: var(--color-text-muted); border-left: 2px solid rgba(248, 113, 113, 0.4); padding-left: 0.75rem; }
+  .agent-ct { font-family: var(--font-mono); font-size: var(--text-2xs); color: var(--color-text-muted); }
+  .agent-card h5 { font-size: var(--text-xl); margin: 0 0 0.15rem; color: var(--color-text); }
+  .agent-role { font-family: var(--font-mono); font-size: var(--text-xs); color: var(--color-accent); margin-bottom: 0.6rem; }
+  .agent-desc { font-size: var(--text-md); color: var(--color-text-muted); line-height: 1.5; margin-bottom: 0.75rem; }
   .agent-tags { display: flex; flex-wrap: wrap; gap: 0.35rem; }
-  .agent-tags span { font-family: var(--font-mono); font-size: 0.7rem; background: var(--color-bg); color: var(--color-accent); padding: 0.15rem 0.5rem; border-radius: 4px; border: 1px solid var(--color-border); }
+  .agent-tags span { font-family: var(--font-mono); font-size: var(--text-2xs); background: var(--color-bg); color: var(--color-accent); padding: 0.15rem 0.5rem; border-radius: 4px; border: 1px solid var(--color-border); }
 
   /* Roadmap */
   .projets-page .roadmap {
@@ -326,13 +326,13 @@
   }
 
   .projets-page .roadmap .layer-header h2 {
-    font-size: 1.4rem;
+    font-size: var(--text-3xl);
     margin-bottom: 0;
   }
 
   .projets-page .roadmap-intro {
     color: var(--color-text-muted);
-    font-size: 0.95rem;
+    font-size: var(--text-lg);
     margin-bottom: 1.5rem;
     line-height: 1.6;
   }
@@ -358,7 +358,7 @@
 
   .projets-page .roadmap-status {
     font-family: var(--font-mono);
-    font-size: 0.65rem;
+    font-size: var(--text-2xs);
     text-transform: uppercase;
     letter-spacing: 0.08em;
     padding: 0.15rem 0.5rem;
@@ -386,13 +386,13 @@
   }
 
   .projets-page .roadmap-item h4 {
-    font-size: 0.9rem;
+    font-size: var(--text-base);
     margin-bottom: 0.4rem;
     color: var(--color-text);
   }
 
   .projets-page .roadmap-item p {
-    font-size: 0.82rem;
+    font-size: var(--text-sm);
     color: var(--color-text-muted);
     line-height: 1.5;
   }
@@ -417,19 +417,19 @@
   }
 
   .projets-page .crosslink-block h3 {
-    font-size: 1rem;
+    font-size: var(--text-lg);
     color: var(--color-accent);
     margin-bottom: 0.5rem;
   }
 
   .projets-page .crosslink-block p {
-    font-size: 0.85rem;
+    font-size: var(--text-md);
     color: var(--color-text-muted);
     line-height: 1.5;
   }
 
   .projets-page .crosslink-arrow {
-    font-size: 1.5rem;
+    font-size: var(--text-4xl);
     color: var(--color-accent);
     flex-shrink: 0;
   }
@@ -441,11 +441,11 @@
     }
 
     .projets-page .project-header h2 {
-      font-size: 1.15rem;
+      font-size: var(--text-xl);
     }
 
     .projets-page .project-intro p {
-      font-size: 0.95rem;
+      font-size: var(--text-lg);
     }
 
     .projets-page .project-details {
@@ -458,11 +458,11 @@
     }
 
     .projets-page .detail-block h4 {
-      font-size: 0.85rem;
+      font-size: var(--text-md);
     }
 
     .projets-page .detail-block p {
-      font-size: 0.82rem;
+      font-size: var(--text-sm);
     }
 
     .projets-page .project-stack {
@@ -491,7 +491,7 @@
     }
 
     .projets-page .roadmap-intro {
-      font-size: 0.9rem;
+      font-size: var(--text-base);
     }
 
     .projets-page .crosslink-block {
@@ -501,7 +501,7 @@
     }
 
     .projets-page .crosslink-block p {
-      font-size: 0.82rem;
+      font-size: var(--text-sm);
     }
 
     .layer-header { flex-wrap: wrap; gap: 0.5rem; }

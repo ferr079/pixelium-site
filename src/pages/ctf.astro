@@ -403,7 +403,7 @@ const builtAt = new Date().toISOString().slice(0, 16).replace('T', ' ');
 
   .kv-platform {
     font-family: var(--font-mono);
-    font-size: 0.75rem;
+    font-size: var(--text-xs);
     font-weight: 700;
     text-transform: uppercase;
     letter-spacing: 0.08em;
@@ -424,20 +424,20 @@ const builtAt = new Date().toISOString().slice(0, 16).replace('T', ' ');
 
   .kv-num {
     font-family: var(--font-mono);
-    font-size: 1.5rem;
+    font-size: var(--text-4xl);
     font-weight: 700;
     color: var(--color-text);
     line-height: 1.1;
   }
 
   .kv-of {
-    font-size: 0.9rem;
+    font-size: var(--text-base);
     font-weight: 400;
     color: var(--color-text-muted);
   }
 
   .kv-label {
-    font-size: 0.75rem;
+    font-size: var(--text-xs);
     color: var(--color-text-muted);
   }
 
@@ -446,13 +446,13 @@ const builtAt = new Date().toISOString().slice(0, 16).replace('T', ' ');
     padding: 0.6rem 1.25rem;
     border-top: 1px solid var(--color-border);
     font-family: var(--font-mono);
-    font-size: 0.7rem;
+    font-size: var(--text-2xs);
     color: var(--color-text-muted);
   }
 
   .kv-note {
     margin-top: 0.75rem;
-    font-size: 0.8rem;
+    font-size: var(--text-sm);
     color: var(--color-text-muted);
   }
 
@@ -475,7 +475,7 @@ const builtAt = new Date().toISOString().slice(0, 16).replace('T', ' ');
 
   .loop-arrow {
     color: var(--color-accent);
-    font-size: 1.1rem;
+    font-size: var(--text-xl);
     flex-shrink: 0;
   }
 
@@ -488,7 +488,7 @@ const builtAt = new Date().toISOString().slice(0, 16).replace('T', ' ');
 
   .loop-offense {
     font-family: var(--font-mono);
-    font-size: 0.8rem;
+    font-size: var(--text-sm);
     color: #f87171;
     background: rgba(248, 113, 113, 0.1);
     padding: 0.15rem 0.5rem;
@@ -497,7 +497,7 @@ const builtAt = new Date().toISOString().slice(0, 16).replace('T', ' ');
   }
 
   .loop-result {
-    font-size: 0.85rem;
+    font-size: var(--text-md);
     color: var(--color-text-muted);
   }
 
@@ -556,14 +556,14 @@ const builtAt = new Date().toISOString().slice(0, 16).replace('T', ' ');
 
   .platform-name {
     font-family: var(--font-mono);
-    font-size: 1rem;
+    font-size: var(--text-lg);
     font-weight: 700;
     color: var(--color-text);
   }
 
   .platform-rank {
     font-family: var(--font-mono);
-    font-size: 0.75rem;
+    font-size: var(--text-xs);
     padding: 0.2rem 0.6rem;
     border-radius: 4px;
     background: rgba(159, 239, 0, 0.1);
@@ -596,27 +596,27 @@ const builtAt = new Date().toISOString().slice(0, 16).replace('T', ' ');
   .stat-number {
     display: block;
     font-family: var(--font-mono);
-    font-size: 1.1rem;
+    font-size: var(--text-xl);
     font-weight: 700;
     color: var(--color-text);
   }
 
   .stat-label {
-    font-size: 0.7rem;
+    font-size: var(--text-2xs);
     color: var(--color-text-muted);
     text-transform: uppercase;
     letter-spacing: 0.05em;
   }
 
   .platform-desc {
-    font-size: 0.85rem;
+    font-size: var(--text-md);
     color: var(--color-text-muted);
     line-height: 1.5;
   }
 
   .platform-cta {
     font-family: var(--font-mono);
-    font-size: 0.8rem;
+    font-size: var(--text-sm);
     color: var(--color-accent);
     margin-top: auto;
   }
@@ -636,7 +636,7 @@ const builtAt = new Date().toISOString().slice(0, 16).replace('T', ' ');
   }
 
   .technique-group h4 {
-    font-size: 0.85rem;
+    font-size: var(--text-md);
     color: var(--color-accent);
     margin-bottom: 0.75rem;
     font-family: var(--font-mono);
@@ -650,7 +650,7 @@ const builtAt = new Date().toISOString().slice(0, 16).replace('T', ' ');
 
   .technique-tags span {
     font-family: var(--font-mono);
-    font-size: 0.7rem;
+    font-size: var(--text-2xs);
     background: var(--color-bg);
     color: var(--color-text-muted);
     padding: 0.2rem 0.5rem;
@@ -678,19 +678,19 @@ const builtAt = new Date().toISOString().slice(0, 16).replace('T', ' ');
   }
 
   .crosslink-block h3 {
-    font-size: 1rem;
+    font-size: var(--text-lg);
     color: var(--color-accent);
     margin-bottom: 0.5rem;
   }
 
   .crosslink-block p {
-    font-size: 0.85rem;
+    font-size: var(--text-md);
     color: var(--color-text-muted);
     line-height: 1.5;
   }
 
   .crosslink-arrow {
-    font-size: 1.5rem;
+    font-size: var(--text-4xl);
     color: var(--color-accent);
     flex-shrink: 0;
   }
@@ -703,11 +703,11 @@ const builtAt = new Date().toISOString().slice(0, 16).replace('T', ' ');
     .platforms-grid, .techniques-grid { grid-template-columns: 1fr; gap: 0.75rem; }
     .kv-row { padding: 0.9rem 1rem; }
     .kv-cells { grid-template-columns: repeat(2, 1fr); gap: 0.9rem 1rem; }
-    .kv-num { font-size: 1.3rem; }
+    .kv-num { font-size: var(--text-2xl); }
     .platform-card { padding: 1rem; }
     .platform-stats { grid-template-columns: repeat(2, 1fr); }
     .crosslink-block { flex-direction: column; gap: 1rem; padding: 1.25rem; }
-    .crosslink-block p { font-size: 0.82rem; }
+    .crosslink-block p { font-size: var(--text-sm); }
     .layer-header { flex-wrap: wrap; gap: 0.5rem; }
   }
 </style>

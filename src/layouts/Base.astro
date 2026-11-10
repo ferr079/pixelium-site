@@ -259,17 +259,17 @@ const cmdkItems = [
     width: 100%; padding: 1rem 1.1rem;
     background: transparent; border: none;
     border-bottom: 1px solid var(--color-border);
-    color: var(--color-text); font-family: var(--font-mono); font-size: 1rem; outline: none;
+    color: var(--color-text); font-family: var(--font-mono); font-size: var(--text-lg); outline: none;
   }
   .cmdk-list { list-style: none; margin: 0; padding: 0.4rem; max-height: 50vh; overflow-y: auto; }
   .cmdk-item {
     display: block; padding: 0.55rem 0.7rem; border-radius: 6px;
-    color: var(--color-text-muted); font-family: var(--font-mono); font-size: 0.9rem;
+    color: var(--color-text-muted); font-family: var(--font-mono); font-size: var(--text-base);
   }
   .cmdk-item.active, .cmdk-item:hover { background: rgb(var(--accent-rgb) / 0.12); color: var(--color-accent); }
   .cmdk-hint {
     padding: 0.5rem 0.9rem; border-top: 1px solid var(--color-border);
-    font-family: var(--font-mono); font-size: 0.7rem; color: var(--color-text-muted); opacity: 0.7;
+    font-family: var(--font-mono); font-size: var(--text-2xs); color: var(--color-text-muted); opacity: 0.7;
   }
 </style>
 
@@ -310,6 +310,25 @@ const cmdkItems = [
     --color-text-muted: rgb(var(--muted-rgb));
     --color-accent: rgb(var(--accent-rgb));
     --color-accent-hover: #7dd3fc;
+    /* Échelle de texte (pixelium-site#237, lot 3b). 13 paliers : chaque taille
+       en rem écrite dans les pages a été ramenée au palier le plus proche, à
+       0,05 rem près au plus (0,8 px), vers le haut en cas d'égalité. Restent
+       hors échelle, exprès : les tailles fluides en clamp(), les tailles
+       relatives en em, les rares valeurs en px ou marquées !important, et trois
+       valeurs trop loin d'un palier (0,45 / 0,5 / 1,6 rem). */
+    --text-3xs: 0.6rem;
+    --text-2xs: 0.7rem;
+    --text-xs: 0.75rem;
+    --text-sm: 0.8rem;
+    --text-md: 0.85rem;
+    --text-base: 0.9rem;
+    --text-lg: 1rem;
+    --text-xl: 1.1rem;
+    --text-2xl: 1.25rem;
+    --text-3xl: 1.4rem;
+    --text-4xl: 1.5rem;
+    --text-5xl: 1.75rem;
+    --text-6xl: 2rem;
     --font-mono: var(--font-jetbrains-mono, 'JetBrains Mono', 'Fira Code', ui-monospace, monospace);
     --font-sans: system-ui, -apple-system, sans-serif;
     --max-width: 64rem;

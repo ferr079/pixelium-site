@@ -261,7 +261,7 @@ const cards = [
 
   .signature-label {
     font-family: var(--font-mono);
-    font-size: 0.68rem;
+    font-size: var(--text-2xs);
     color: var(--color-text-muted);
     text-transform: uppercase;
     letter-spacing: 0.07em;
@@ -278,7 +278,7 @@ const cards = [
     max-width: 44rem;
     margin: 0.85rem auto 0;
     font-family: var(--font-mono);
-    font-size: 0.68rem;
+    font-size: var(--text-2xs);
     color: var(--color-text-muted);
     opacity: 0.7;
     text-align: center;
@@ -326,7 +326,7 @@ const cards = [
   }
 
   .opensource-badge p {
-    font-size: 0.9rem;
+    font-size: var(--text-base);
     color: var(--color-text-muted);
     line-height: 1.6;
     max-width: 40rem;
@@ -376,7 +376,7 @@ const cards = [
     justify-content: center;
     gap: 0.6rem;
     font-family: var(--font-mono);
-    font-size: 0.85rem;
+    font-size: var(--text-md);
     color: var(--color-text-muted);
     flex-wrap: wrap;
     transition: color 0.2s;
@@ -394,9 +394,9 @@ const cards = [
   @media (max-width: 640px) {
     .grid { grid-template-columns: 1fr; gap: 0.75rem; }
     .opensource-badge { padding: 1rem 1.25rem; }
-    .opensource-badge p { font-size: 0.85rem; }
+    .opensource-badge p { font-size: var(--text-md); }
     .banner-cta { flex-direction: column; gap: 0.5rem; align-items: flex-start; }
-    .banner-step { font-size: 0.75rem; }
+    .banner-step { font-size: var(--text-xs); }
     .banner-pipe { display: none; }
   }
 </style>
