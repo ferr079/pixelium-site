@@ -1,5 +1,6 @@
 ---
 import Base from '../layouts/Base.astro';
+import PageHero from '../components/PageHero.astro';
 import { SERVICE_INFO } from '../data/service-info';
 import { getBuildStats } from '../lib/build-stats';
 
@@ -9,13 +10,9 @@ const stats = await getBuildStats();
 
 <Base title="Status — pixelium.win" description={`Live infrastructure status: ${stats.services_total} services, ${stats.proxmox_nodes} Proxmox nodes, tri-state monitoring (up · on-demand · down). Data pushed from the homelab by Dagu every 15 minutes.`}>
   <main>
-    <section class="hero-mini">
-      <div class="container">
-        <p class="terminal-prompt">$ ping --all</p>
-        <h1>Status<span class="dot">.</span></h1>
-        <p class="subtitle">Live infrastructure dashboard. Data pushed by Dagu every 15 minutes — zero ports exposed.</p>
-      </div>
-    </section>
+    <PageHero prompt="$ ping --all" title="Status">
+      Live infrastructure dashboard. Data pushed by Dagu every 15 minutes — zero ports exposed.
+    </PageHero>
 
     <!-- Staleness alert banner -->
     <div id="stale-banner" class="stale-banner" style="display:none;">
