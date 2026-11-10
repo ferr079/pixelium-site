@@ -19,7 +19,7 @@
     padding: 0.75rem 1.5rem;
     background: rgb(var(--down-rgb) / 0.12);
     border: 1px solid rgb(var(--down-rgb) / 0.3);
-    border-radius: 8px;
+    border-radius: var(--radius-lg);
     margin: 1.5rem auto 0;
     max-width: 700px;
     font-family: var(--font-mono);
@@ -45,7 +45,7 @@
 
   /* Uptime timeline */
   .status-page .uptime-placeholder { padding: 1rem 0; }
-  .status-page .uptime-skeleton { height: 2.5rem; background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 6px; animation: skeleton-pulse 1.5s ease-in-out infinite; }
+  .status-page .uptime-skeleton { height: 2.5rem; background: var(--color-surface); border: 1px solid var(--color-border); border-radius: var(--radius-md); animation: skeleton-pulse 1.5s ease-in-out infinite; }
   .status-page .uptime-wait { text-align: center; color: var(--color-text-muted); font-family: var(--font-mono); font-size: var(--text-sm); margin-top: 0.75rem; }
   .status-page .uptime-header { display: flex; align-items: baseline; gap: 0.75rem; margin-bottom: 0.75rem; }
   .status-page .uptime-avg { font-family: var(--font-mono); font-size: var(--text-6xl); font-weight: 800; color: var(--color-ok); }
@@ -53,7 +53,7 @@
   .status-page .uptime-labels { display: flex; justify-content: space-between; margin-top: 0.4rem; font-family: var(--font-mono); font-size: var(--text-2xs); color: var(--color-text-muted); }
 
   .status-page .skeleton-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 0.75rem; }
-  .status-page .skeleton-card { height: 2.5rem; background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 6px; animation: skeleton-pulse 1.5s ease-in-out infinite; }
+  .status-page .skeleton-card { height: 2.5rem; background: var(--color-surface); border: 1px solid var(--color-border); border-radius: var(--radius-md); animation: skeleton-pulse 1.5s ease-in-out infinite; }
   .status-page .skeleton-nodes { grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); }
   .status-page .skeleton-node { height: 8rem; }
   .status-page .status-waiting { text-align: center; color: var(--color-text-muted); font-family: var(--font-mono); font-size: var(--text-md); margin-top: 1.5rem; }

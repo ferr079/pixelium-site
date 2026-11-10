@@ -739,7 +739,7 @@ import PageHero from '../components/PageHero.astro';
 
   #monitor-bezel {
     border: 1px solid var(--color-border);
-    border-radius: 10px;
+    border-radius: var(--radius-xl);
     padding: 0.8rem;
     background: var(--color-surface);
     box-shadow: 0 0 30px rgb(var(--accent-rgb) / 0.03);
@@ -770,7 +770,7 @@ import PageHero from '../components/PageHero.astro';
     max-height: 50rem;
     padding: 0.8rem 1rem;
     overflow: hidden;
-    border-radius: 6px;
+    border-radius: var(--radius-md);
     background: var(--color-bg);
     border: 1px solid var(--color-border);
     box-shadow: inset 0 0 40px rgba(0, 0, 0, 0.2);
@@ -788,7 +788,7 @@ import PageHero from '../components/PageHero.astro';
     );
     pointer-events: none;
     z-index: 10;
-    border-radius: 6px;
+    border-radius: var(--radius-md);
   }
 
   #crt::after {
@@ -798,7 +798,7 @@ import PageHero from '../components/PageHero.astro';
     background: radial-gradient(ellipse at center, transparent 65%, rgba(0, 0, 0, 0.2) 100%);
     pointer-events: none;
     z-index: 5;
-    border-radius: 6px;
+    border-radius: var(--radius-md);
   }
 
   /* Terminal */
@@ -816,7 +816,7 @@ import PageHero from '../components/PageHero.astro';
 
   #terminal::-webkit-scrollbar { width: 4px; }
   #terminal::-webkit-scrollbar-track { background: transparent; }
-  #terminal::-webkit-scrollbar-thumb { background: var(--color-border); border-radius: 2px; }
+  #terminal::-webkit-scrollbar-thumb { background: var(--color-border); border-radius: var(--radius-2xs); }
 
   #input-line {
     display: flex;

@@ -13,7 +13,7 @@
   .infrastructure-page .inception-trigger {
     margin-top: 1.1rem; display: inline-flex; align-items: center; gap: 0.5rem;
     background: rgb(var(--accent-rgb) / 0.06); border: 1px solid rgb(var(--accent-rgb) / 0.25);
-    border-radius: 6px; padding: 0.5rem 0.85rem; cursor: pointer;
+    border-radius: var(--radius-md); padding: 0.5rem 0.85rem; cursor: pointer;
     font-family: var(--font-mono); font-size: var(--text-sm); color: var(--color-text-muted);
     transition: all 0.2s;
   }
@@ -31,7 +31,7 @@
   .infrastructure-page .inception.open { display: flex; }
   .infrastructure-page .inception-win {
     width: min(92vw, 40rem); background: var(--color-bg);
-    border: 1px solid var(--color-border); border-radius: 10px; overflow: hidden;
+    border: 1px solid var(--color-border); border-radius: var(--radius-xl); overflow: hidden;
     box-shadow: 0 24px 70px rgba(0, 0, 0, 0.6);
   }
   .infrastructure-page .inception-bar {
@@ -88,7 +88,7 @@
   .infrastructure-page .node-card {
     background: var(--color-surface);
     border: 1px solid var(--color-border);
-    border-radius: 8px;
+    border-radius: var(--radius-lg);
     padding: 1.25rem;
   }
 
@@ -116,7 +116,7 @@
     font-family: var(--font-mono);
     font-size: var(--text-2xs);
     padding: 0.15rem 0.5rem;
-    border-radius: 4px;
+    border-radius: var(--radius-sm);
     margin-left: auto;
   }
 
@@ -180,7 +180,7 @@
   .infrastructure-page .tech-card {
     background: var(--color-surface);
     border: 1px solid var(--color-border);
-    border-radius: 8px;
+    border-radius: var(--radius-lg);
     padding: 1.25rem;
     transition: border-color 0.2s;
   }
@@ -242,7 +242,7 @@
   .infrastructure-page .tls-step {
     background: var(--color-surface);
     border: 1px solid var(--color-border);
-    border-radius: 8px;
+    border-radius: var(--radius-lg);
     padding: 1rem 1.25rem;
     display: flex;
     align-items: flex-start;
@@ -289,7 +289,7 @@
   .infrastructure-page .obs-card {
     background: var(--color-surface);
     border: 1px solid var(--color-border);
-    border-radius: 8px;
+    border-radius: var(--radius-lg);
     padding: 1.25rem;
   }
 
@@ -334,7 +334,7 @@
     gap: 0.3rem;
     padding: 0.9rem 1rem;
     border: 1px solid var(--color-border);
-    border-radius: 6px;
+    border-radius: var(--radius-md);
     background: var(--color-surface);
   }
 
@@ -362,7 +362,7 @@
     color: var(--color-accent);
     background: rgb(var(--accent-rgb) / 0.06);
     padding: 0.05rem 0.3rem;
-    border-radius: 3px;
+    border-radius: var(--radius-xs);
   }
 
   /* Crosslink banner */
@@ -379,7 +379,7 @@
     padding: 1.5rem 2rem;
     background: var(--color-surface);
     border: 1px solid var(--color-border);
-    border-radius: 8px;
+    border-radius: var(--radius-lg);
     text-decoration: none;
     transition: border-color 0.2s, transform 0.2s;
   }
