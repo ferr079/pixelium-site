@@ -57,24 +57,16 @@
     border-top: 1px solid var(--color-border);
   }
 
-  .infrastructure-page .layer-header {
-    display: flex;
-    align-items: center;
-    gap: 1rem;
-    margin-bottom: 1.5rem;
-  }
-
   .infrastructure-page .tech-logo {
     width: 1.4rem;
     height: 1.4rem;
     flex-shrink: 0;
   }
 
-  .infrastructure-page .layer-header h2 {
-    font-size: var(--text-3xl);
-    margin-bottom: 0;
-  }
-
+  /* Ces deux règles répètent page-chrome.css, exprès. Sous le préfixe de la
+     page, elles l'emportent sur .mcp-note (interligne 1.6) : le paragraphe
+     « Principle: least privilege » garde l'interligne 1.7 des autres. Les
+     retirer change son rendu (vu en capture, pixelium-site#237). */
   .infrastructure-page .layer-content > p {
     color: var(--color-text-muted);
     margin-bottom: 1.5rem;
@@ -171,30 +163,10 @@
   }
 
   /* Details grid */
+  /* Variante de /infrastructure : la grille est suivie d'un bloc. Le reste de
+     .details-grid vient de page-chrome.css. */
   .infrastructure-page .details-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(16rem, 1fr));
-    gap: 1rem;
     margin-bottom: 1.5rem;
-  }
-
-  .infrastructure-page .detail {
-    background: var(--color-surface);
-    border: 1px solid var(--color-border);
-    border-radius: 6px;
-    padding: 1.25rem;
-  }
-
-  .infrastructure-page .detail h4 {
-    font-size: var(--text-base);
-    margin-bottom: 0.5rem;
-    color: var(--color-text);
-  }
-
-  .infrastructure-page .detail p {
-    font-size: var(--text-md);
-    color: var(--color-text-muted);
-    line-height: 1.5;
   }
 
   /* Tech grid — section 02 */
@@ -462,8 +434,6 @@
   }
 
   @media (max-width: 640px) {
-    .infrastructure-page .details-grid, .infrastructure-page .obs-grid { grid-template-columns: 1fr; gap: 0.75rem; }
-    .infrastructure-page .detail { padding: 0.75rem 1rem; }
+    .infrastructure-page .obs-grid { grid-template-columns: 1fr; gap: 0.75rem; }
     .infrastructure-page .node-badge { padding: 0.5rem 0.75rem; font-size: var(--text-xs); }
-    .infrastructure-page .layer-header { flex-wrap: wrap; gap: 0.5rem; }
   }

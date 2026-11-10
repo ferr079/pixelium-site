@@ -10,14 +10,6 @@
  * page sans l'autre.
  */
 
-  /* Layers */
-  .securite-page .layer-header {
-    display: flex;
-    align-items: center;
-    gap: 1rem;
-    margin-bottom: 1.5rem;
-  }
-
   .securite-page .tech-logo {
     width: 1.4rem;
     height: 1.4rem;
@@ -56,32 +48,6 @@
   }
 
   .securite-page .defense-layer p {
-    font-size: var(--text-md);
-    color: var(--color-text-muted);
-    line-height: 1.5;
-  }
-
-  /* Details grid */
-  .securite-page .details-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(16rem, 1fr));
-    gap: 1rem;
-  }
-
-  .securite-page .detail {
-    background: var(--color-surface);
-    border: 1px solid var(--color-border);
-    border-radius: 6px;
-    padding: 1.25rem;
-  }
-
-  .securite-page .detail h4 {
-    font-size: var(--text-base);
-    margin-bottom: 0.5rem;
-    color: var(--color-text);
-  }
-
-  .securite-page .detail p {
     font-size: var(--text-md);
     color: var(--color-text-muted);
     line-height: 1.5;
@@ -165,8 +131,5 @@
     .securite-page .spec { flex-direction: column; gap: 0.25rem; }
     .securite-page .spec-label { min-width: unset; }
     .securite-page .defense-layer { flex-direction: column; gap: 0.5rem; padding: 0.75rem 1rem; }
-    .securite-page .details-grid { grid-template-columns: 1fr; gap: 0.75rem; }
-    .securite-page .detail { padding: 0.75rem 1rem; }
     .securite-page .transparency-block { padding: 1rem 1.25rem; }
-    .securite-page .layer-header { flex-wrap: wrap; gap: 0.5rem; }
   }
