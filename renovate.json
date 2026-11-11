@@ -5,6 +5,7 @@
   ],
   "dependencyDashboard": true,
   "prConcurrentLimit": 3,
+  "prHourlyLimit": 0,
   "timezone": "Europe/Paris",
   "osvVulnerabilityAlerts": true,
   "customManagers": [
