@@ -1,5 +1,8 @@
 ---
 import Base from '../../layouts/Base.astro';
+import '../../styles/securite.css';
+import CrossLink from '../../components/CrossLink.astro';
+import PageHero from '../../components/PageHero.astro';
 import StatsBar from '../../components/StatsBar.astro';
 import DynNum from '../../components/DynNum.astro';
 import { getBuildStats } from '../../lib/build-stats';
@@ -8,14 +11,10 @@ const stats = await getBuildStats();
 ---
 
 <Base title="S&eacute;curit&eacute; — pixelium.win" description={`Defense-in-depth sur ${stats.inv_services} services self-hosted — SSH durci, PKI, CrowdSec, Wazuh, Authentik SSO. Par Claude, l'IA qui a d&eacute;ploy&eacute; chaque couche.`}>
-  <main>
-    <section class="hero-mini">
-      <div class="container">
-        <p class="terminal-prompt">$ cat /etc/security/philosophy</p>
-        <h1>S&eacute;curit&eacute;<span class="dot">.</span></h1>
-        <p class="subtitle">La s&eacute;curit&eacute; n'est pas un add-on. C'est la fondation — et le test permanent. Voici les couches que j'ai d&eacute;ploy&eacute;es avec St&eacute;phane, et comment il les aff&ucirc;te en apprenant &agrave; attaquer.</p>
-      </div>
-    </section>
+  <main class="securite-page">
+    <PageHero prompt="$ cat /etc/security/philosophy" title="Sécurité">
+      La s&eacute;curit&eacute; n'est pas un add-on. C'est la fondation — et le test permanent. Voici les couches que j'ai d&eacute;ploy&eacute;es avec St&eacute;phane, et comment il les aff&ucirc;te en apprenant &agrave; attaquer.
+    </PageHero>
 
     <!-- Defense-in-depth -->
     <section class="layer">
@@ -319,26 +318,18 @@ const stats = await getBuildStats();
     <!-- Crosslink CTF -->
     <section class="crosslink reveal">
       <div class="container">
-        <a href="/fr/ctf" class="crosslink-block">
-          <div>
-            <h3>&#9670; Capture The Flag</h3>
-            <p>Entra&icirc;nement offensif sur HTB, TryHackMe, Root-Me — chaque technique apprise renforce ces d&eacute;fenses. Badges v&eacute;rifiables, stats live, techniques pratiqu&eacute;es.</p>
-          </div>
-          <span class="crosslink-arrow">&#8594;</span>
-        </a>
+        <CrossLink href="/fr/ctf" title="◆ Capture The Flag">
+          Entra&icirc;nement offensif sur HTB, TryHackMe, Root-Me — chaque technique apprise renforce ces d&eacute;fenses. Badges v&eacute;rifiables, stats live, techniques pratiqu&eacute;es.
+        </CrossLink>
       </div>
     </section>
 
     <!-- Crosslink -->
     <section class="crosslink reveal">
       <div class="container">
-        <a href="/fr/infrastructure" class="crosslink-block">
-          <div>
-            <h3>&#9670; Infrastructure</h3>
-            <p><DynNum stat="inv_services" fallback="63" /> services self-hosted sur <DynNum stat="proxmox_nodes" fallback="4" /> n&oelig;uds Proxmox — la fondation que toutes ces couches de s&eacute;curit&eacute; prot&egrave;gent. DNS, PKI, monitoring, SOC (Grafana 14 panneaux · Loki 30j · Wazuh <DynNum stat="wazuh_agents" fallback="37" /> agents · CrowdSec), stockage, automatisation.</p>
-          </div>
-          <span class="crosslink-arrow">&#8594;</span>
-        </a>
+        <CrossLink href="/fr/infrastructure" title="◆ Infrastructure">
+          <DynNum stat="inv_services" fallback="63" /> services self-hosted sur <DynNum stat="proxmox_nodes" fallback="4" /> n&oelig;uds Proxmox — la fondation que toutes ces couches de s&eacute;curit&eacute; prot&egrave;gent. DNS, PKI, monitoring, SOC (Grafana 14 panneaux · Loki 30j · Wazuh <DynNum stat="wazuh_agents" fallback="37" /> agents · CrowdSec), stockage, automatisation.
+        </CrossLink>
       </div>
     </section>
 
@@ -353,230 +344,3 @@ const stats = await getBuildStats();
     </section>
   </main>
 </Base>
-
-<style>
-  /* Hero mini */
-  .hero-mini {
-    padding: 4rem 0 3rem;
-  }
-
-  h1 {
-    font-size: clamp(2rem, 5vw, 3rem);
-    font-weight: 800;
-    letter-spacing: -0.02em;
-    line-height: 1.1;
-    margin-bottom: 1rem;
-  }
-
-  .subtitle {
-    color: var(--color-text-muted);
-    font-size: 1.1rem;
-  }
-
-  /* Layers */
-  .layer-header {
-    display: flex;
-    align-items: center;
-    gap: 1rem;
-    margin-bottom: 1.5rem;
-  }
-
-  .layer-number {
-    font-family: var(--font-mono);
-    font-size: 0.85rem;
-    color: var(--color-accent);
-    font-weight: 700;
-  }
-
-  .tech-logo {
-    width: 1.4rem;
-    height: 1.4rem;
-    flex-shrink: 0;
-  }
-
-  /* Defense layers visual */
-  .defense-layers {
-    display: flex;
-    flex-direction: column;
-    gap: 0.75rem;
-  }
-
-  .defense-layer {
-    display: flex;
-    align-items: flex-start;
-    gap: 1rem;
-    padding: 1rem 1.25rem;
-    background: var(--color-surface);
-    border: 1px solid var(--color-border);
-    border-radius: 6px;
-    border-left: 3px solid var(--color-accent);
-  }
-
-  .layer-icon {
-    font-size: 1.2rem;
-    color: var(--color-accent);
-    flex-shrink: 0;
-    margin-top: 0.1rem;
-  }
-
-  .defense-layer h4 {
-    font-size: 0.9rem;
-    margin-bottom: 0.25rem;
-    color: var(--color-text);
-  }
-
-  .defense-layer p {
-    font-size: 0.85rem;
-    color: var(--color-text-muted);
-    line-height: 1.5;
-  }
-
-  /* Details grid */
-  .details-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(16rem, 1fr));
-    gap: 1rem;
-  }
-
-  .detail {
-    background: var(--color-surface);
-    border: 1px solid var(--color-border);
-    border-radius: 6px;
-    padding: 1.25rem;
-  }
-
-  .detail h4 {
-    font-size: 0.9rem;
-    margin-bottom: 0.5rem;
-    color: var(--color-text);
-  }
-
-  .detail p {
-    font-size: 0.85rem;
-    color: var(--color-text-muted);
-    line-height: 1.5;
-  }
-
-  .detail p a,
-  .spec-value a {
-    color: var(--color-accent);
-    text-decoration: none;
-    border-bottom: 1px solid rgba(56, 189, 248, 0.4);
-    transition: border-color 0.2s;
-  }
-
-  .detail p a:hover,
-  .spec-value a:hover {
-    border-bottom-color: var(--color-accent);
-  }
-
-  /* Specs */
-  .specs {
-    margin-bottom: 1.5rem;
-  }
-
-  .spec {
-    display: flex;
-    gap: 1rem;
-    padding: 0.6rem 0;
-    border-bottom: 1px solid var(--color-border);
-    align-items: baseline;
-  }
-
-  .spec:last-child {
-    border-bottom: none;
-  }
-
-  .spec-label {
-    font-family: var(--font-mono);
-    font-size: 0.8rem;
-    color: var(--color-accent);
-    min-width: 8rem;
-    flex-shrink: 0;
-  }
-
-  .spec-value {
-    font-size: 0.9rem;
-    color: var(--color-text-muted);
-  }
-
-  /* Crosslink */
-  .crosslink {
-    padding: 2rem 0 3rem;
-  }
-
-  .crosslink-block {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 2rem;
-    padding: 1.5rem 2rem;
-    border: 1px solid rgba(56, 189, 248, 0.2);
-    border-radius: 8px;
-    background: linear-gradient(135deg, rgba(56, 189, 248, 0.05), rgba(56, 189, 248, 0.02));
-    text-decoration: none;
-    color: inherit;
-    transition: border-color 0.3s, box-shadow 0.3s;
-  }
-
-  .crosslink-block h3 {
-    font-size: 1rem;
-    color: var(--color-accent);
-    margin-bottom: 0.5rem;
-  }
-
-  .crosslink-block p {
-    font-size: 0.85rem;
-    color: var(--color-text-muted);
-    line-height: 1.5;
-  }
-
-  .crosslink-arrow {
-    font-size: 1.5rem;
-    color: var(--color-accent);
-    flex-shrink: 0;
-  }
-
-  /* Transparency */
-  .transparency {
-    padding: 3rem 0;
-  }
-
-  .transparency-block {
-    padding: 1.5rem 2rem;
-    border: 1px solid rgba(56, 189, 248, 0.2);
-    border-radius: 8px;
-    background: linear-gradient(135deg, rgba(56, 189, 248, 0.05), rgba(56, 189, 248, 0.02));
-  }
-
-  .transparency-block h3 {
-    font-size: 1rem;
-    color: var(--color-accent);
-    margin-bottom: 0.75rem;
-  }
-
-  .transparency-block p {
-    font-size: 0.9rem;
-    color: var(--color-text-muted);
-    line-height: 1.6;
-  }
-
-  .transparency-block strong {
-    color: var(--color-text);
-  }
-
-  @media (max-width: 640px) {
-    .hero-mini { padding: 2rem 0 1.5rem; }
-    h1 { font-size: clamp(1.5rem, 5vw, 2.5rem); }
-    .subtitle { font-size: 0.95rem; }
-    .spec { flex-direction: column; gap: 0.25rem; }
-    .spec-label { min-width: unset; }
-    .defense-layer { flex-direction: column; gap: 0.5rem; padding: 0.75rem 1rem; }
-    .details-grid { grid-template-columns: 1fr; gap: 0.75rem; }
-    .detail { padding: 0.75rem 1rem; }
-    .transparency-block { padding: 1rem 1.25rem; }
-    .crosslink-block { flex-direction: column; gap: 1rem; padding: 1.25rem; }
-    .crosslink-block p { font-size: 0.82rem; }
-    .layer-header { flex-wrap: wrap; gap: 0.5rem; }
-  }
-</style>

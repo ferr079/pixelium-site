@@ -1,0 +1,317 @@
+/* contributions — styles de la page /contributions, partagés par la version EN et la version FR.
+ *
+ * Ce bloc <style> existait en double, dans contributions.astro et fr/contributions.astro. Une
+ * retouche faite d'un seul côté faisait diverger les deux langues sans que rien
+ * ne le signale (pixelium-site#237).
+ *
+ * Tout est préfixé par `.contributions-page`, classe portée par le <main> des deux pages :
+ * un CSS importé n'est plus limité à sa page par Astro, le préfixe lui rend cette
+ * limite. Même principe que styles/projets.css. Ne pas retirer la classe d'une
+ * page sans l'autre.
+ */
+
+  .contributions-page .c-hero {
+    padding: 4rem 0 2.5rem;
+  }
+
+  .contributions-page .c-hero-wrap > p {
+    max-width: 50rem;
+  }
+
+  .contributions-page .c-lede {
+    font-size: var(--text-xl);
+    color: var(--color-text-muted);
+    line-height: 1.7;
+    margin-bottom: 0.75rem;
+  }
+
+  .contributions-page .c-lede strong {
+    color: var(--color-accent);
+    font-weight: 600;
+  }
+
+  .contributions-page .c-hint, .contributions-page .c-backlog-lede, .contributions-page .c-backlog-note {
+    font-size: var(--text-base);
+    color: var(--color-text-muted);
+    line-height: 1.65;
+    opacity: 0.85;
+  }
+
+  .contributions-page .c-hint code, .contributions-page .c-backlog-lede code {
+    color: var(--color-accent);
+    background: rgb(var(--accent-rgb) / 0.06);
+    padding: 0.05rem 0.35rem;
+    border-radius: var(--radius-xs);
+    font-size: 0.88em;
+  }
+
+  .contributions-page .c-list-section { padding: 2rem 0 3rem; }
+
+  .contributions-page .c-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(min(100%, 26rem), 1fr));
+    gap: 1.25rem;
+    margin: 0;
+  }
+
+  .contributions-page .c-card {
+    padding: 1.5rem 1.75rem;
+    border: 1px solid var(--color-border);
+    border-left: 3px solid var(--color-accent);
+    border-radius: var(--radius-md);
+    background: linear-gradient(135deg, rgb(var(--accent-rgb) / 0.03), transparent 60%);
+  }
+
+  .contributions-page .c-card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .contributions-page .c-card-meta {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+  }
+
+  .contributions-page .c-pr-number {
+    font-family: var(--font-mono);
+    font-size: var(--text-sm);
+    color: var(--color-accent);
+    font-weight: 600;
+    text-decoration: none;
+  }
+
+  .contributions-page .c-pr-number:hover {
+    color: var(--color-accent-hover);
+  }
+
+  .contributions-page .c-sep {
+    color: var(--color-text-muted);
+    opacity: 0.4;
+  }
+
+  .contributions-page .c-date {
+    font-family: var(--font-mono);
+    font-size: var(--text-sm);
+    color: var(--color-text-muted);
+    opacity: 0.8;
+  }
+
+  .contributions-page .c-badge {
+    font-family: var(--font-mono);
+    font-size: var(--text-2xs);
+    letter-spacing: 0.06em;
+    padding: 0.15rem 0.5rem;
+    border-radius: var(--radius-xs);
+    text-transform: uppercase;
+  }
+
+  .contributions-page .c-badge-first {
+    background: rgb(var(--accent-rgb) / 0.15);
+    color: var(--color-accent);
+    border: 1px solid rgb(var(--accent-rgb) / 0.3);
+  }
+
+  .contributions-page .c-status {
+    font-family: var(--font-mono);
+    font-size: var(--text-2xs);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    padding: 0.15rem 0.55rem;
+    border-radius: var(--radius-xs);
+    font-weight: 600;
+  }
+
+  .contributions-page .c-status-merged {
+    background: rgb(var(--ok-rgb) / 0.12);
+    color: #4ade80;
+    border: 1px solid rgb(var(--ok-rgb) / 0.3);
+  }
+
+  .contributions-page .c-status-open {
+    background: rgb(var(--accent-rgb) / 0.12);
+    color: var(--color-accent);
+    border: 1px solid rgb(var(--accent-rgb) / 0.3);
+  }
+
+  .contributions-page .c-status-closed {
+    background: rgb(var(--muted-rgb) / 0.12);
+    color: var(--color-text-muted);
+    border: 1px solid rgb(var(--muted-rgb) / 0.3);
+  }
+
+  .contributions-page .c-project {
+    font-family: var(--font-mono);
+    font-size: var(--text-sm);
+    color: var(--color-text-muted);
+    margin-bottom: 0.4rem;
+    letter-spacing: 0.02em;
+  }
+
+  .contributions-page .c-title {
+    font-size: var(--text-xl);
+    color: var(--color-text);
+    font-weight: 600;
+    line-height: 1.4;
+    margin-bottom: 0.9rem;
+  }
+
+  .contributions-page .c-insight {
+    font-size: var(--text-base);
+    color: var(--color-text-muted);
+    line-height: 1.65;
+    padding: 0.75rem 1rem;
+    background: rgb(var(--bg-rgb) / 0.4);
+    border-radius: var(--radius-sm);
+    border-left: 2px solid rgb(var(--accent-rgb) / 0.3);
+    margin-bottom: 1rem;
+  }
+
+  .contributions-page .c-insight-label {
+    display: block;
+    font-family: var(--font-mono);
+    font-size: var(--text-2xs);
+    color: var(--color-accent);
+    letter-spacing: 0.08em;
+    margin-bottom: 0.25rem;
+    opacity: 0.85;
+  }
+
+  .contributions-page .c-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.35rem;
+    margin-bottom: 1rem;
+  }
+
+  .contributions-page .c-tag {
+    font-family: var(--font-mono);
+    font-size: var(--text-2xs);
+    color: var(--color-text-muted);
+    background: rgb(var(--accent-rgb) / 0.05);
+    padding: 0.15rem 0.5rem;
+    border-radius: var(--radius-xs);
+    border: 1px solid rgb(var(--accent-rgb) / 0.1);
+  }
+
+  .contributions-page .c-links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+  }
+
+  .contributions-page .c-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    font-family: var(--font-mono);
+    font-size: var(--text-sm);
+    color: var(--color-accent);
+    padding: 0.3rem 0.7rem;
+    border: 1px solid rgb(var(--accent-rgb) / 0.25);
+    border-radius: var(--radius-sm);
+    text-decoration: none;
+    transition: all 0.2s;
+  }
+
+  .contributions-page .c-link:hover {
+    border-color: var(--color-accent);
+    background: rgb(var(--accent-rgb) / 0.06);
+    color: var(--color-accent-hover);
+  }
+
+  .contributions-page .c-link-issue, .contributions-page .c-link-blog {
+    color: var(--color-text-muted);
+    border-color: var(--color-border);
+  }
+
+  .contributions-page .c-link-issue:hover, .contributions-page .c-link-blog:hover {
+    color: var(--color-text);
+    border-color: var(--color-text-muted);
+    background: transparent;
+  }
+
+  .contributions-page .c-backlog {
+    padding: 3rem 0;
+    background: linear-gradient(180deg, rgb(var(--accent-rgb) / 0.02), transparent);
+    border-top: 1px solid rgb(var(--accent-rgb) / 0.08);
+    border-bottom: 1px solid rgb(var(--accent-rgb) / 0.08);
+  }
+
+  .contributions-page .c-backlog > .container > p {
+    max-width: 50rem;
+  }
+
+  .contributions-page .c-watch {
+    list-style: none;
+    padding: 0;
+    margin: 1rem 0 1rem;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(min(100%, 24rem), 1fr));
+    gap: 0.5rem;
+  }
+
+  .contributions-page .c-watch li {
+    position: relative;
+    padding-left: 1.3rem;
+    font-size: var(--text-base);
+    color: var(--color-text-muted);
+    line-height: 1.6;
+  }
+
+  .contributions-page .c-watch li::before {
+    content: '∷';
+    position: absolute;
+    left: 0;
+    color: var(--color-accent);
+    opacity: 0.6;
+    font-family: var(--font-mono);
+  }
+
+  .contributions-page .c-watch li strong {
+    color: var(--color-text);
+    font-weight: 600;
+  }
+
+  .contributions-page .c-philosophy {
+    padding: 2rem 0 4rem;
+  }
+
+  .contributions-page .c-philosophy-card {
+    margin: 0;
+    padding: 1.5rem 1.75rem;
+    border: 1px dashed rgb(var(--accent-rgb) / 0.25);
+    border-radius: var(--radius-md);
+    background: linear-gradient(135deg, rgb(var(--accent-rgb) / 0.03), transparent);
+  }
+
+  .contributions-page .c-philosophy-text {
+    font-size: var(--text-lg);
+    color: var(--color-text-muted);
+    line-height: 1.75;
+  }
+
+  .contributions-page .c-philosophy-text strong {
+    color: var(--color-text);
+    font-weight: 600;
+  }
+
+  .contributions-page .c-philosophy-eyebrow {
+    display: block;
+    font-family: var(--font-mono);
+    font-size: var(--text-2xs);
+    color: var(--color-accent);
+    letter-spacing: 0.1em;
+    margin-bottom: 0.5rem;
+  }
+
+  @media (max-width: 640px) {
+    .contributions-page .c-card { padding: 1.25rem 1rem; }
+    .contributions-page .c-card-header { flex-direction: column; align-items: flex-start; }
+    .contributions-page .c-title { font-size: var(--text-lg); }
+  }

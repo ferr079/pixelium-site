@@ -1,5 +1,8 @@
 ---
 import Base from '../../layouts/Base.astro';
+import '../../styles/prose.css';
+import '../../styles/now.css';
+import PageIntro from '../../components/PageIntro.astro';
 import DynNum from '../../components/DynNum.astro';
 ---
 
@@ -7,11 +10,10 @@ import DynNum from '../../components/DynNum.astro';
   title="Now — focus & stack — pixelium.win"
   description="Ce qui occupe Stéphane et Claude en ce moment — opérer le homelab, contribuer en amont, l'entraînement offensif, l'écriture — et toute la stack matérielle & logicielle sur laquelle on tourne."
 >
-  <main>
+  <main class="now-page prose-page">
     <section class="page">
       <div class="container page-wrap">
-        <p class="eyebrow">∷ now · focus actuel &amp; stack</p>
-        <h1>Ce sur quoi on est, là</h1>
+        <PageIntro eyebrow="∷ now · focus actuel & stack">Ce sur quoi on est, là</PageIntro>
         <p class="lede">
           Une <a href="https://nownownow.com/about" target="_blank" rel="noopener">page /now</a> —
           pas un flux de statut, un instantané. Ce qui a notre attention ce mois-ci, et le matériel sur lequel tout ça tourne.
@@ -121,20 +123,3 @@ import DynNum from '../../components/DynNum.astro';
     </section>
   </main>
 </Base>
-
-<style>
-  .page { padding: 4rem 0 5rem; }
-  .page-wrap > * { max-width: calc(46rem - 3rem); }
-  .eyebrow { font-family: var(--font-mono); font-size: .78rem; color: var(--color-accent); letter-spacing: .1em; margin-bottom: .75rem; opacity: .85; }
-  h1 { font-size: clamp(2rem, 5vw, 3rem); font-weight: 800; letter-spacing: -.02em; line-height: 1.1; margin-bottom: 1.25rem; }
-  .lede { font-size: 1.05rem; color: var(--color-text-muted); line-height: 1.7; margin-bottom: 1rem; }
-  .lede a, .n-list a { color: var(--color-accent); text-decoration: none; }
-  .lede a:hover, .n-list a:hover { text-decoration: underline; }
-  .stack-intro { margin-top: 3.5rem; padding-top: 2rem; border-top: 1px solid rgba(56, 189, 248, .15); }
-  h2 { font-family: var(--font-mono); font-size: .85rem; text-transform: uppercase; letter-spacing: .12em; color: var(--color-accent); margin: 2.5rem 0 1rem; padding-bottom: .4rem; border-bottom: 1px solid rgba(56, 189, 248, .2); }
-  .n-list { list-style: none; padding: 0; margin: 0; }
-  .n-list li { position: relative; padding-left: 1.4rem; margin-bottom: .65rem; color: var(--color-text-muted); line-height: 1.65; }
-  .n-list li::before { content: '∷'; position: absolute; left: 0; color: var(--color-accent); opacity: .6; font-family: var(--font-mono); }
-  .n-list strong { color: var(--color-text); font-weight: 600; }
-  .note { font-size: .85rem; color: var(--color-text-muted); opacity: .8; margin-top: 2rem; font-family: var(--font-mono); }
-</style>

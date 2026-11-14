@@ -25,8 +25,8 @@ const { title, bg } = Astro.props;
     border-bottom: 1px solid var(--color-border);
   }
   .winchrome-dot { width: 0.5rem; height: 0.5rem; border-radius: 50%; flex: none; }
-  .winchrome-dot--r { background: var(--color-down, #ef4444); }
-  .winchrome-dot--y { background: var(--color-warn, #eab308); }
-  .winchrome-dot--g { background: var(--color-ok, #22c55e); }
-  .winchrome-title { font-family: var(--font-mono); font-size: 0.7rem; color: var(--color-text-muted); margin-left: 0.5rem; }
+  .winchrome-dot--r { background: var(--color-down, var(--color-down)); }
+  .winchrome-dot--y { background: var(--color-warn, var(--color-warn)); }
+  .winchrome-dot--g { background: var(--color-ok, var(--color-ok)); }
+  .winchrome-title { font-family: var(--font-mono); font-size: var(--text-2xs); color: var(--color-text-muted); margin-left: 0.5rem; }
 </style>

@@ -1,0 +1,56 @@
+---
+/**
+ * PageIntro — l'ouverture des pages « prose » : une ligne d'étiquette
+ * (« ∷ sujet · précision »), puis un titre en phrase, sans point ni curseur.
+ * Le pendant de PageHero, qui porte la grammaire « terminal ».
+ *
+ * Ces deux règles étaient recopiées dans agents, now, claude, contributions et
+ * pact (EN et FR), avec trois tailles de titre et quatre espacements. Décision
+ * du 2026-11-10 (pixelium-site#237) : une seule échelle, celle de /agents et
+ * /now ; /pact garde la sienne, nommée `manifesto`.
+ *
+ * - `eyebrow` : le texte de l'étiquette.
+ * - `size`    : `manifesto` pour le titre ample de /pact.
+ * - slot par défaut : le contenu du h1 (texte, <span class="accent">, <DynNum />…).
+ *
+ * Le composant rend deux éléments frères, sans conteneur : ils restent des
+ * enfants directs du conteneur de la page. `...rest` leur transmet l'attribut
+ * de portée de la page appelante, pour que ses règles de largeur
+ * (`.page-wrap > *`, `.cs-hero-wrap > p`…) continuent de les atteindre.
+ * Le chapeau qui suit reste dans la page : ses variantes ne sont pas tranchées.
+ */
+interface Props {
+  eyebrow: string;
+  size?: 'default' | 'manifesto';
+  [key: string]: unknown;
+}
+
+const { eyebrow, size = 'default', ...rest } = Astro.props;
+---
+
+<p class="eyebrow" {...rest}>{eyebrow}</p>
+<h1 class:list={[{ manifesto: size === 'manifesto' }]} {...rest}><slot /></h1>
+
+<style>
+  .eyebrow {
+    font-family: var(--font-mono);
+    font-size: var(--text-sm);
+    color: var(--color-accent);
+    letter-spacing: 0.1em;
+    margin-bottom: 0.75rem;
+    opacity: 0.85;
+  }
+
+  h1 {
+    font-size: clamp(2rem, 5vw, 3rem);
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    line-height: 1.1;
+    margin-bottom: 1.25rem;
+  }
+
+  h1.manifesto {
+    font-size: clamp(2.25rem, 5vw, 3.5rem);
+    margin-bottom: 2.25rem;
+  }
+</style>

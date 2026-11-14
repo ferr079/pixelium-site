@@ -142,9 +142,9 @@ const nodeTitle = (n: { label: string; hostname?: string | null; ipAddress?: str
     max-width: 72rem;
     margin: 2rem auto;
     padding: 1.5rem;
-    border: 1px solid rgba(56, 189, 248, 0.15);
-    border-radius: 8px;
-    background: rgba(11, 17, 32, 0.5);
+    border: 1px solid rgb(var(--accent-rgb) / 0.15);
+    border-radius: var(--radius-lg);
+    background: rgb(var(--bg-rgb) / 0.5);
   }
 
   .topo-header {
@@ -158,7 +158,7 @@ const nodeTitle = (n: { label: string; hostname?: string | null; ipAddress?: str
 
   .topo-eyebrow {
     font-family: var(--font-mono);
-    font-size: 0.78rem;
+    font-size: var(--text-sm);
     color: var(--color-accent);
     letter-spacing: 0.08em;
     opacity: 0.85;
@@ -167,7 +167,7 @@ const nodeTitle = (n: { label: string; hostname?: string | null; ipAddress?: str
 
   .topo-hint {
     font-family: var(--font-mono);
-    font-size: 0.72rem;
+    font-size: var(--text-2xs);
     color: var(--color-text-muted);
     opacity: 0.6;
     margin: 0;
@@ -177,11 +177,11 @@ const nodeTitle = (n: { label: string; hostname?: string | null; ipAddress?: str
   .topo-map {
     position: relative;
     padding: 1.25rem 1rem 1.5rem;
-    border-radius: 6px;
+    border-radius: var(--radius-md);
     background:
-      linear-gradient(rgba(56, 189, 248, 0.04) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(56, 189, 248, 0.04) 1px, transparent 1px),
-      rgba(11, 17, 32, 0.6);
+      linear-gradient(rgb(var(--accent-rgb) / 0.04) 1px, transparent 1px),
+      linear-gradient(90deg, rgb(var(--accent-rgb) / 0.04) 1px, transparent 1px),
+      rgb(var(--bg-rgb) / 0.6);
     background-size: 32px 32px, 32px 32px, 100% 100%;
     display: flex;
     flex-direction: column;
@@ -216,7 +216,7 @@ const nodeTitle = (n: { label: string; hostname?: string | null; ipAddress?: str
   .topo-node-sub {
     display: block;
     font-family: var(--font-mono);
-    font-size: 0.62rem;
+    font-size: var(--text-3xs);
     color: var(--color-text-muted);
     opacity: 0.7;
     margin-top: 0.18rem;
@@ -256,7 +256,7 @@ const nodeTitle = (n: { label: string; hostname?: string | null; ipAddress?: str
     height: 1px;
     background: repeating-linear-gradient(
       90deg,
-      rgba(56, 189, 248, 0.3) 0 4px,
+      rgb(var(--accent-rgb) / 0.3) 0 4px,
       transparent 4px 8px
     );
   }
@@ -266,12 +266,12 @@ const nodeTitle = (n: { label: string; hostname?: string | null; ipAddress?: str
 
   .topo-connector-label {
     font-family: var(--font-mono);
-    font-size: 0.65rem;
+    font-size: var(--text-2xs);
     color: var(--color-text-muted);
-    background: rgba(11, 17, 32, 0.8);
+    background: rgb(var(--bg-rgb) / 0.8);
     padding: 0.1rem 0.5rem;
-    border-radius: 3px;
-    border: 1px solid rgba(56, 189, 248, 0.15);
+    border-radius: var(--radius-xs);
+    border: 1px solid rgb(var(--accent-rgb) / 0.15);
     opacity: 0.8;
   }
 
@@ -286,8 +286,8 @@ const nodeTitle = (n: { label: string; hostname?: string | null; ipAddress?: str
   .topo-zone {
     padding: 0.85rem;
     border: 1px solid rgba(245, 158, 11, 0.4); /* orange like Homelable canvas */
-    border-radius: 6px;
-    background: rgba(11, 17, 32, 0.4);
+    border-radius: var(--radius-md);
+    background: rgb(var(--bg-rgb) / 0.4);
     display: flex;
     flex-direction: column;
     gap: 0.7rem;
@@ -295,7 +295,7 @@ const nodeTitle = (n: { label: string; hostname?: string | null; ipAddress?: str
 
   .topo-zone-ondemand {
     border-style: dashed;
-    border-color: rgba(56, 189, 248, 0.3);
+    border-color: rgb(var(--accent-rgb) / 0.3);
     opacity: 0.92;
   }
 
@@ -308,12 +308,12 @@ const nodeTitle = (n: { label: string; hostname?: string | null; ipAddress?: str
   }
 
   .topo-zone-ondemand .topo-zone-header {
-    border-bottom-color: rgba(56, 189, 248, 0.2);
+    border-bottom-color: rgb(var(--accent-rgb) / 0.2);
   }
 
   .topo-zone-name {
     font-family: var(--font-mono);
-    font-size: 0.85rem;
+    font-size: var(--text-md);
     font-weight: 700;
     color: #f59e0b;
     letter-spacing: 0.02em;
@@ -323,19 +323,19 @@ const nodeTitle = (n: { label: string; hostname?: string | null; ipAddress?: str
 
   .topo-zone-badge {
     font-family: var(--font-mono);
-    font-size: 0.6rem;
+    font-size: var(--text-3xs);
     color: var(--color-accent);
-    background: rgba(56, 189, 248, 0.08);
+    background: rgb(var(--accent-rgb) / 0.08);
     padding: 0.1rem 0.4rem;
-    border-radius: 3px;
-    border: 1px solid rgba(56, 189, 248, 0.2);
+    border-radius: var(--radius-xs);
+    border: 1px solid rgb(var(--accent-rgb) / 0.2);
     letter-spacing: 0.04em;
   }
 
   .topo-zone-count {
     margin-left: auto;
     font-family: var(--font-mono);
-    font-size: 0.65rem;
+    font-size: var(--text-2xs);
     color: var(--color-text-muted);
     opacity: 0.65;
   }
@@ -349,23 +349,23 @@ const nodeTitle = (n: { label: string; hostname?: string | null; ipAddress?: str
   /* Generic node card */
   .topo-node {
     padding: 0.4rem 0.55rem;
-    background: rgba(11, 17, 32, 0.7);
+    background: rgb(var(--bg-rgb) / 0.7);
     border: 1px solid var(--color-border);
-    border-radius: 3px;
+    border-radius: var(--radius-xs);
     cursor: help;
     transition: border-color 0.15s, box-shadow 0.15s, transform 0.15s;
   }
 
   .topo-node:hover {
     border-color: var(--color-accent);
-    box-shadow: 0 0 6px rgba(56, 189, 248, 0.25);
+    box-shadow: 0 0 6px rgb(var(--accent-rgb) / 0.25);
     transform: translateY(-1px);
   }
 
   .topo-node-label {
     display: block;
     font-family: var(--font-mono);
-    font-size: 0.7rem;
+    font-size: var(--text-2xs);
     color: var(--color-text);
     line-height: 1.35;
     overflow: hidden;
@@ -374,16 +374,16 @@ const nodeTitle = (n: { label: string; hostname?: string | null; ipAddress?: str
   }
 
   /* Colors by node type — matching Homelable canvas palette */
-  .type-lxc { border-color: rgba(56, 189, 248, 0.55); }
-  .type-lxc .topo-node-label { color: #7dd3fc; }
+  .type-lxc { border-color: rgb(var(--accent-rgb) / 0.55); }
+  .type-lxc .topo-node-label { color: var(--color-accent-hover); }
 
   .type-vm { border-color: rgba(192, 132, 252, 0.55); }
   .type-vm .topo-node-label { color: #d8b4fe; }
 
-  .type-isp { border-color: rgba(56, 189, 248, 0.7); background: rgba(56, 189, 248, 0.06); }
+  .type-isp { border-color: rgb(var(--accent-rgb) / 0.7); background: rgb(var(--accent-rgb) / 0.06); }
   .type-isp .topo-node-label { color: var(--color-accent); font-weight: 700; }
 
-  .type-nas { border-color: rgba(34, 197, 94, 0.5); }
+  .type-nas { border-color: rgb(var(--ok-rgb) / 0.5); }
   .type-nas .topo-node-label { color: #86efac; }
 
   .type-computer { border-color: rgba(236, 72, 153, 0.5); }
@@ -401,12 +401,12 @@ const nodeTitle = (n: { label: string; hostname?: string | null; ipAddress?: str
 
   .topo-pve-link-label {
     font-family: var(--font-mono);
-    font-size: 0.65rem;
+    font-size: var(--text-2xs);
     color: var(--color-accent);
-    background: rgba(56, 189, 248, 0.08);
+    background: rgb(var(--accent-rgb) / 0.08);
     padding: 0.2rem 0.7rem;
-    border-radius: 3px;
-    border: 1px solid rgba(56, 189, 248, 0.25);
+    border-radius: var(--radius-xs);
+    border: 1px solid rgb(var(--accent-rgb) / 0.25);
     letter-spacing: 0.05em;
   }
 
@@ -418,7 +418,7 @@ const nodeTitle = (n: { label: string; hostname?: string | null; ipAddress?: str
     margin-top: 1rem;
     justify-content: center;
     font-family: var(--font-mono);
-    font-size: 0.7rem;
+    font-size: var(--text-2xs);
     color: var(--color-text-muted);
   }
 
@@ -432,14 +432,14 @@ const nodeTitle = (n: { label: string; hostname?: string | null; ipAddress?: str
     display: inline-block;
     width: 0.7rem;
     height: 0.7rem;
-    border-radius: 2px;
+    border-radius: var(--radius-2xs);
     border: 1px solid;
   }
 
-  .legend-item.type-lxc .legend-swatch { border-color: #7dd3fc; }
+  .legend-item.type-lxc .legend-swatch { border-color: var(--color-accent-hover); }
   .legend-item.type-vm .legend-swatch { border-color: #d8b4fe; }
   .legend-item.type-proxmox .legend-swatch { border-color: #f59e0b; background: rgba(245, 158, 11, 0.12); }
-  .legend-item.type-isp .legend-swatch { border-color: var(--color-accent); background: rgba(56, 189, 248, 0.1); }
+  .legend-item.type-isp .legend-swatch { border-color: var(--color-accent); background: rgb(var(--accent-rgb) / 0.1); }
   .legend-item.type-switch .legend-swatch { border-color: #2dd4bf; }
   .legend-item.type-nas .legend-swatch { border-color: #86efac; }
   .legend-item.type-computer .legend-swatch { border-color: #f9a8d4; }

@@ -10,6 +10,16 @@ const commitSha = process.env.GITHUB_SHA
   || (() => { try { return execFileSync('git', ['rev-parse', 'HEAD']).toString().trim(); } catch { return 'dev'; } })();
 const buildTime = new Date().toISOString();
 
+/** Greffon PostCSS sans dépendance : retire tous les commentaires CSS. */
+function stripCssComments() {
+  return {
+    postcssPlugin: 'strip-css-comments',
+    Once(root) {
+      root.walkComments((comment) => { comment.remove(); });
+    },
+  };
+}
+
 // https://astro.build/config
 export default defineConfig({
   site: 'https://pixelium.win',
@@ -53,6 +63,15 @@ export default defineConfig({
     },
   },
   vite: {
+    css: {
+      // Le CSS n'est pas minifié (voir build.cssMinify plus bas), donc ses
+      // commentaires partaient chez le visiteur : 13 Ko dans les fichiers CSS
+      // et 7 Ko inlinés dans le HTML de /agents, /now et /pact (2026-11-11).
+      // Ce greffon PostCSS les retire au build, et ne touche à rien d'autre.
+      // Déclaré ici, il remplace la recherche d'un postcss.config.* : le dépôt
+      // n'en a pas.
+      postcss: { plugins: [stripCssComments()] },
+    },
     define: {
       'import.meta.env.PUBLIC_COMMIT_SHA': JSON.stringify(commitSha),
       'import.meta.env.PUBLIC_BUILD_TIME': JSON.stringify(buildTime),

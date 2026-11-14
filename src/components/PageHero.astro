@@ -1,0 +1,89 @@
+---
+/**
+ * PageHero — l'en-tête standard des pages de contenu : invite de terminal,
+ * titre terminé par le point carré, sous-titre.
+ *
+ * Ces règles étaient recopiées à l'identique dans le <style> de chaque page
+ * (about, ctf, securite, infrastructure, EN et FR) et dans styles/projets.css.
+ * Elles vivent ici, en un seul endroit. Voir pixelium-site#237.
+ *
+ * - `prompt` : la ligne « $ commande » au-dessus du titre.
+ * - `title`  : le texte du h1, sans le point final (ajouté ici).
+ * - slot par défaut : le contenu du sous-titre (texte, <DynNum />…).
+ * - slot `after`    : ce qui suit le sous-titre dans l'en-tête, s'il y en a.
+ *
+ * - `compact`: l'en-tête resserré de /bbs, qui laisse la place au terminal.
+ *
+ * `.terminal-prompt` est stylé par styles/page-chrome.css, le point carré et
+ * son curseur par Base.astro.
+ */
+interface Props {
+  prompt: string;
+  title: string;
+  compact?: boolean;
+}
+
+const { prompt, title, compact = false } = Astro.props;
+---
+
+<section class:list={['hero-mini', { compact }]}>
+  <div class="container">
+    <p class="terminal-prompt">{prompt}</p>
+    <h1>{title}<span class="dot">.</span></h1>
+    <p class="subtitle"><slot /></p>
+    <slot name="after" />
+  </div>
+</section>
+
+<style>
+  .hero-mini {
+    padding: 4rem 0 3rem;
+  }
+
+  h1 {
+    font-size: clamp(2rem, 5vw, 3rem);
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    line-height: 1.1;
+    margin-bottom: 1rem;
+  }
+
+  .subtitle {
+    color: var(--color-text-muted);
+    font-size: var(--text-xl);
+  }
+
+  .hero-mini.compact {
+    padding: 1.5rem 0 1rem;
+  }
+
+  .compact h1 {
+    margin-bottom: 0.5rem;
+  }
+
+  .compact .subtitle {
+    font-size: var(--text-lg);
+  }
+
+  @media (max-width: 640px) {
+    .hero-mini {
+      padding: 2rem 0 1.5rem;
+    }
+
+    h1 {
+      font-size: clamp(1.5rem, 5vw, 2.5rem);
+    }
+
+    .subtitle {
+      font-size: var(--text-lg);
+    }
+
+    .hero-mini.compact {
+      padding: 1rem 0 0.5rem;
+    }
+
+    .compact .subtitle {
+      font-size: var(--text-md);
+    }
+  }
+</style>

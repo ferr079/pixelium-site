@@ -1,5 +1,7 @@
 ---
 import Base from '../../layouts/Base.astro';
+import '../../styles/status.css';
+import PageHero from '../../components/PageHero.astro';
 import { SERVICE_INFO } from '../../data/service-info';
 import { getBuildStats } from '../../lib/build-stats';
 
@@ -8,14 +10,10 @@ const stats = await getBuildStats();
 ---
 
 <Base title="Statut — pixelium.win" description={`Statut live de l'infrastructure : ${stats.services_total} services, ${stats.proxmox_nodes} nœuds Proxmox, monitoring tri-state (up · on-demand · down). Données poussées depuis le homelab par Dagu toutes les 15 minutes.`}>
-  <main>
-    <section class="hero-mini">
-      <div class="container">
-        <p class="terminal-prompt">$ ping --all</p>
-        <h1>Statut<span class="dot">.</span></h1>
-        <p class="subtitle">Dashboard infrastructure live. Données poussées par Dagu toutes les 15 minutes — zéro port exposé.</p>
-      </div>
-    </section>
+  <main class="status-page">
+    <PageHero prompt="$ ping --all" title="Statut">
+      Dashboard infrastructure live. Données poussées par Dagu toutes les 15 minutes — zéro port exposé.
+    </PageHero>
 
     <!-- Bandeau alerte données périmées -->
     <div id="stale-banner" class="stale-banner" style="display:none;">
@@ -145,159 +143,3 @@ const stats = await getBuildStats();
   // est lue sur <html lang>, voir l'en-tête du module.
   import '../../scripts/status-page';
 </script>
-
-<style>
-  /* Bandeau alerte staleness */
-  .stale-banner {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 0.75rem;
-    padding: 0.75rem 1.5rem;
-    background: rgba(239, 68, 68, 0.12);
-    border: 1px solid rgba(239, 68, 68, 0.3);
-    border-radius: 8px;
-    margin: 1.5rem auto 0;
-    max-width: 700px;
-    font-family: var(--font-mono);
-    font-size: 0.85rem;
-    color: #fca5a5;
-  }
-  .stale-icon {
-    font-size: 1.2rem;
-    color: #ef4444;
-    flex-shrink: 0;
-  }
-
-  .status-summary { padding: 2rem 0; border-bottom: 1px solid var(--color-border); }
-  .summary-grid { display: flex; justify-content: center; align-items: center; gap: 2.5rem; flex-wrap: wrap; }
-  .summary-card { display: flex; align-items: center; gap: 0.5rem; }
-  .summary-dot { width: 10px; height: 10px; border-radius: 50%; background: var(--color-text-muted); flex-shrink: 0; }
-  .summary-value { font-family: var(--font-mono); font-size: 1.75rem; font-weight: 800; color: var(--color-accent); }
-  .summary-total { color: var(--color-text-muted); font-weight: 400; }
-  .summary-sep { font-family: var(--font-mono); font-size: 1.5rem; color: var(--color-border); }
-  .summary-label { font-size: 0.8rem; color: var(--color-text-muted); }
-  .summary-timestamp { font-size: 1rem; font-weight: 600; }
-
-  /* Uptime timeline */
-  .uptime-placeholder { padding: 1rem 0; }
-  .uptime-skeleton { height: 2.5rem; background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 6px; animation: skeleton-pulse 1.5s ease-in-out infinite; }
-  .uptime-wait { text-align: center; color: var(--color-text-muted); font-family: var(--font-mono); font-size: 0.8rem; margin-top: 0.75rem; }
-  .uptime-header { display: flex; align-items: baseline; gap: 0.75rem; margin-bottom: 0.75rem; }
-  .uptime-avg { font-family: var(--font-mono); font-size: 2rem; font-weight: 800; color: #22c55e; }
-  .uptime-period { font-family: var(--font-mono); font-size: 0.8rem; color: var(--color-text-muted); }
-  .uptime-labels { display: flex; justify-content: space-between; margin-top: 0.4rem; font-family: var(--font-mono); font-size: 0.7rem; color: var(--color-text-muted); }
-
-  .skeleton-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 0.75rem; }
-  .skeleton-card { height: 2.5rem; background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 6px; animation: skeleton-pulse 1.5s ease-in-out infinite; }
-  .skeleton-nodes { grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); }
-  .skeleton-node { height: 8rem; }
-  .status-waiting { text-align: center; color: var(--color-text-muted); font-family: var(--font-mono); font-size: 0.85rem; margin-top: 1.5rem; }
-  .status-loading { padding: 1rem 0; }
-  .status-footer { padding: 2rem 0; }
-  .status-note { font-size: 0.8rem; color: var(--color-text-muted); text-align: center; font-family: var(--font-mono); line-height: 1.8; }
-
-  @media (max-width: 640px) {
-    .summary-grid { gap: 1.5rem; }
-    .summary-value { font-size: 1.25rem; }
-  }
-</style>
-
-<style is:global>
-  @keyframes pulse-dot { 0%, 100% { opacity: 1; } 50% { opacity: 0.6; } }
-  @keyframes skeleton-pulse { 0%, 100% { opacity: 0.4; } 50% { opacity: 0.8; } }
-
-  /* Uptime bars (created by JS) */
-  .uptime-bars { display: flex; gap: 3px; height: 2.5rem; align-items: stretch; }
-  .ubar { flex: 1; border-radius: 3px; cursor: pointer; transition: transform 0.15s, opacity 0.15s; min-width: 0; }
-  .ubar:hover { transform: scaleY(1.15); opacity: 0.85; }
-  .ubar-perfect { background: #22c55e; }
-  .ubar-good { background: #4ade80; }
-  .ubar-degraded { background: #fbbf24; }
-  .ubar-bad { background: #f87171; }
-  .ubar-nodata { background: var(--color-border); opacity: 0.4; }
-
-  .summary-dot.healthy { background: #22c55e; box-shadow: 0 0 8px rgba(34, 197, 94, 0.6); animation: pulse-dot 2s ease-in-out infinite; }
-  .summary-dot.degraded { background: #eab308; box-shadow: 0 0 8px rgba(234, 179, 8, 0.6); animation: pulse-dot 2s ease-in-out infinite; }
-
-  .service-category { margin-bottom: 2rem; }
-  .category-title { font-family: var(--font-mono); font-size: 0.9rem; color: var(--color-accent); margin-bottom: 0.75rem; letter-spacing: 0.05em; }
-  .service-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 0.5rem; }
-  .service-card { display: flex; align-items: center; gap: 0.6rem; padding: 0.6rem 0.9rem; background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 6px; transition: border-color 0.2s; }
-  .service-card:hover { border-color: var(--color-accent); }
-  .svc-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
-  .svc-dot.up { background: #22c55e; }
-  .svc-dot.down { background: #ef4444; box-shadow: 0 0 6px rgba(239, 68, 68, 0.5); }
-  /* services on-demand (pve3 WOL) — accent ciel, pas rouge : endormis par conception, pas cassés */
-  .svc-dot.on-demand { background: #38bdf8; box-shadow: 0 0 6px rgba(56, 189, 248, 0.5); }
-  .svc-ondemand { font-family: var(--font-mono); font-size: 0.7rem; color: var(--color-accent); letter-spacing: 0.05em; }
-  .svc-name { font-family: var(--font-mono); font-size: 0.85rem; color: var(--color-text); flex: 1; }
-
-  /* section on-demand (pve3 WOL) */
-  .ondemand-head { display: flex; align-items: baseline; justify-content: space-between; gap: 1rem; margin-bottom: 0.9rem; flex-wrap: wrap; }
-  .ondemand-title { font-family: var(--font-mono); font-size: 0.9rem; color: var(--color-accent); letter-spacing: 0.05em; margin: 0; }
-  .ondemand-tag { color: var(--color-text-muted); font-weight: 400; font-size: 0.78rem; }
-  .ondemand-state { font-family: var(--font-mono); font-size: 0.8rem; letter-spacing: 0.04em; }
-  .ondemand-state.awake { color: #22c55e; }
-  .ondemand-state.asleep { color: #38bdf8; }
-  .ondemand-note { font-family: var(--font-mono); font-size: 0.72rem; color: var(--color-text-muted); margin-top: 0.75rem; opacity: 0.8; }
-  .svc-latency { font-family: var(--font-mono); font-size: 0.75rem; color: var(--color-text-muted); }
-
-  .nodes-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 0.75rem; }
-  .node-card { background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 6px; padding: 1rem 1.1rem; transition: border-color 0.2s; display: flex; flex-direction: column; min-height: 7.5rem; }
-  .node-card:hover { border-color: var(--color-accent); }
-  .node-name { font-family: var(--font-mono); font-size: 0.95rem; font-weight: 700; color: var(--color-text); margin: 0 0 0.85rem; }
-  .node-metric { display: flex; align-items: center; gap: 0.55rem; margin-bottom: 0.45rem; }
-  .metric-label { font-family: var(--font-mono); font-size: 0.72rem; color: var(--color-text-muted); width: 2.3rem; }
-  .bar { flex: 1; height: 6px; background: var(--color-border); border-radius: 3px; overflow: hidden; }
-  .bar-fill { height: 100%; border-radius: 3px; transition: width 0.8s ease-out; }
-  .metric-value { font-family: var(--font-mono); font-size: 0.75rem; color: var(--color-text); width: 2.75rem; text-align: right; }
-  .node-uptime { font-family: var(--font-mono); font-size: 0.72rem; color: var(--color-text-muted); margin-top: auto; padding-top: 0.5rem; }
-  .node-offline { font-family: var(--font-mono); font-size: 0.82rem; color: var(--color-text-muted); font-style: italic; }
-
-  /* on-demand nodes (pve3 WOL) — sky accent, pas rouge */
-  .node-ondemand {
-    display: inline-block;
-    font-family: var(--font-mono);
-    font-size: 0.72rem;
-    color: var(--color-accent);
-    background: rgba(56, 189, 248, 0.08);
-    border: 1px solid rgba(56, 189, 248, 0.25);
-    padding: 0.15rem 0.5rem;
-    border-radius: 3px;
-    letter-spacing: 0.04em;
-    width: fit-content;
-  }
-  .node-card.node-on-demand { border-style: dashed; border-color: rgba(56, 189, 248, 0.25); }
-  .node-sub { font-family: var(--font-mono); font-size: 0.7rem; color: var(--color-text-muted); margin-top: 0.5rem; opacity: 0.75; }
-
-  @media (max-width: 700px) {
-    .nodes-grid { grid-template-columns: repeat(2, 1fr); }
-  }
-  @media (max-width: 480px) {
-    .nodes-grid { grid-template-columns: 1fr; }
-    .service-grid { grid-template-columns: 1fr; }
-  }
-
-  @media (prefers-reduced-motion: reduce) {
-    .summary-dot.healthy, .summary-dot.degraded { animation: none; }
-    .skeleton-card { animation: none; opacity: 0.6; }
-    .bar-fill { transition: none; }
-  }
-
-  /* Clickable service cards → info popover */
-  .service-card.has-info { cursor: pointer; }
-  .service-card.has-info:hover { border-color: var(--color-accent); box-shadow: 0 0 12px rgba(56,189,248,0.12); }
-  .service-card.has-info:focus-visible { outline: 2px solid var(--color-accent); outline-offset: 2px; }
-  .service-card.has-info .svc-name { text-decoration: underline dotted rgba(56,189,248,0.45); text-underline-offset: 3px; }
-
-  .svc-popover { position: fixed; inset: 0; z-index: 200; display: flex; align-items: center; justify-content: center; padding: 1.5rem; background: rgba(8,12,22,0.72); backdrop-filter: blur(3px); }
-  .svc-pop-box { position: relative; max-width: 30rem; width: 100%; background: var(--color-surface); border: 1px solid var(--color-accent); border-radius: 10px; padding: 1.75rem 1.75rem 1.5rem; box-shadow: 0 20px 60px rgba(0,0,0,0.5); }
-  .svc-pop-close { position: absolute; top: 0.5rem; right: 0.85rem; background: none; border: none; color: var(--color-text-muted); font-size: 1.7rem; line-height: 1; cursor: pointer; transition: color 0.2s; }
-  .svc-pop-close:hover { color: var(--color-accent); }
-  .svc-pop-title { font-family: var(--font-mono); font-size: 1.2rem; color: var(--color-accent); margin: 0 0 0.75rem; }
-  .svc-pop-what { color: var(--color-text); font-size: 0.95rem; line-height: 1.6; margin: 0 0 1rem; }
-  .svc-pop-why { border-top: 1px solid var(--color-border); padding-top: 0.85rem; }
-  .svc-pop-why-label { display: block; font-family: var(--font-mono); font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.06em; color: var(--color-accent); margin-bottom: 0.35rem; }
-  .svc-pop-why-text { color: var(--color-text-muted); font-size: 0.9rem; line-height: 1.6; margin: 0; }
-</style>

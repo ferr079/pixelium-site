@@ -53,13 +53,13 @@ import Base from '../layouts/Base.astro';
   }
 
   @keyframes logo-pulse {
-    0%, 100% { opacity: 0.6; filter: drop-shadow(0 0 8px rgba(56, 189, 248, 0.3)); }
-    50% { opacity: 1; filter: drop-shadow(0 0 20px rgba(56, 189, 248, 0.5)); }
+    0%, 100% { opacity: 0.6; filter: drop-shadow(0 0 8px rgb(var(--accent-rgb) / 0.3)); }
+    50% { opacity: 1; filter: drop-shadow(0 0 20px rgb(var(--accent-rgb) / 0.5)); }
   }
 
   .notfound-ascii {
     font-family: var(--font-mono);
-    font-size: 0.6rem;
+    font-size: var(--text-3xs);
     line-height: 1.15;
     color: var(--color-accent);
     opacity: 0.3;
@@ -74,7 +74,7 @@ import Base from '../layouts/Base.astro';
 
   .notfound-msg {
     color: var(--color-text-muted);
-    font-size: 1.1rem;
+    font-size: var(--text-xl);
     margin-bottom: 2rem;
     font-family: var(--font-mono);
   }
@@ -88,9 +88,9 @@ import Base from '../layouts/Base.astro';
 
   .btn {
     font-family: var(--font-mono);
-    font-size: 0.9rem;
+    font-size: var(--text-base);
     padding: 0.65rem 1.5rem;
-    border-radius: 6px;
+    border-radius: var(--radius-md);
     text-decoration: none;
     transition: background 0.2s, border-color 0.2s;
   }

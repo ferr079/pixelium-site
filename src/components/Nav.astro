@@ -84,7 +84,7 @@ const blogUrl = 'https://blog.pixelium.win';
     position: sticky;
     top: 0;
     z-index: 100;
-    background: rgba(11, 17, 32, 0.95);
+    background: rgb(var(--bg-rgb) / 0.95);
     backdrop-filter: blur(8px);
     -webkit-backdrop-filter: blur(8px);
     border-bottom: 1px solid var(--color-border);
@@ -102,7 +102,7 @@ const blogUrl = 'https://blog.pixelium.win';
 
   .nav-brand {
     font-family: var(--font-mono);
-    font-size: 1.1rem;
+    font-size: var(--text-xl);
     color: var(--color-text);
     font-weight: 700;
     text-decoration: none;
@@ -131,7 +131,7 @@ const blogUrl = 'https://blog.pixelium.win';
   }
 
   .nav-brand:hover .nav-logo {
-    filter: drop-shadow(0 0 4px rgba(56, 189, 248, 0.5));
+    filter: drop-shadow(0 0 4px rgb(var(--accent-rgb) / 0.5));
   }
 
   .nav-dot {
@@ -152,7 +152,7 @@ const blogUrl = 'https://blog.pixelium.win';
 
   .nav-links a {
     font-family: var(--font-sans);
-    font-size: 0.95rem;
+    font-size: var(--text-lg);
     font-weight: 500;
     color: var(--color-text-muted);
     text-decoration: none;
@@ -176,24 +176,24 @@ const blogUrl = 'https://blog.pixelium.win';
     font-size: 0.8rem !important;
     padding: 0.2rem 0.6rem !important;
     border: 1px solid var(--color-border) !important;
-    border-radius: 4px !important;
+    border-radius: var(--radius-sm) !important;
     color: var(--color-accent) !important;
     transition: all 0.2s !important;
   }
 
   .nav-blog-link:hover {
     border-color: var(--color-accent) !important;
-    background: rgba(56, 189, 248, 0.08);
+    background: rgb(var(--accent-rgb) / 0.08);
   }
 
-  .nav-arrow { font-size: 0.65rem; }
+  .nav-arrow { font-size: var(--text-2xs); }
 
   /* Hamburger button — hidden on desktop */
   .nav-toggle {
     display: none;
     background: none;
     border: 1px solid var(--color-border);
-    border-radius: 4px;
+    border-radius: var(--radius-sm);
     padding: 0.4rem;
     cursor: pointer;
     width: 2rem;
@@ -258,7 +258,7 @@ const blogUrl = 'https://blog.pixelium.win';
     font-family: var(--font-mono) !important;
     font-size: 0.75rem !important;
     padding: 0.2rem 0.4rem !important;
-    border-radius: 3px !important;
+    border-radius: var(--radius-xs) !important;
     border-bottom: none !important;
     letter-spacing: 0.05em !important;
     text-decoration: none;
@@ -267,7 +267,7 @@ const blogUrl = 'https://blog.pixelium.win';
 
   .lang-link.lang-active {
     color: var(--color-accent) !important;
-    background: rgba(56, 189, 248, 0.1);
+    background: rgb(var(--accent-rgb) / 0.1);
   }
 
   .lang-link:not(.lang-active) {
@@ -313,14 +313,14 @@ const blogUrl = 'https://blog.pixelium.win';
     }
 
     .nav-links a {
-      font-size: 0.9rem;
+      font-size: var(--text-base);
       padding: 0.6rem 0.5rem;
-      border-bottom: 1px solid rgba(51, 65, 85, 0.3);
-      border-radius: 4px;
+      border-bottom: 1px solid rgb(var(--border-rgb) / 0.3);
+      border-radius: var(--radius-sm);
     }
 
     .nav-links a.active {
-      background: rgba(56, 189, 248, 0.08);
+      background: rgb(var(--accent-rgb) / 0.08);
       border-left: 2px solid var(--color-accent);
     }
 

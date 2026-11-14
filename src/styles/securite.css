@@ -1,0 +1,135 @@
+/* securite — styles de la page /securite, partagés par la version EN et la version FR.
+ *
+ * Ce bloc <style> existait en double, dans securite.astro et fr/securite.astro. Une
+ * retouche faite d'un seul côté faisait diverger les deux langues sans que rien
+ * ne le signale (pixelium-site#237).
+ *
+ * Tout est préfixé par `.securite-page`, classe portée par le <main> des deux pages :
+ * un CSS importé n'est plus limité à sa page par Astro, le préfixe lui rend cette
+ * limite. Même principe que styles/projets.css. Ne pas retirer la classe d'une
+ * page sans l'autre.
+ */
+
+  .securite-page .tech-logo {
+    width: 1.4rem;
+    height: 1.4rem;
+    flex-shrink: 0;
+  }
+
+  /* Defense layers visual */
+  .securite-page .defense-layers {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+
+  .securite-page .defense-layer {
+    display: flex;
+    align-items: flex-start;
+    gap: 1rem;
+    padding: 1rem 1.25rem;
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+    border-left: 3px solid var(--color-accent);
+  }
+
+  .securite-page .layer-icon {
+    font-size: var(--text-2xl);
+    color: var(--color-accent);
+    flex-shrink: 0;
+    margin-top: 0.1rem;
+  }
+
+  .securite-page .defense-layer h4 {
+    font-size: var(--text-base);
+    margin-bottom: 0.25rem;
+    color: var(--color-text);
+  }
+
+  .securite-page .defense-layer p {
+    font-size: var(--text-md);
+    color: var(--color-text-muted);
+    line-height: 1.5;
+  }
+
+  .securite-page .detail p a, .securite-page .spec-value a {
+    color: var(--color-accent);
+    text-decoration: none;
+    border-bottom: 1px solid rgb(var(--accent-rgb) / 0.4);
+    transition: border-color 0.2s;
+  }
+
+  .securite-page .detail p a:hover, .securite-page .spec-value a:hover {
+    border-bottom-color: var(--color-accent);
+  }
+
+  /* Specs */
+  .securite-page .specs {
+    margin-bottom: 1.5rem;
+  }
+
+  .securite-page .spec {
+    display: flex;
+    gap: 1rem;
+    padding: 0.6rem 0;
+    border-bottom: 1px solid var(--color-border);
+    align-items: baseline;
+  }
+
+  .securite-page .spec:last-child {
+    border-bottom: none;
+  }
+
+  .securite-page .spec-label {
+    font-family: var(--font-mono);
+    font-size: var(--text-sm);
+    color: var(--color-accent);
+    min-width: 8rem;
+    flex-shrink: 0;
+  }
+
+  .securite-page .spec-value {
+    font-size: var(--text-base);
+    color: var(--color-text-muted);
+  }
+
+  /* Crosslink */
+  .securite-page .crosslink {
+    padding: 2rem 0 3rem;
+  }
+
+  /* Transparency */
+  .securite-page .transparency {
+    padding: 3rem 0;
+  }
+
+  .securite-page .transparency-block {
+    padding: 1.5rem 2rem;
+    border: 1px solid rgb(var(--accent-rgb) / 0.2);
+    border-radius: var(--radius-lg);
+    background: linear-gradient(135deg, rgb(var(--accent-rgb) / 0.05), rgb(var(--accent-rgb) / 0.02));
+  }
+
+  .securite-page .transparency-block h3 {
+    font-size: var(--text-lg);
+    color: var(--color-accent);
+    margin-bottom: 0.75rem;
+  }
+
+  .securite-page .transparency-block p {
+    font-size: var(--text-base);
+    color: var(--color-text-muted);
+    line-height: 1.6;
+  }
+
+  .securite-page .transparency-block strong {
+    color: var(--color-text);
+  }
+
+  @media (max-width: 640px) {
+    .securite-page .spec { flex-direction: column; gap: 0.25rem; }
+    .securite-page .spec-label { min-width: unset; }
+    .securite-page .defense-layer { flex-direction: column; gap: 0.5rem; padding: 0.75rem 1rem; }
+    .securite-page .transparency-block { padding: 1rem 1.25rem; }
+  }

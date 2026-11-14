@@ -1,0 +1,439 @@
+/* infrastructure — styles de la page /infrastructure, partagés par la version EN et la version FR.
+ *
+ * Ce bloc <style> existait en double, dans infrastructure.astro et fr/infrastructure.astro. Une
+ * retouche faite d'un seul côté faisait diverger les deux langues sans que rien
+ * ne le signale (pixelium-site#237).
+ *
+ * Tout est préfixé par `.infrastructure-page`, classe portée par le <main> des deux pages :
+ * un CSS importé n'est plus limité à sa page par Astro, le préfixe lui rend cette
+ * limite. Même principe que styles/projets.css. Ne pas retirer la classe d'une
+ * page sans l'autre.
+ */
+
+  .infrastructure-page .inception-trigger {
+    margin-top: 1.1rem; display: inline-flex; align-items: center; gap: 0.5rem;
+    background: rgb(var(--accent-rgb) / 0.06); border: 1px solid rgb(var(--accent-rgb) / 0.25);
+    border-radius: var(--radius-md); padding: 0.5rem 0.85rem; cursor: pointer;
+    font-family: var(--font-mono); font-size: var(--text-sm); color: var(--color-text-muted);
+    transition: all 0.2s;
+  }
+  .infrastructure-page .inception-trigger:hover { border-color: var(--color-accent); color: var(--color-accent); background: rgb(var(--accent-rgb) / 0.1); }
+  .infrastructure-page .ic-dollar { color: var(--color-accent); }
+  .infrastructure-page .ic-blink { animation: ic-blink 1.1s steps(1) infinite; color: var(--color-accent); }
+  @keyframes ic-blink { 50% { opacity: 0; } }
+  @media (prefers-reduced-motion: reduce) { .infrastructure-page .ic-blink { animation: none; } }
+
+  .infrastructure-page .inception {
+    position: fixed; inset: 0; z-index: 110; display: none;
+    align-items: center; justify-content: center; padding: 1.5rem;
+    background: rgb(var(--bg-rgb) / 0.78); -webkit-backdrop-filter: blur(4px); backdrop-filter: blur(4px);
+  }
+  .infrastructure-page .inception.open { display: flex; }
+  .infrastructure-page .inception-win {
+    width: min(92vw, 40rem); background: var(--color-bg);
+    border: 1px solid var(--color-border); border-radius: var(--radius-xl); overflow: hidden;
+    box-shadow: 0 24px 70px rgba(0, 0, 0, 0.6);
+  }
+  .infrastructure-page .inception-bar {
+    display: flex; align-items: center; gap: 0.6rem; padding: 0.6rem 0.9rem;
+    background: var(--color-surface); border-bottom: 1px solid var(--color-border);
+  }
+  .infrastructure-page .ic-dots { display: inline-flex; gap: 0.35rem; }
+  .infrastructure-page .ic-dots i { width: 0.7rem; height: 0.7rem; border-radius: 50%; background: var(--color-border); display: block; }
+  .infrastructure-page .ic-title { font-family: var(--font-mono); font-size: var(--text-xs); color: var(--color-text-muted); flex: 1; }
+  .infrastructure-page .inception-close { background: none; border: none; color: var(--color-text-muted); font-size: var(--text-2xl); cursor: pointer; line-height: 1; padding: 0 0.2rem; }
+  .infrastructure-page .inception-close:hover { color: var(--color-accent); }
+  .infrastructure-page .inception-body { padding: 1.4rem 1.5rem; }
+  .infrastructure-page .inception-body p { font-family: var(--font-mono); font-size: var(--text-base); line-height: 1.7; color: var(--color-text-muted); margin-bottom: 1rem; }
+  .infrastructure-page .inception-body .ic-cmd-line { color: var(--color-accent); }
+  .infrastructure-page .inception-body .ic-end { color: var(--color-text); margin-bottom: 0; }
+  .infrastructure-page .inception-body a { color: var(--color-accent); }
+  .infrastructure-page .icons-credit { text-align: center; font-size: var(--text-xs); color: var(--color-text-muted); font-family: var(--font-mono); margin-top: 1.5rem; }
+  .infrastructure-page .icons-credit a { color: var(--color-text-muted); }
+
+  /* Layers */
+  .infrastructure-page .layer {
+    padding: 3rem 0;
+    border-top: 1px solid var(--color-border);
+  }
+
+  .infrastructure-page .tech-logo {
+    width: 1.4rem;
+    height: 1.4rem;
+    flex-shrink: 0;
+  }
+
+  /* Ces deux règles répètent page-chrome.css, exprès. Sous le préfixe de la
+     page, elles l'emportent sur .mcp-note (interligne 1.6) : le paragraphe
+     « Principle: least privilege » garde l'interligne 1.7 des autres. Les
+     retirer change son rendu (vu en capture, pixelium-site#237). */
+  .infrastructure-page .layer-content > p {
+    color: var(--color-text-muted);
+    margin-bottom: 1.5rem;
+    line-height: 1.7;
+  }
+
+  .infrastructure-page .layer-content > p strong {
+    color: var(--color-text);
+  }
+
+  /* Node cards */
+  .infrastructure-page .nodes-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem;
+    margin-bottom: 2rem;
+  }
+
+  .infrastructure-page .node-card {
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+    padding: 1.25rem;
+  }
+
+  .infrastructure-page .node-header {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin-bottom: 1rem;
+    flex-wrap: wrap;
+  }
+
+  .infrastructure-page .node-name {
+    font-family: var(--font-mono);
+    font-size: var(--text-xl);
+    font-weight: 700;
+    color: var(--color-accent);
+  }
+
+  .infrastructure-page .node-role {
+    font-size: var(--text-md);
+    color: var(--color-text-muted);
+  }
+
+  .infrastructure-page .node-badge {
+    font-family: var(--font-mono);
+    font-size: var(--text-2xs);
+    padding: 0.15rem 0.5rem;
+    border-radius: var(--radius-sm);
+    margin-left: auto;
+  }
+
+  .infrastructure-page .badge-24x7 {
+    background: rgb(var(--ok-rgb) / 0.15);
+    color: var(--color-ok);
+    border: 1px solid rgb(var(--ok-rgb) / 0.3);
+  }
+
+  .infrastructure-page .badge-ondemand {
+    background: rgb(var(--warn-rgb) / 0.15);
+    color: var(--color-warn);
+    border: 1px solid rgb(var(--warn-rgb) / 0.3);
+  }
+
+  /* Specs */
+  .infrastructure-page .specs {
+    margin-bottom: 1.5rem;
+  }
+
+  .infrastructure-page .spec {
+    display: flex;
+    gap: 1rem;
+    padding: 0.6rem 0;
+    border-bottom: 1px solid var(--color-border);
+    align-items: baseline;
+  }
+
+  .infrastructure-page .spec:last-child {
+    border-bottom: none;
+  }
+
+  .infrastructure-page .spec-label {
+    font-family: var(--font-mono);
+    font-size: var(--text-sm);
+    color: var(--color-accent);
+    min-width: 5rem;
+    flex-shrink: 0;
+  }
+
+  .infrastructure-page .spec-value {
+    font-size: var(--text-base);
+    color: var(--color-text-muted);
+  }
+
+  /* Details grid */
+  /* Variante de /infrastructure : la grille est suivie d'un bloc. Le reste de
+     .details-grid vient de page-chrome.css. */
+  .infrastructure-page .details-grid {
+    margin-bottom: 1.5rem;
+  }
+
+  /* Tech grid — section 02 */
+  .infrastructure-page .tech-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(20rem, 1fr));
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .infrastructure-page .tech-card {
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+    padding: 1.25rem;
+    transition: border-color 0.2s;
+  }
+
+  .infrastructure-page .tech-card:hover {
+    border-color: var(--color-accent);
+  }
+
+  .infrastructure-page .tech-card-header {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .infrastructure-page .tech-card-header h4 {
+    font-size: var(--text-lg);
+    color: var(--color-text);
+    margin: 0;
+  }
+
+  .infrastructure-page .tech-card-body p {
+    font-size: var(--text-md);
+    color: var(--color-text-muted);
+    line-height: 1.5;
+    margin-bottom: 0.5rem;
+  }
+
+  .infrastructure-page .tech-card-body p:last-child {
+    margin-bottom: 0;
+  }
+
+  .infrastructure-page .tech-card-body p strong {
+    color: var(--color-text);
+  }
+
+  .infrastructure-page .alt-label {
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    color: var(--color-text-muted);
+    opacity: 0.7;
+  }
+
+  .infrastructure-page .result-label {
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    color: var(--color-accent);
+  }
+
+  /* TLS Pipeline */
+  .infrastructure-page .tls-pipeline {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    flex-wrap: wrap;
+    margin-top: 2rem;
+  }
+
+  .infrastructure-page .tls-step {
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+    padding: 1rem 1.25rem;
+    display: flex;
+    align-items: flex-start;
+    gap: 0.75rem;
+    flex: 1;
+    min-width: 9rem;
+  }
+
+  .infrastructure-page .tls-icon {
+    font-family: var(--font-mono);
+    font-size: var(--text-sm);
+    color: var(--color-accent);
+    font-weight: 700;
+    flex-shrink: 0;
+    margin-top: 0.1rem;
+  }
+
+  .infrastructure-page .tls-step h4 {
+    font-size: var(--text-md);
+    margin-bottom: 0.25rem;
+  }
+
+  .infrastructure-page .tls-step p {
+    font-size: var(--text-xs);
+    color: var(--color-text-muted);
+    line-height: 1.4;
+  }
+
+  .infrastructure-page .tls-arrow {
+    color: var(--color-accent);
+    font-family: var(--font-mono);
+    font-size: var(--text-2xl);
+    flex-shrink: 0;
+  }
+
+  /* Observability grid */
+  .infrastructure-page .obs-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1rem;
+    margin-bottom: 2rem;
+  }
+
+  .infrastructure-page .obs-card {
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+    padding: 1.25rem;
+  }
+
+  .infrastructure-page .obs-header {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .infrastructure-page .obs-header h4 {
+    font-size: var(--text-base);
+    color: var(--color-text);
+    margin: 0;
+  }
+
+  .infrastructure-page .obs-role {
+    font-family: var(--font-mono);
+    font-size: var(--text-2xs);
+    color: var(--color-accent);
+    display: block;
+    margin-bottom: 0.5rem;
+  }
+
+  .infrastructure-page .obs-card p {
+    font-size: var(--text-sm);
+    color: var(--color-text-muted);
+    line-height: 1.5;
+  }
+
+  /* MCP grid — section 05 */
+  .infrastructure-page .mcp-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(14rem, 1fr));
+    gap: 0.75rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .infrastructure-page .mcp-server {
+    display: flex;
+    flex-direction: column;
+    gap: 0.3rem;
+    padding: 0.9rem 1rem;
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+    background: var(--color-surface);
+  }
+
+  .infrastructure-page .mcp-server strong {
+    font-family: var(--font-mono);
+    font-size: var(--text-base);
+    color: var(--color-accent);
+  }
+
+  .infrastructure-page .mcp-server span {
+    font-size: var(--text-sm);
+    color: var(--color-text-muted);
+    line-height: 1.4;
+  }
+
+  .infrastructure-page .mcp-note {
+    font-size: var(--text-md);
+    color: var(--color-text-muted);
+    line-height: 1.6;
+  }
+
+  .infrastructure-page .mcp-note strong { color: var(--color-text); }
+  .infrastructure-page .mcp-note code {
+    font-size: 0.85em;
+    color: var(--color-accent);
+    background: rgb(var(--accent-rgb) / 0.06);
+    padding: 0.05rem 0.3rem;
+    border-radius: var(--radius-xs);
+  }
+
+  /* Crosslink banner */
+  .infrastructure-page .crosslink {
+    padding: 3rem 0;
+    border-top: 1px solid var(--color-border);
+  }
+
+  .infrastructure-page .crosslink-banner {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.75rem;
+    padding: 1.5rem 2rem;
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+    text-decoration: none;
+    transition: border-color 0.2s, transform 0.2s;
+  }
+
+  .infrastructure-page .crosslink-banner:hover {
+    border-color: var(--color-accent);
+    transform: translateY(-2px);
+  }
+
+  .infrastructure-page .crosslink-text {
+    font-size: var(--text-xl);
+    color: var(--color-text);
+    font-weight: 600;
+  }
+
+  .infrastructure-page .crosslink-arrow {
+    font-family: var(--font-mono);
+    font-size: var(--text-2xl);
+    color: var(--color-accent);
+    transition: transform 0.2s;
+  }
+
+  .infrastructure-page .crosslink-banner:hover .crosslink-arrow {
+    transform: translateX(4px);
+  }
+
+  /* Responsive */
+  @media (max-width: 768px) {
+    .infrastructure-page .tls-pipeline {
+      flex-direction: column;
+    }
+
+    .infrastructure-page .tls-arrow {
+      transform: rotate(90deg);
+    }
+
+    .infrastructure-page .tls-step {
+      width: 100%;
+    }
+
+    .infrastructure-page .nodes-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .infrastructure-page .tech-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .infrastructure-page .node-badge {
+      margin-left: 0;
+    }
+  }
+
+  @media (max-width: 640px) {
+    .infrastructure-page .obs-grid { grid-template-columns: 1fr; gap: 0.75rem; }
+    .infrastructure-page .node-badge { padding: 0.5rem 0.75rem; font-size: var(--text-xs); }
+  }

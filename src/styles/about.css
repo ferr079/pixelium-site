@@ -1,0 +1,203 @@
+/* about — styles de la page /about, partagés par la version EN et la version FR.
+ *
+ * Ce bloc <style> existait en double, dans about.astro et fr/about.astro. Une
+ * retouche faite d'un seul côté faisait diverger les deux langues sans que rien
+ * ne le signale (pixelium-site#237).
+ *
+ * Tout est préfixé par `.about-page`, classe portée par le <main> des deux pages :
+ * un CSS importé n'est plus limité à sa page par Astro, le préfixe lui rend cette
+ * limite. Même principe que styles/projets.css. Ne pas retirer la classe d'une
+ * page sans l'autre.
+ */
+
+  /* Variante de /about : titres de section alignés sur la ligne de base. Le
+     reste de .layer-header vient de page-chrome.css. */
+  .about-page .layer-header {
+    align-items: baseline;
+  }
+
+  /* Origin story */
+  .about-page .origin-zines {
+    font-size: var(--text-sm);
+    color: var(--color-text-muted);
+    opacity: 0.75;
+  }
+
+  .about-page .origin-zines code {
+    font-family: var(--font-mono);
+    font-size: var(--text-sm);
+    background: rgb(var(--accent-rgb) / 0.08);
+    color: var(--color-accent);
+    padding: 0.15rem 0.45rem;
+    border-radius: var(--radius-xs);
+    border: 1px solid rgb(var(--accent-rgb) / 0.15);
+  }
+
+  .about-page .origin-punchline {
+    margin-top: 1.5rem;
+    font-family: var(--font-mono);
+    font-size: var(--text-md);
+    color: var(--color-accent);
+    opacity: 0.85;
+    border-left: 2px solid var(--color-accent);
+    padding-left: 1rem;
+    font-style: italic;
+  }
+
+  .about-page .origin-punchline em {
+    font-style: normal;
+    font-weight: 700;
+    color: var(--color-text);
+  }
+
+  /* Philosophy grid — from symbiose, kept */
+  .about-page .philosophy-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(16rem, 1fr));
+    gap: 1rem;
+  }
+
+  .about-page .philosophy-point {
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+    padding: 1.25rem;
+  }
+
+  .about-page .philosophy-point h4 {
+    font-size: var(--text-base);
+    margin-bottom: 0.5rem;
+    color: var(--color-accent);
+  }
+
+  .about-page .philosophy-point p {
+    font-size: var(--text-md);
+    color: var(--color-text-muted);
+    line-height: 1.5;
+  }
+
+  .about-page .philosophy-point a {
+    color: var(--color-accent);
+  }
+
+  /* Stats grid — track record cards */
+  .about-page .stats-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 0.75rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .about-page .stat-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.25rem;
+    padding: 1.25rem 0.75rem;
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+    transition: border-color 0.3s;
+  }
+
+  .about-page .stat-card:hover {
+    border-color: var(--color-accent);
+  }
+
+  .about-page .stat-card.accent {
+    border-color: rgb(var(--accent-rgb) / 0.3);
+    background: rgb(var(--accent-rgb) / 0.05);
+  }
+
+  .about-page .stat-number {
+    font-family: var(--font-mono);
+    font-size: 1.6rem;
+    font-weight: 800;
+    color: var(--color-accent);
+    line-height: 1;
+  }
+
+  .about-page .stat-label {
+    font-size: var(--text-2xs);
+    color: var(--color-text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    text-align: center;
+  }
+
+  .about-page .stats-footnote {
+    font-size: var(--text-sm);
+    opacity: 0.7;
+  }
+
+  @media (max-width: 640px) {
+    .about-page .stats-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  /* Crosslinks — duo layout */
+  .about-page .crosslink { padding: 2rem 0 1rem; }
+
+  /* Contact */
+  .about-page .contact-links {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+  }
+
+  .about-page .contact-link {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-family: var(--font-mono);
+    font-size: var(--text-base);
+    padding: 0.6rem 1.2rem;
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+    color: var(--color-text);
+    transition: all 0.3s;
+  }
+
+  .about-page .contact-link:hover {
+    border-color: var(--color-accent);
+    color: var(--color-accent);
+    box-shadow: 0 0 12px rgb(var(--accent-rgb) / 0.15);
+  }
+
+  .about-page .contact-logo {
+    width: 1.1rem;
+    height: 1.1rem;
+    flex-shrink: 0;
+  }
+
+  /* Transparency */
+  .about-page .transparency { padding: 1rem 0 3rem; }
+
+  .about-page .transparency-block {
+    padding: 1.25rem 1.5rem;
+    border: 1px solid rgb(var(--accent-rgb) / 0.2);
+    border-radius: var(--radius-lg);
+    background: linear-gradient(135deg, rgb(var(--accent-rgb) / 0.05), rgb(var(--accent-rgb) / 0.02));
+  }
+
+  .about-page .transparency-block h3 {
+    font-size: var(--text-lg);
+    color: var(--color-accent);
+    margin-bottom: 0.5rem;
+  }
+
+  .about-page .transparency-block p {
+    font-size: var(--text-md);
+    color: var(--color-text-muted);
+    line-height: 1.6;
+  }
+
+  @media (max-width: 640px) {
+    .about-page .philosophy-grid { grid-template-columns: 1fr; gap: 0.75rem; }
+    .about-page .detail, .about-page .philosophy-point { padding: 1rem; }
+    .about-page .origin-punchline { font-size: var(--text-sm); padding-left: 0.75rem; }
+    .about-page .contact-links { flex-direction: column; width: 100%; }
+    .about-page .contact-link { width: 100%; justify-content: center; padding: 0.6rem 1rem; font-size: var(--text-md); }
+    .about-page .crosslink-duo { grid-template-columns: 1fr; }
+  }

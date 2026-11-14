@@ -1,18 +1,16 @@
 ---
 import Base from '../layouts/Base.astro';
+import CrossLink from '../components/CrossLink.astro';
+import PageHero from '../components/PageHero.astro';
 import DynNum from '../components/DynNum.astro';
 import '../styles/projets.css';
 ---
 
 <Base title="Projects — pixelium.win" description="15 production projects + AI infrastructure layer: a prompt-injection challenge, BBS terminal, conversational CV, SSO, defense-in-depth, observability, autonomous backup, CI/CD. Real ops, real debugging.">
   <main class="projets-page">
-    <section class="hero-mini">
-      <div class="container">
-        <p class="terminal-prompt">$ git log --oneline --all</p>
-        <h1>Projects<span class="dot">.</span></h1>
-        <p class="subtitle">What we built together — from autonomous AI agents to retro terminals. Real challenges, real debugging, real solutions.</p>
-      </div>
-    </section>
+    <PageHero prompt="$ git log --oneline --all" title="Projects">
+      What we built together — from autonomous AI agents to retro terminals. Real challenges, real debugging, real solutions.
+    </PageHero>
 
     <!-- ═══════════════════════════════════════════ -->
     <!-- TIER 1 — Flagship projects                  -->
@@ -897,13 +895,9 @@ import '../styles/projets.css';
     <!-- Crosslink security -->
     <section class="crosslink reveal">
       <div class="container">
-        <a href="/securite" class="crosslink-block">
-          <div>
-            <h3>&#9670; Full defensive stack</h3>
-            <p>Internal PKI, Authentik SSO, CrowdSec IPS, Wazuh SIEM, Headscale VPN — the 5 security layers deployed on this homelab, detailed one by one.</p>
-          </div>
-          <span class="crosslink-arrow">&#8594;</span>
-        </a>
+        <CrossLink href="/securite" title="◆ Full defensive stack">
+          Internal PKI, Authentik SSO, CrowdSec IPS, Wazuh SIEM, Headscale VPN — the 5 security layers deployed on this homelab, detailed one by one.
+        </CrossLink>
       </div>
     </section>
   </main>

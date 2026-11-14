@@ -1,16 +1,13 @@
 ---
 import Base from '../layouts/Base.astro';
+import PageHero from '../components/PageHero.astro';
 ---
 
 <Base title="WOPR Terminal — pixelium BBS" description="Shall we play a game? Connect to the WOPR terminal — chat with Joshua, play Global Thermonuclear War, browse the bulletin boards." enOnly router={false}>
   <main class="bbs-page">
-    <section class="hero-mini">
-      <div class="container">
-        <p class="terminal-prompt">$ telnet pixelium.bbs 2400</p>
-        <h1>WOPR Terminal<span class="dot">.</span></h1>
-        <p class="subtitle">War Operation Plan Response — Shall we play a game?</p>
-      </div>
-    </section>
+    <PageHero compact prompt="$ telnet pixelium.bbs 2400" title="WOPR Terminal">
+      War Operation Plan Response — Shall we play a game?
+    </PageHero>
 
     <section class="terminal-section">
       <div class="container">
@@ -730,26 +727,6 @@ import Base from '../layouts/Base.astro';
 </script>
 
 <style>
-  /* Hero — compact to maximize terminal space */
-  .hero-mini {
-    padding: 1.5rem 0 1rem;
-  }
-
-  .bbs-page h1 {
-    font-size: clamp(2rem, 5vw, 3rem);
-    font-weight: 800;
-    letter-spacing: -0.02em;
-    line-height: 1.1;
-    margin-bottom: 0.5rem;
-  }
-
-  .dot { color: transparent; } /* square pixel drawn by Base */
-
-  .subtitle {
-    color: var(--color-text-muted);
-    font-size: 1rem;
-  }
-
   /* Terminal section — fill remaining viewport */
   .terminal-section {
     padding: 0 0 1rem;
@@ -762,10 +739,10 @@ import Base from '../layouts/Base.astro';
 
   #monitor-bezel {
     border: 1px solid var(--color-border);
-    border-radius: 10px;
+    border-radius: var(--radius-xl);
     padding: 0.8rem;
     background: var(--color-surface);
-    box-shadow: 0 0 30px rgba(56, 189, 248, 0.03);
+    box-shadow: 0 0 30px rgb(var(--accent-rgb) / 0.03);
     position: relative;
   }
 
@@ -793,7 +770,7 @@ import Base from '../layouts/Base.astro';
     max-height: 50rem;
     padding: 0.8rem 1rem;
     overflow: hidden;
-    border-radius: 6px;
+    border-radius: var(--radius-md);
     background: var(--color-bg);
     border: 1px solid var(--color-border);
     box-shadow: inset 0 0 40px rgba(0, 0, 0, 0.2);
@@ -811,7 +788,7 @@ import Base from '../layouts/Base.astro';
     );
     pointer-events: none;
     z-index: 10;
-    border-radius: 6px;
+    border-radius: var(--radius-md);
   }
 
   #crt::after {
@@ -821,14 +798,14 @@ import Base from '../layouts/Base.astro';
     background: radial-gradient(ellipse at center, transparent 65%, rgba(0, 0, 0, 0.2) 100%);
     pointer-events: none;
     z-index: 5;
-    border-radius: 6px;
+    border-radius: var(--radius-md);
   }
 
   /* Terminal */
   #terminal {
     flex: 1;
     font-family: var(--font-mono);
-    font-size: 0.85rem;
+    font-size: var(--text-md);
     line-height: 1.6;
     color: var(--color-text);
     overflow-y: auto;
@@ -839,13 +816,13 @@ import Base from '../layouts/Base.astro';
 
   #terminal::-webkit-scrollbar { width: 4px; }
   #terminal::-webkit-scrollbar-track { background: transparent; }
-  #terminal::-webkit-scrollbar-thumb { background: var(--color-border); border-radius: 2px; }
+  #terminal::-webkit-scrollbar-thumb { background: var(--color-border); border-radius: var(--radius-2xs); }
 
   #input-line {
     display: flex;
     align-items: center;
     font-family: var(--font-mono);
-    font-size: 0.85rem;
+    font-size: var(--text-md);
     border-top: 1px solid var(--color-border);
     padding-top: 0.5rem;
   }
@@ -875,7 +852,7 @@ import Base from '../layouts/Base.astro';
     justify-content: space-between;
     padding: 0.4rem 0.5rem 0;
     font-family: var(--font-mono);
-    font-size: 0.55rem;
+    font-size: var(--text-3xs);
     color: var(--color-text-muted);
   }
 
@@ -887,10 +864,6 @@ import Base from '../layouts/Base.astro';
   #terminal .white { color: var(--color-text); }
 
   @media (max-width: 640px) {
-    .hero-mini { padding: 1rem 0 0.5rem; }
-    .bbs-page h1 { font-size: clamp(1.5rem, 5vw, 2.5rem); }
-    .subtitle { font-size: 0.85rem; }
-
     #crt {
       height: calc(100vh - 12rem);
       min-height: 16rem;
@@ -898,7 +871,7 @@ import Base from '../layouts/Base.astro';
       padding: 0.5rem 0.6rem;
     }
 
-    #terminal { font-size: 0.75rem; line-height: 1.4; }
-    #input-line { font-size: 0.75rem; }
+    #terminal { font-size: var(--text-xs); line-height: 1.4; }
+    #input-line { font-size: var(--text-xs); }
   }
 </style>

@@ -82,7 +82,7 @@ const slides = rawSlides.map(s => ({
     position: relative;
     overflow: hidden;
     margin: 2rem 0;
-    border-radius: 8px;
+    border-radius: var(--radius-lg);
   }
 
   .carousel-track {
@@ -98,14 +98,14 @@ const slides = rawSlides.map(s => ({
 
   .carousel-window {
     border: 1px solid var(--color-border);
-    border-radius: 8px;
+    border-radius: var(--radius-lg);
     overflow: hidden;
     background: rgba(0, 0, 0, 0.3);
     margin: 0 0.25rem;
   }
 
   .carousel-expand {
-    font-size: 0.7rem;
+    font-size: var(--text-2xs);
     color: var(--color-text-muted);
     margin-left: auto;
     opacity: 0.5;
@@ -121,10 +121,10 @@ const slides = rawSlides.map(s => ({
     position: absolute;
     top: 50%;
     transform: translateY(-50%);
-    background: rgba(11, 17, 32, 0.85);
+    background: rgb(var(--bg-rgb) / 0.85);
     border: 1px solid var(--color-border);
     color: var(--color-accent);
-    font-size: 1.2rem;
+    font-size: var(--text-2xl);
     width: 2.5rem;
     height: 2.5rem;
     border-radius: 50%;
@@ -134,7 +134,7 @@ const slides = rawSlides.map(s => ({
   }
 
   .carousel-btn:hover {
-    background: rgba(11, 17, 32, 0.95);
+    background: rgb(var(--bg-rgb) / 0.95);
     border-color: var(--color-accent);
   }
 

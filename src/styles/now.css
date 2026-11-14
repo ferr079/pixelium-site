@@ -1,0 +1,17 @@
+/* now — styles de la page /now, partagés par la version EN et la version FR.
+ *
+ * Ce bloc <style> existait en double, dans now.astro et fr/now.astro. Une
+ * retouche faite d'un seul côté faisait diverger les deux langues sans que rien
+ * ne le signale (pixelium-site#237).
+ *
+ * Tout est préfixé par `.now-page`, classe portée par le <main> des deux pages :
+ * un CSS importé n'est plus limité à sa page par Astro, le préfixe lui rend cette
+ * limite. Même principe que styles/projets.css. Ne pas retirer la classe d'une
+ * page sans l'autre.
+ */
+
+  .now-page .page-wrap > * { max-width: calc(46rem - 3rem); }
+  .now-page .stack-intro { margin-top: 3.5rem; padding-top: 2rem; border-top: 1px solid rgb(var(--accent-rgb) / .15); }
+  .now-page .n-list { list-style: none; padding: 0; margin: 0; }
+  .now-page .n-list li { position: relative; padding-left: 1.4rem; margin-bottom: .65rem; color: var(--color-text-muted); line-height: 1.65; }
+  .now-page .note { font-size: var(--text-md); color: var(--color-text-muted); opacity: .8; margin-top: 2rem; font-family: var(--font-mono); }

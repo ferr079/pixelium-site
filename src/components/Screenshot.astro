@@ -51,7 +51,7 @@ const dims = rawSrc.startsWith('/images/') ? assetDims(rawSrc) : undefined;
 
   .screenshot-window {
     border: 1px solid var(--color-border);
-    border-radius: 8px;
+    border-radius: var(--radius-lg);
     overflow: hidden;
     background: rgba(0, 0, 0, 0.3);
     transition: transform 0.3s, box-shadow 0.3s;
@@ -60,7 +60,7 @@ const dims = rawSrc.startsWith('/images/') ? assetDims(rawSrc) : undefined;
   .screenshot-window:hover {
     transform: scale(1.02);
     box-shadow:
-      0 0 20px rgba(56, 189, 248, 0.15),
+      0 0 20px rgb(var(--accent-rgb) / 0.15),
       0 8px 30px rgba(0, 0, 0, 0.4);
   }
 
@@ -80,9 +80,9 @@ const dims = rawSrc.startsWith('/images/') ? assetDims(rawSrc) : undefined;
     background: var(--color-border);
   }
 
-  .screenshot-dot:nth-child(1) { background: #ef4444; }
-  .screenshot-dot:nth-child(2) { background: #eab308; }
-  .screenshot-dot:nth-child(3) { background: #22c55e; }
+  .screenshot-dot:nth-child(1) { background: var(--color-down); }
+  .screenshot-dot:nth-child(2) { background: var(--color-warn); }
+  .screenshot-dot:nth-child(3) { background: var(--color-ok); }
 
   .screenshot-link {
     text-decoration: none;
@@ -96,13 +96,13 @@ const dims = rawSrc.startsWith('/images/') ? assetDims(rawSrc) : undefined;
 
   .screenshot-title {
     font-family: var(--font-mono);
-    font-size: 0.7rem;
+    font-size: var(--text-2xs);
     color: var(--color-text-muted);
     margin-left: 0.5rem;
   }
 
   .screenshot-expand {
-    font-size: 0.7rem;
+    font-size: var(--text-2xs);
     color: var(--color-text-muted);
     margin-left: auto;
     opacity: 0;
@@ -141,7 +141,7 @@ const dims = rawSrc.startsWith('/images/') ? assetDims(rawSrc) : undefined;
 
   figcaption {
     font-family: var(--font-mono);
-    font-size: 0.75rem;
+    font-size: var(--text-xs);
     color: var(--color-text-muted);
     text-align: center;
     margin-top: 0.75rem;

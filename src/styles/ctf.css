@@ -1,0 +1,346 @@
+/* ctf — styles de la page /ctf, partagés par la version EN et la version FR.
+ *
+ * Ce bloc <style> existait en double, dans ctf.astro et fr/ctf.astro. Une
+ * retouche faite d'un seul côté faisait diverger les deux langues sans que rien
+ * ne le signale (pixelium-site#237).
+ *
+ * Tout est préfixé par `.ctf-page`, classe portée par le <main> des deux pages :
+ * un CSS importé n'est plus limité à sa page par Astro, le préfixe lui rend cette
+ * limite. Même principe que styles/projets.css. Ne pas retirer la classe d'une
+ * page sans l'autre.
+ */
+
+  .ctf-page .tech-logo {
+    width: 1.4rem;
+    height: 1.4rem;
+    flex-shrink: 0;
+  }
+
+  /* Badges */
+  .ctf-page .badges-row {
+    display: flex;
+    gap: 2rem;
+    flex-wrap: wrap;
+    align-items: center;
+  }
+
+  /* 50px = la hauteur NATIVE du badge HTB (220x50) ; le THM (249x58) est donc
+     légèrement réduit. Aucun des deux n'est agrandi : ce sont des PNG bitmap
+     servis par les plateformes, et les afficher à 80px les upscalait de 60 %,
+     d'où un rendu flou. Ne pas remonter cette valeur sans vérifier les tailles
+     natives — elles peuvent changer côté HTB/THM. */
+  .ctf-page .ctf-badge {
+    height: 50px;
+    width: auto;
+    border-radius: var(--radius-md);
+    transition: transform 0.2s;
+  }
+
+  .ctf-page .ctf-badge:hover {
+    transform: scale(1.05);
+  }
+
+  /* KV panel — replaced the HTB dashboard screenshot (2026-10-03). Every number is a
+     data-stat anchor, so scripts/check-deployed.mjs compares it with the live KV. */
+  .ctf-page .kv-panel {
+    margin-top: 1.5rem;
+    background: var(--color-deep, var(--color-deep));
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+  }
+
+  .ctf-page .kv-row {
+    padding: 1rem 1.25rem;
+    border-left: 3px solid var(--color-border);
+  }
+
+  .ctf-page .kv-row + .kv-row {
+    border-top: 1px solid var(--color-border);
+  }
+
+  .ctf-page .htb-row { border-left-color: #9fef00; }
+  .ctf-page .rootme-row { border-left-color: #ffc107; }
+  .ctf-page .arsenal-row { border-left-color: var(--color-accent); }
+
+  .ctf-page .kv-row-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 0.75rem;
+  }
+
+  .ctf-page .kv-platform {
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--color-text-muted);
+  }
+
+  .ctf-page .kv-cells {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(9rem, 1fr));
+    gap: 1rem 1.5rem;
+  }
+
+  .ctf-page .kv-cell {
+    display: flex;
+    flex-direction: column;
+    gap: 0.2rem;
+  }
+
+  .ctf-page .kv-num {
+    font-family: var(--font-mono);
+    font-size: var(--text-4xl);
+    font-weight: 700;
+    color: var(--color-text);
+    line-height: 1.1;
+  }
+
+  .ctf-page .kv-of {
+    font-size: var(--text-base);
+    font-weight: 400;
+    color: var(--color-text-muted);
+  }
+
+  .ctf-page .kv-label {
+    font-size: var(--text-xs);
+    color: var(--color-text-muted);
+  }
+
+  .ctf-page .kv-source {
+    margin: 0;
+    padding: 0.6rem 1.25rem;
+    border-top: 1px solid var(--color-border);
+    font-family: var(--font-mono);
+    font-size: var(--text-2xs);
+    color: var(--color-text-muted);
+  }
+
+  .ctf-page .kv-note {
+    margin-top: 0.75rem;
+    font-size: var(--text-sm);
+    color: var(--color-text-muted);
+  }
+
+  /* Feedback loop */
+  .ctf-page .feedback-loop {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .ctf-page .loop-item {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.75rem 1rem;
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+  }
+
+  .ctf-page .loop-arrow {
+    color: var(--color-accent);
+    font-size: var(--text-xl);
+    flex-shrink: 0;
+  }
+
+  .ctf-page .loop-item > div {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+  }
+
+  .ctf-page .loop-offense {
+    font-family: var(--font-mono);
+    font-size: var(--text-sm);
+    color: #f87171;
+    background: rgba(248, 113, 113, 0.1);
+    padding: 0.15rem 0.5rem;
+    border-radius: var(--radius-xs);
+    border: 1px solid rgba(248, 113, 113, 0.2);
+  }
+
+  .ctf-page .loop-result {
+    font-size: var(--text-md);
+    color: var(--color-text-muted);
+  }
+
+  /* Platform cards */
+  .ctf-page .platforms-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(18rem, 1fr));
+    gap: 1rem;
+  }
+
+  .ctf-page .platform-card {
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+    padding: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    transition: border-color 0.3s, box-shadow 0.3s;
+  }
+
+  .ctf-page a.platform-card {
+    text-decoration: none;
+    color: inherit;
+  }
+
+  .ctf-page a.platform-card:hover {
+    border-color: var(--color-accent);
+    box-shadow: 0 0 20px rgb(var(--accent-rgb) / 0.1);
+    color: inherit;
+  }
+
+  .ctf-page .htb-card {
+    border-top: 3px solid #9fef00;
+  }
+
+  .ctf-page .thm-card {
+    border-top: 3px solid #ef3b36;
+  }
+
+  .ctf-page .rootme-card {
+    border-top: 3px solid #ffc107;
+  }
+
+  .ctf-page .platform-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .ctf-page .platform-logo {
+    width: 1.4rem;
+    height: 1.4rem;
+    flex-shrink: 0;
+  }
+
+  .ctf-page .platform-name {
+    font-family: var(--font-mono);
+    font-size: var(--text-lg);
+    font-weight: 700;
+    color: var(--color-text);
+  }
+
+  .ctf-page .platform-rank {
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    padding: 0.2rem 0.6rem;
+    border-radius: var(--radius-sm);
+    background: rgba(159, 239, 0, 0.1);
+    color: #9fef00;
+    border: 1px solid rgba(159, 239, 0, 0.3);
+  }
+
+  .ctf-page .platform-rank.thm-rank {
+    background: rgba(239, 59, 54, 0.1);
+    color: #ef3b36;
+    border-color: rgba(239, 59, 54, 0.3);
+  }
+
+  .ctf-page .platform-rank.rootme-rank {
+    background: rgba(255, 193, 7, 0.1);
+    color: #ffc107;
+    border-color: rgba(255, 193, 7, 0.3);
+  }
+
+  .ctf-page .platform-stats {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 0.5rem;
+  }
+
+  .ctf-page .platform-stat {
+    text-align: center;
+  }
+
+  .ctf-page .stat-number {
+    display: block;
+    font-family: var(--font-mono);
+    font-size: var(--text-xl);
+    font-weight: 700;
+    color: var(--color-text);
+  }
+
+  .ctf-page .stat-label {
+    font-size: var(--text-2xs);
+    color: var(--color-text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+
+  .ctf-page .platform-desc {
+    font-size: var(--text-md);
+    color: var(--color-text-muted);
+    line-height: 1.5;
+  }
+
+  .ctf-page .platform-cta {
+    font-family: var(--font-mono);
+    font-size: var(--text-sm);
+    color: var(--color-accent);
+    margin-top: auto;
+  }
+
+  /* Techniques grid */
+  .ctf-page .techniques-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(16rem, 1fr));
+    gap: 1rem;
+  }
+
+  .ctf-page .technique-group {
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+    padding: 1.25rem;
+  }
+
+  .ctf-page .technique-group h4 {
+    font-size: var(--text-md);
+    color: var(--color-accent);
+    margin-bottom: 0.75rem;
+    font-family: var(--font-mono);
+  }
+
+  .ctf-page .technique-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+  }
+
+  .ctf-page .technique-tags span {
+    font-family: var(--font-mono);
+    font-size: var(--text-2xs);
+    background: var(--color-bg);
+    color: var(--color-text-muted);
+    padding: 0.2rem 0.5rem;
+    border-radius: var(--radius-sm);
+    border: 1px solid var(--color-border);
+  }
+
+  /* Crosslink */
+  .ctf-page .crosslink {
+    padding: 2rem 0 3rem;
+  }
+
+  @media (max-width: 640px) {
+    .ctf-page .badges-row { flex-direction: column; align-items: flex-start; }
+    .ctf-page .ctf-badge { height: 44px; }
+    .ctf-page .loop-item > div { flex-direction: column; align-items: flex-start; }
+    .ctf-page .loop-item { padding: 0.5rem 0.75rem; }
+    .ctf-page .platforms-grid, .ctf-page .techniques-grid { grid-template-columns: 1fr; gap: 0.75rem; }
+    .ctf-page .kv-row { padding: 0.9rem 1rem; }
+    .ctf-page .kv-cells { grid-template-columns: repeat(2, 1fr); gap: 0.9rem 1rem; }
+    .ctf-page .kv-num { font-size: var(--text-2xl); }
+    .ctf-page .platform-card { padding: 1rem; }
+    .ctf-page .platform-stats { grid-template-columns: repeat(2, 1fr); }
+  }

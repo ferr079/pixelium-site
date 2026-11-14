@@ -1,24 +1,27 @@
 /* page-chrome — styles de "chrome de page" partagés par les pages de contenu.
  *
- * Ces règles étaient recopiées à l'identique dans chaque page (EN comme FR) : un
- * ajustement d'espacement ou de mobile appliqué à une seule copie produisait une
- * dérive visuelle permanente, sans que rien ne le signale.
+ * Ces règles étaient recopiées dans chaque page : un ajustement appliqué à une
+ * seule copie produisait une dérive visuelle permanente, sans que rien ne le
+ * signale.
  *
- * ⚠️ Ne contient QUE les sélecteurs strictement identiques partout, vérifiés par
- * comparaison des blocs. Volontairement ABSENTS, malgré la recommandation de
- * l'audit : .hero-mini, .subtitle, .layer-header, .crosslink-block (+ h3, + p).
- * Ceux-là ont des variantes légitimes — /about utilise gap 1.5rem et font-size
- * 0.95rem là où les autres pages utilisent 2rem et 1rem. Les extraire aurait
- * uniformisé /about en silence. Ils restent scoped dans chaque page.
+ * Ce fichier est GLOBAL (importé par Base.astro) : il ne contient que des
+ * classes qui n'existent que sur les pages de contenu, vérifié sur le HTML
+ * construit avant chaque ajout (pixelium-site#237).
  *
- * Les blocs sous @media restent également locaux : seules les règles de premier
- * niveau sont ici.
+ * Une variante de page ne se recopie pas ici : elle s'écrit dans
+ * styles/<page>.css, sous le préfixe de la page, et ne porte que la propriété
+ * qui diffère. Variantes en place : /about (.layer-header aligné sur la ligne
+ * de base, .detail plus aéré sur mobile), /infrastructure (.details-grid suivi
+ * d'une marge), /projets (.roadmap .layer-header plus serré).
+ *
+ * Reste locale, parce que sa marge diffère d'une page à l'autre : la section
+ * .crosslink (le bloc qu'elle contient est le composant CrossLink).
  */
 
 .terminal-prompt {
     font-family: var(--font-mono);
     color: var(--color-accent);
-    font-size: 0.95rem;
+    font-size: var(--text-lg);
     margin-bottom: 0.75rem;
   }
 
@@ -27,8 +30,15 @@
     border-top: 1px solid var(--color-border);
   }
 
+.layer-header {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+  }
+
 .layer-header h2 {
-    font-size: 1.4rem;
+    font-size: var(--text-3xl);
     margin-bottom: 0;
   }
 
@@ -48,7 +58,7 @@
 
 .crosslink-block:hover {
     border-color: var(--color-accent);
-    box-shadow: 0 0 20px rgba(56, 189, 248, 0.1);
+    box-shadow: 0 0 20px rgb(var(--accent-rgb) / 0.1);
     color: inherit;
   }
 
@@ -57,3 +67,44 @@
     grid-template-columns: 1fr 1fr;
     gap: 1rem;
   }
+
+.details-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(16rem, 1fr));
+    gap: 1rem;
+  }
+
+.detail {
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+    padding: 1.25rem;
+  }
+
+.detail h4 {
+    font-size: var(--text-base);
+    color: var(--color-text);
+    margin-bottom: 0.5rem;
+  }
+
+.detail p {
+    font-size: var(--text-md);
+    color: var(--color-text-muted);
+    line-height: 1.5;
+  }
+
+@media (max-width: 640px) {
+  .layer-header {
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+
+  .details-grid {
+    grid-template-columns: 1fr;
+    gap: 0.75rem;
+  }
+
+  .detail {
+    padding: 0.75rem 1rem;
+  }
+}
