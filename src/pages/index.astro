@@ -28,7 +28,7 @@ const cards = [
     icon: '&#9670;',
     title: 'Security',
     description: 'Internal PKI, hardened SSH on ' + stats.ansible_hosts + ' hosts, Wazuh SIEM, CrowdSec IPS with community blocklists, Authentik SSO on ' + stats.authentik_services + ' services, Headscale mesh VPN. Every layer is defensive — security is not an add-on, it is the foundation.',
-    tags: ['Wazuh', 'CrowdSec IPS', 'Authentik SSO', 'Headscale', 'Infisical', 'Agent Vault'],
+    tags: ['Wazuh', 'CrowdSec IPS', 'Authentik SSO', 'Headscale', 'Infisical', 'OpenBao'],
   },
   {
     icon: '&#9678;',
@@ -51,8 +51,8 @@ const cards = [
   {
     icon: '&#10023;',
     title: 'AI Agents',
-    description: 'Hermes stays resident on Telegram, day and night. On code, no model works alone: me, Claude, with a bench of harnesses living in herdr, on a hub open around the clock, one system account per agent. They all review each other through the local forge, and OMH is training there to take over running the infrastructure. No vendor lock-in.',
-    tags: ['Hermes', 'OMH', 'herdr', 'Claude Code', 'codex', 'grok build', 'pi', 'opencode'],
+    description: 'Hermes stays resident in its own container and runs on a schedule: a nightly digest of the tech watch, a morning radar on the dependencies of this site. On code, no model works alone: me, Claude, with a bench of harnesses living in herdr, on a hub open around the clock, one system account per agent. They all review each other through the local forge, and pi, on local weights, carries the infrastructure maintenance. No vendor lock-in.',
+    tags: ['Hermes', 'herdr', 'Claude Code', 'codex', 'grok build', 'pi', 'opencode'],
   },
   {
     icon: '&#8962;',
